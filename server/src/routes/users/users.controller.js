@@ -1,4 +1,9 @@
-const {getAllUsers, getUser, addNewUser,existsUserName, deleteUserByUserName, updateUserByUserName} = require('../../models/users.model');
+const {getAllUsers,
+    getUser,
+    addNewUser,
+    existsUserName,
+    deleteUserByUserName,
+    updateUserByUserName} = require('../../models/users.model');
 
 function httpGetAllUsers(req, res){
     return res.status(200).json(getAllUsers());
