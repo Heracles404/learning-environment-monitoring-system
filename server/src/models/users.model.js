@@ -11,23 +11,38 @@ const user = {
     lastName: 'Reyes II'
 }
 
-users.set(user.userName, user);
+users.set(user.userId, user);
 
 function existsUserName(userName){
     console.log(users);
-    return users.has(userName);
+    for (const user of users.values()) {
+        if (user.userName === userName) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function getAllUsers(){
     // return Array.from(users.values());
-    return Array.from(users.values()).map(({password, ...userWithoutPassword}) => userWithoutPassword);}
+    console.log(users);
+    return Array.from(users.values()).map(({password, ...userWithoutPassword}) => userWithoutPassword);
+}
 
-function getUser(userName){
-    const { password, ...userWithoutPassword } = users.get(userName); // Exclude password
-    return userWithoutPassword;
+
+function getUserByUserName(userName) {
+    // Find the user by userName
+    for (const user of users.values()) {
+        if (user.userName === userName) {
+            const { password, ...userWithoutPassword } = user; // Exclude password
+            return userWithoutPassword;
+        }
+    }
+    return null; // User not found
 }
 
 function addNewUser(user) {
+    console.log(users);
     latestUserId++;
 
     // Create a new user object that includes the userId
@@ -36,36 +51,39 @@ function addNewUser(user) {
         ...user // Spread the properties from the user object
     };
 
-    users.set(user.userName, newUser); // Store the new user in the map
+    users.set(newUser.userId, newUser); // Store the new user in the map
 }
 
+function deleteUserByUserName(userName) {
+    console.log(users);
 
-function deleteUserByUserName(userName){
-    const username = user.userName;
-
-    if (!existsUserName(userName)) {
-        return `User ${userName} not found.`;
+    // Find the userId by userName and delete the user
+    for (const [id, user] of users.entries()) {
+        if (user.userName === userName) {
+            users.delete(id);
+            return `User ${userName} has been deleted.`;
+        }
     }
 
-    users.delete(userName);
+    return `User ${userName} not found.`;
 }
 
-
-function updateUserByUserName(userName, updates){
-    const user = users.get(userName);
-
-    // Update the fields with the provided updates
-    Object.assign(user, updates); // Update the fields
-    // users.set(userName, user); // Save the updated user back to the Map
-
-    // Return a success message
-    return `User ${userName} has been updated.`;
+function updateUserByUserName(userName, updates) {
+    // Find the user by userName and update their details
+    for (const [id, user] of users.entries()) {
+        if (user.userName === userName) {
+            const updatedUser = { ...user, ...updates }; // Update the fields
+            users.set(id, updatedUser); // Save the updated user back to the Map
+            return `User ${userName} has been updated.`;
+        }
+    }
+    return `User ${userName} not found.`;
 }
 
 module.exports = {
     existsUserName,
     getAllUsers,
-    getUser,
+    getUserByUserName,
     addNewUser,
     deleteUserByUserName,
     updateUserByUserName

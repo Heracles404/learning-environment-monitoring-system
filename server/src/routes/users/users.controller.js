@@ -1,5 +1,6 @@
 const {getAllUsers,
-    getUser,
+    // getUser,
+    getUserByUserName,
     addNewUser,
     existsUserName,
     deleteUserByUserName,
@@ -17,7 +18,7 @@ function httpGetUser(req, res) {
             error: `User ${userName} not found...`
         })
     }else {
-        return res.status(201).json(getUser(userName))
+        return res.status(201).json(getUserByUserName(userName))
     }
 }
 
@@ -26,7 +27,13 @@ function httpAddNewUser(req, res){
     const user = req.body;
     if(!user.userName || !user.password || !user.role || !user.firstName || !user.lastName){
         return res.status(400).json({
-           error: 'Missing required attributes'
+            error: 'Missing required attributes'
+        });
+    }
+
+    if (existsUserName(user.userName)) {
+        return res.status(400).json({
+            error: `UserName ${user.userName} already exists.`
         });
     }
 
