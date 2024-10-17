@@ -97,17 +97,32 @@ export const CardsData = [
 export const UpdatesData = [
   {
     name: "Temperature",
-    noti: "has ordered Apple smart watch 2500mh battery.",
+    noti: "has decreased.",
     time: "25 seconds ago",
   },
   {
     name: "Light",
-    noti: "has received Samsung gadget for charging battery.",
+    noti: "has been lit.",
     time: "30 minutes ago",
   },
   {
     name: "Air Quality",
-    noti: "has ordered Apple smart watch, samsung Gear 2500mh battery.",
+    noti: "has been purified.",
+    time: "2 hours ago",
+  },
+  {
+    name: "Carbon Dioxide",
+    noti: "has cleaned.",
+    time: "2 hours ago",
+  },
+  {
+    name: "Smog",
+    noti: "has no detections.",
+    time: "2 hours ago",
+  },
+  {
+    name: "Head Count",
+    noti: "has been captured.",
     time: "2 hours ago",
   },
 ];
