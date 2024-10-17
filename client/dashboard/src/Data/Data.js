@@ -21,9 +21,13 @@ export const SidebarData =[
     },
     {
         icon: UilClipboardAlt,
-        heading: "Reports",
+        heading: "Report",
         path: "/reports"
-
+    },
+    {
+        icon: UilPackage,
+        heading: "Record",
+        // path: "/record"
     },
     {
         icon: UilUsersAlt,
@@ -33,6 +37,8 @@ export const SidebarData =[
     {
         icon: UilPackage,
         heading: "Monitor",
+        path: "/monitor"
+
     },
     {
         icon: UilChart,
@@ -43,17 +49,17 @@ export const SidebarData =[
 // Analytics Cards Data
 export const CardsData = [
     {
-      title: "Air Quality",
+      title: "Oxygen",
       color: {
         backGround: "linear-gradient(180deg, #bb67ff 0%, #c484f3 100%)",
         boxShadow: "0px 10px 20px 0px #e0c6f5",
       },
       barValue: 70,
       value: "25,970",
-      png: UilUsdSquare,
+      png: UilClipboardAlt,
       series: [
         {
-          name: "Air Quality",
+          name: "Oxygen",
           data: [31, 40, 28, 51, 42, 109, 100],
         },
       ],
@@ -66,7 +72,7 @@ export const CardsData = [
       },
       barValue: 80,
       value: "14,270",
-      png: UilMoneyWithdrawal,
+      png: UilClipboardAlt,
       series: [
         {
           name: "Temperature",
@@ -91,6 +97,42 @@ export const CardsData = [
         },
       ],
     },
+    {
+      title: "Smog",
+      color: {
+        backGround:
+        "linear-gradient(rgb(70, 100, 248) -146.42%, rgb(50 100 248) -46.42%)",
+        boxShadow: "0px 10px 20px 0px #F9D59B",
+      },
+      barValue: 60,
+      value: "4,270",
+      png: UilClipboardAlt,
+      series: [
+        {
+          name: "Smog",
+          data: [10, 25, 15, 30, 12, 15, 20],
+        },
+      ],
+    },
+    {
+      title: "Carbon Dioxide",
+      color: {
+        backGround:
+          "linear-gradient(rgb(1, 212, 154) -146.42%, rgb(1 202 113) -46.42%)",
+
+    
+        boxShadow: "0px 10px 20px 0px #F9D59B",
+      },
+      barValue: 60,
+      value: "4,270",
+      png: UilClipboardAlt,
+      series: [
+        {
+          name: "Carbon Dioxide",
+          data: [10, 25, 15, 30, 12, 15, 20],
+        },
+      ],
+    },
   ];
 
   // Recent Update Card Data
@@ -106,7 +148,7 @@ export const UpdatesData = [
     time: "30 minutes ago",
   },
   {
-    name: "Air Quality",
+    name: "Oxygen",
     noti: "has been purified.",
     time: "2 hours ago",
   },

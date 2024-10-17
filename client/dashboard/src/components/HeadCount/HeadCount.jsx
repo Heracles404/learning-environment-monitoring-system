@@ -1,4 +1,5 @@
 import React from 'react'
+import './HeadCount.css'
 import Chart from 'react-apexcharts'
 const HeadCount = () => {
     const data = {

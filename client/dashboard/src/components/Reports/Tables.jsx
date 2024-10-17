@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import './Table.css'
+import './Tables.css'
 
 function createData(
   name: string,
@@ -56,7 +56,6 @@ const makeStyles=(status)=>{
 export default function BasicTable() {
   return (
     <div className="Table">
-        <h3>Monitoring</h3>
     
     <TableContainer component={Paper}
         style={{ boxShadow: "0px 13px 20px 0px #80808029" }}
@@ -68,10 +67,10 @@ export default function BasicTable() {
             <TableCell> </TableCell>
             <TableCell align="left">Ideal</TableCell>
             <TableCell align="left">Current&nbsp;</TableCell>
-            {/* <TableCell align="left">Minimum&nbsp;</TableCell> */}
-            {/* <TableCell align="left">Maximum&nbsp;</TableCell> */}
-            {/* <TableCell align="left">Variance&nbsp;</TableCell> */}
-            {/* <TableCell align="left">Deviation&nbsp;</TableCell> */}
+            <TableCell align="left">Minimum&nbsp;</TableCell>
+            <TableCell align="left">Maximum&nbsp;</TableCell>
+            <TableCell align="left">Variance&nbsp;</TableCell>
+            <TableCell align="left">Deviation&nbsp;</TableCell>
             <TableCell align="left">Status</TableCell>
           </TableRow>
         </TableHead>
@@ -86,10 +85,10 @@ export default function BasicTable() {
               </TableCell>
               <TableCell align="left">{row.ideal}</TableCell>
               <TableCell align="left">{row.current}</TableCell>
-              {/* <TableCell align="left">{row.min}</TableCell> */}
-              {/* <TableCell align="left">{row.max}</TableCell> */}
-              {/* <TableCell align="left">{row.variance}</TableCell> */}
-              {/* <TableCell align="left">{row.deviation}</TableCell> */}
+              <TableCell align="left">{row.min}</TableCell>
+              <TableCell align="left">{row.max}</TableCell>
+              <TableCell align="left">{row.variance}</TableCell>
+              <TableCell align="left">{row.deviation}</TableCell>
               <TableCell align="left">
                 <span className="status" style={makeStyles(row.status)}>{row.status}</span>
 

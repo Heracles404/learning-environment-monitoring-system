@@ -1,0 +1,11 @@
+.HeadCount{
+    width: 75%;
+    /* background: white; */
+    border-radius: 0.7rem;
+    padding: 1rem;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+    
+}

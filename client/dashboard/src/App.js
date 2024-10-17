@@ -4,6 +4,7 @@ import MainDash from './components/MainDash/MainDash.jsx';
 import RightSide from './components/RightSide/RightSide.jsx';
 import Sidebar from './components/Sidebar/Sidebar.jsx';
 import Reports from './components/Reports/Reports.jsx';
+import Monitor from './components/Monitor/Monitor.jsx';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Routes>
             <Route path="/" element={<MainDash />} />
             <Route path="/reports" element={<Reports />} />
+            <Route path="/monitor" element={<Monitor />} />
           </Routes>
           <RightSide />
         </div>
