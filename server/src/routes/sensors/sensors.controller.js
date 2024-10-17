@@ -28,30 +28,31 @@ function httpGetReadoutById(req, res){
 
 
 function httpGetReadoutsByDate(req, res) {
-    const date = req.params.date;
+    const { startDate, endDate } = req.query; // Extract startDate and endDate from query parameters
 
-    // Validate the date
-    if (!isValidDate(date)) {
-        return res.status(400).json({ error: 'Invalid date format. Use MM/DD/YYYY.' });
+    if (!startDate || !endDate) {
+        return res.status(400).json({ message: 'Both startDate and endDate are required.' });
     }
 
-    const readoutsByDate = getReadoutsByDate(date);
+    const readoutsInRange = getReadoutsByDate(startDate, endDate);
 
-    // Check if any readouts were found
-    if (readoutsByDate.length === 0) {
-        return res.status(404).json({ error: 'No readouts found for the given date' });
+    if (readoutsInRange.length > 0) {
+        res.status(200).json(readoutsInRange);
+    } else {
+        res.status(404).json({ message: 'No readouts found for the specified date range.' });
     }
-
-    // Return the found readouts
-    return res.status(200).json(readoutsByDate);
 }
 
-// Helper function to validate dates in MM/DD/YYYY format
-function isValidDate(date) {
-    const regex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/(20[0-9]{2})$/; // Matches MM/DD/YYYY
-    return regex.test(date);
+function httpGetReadoutsByTime(req, res) {
+    const time = req.params.time; // Extract the 'time' parameter from the request
+    const readoutsAtTime = getReadoutsByTime(time); // Use the function to get readouts for the specified time
+
+    if (readoutsAtTime.length > 0) {
+        res.status(200).json(readoutsAtTime);
+    } else {
+        res.status(404).json({ message: 'No readouts found for the specified time.' });
+    }
 }
-function httpGetReadoutsByTime(req, res){}
 
 
 function httpNewReadouts(req,res){

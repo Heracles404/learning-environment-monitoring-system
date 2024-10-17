@@ -7,15 +7,22 @@ const currentDateTime = new Date();
 const readout  = {
     readoutId: 1,
     date: "10/16/2024",
-    time: "3:15:00 PM",
-    temperature: 6,
+    time: "03:15 PM",
+    temperature: 36,
     humidity: 33,
+    // calculate heatIndex arduino
+    heatIndex: 37,
     lighting: 160,
     headCount: 54,
     oxygen: 24,
     carbonDioxide: 600,
     sulfurDioxide: 30,
-    particulateMatter: 15
+    particulateMatter: 15,
+    // For remarks - set conditions in arduino
+    indoorAir: "Good",
+    outdoorAir: "Good",
+    temp: "Good",
+    remarks: "Good"
 }
 
 readouts.set(readout.readoutId, readout);
@@ -33,12 +40,20 @@ function getReadoutById(readoutId){
     return readouts.get(readoutId);
 }
 
-function getReadoutsByDate(date){
-    return readouts.filter(readout => readout.date === date);
+
+function getReadoutsByDate(startDate, endDate) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    return Array.from(readouts.values()).filter(readout => {
+        const readoutDate = new Date(readout.date);
+        return readoutDate >= start && readoutDate <= end;
+    });
 }
 
+
 function getReadoutsByTime(time){
-    return readouts.filter(readout => readout.time === time);
+    return Array.from(readouts.values()).filter(readout => readout.time === time);
 }
 
 function newReadouts(readout){
@@ -47,7 +62,8 @@ function newReadouts(readout){
     const newReadout = {
         readoutId: latestReadoutId,
         date: currentDateTime.toLocaleDateString(), // Format date
-        time: currentDateTime.toLocaleTimeString(), // Format time
+        time: currentDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), // Format time to include only hour and minute
+        // time: currentDateTime.toLocaleTimeString(), // Format time
         ...readout
     };
 

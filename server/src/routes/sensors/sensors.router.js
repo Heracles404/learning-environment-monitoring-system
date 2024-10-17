@@ -11,8 +11,8 @@ const  sensorsRouter = express.Router();
 
 sensorsRouter.get('/', httpGetAllReadouts);
 sensorsRouter.get('/:id', httpGetReadoutById);
-sensorsRouter.get('/:date', httpGetReadoutsByDate);
-sensorsRouter.get('/:time', httpGetReadoutsByTime);
+sensorsRouter.get('/date/date', httpGetReadoutsByDate);
+sensorsRouter.get('/time/:time', httpGetReadoutsByTime);
 
 sensorsRouter.post('/', httpNewReadouts);
 
