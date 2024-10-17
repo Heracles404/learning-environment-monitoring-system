@@ -1,4 +1,10 @@
-const {getAllUsers, getUser, addNewUser,existsUserName, deleteUserByUserName, updateUserByUserName} = require('../../models/users.model');
+const {getAllUsers,
+    // getUser,
+    getUserByUserName,
+    addNewUser,
+    existsUserName,
+    deleteUserByUserName,
+    updateUserByUserName} = require('../../models/users.model');
 
 function httpGetAllUsers(req, res){
     return res.status(200).json(getAllUsers());
@@ -12,7 +18,7 @@ function httpGetUser(req, res) {
             error: `User ${userName} not found...`
         })
     }else {
-        return res.status(201).json(getUser(userName))
+        return res.status(201).json(getUserByUserName(userName))
     }
 }
 
@@ -21,7 +27,13 @@ function httpAddNewUser(req, res){
     const user = req.body;
     if(!user.userName || !user.password || !user.role || !user.firstName || !user.lastName){
         return res.status(400).json({
-           error: 'Missing required attributes'
+            error: 'Missing required attributes'
+        });
+    }
+
+    if (existsUserName(user.userName)) {
+        return res.status(400).json({
+            error: `UserName ${user.userName} already exists.`
         });
     }
 
