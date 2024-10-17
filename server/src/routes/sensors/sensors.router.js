@@ -1,8 +1,8 @@
 const express = require('express');
 const {httpGetAllReadouts,
     httpGetReadoutById,
-    httpGetReadoutByDate,
-    httpGetReadoutByTime,
+    httpGetReadoutsByDate,
+    httpGetReadoutsByTime,
     httpNewReadouts,
     httpDeleteReadout,
     httpDeleteAllReadouts} = require('./sensors.controller');
@@ -11,8 +11,8 @@ const  sensorsRouter = express.Router();
 
 sensorsRouter.get('/', httpGetAllReadouts);
 sensorsRouter.get('/:id', httpGetReadoutById);
-sensorsRouter.get('/:date', httpGetReadoutByDate);
-sensorsRouter.get('./:time', httpGetReadoutByTime);
+sensorsRouter.get('/:date', httpGetReadoutsByDate);
+sensorsRouter.get('/:time', httpGetReadoutsByTime);
 
 sensorsRouter.post('/', httpNewReadouts);
 

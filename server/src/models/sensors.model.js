@@ -1,11 +1,13 @@
-const sensors = new Map();
+const readouts = new Map();
 
 let latestReadoutId = 1;
 
-const sensor  = {
+const currentDateTime = new Date();
+
+const readout  = {
     readoutId: 1,
-    date: "January 1, 2024",
-    time: "13:15",
+    date: "10/16/2024",
+    time: "3:15:00 PM",
     temperature: 6,
     humidity: 33,
     lighting: 160,
@@ -16,35 +18,60 @@ const sensor  = {
     particulateMatter: 15
 }
 
-sensors.set(sensor.readoutId, sensor);
+readouts.set(readout.readoutId, readout);
 
 function getAllReadouts(){
-    return Array.from(sensors.values());
+    console.log(readouts);
+    return Array.from(readouts.values());
 }
 
 function existsId(readoutId){
-    return sensor.has(readoutId);
+    return readouts.has(readoutId);
 }
 
 function getReadoutById(readoutId){
-    return sensors.get(readoutId);
+    return readouts.get(readoutId);
 }
 
-function getReadoutByDate(){}
+function getReadoutsByDate(date){
+    return readouts.filter(readout => readout.date === date);
+}
 
-function getReadoutByTime(){}
+function getReadoutsByTime(time){
+    return readouts.filter(readout => readout.time === time);
+}
 
-function newReadouts(){}
+function newReadouts(readout){
+    latestReadoutId++;
 
-function deleteReadout(){}
+    const newReadout = {
+        readoutId: latestReadoutId,
+        date: currentDateTime.toLocaleDateString(), // Format date
+        time: currentDateTime.toLocaleTimeString(), // Format time
+        ...readout
+    };
 
-function deleteAllReadouts(){}
+    readouts.set(newReadout.readoutId, newReadout);
+
+    console.log(readouts);
+}
+
+function deleteReadout(id){
+    readouts.delete(id);
+    console.log(readouts);
+}
+
+function deleteAllReadouts(){
+    readouts.clear();
+    console.log(readouts);
+}
 
 module.exports = {
+    existsId,
     getAllReadouts,
     getReadoutById,
-    getReadoutByDate,
-    getReadoutByTime,
+    getReadoutsByDate,
+    getReadoutsByTime,
     newReadouts,
     deleteReadout,
     deleteAllReadouts
