@@ -19,14 +19,18 @@ export const SidebarData =[
     {
         icon: UilEstate,
         heading: "Dashboard",
+        path: "/"
     },
     {
         icon: UilClipboardAlt,
         heading: "Reports",
+        path: "/reports"
+
     },
     {
         icon: UilUsersAlt,
         heading: "Accounts",
+        
     },
     {
         icon: UilPackage,
