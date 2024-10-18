@@ -99,6 +99,73 @@ export const UpdatesData = [
   },
 ];
 
+// mock data Team
+export const mockDataTeam = [
+  {
+    id: 1,
+    name: "Jon Snow",
+    email: "jonsnow@gmail.com",
+    age: 35,
+    phone: "(665)121-5454",
+    access: "admin",
+  },
+  {
+    id: 2,
+    name: "Cersei Lannister",
+    email: "cerseilannister@gmail.com",
+    age: 42,
+    phone: "(421)314-2288",
+    access: "manager",
+  },
+  {
+    id: 3,
+    name: "Jaime Lannister",
+    email: "jaimelannister@gmail.com",
+    age: 45,
+    phone: "(422)982-6739",
+    access: "user",
+  },
+];
+
+// user data
+export const user = [
+  {
+    id: 1,
+    userName: 'SirNicanor',
+    password: '123admin',
+    role: 'Principal',
+    firstName: 'Sir',
+    lastName: 'Reyes I',
+
+    access: "Admin",
+    email: '1Reyes@gmail.com'
+  },
+  {
+    id: 2,
+    userName: 'SirNicanor',
+    password: '123admin',
+    role: 'Physical Facilitator Coordinator',
+    firstName: 'Nicanor',
+    lastName: 'Reyes II',
+
+    access: "Manager",
+    email: '2Reyes@gmail.com'
+    
+  },
+  {
+    id: 3,
+    userName: 'SirNicanor',
+    password: '123admin',
+    role: 'SDRRM Coordinator',
+    firstName: 'Mr',
+    lastName: 'Reyes III',
+
+    access: "User",
+    email: '3Reyes@gmail.com'
+  },
+];
+
+
 //Sidebar Data
 export const SidebarData =[
     {
