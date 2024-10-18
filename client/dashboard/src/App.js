@@ -1,9 +1,13 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MainDash from './pages/MainDash/MainDash.jsx';
 import RightSide from './global/RightSide/RightSide.jsx';
 import Sidebar from './global/Sidebar/Sidebar.jsx';
-import Reports from './pages/Reports/Reports.jsx';
+
+import MainDash from './pages/MainDash/MainDash.jsx';
+import Accounts from './pages/Accounts/Accounts.jsx';
+import Records from './pages/Records/Records.jsx';
+import Monitor from './pages/Monitor/Monitor.jsx';
+
 
 function App() {
   return (
@@ -12,7 +16,9 @@ function App() {
           <Sidebar />
           <Routes>
             <Route path="/" element={<MainDash />} />
-            <Route path="/reports" element={<Reports />} />
+            <Route path="/accounts" element={<Accounts />} />
+            <Route path="/records" element={<Records />} />
+            <Route path="/monitor" element={<Monitor />} />
           </Routes>
           <RightSide />
         </div>

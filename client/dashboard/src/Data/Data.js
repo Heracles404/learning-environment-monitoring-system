@@ -12,34 +12,6 @@ import{
 
 
 
-//Sidebar Data
-export const SidebarData =[
-    {
-        icon: UilEstate,
-        heading: "Dashboard",
-        path: "/"
-    },
-    {
-        icon: UilClipboardAlt,
-        heading: "Reports",
-        path: "/reports"
-
-    },
-    {
-        icon: UilUsersAlt,
-        heading: "Accounts",
-        
-    },
-    {
-        icon: UilPackage,
-        heading: "Monitor",
-    },
-    {
-        icon: UilChart,
-        heading: "Analytics",
-    },
-];
-
 // Analytics Cards Data
 export const CardsData = [
     {
@@ -125,4 +97,34 @@ export const UpdatesData = [
     noti: "has been captured.",
     time: "2 hours ago",
   },
+];
+
+//Sidebar Data
+export const SidebarData =[
+    {
+        icon: UilEstate,
+        heading: "Dashboard",
+        path: "/"
+    },    
+    {
+        icon: UilUsersAlt,
+        heading: "Accounts",
+        path: "/accounts"
+    },
+    {
+        icon: UilClipboardAlt,
+        heading: "Reports",
+        path: "/records"
+
+    },
+
+    {
+        icon: UilPackage,
+        heading: "Monitor",
+        path: "/monitor"
+    },
+    {
+        icon: UilChart,
+        heading: "Analytics",
+    },
 ];
