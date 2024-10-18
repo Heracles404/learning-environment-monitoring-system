@@ -1,7 +1,7 @@
 import React from 'react'
 import './RightSide.css'
-import Updates from '../Updates/Updates'
-import HeadCount from '../HeadCount/HeadCount'
+import Updates from '../../components/Updates/Updates'
+import HeadCount from '../../components/HeadCount/HeadCount'
 
 const RightSide = () => {
   return (
