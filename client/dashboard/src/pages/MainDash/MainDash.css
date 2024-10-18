@@ -4,6 +4,14 @@
     justify-content: space-evenly;
 }
 
+.MainContainer {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+
 @media screen and (max-width:1200px) {
     .MainDash{
         justify-content: flex-start;

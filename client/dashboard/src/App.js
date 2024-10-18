@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import RightSide from './global/RightSide/RightSide.jsx';
+// import RightSide from './global/RightSide/RightSide.jsx';
 import Sidebar from './global/Sidebar/Sidebar.jsx';
 
 import MainDash from './pages/MainDash/MainDash.jsx';
@@ -20,7 +20,7 @@ function App() {
             <Route path="/records" element={<Records />} />
             <Route path="/monitor" element={<Monitor />} />
           </Routes>
-          <RightSide />
+          {/* <RightSide /> */}
         </div>
       </div>
   );
