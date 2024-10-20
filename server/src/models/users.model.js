@@ -3,7 +3,7 @@ const users = new Map();
 let latestUserId = 1;
 
 const user = {
-    userId: 1,
+    _id: 1,
     userName: 'SirNicanor',
     password: '123admin',
     role: 'Principal',
@@ -11,7 +11,7 @@ const user = {
     lastName: 'Reyes II'
 }
 
-users.set(user.userId, user);
+users.set(user._id, user);
 
 function existsUserName(userName){
     console.log(users);
@@ -47,17 +47,17 @@ function addNewUser(user) {
 
     // Create a new user object that includes the userId
     const newUser = {
-        userId: latestUserId, // Add userId
+        _id: latestUserId, // Add userId
         ...user // Spread the properties from the user object
     };
 
-    users.set(newUser.userId, newUser); // Store the new user in the map
+    users.set(newUser._id, newUser); // Store the new user in the map
 }
 
 function deleteUserByUserName(userName) {
     console.log(users);
 
-    // Find the userId by userName and delete the user
+    // Find the _id by userName and delete the user
     for (const [id, user] of users.entries()) {
         if (user.userName === userName) {
             users.delete(id);

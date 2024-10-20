@@ -5,7 +5,7 @@ let latestReadoutId = 1;
 const currentDateTime = new Date();
 
 const readout  = {
-    readoutId: 1,
+    _id: 1,
     date: "10/16/2024",
     time: "03:15 PM",
     temperature: 36,
@@ -25,7 +25,7 @@ const readout  = {
     remarks: "Good"
 }
 
-readouts.set(readout.readoutId, readout);
+readouts.set(readout._id, readout);
 
 function getAllReadouts(){
     console.log(readouts);
@@ -60,14 +60,14 @@ function newReadouts(readout){
     latestReadoutId++;
 
     const newReadout = {
-        readoutId: latestReadoutId,
+        _id: latestReadoutId,
         date: currentDateTime.toLocaleDateString(), // Format date
         time: currentDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), // Format time to include only hour and minute
         // time: currentDateTime.toLocaleTimeString(), // Format time
         ...readout
     };
 
-    readouts.set(newReadout.readoutId, newReadout);
+    readouts.set(newReadout._id, newReadout);
 
     console.log(readouts);
 }
