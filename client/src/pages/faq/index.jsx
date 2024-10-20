@@ -18,7 +18,7 @@ const FAQ = () => {
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-            An Important Question
+            What is this monitoring system?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -31,7 +31,7 @@ const FAQ = () => {
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-            Another Important Question
+            What are we monitoring? 
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -44,7 +44,7 @@ const FAQ = () => {
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-            Your Favorite Question
+          How to export in Records?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -57,7 +57,7 @@ const FAQ = () => {
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-            Some Random Question
+          How to add event in Calendar
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -70,7 +70,7 @@ const FAQ = () => {
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-            The Final Question
+            Bakit ang pogi ni Sir Ilao?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
