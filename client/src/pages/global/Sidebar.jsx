@@ -237,7 +237,7 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
             <Item
-              title="Head Count"
+              title="Lighting"
               to="/bar"
               icon={<BarChartOutlinedIcon />}
               selected={selected}
@@ -250,6 +250,13 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+                        <Item
+              title="Head Count"
+              to="/bar"
+              icon={<BarChartOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            /> 
             {/* <Item
               title="Geography Chart"
               to="/geography"
