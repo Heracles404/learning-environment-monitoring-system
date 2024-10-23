@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -19,7 +19,7 @@ import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import LegendToggleIcon from '@mui/icons-material/LegendToggle';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 
-const Item = ({ title, to, icon, selected, setSelected }) => {
+const Item = ({ title, to, icon, selected, setSelected, onClick }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
@@ -28,7 +28,10 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
       style={{
         color: colors.grey[100],
       }}
-      onClick={() => setSelected(title)}
+      onClick={() => {
+        setSelected(title);
+        if (onClick) onClick(); // Call onClick if provided (for logout)
+      }}
       icon={icon}
     >
       <Typography>{title}</Typography>
@@ -42,6 +45,12 @@ const Sidebar = () => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+  const navigate = useNavigate(); // Initialize useNavigate for navigation
+
+  const handleLogout = () => {
+    localStorage.removeItem("isAuthenticated"); // Clear the authentication status
+    navigate("/"); // Redirect to the login page
+  };
 
   return (
     <Box
@@ -114,6 +123,7 @@ const Sidebar = () => {
                 <Typography variant="h5" color={colors.greenAccent[500]}>
                   Principal
                 </Typography>
+                
               </Box>
             </Box>
           )}
@@ -121,10 +131,18 @@ const Sidebar = () => {
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Dashboard"
-              to="/"
+              to="/dashboard"
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+            />
+              <Item
+              title="Sign Out" // Sign Out item
+              to="/"
+              icon={<PersonOutlinedIcon />} // You can use a different icon
+              selected={selected}
+              setSelected={setSelected}
+              onClick={handleLogout} // Trigger logout
             />
             {/* <Item
               title="Calendar"
@@ -250,7 +268,7 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-                        <Item
+              <Item
               title="Head Count"
               to="/bar"
               icon={<BarChartOutlinedIcon />}
@@ -264,6 +282,7 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             /> */}
+
           </Box>
         </Menu>
       </ProSidebar>
