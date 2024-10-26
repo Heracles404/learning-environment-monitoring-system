@@ -16,6 +16,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./pages/calendar/calendar";
 import Login from "./pages/Login";
+import LoginPage from "./pages/Login/Login";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -43,8 +44,12 @@ function App() {
           <Routes>
             <Route 
               path="/" 
-              element={<Login />} 
+              element={<LoginPage />} 
             />
+            {/* <Route 
+              path="/" 
+              element={<Login />} 
+            /> */}
             <Route
               path="/dashboard"
               element={
