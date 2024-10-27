@@ -28,7 +28,7 @@ const LoginPage = () => {
         <Box
             sx={{
                 // height: '100%',
-                backgroundImage: `url(${backgroundImage})`,
+                backgroundImage: `linear-gradient(rgba(0, 58, 0, 0.5), rgba(0, 128, 0, 0.5)), url(${backgroundImage})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 display: 'flex',
