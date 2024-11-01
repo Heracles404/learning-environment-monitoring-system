@@ -3,10 +3,9 @@ import { Box, Typography, TextField, Button, Link } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// Import the local image
 import backgroundImage from '../../imgs/ESLIHS_BG.png';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import KeyIcon from '@mui/icons-material/Key';
+import LockIcon from '@mui/icons-material/Lock';
 
 const LoginPage = () => {
     const [username, setUsername] = useState("");
@@ -28,7 +27,7 @@ const LoginPage = () => {
         <Box
             sx={{
                 // height: '100%',
-                backgroundImage: `linear-gradient(rgba(0, 58, 0, 0.5), rgba(0, 128, 0, 0.5)), url(${backgroundImage})`,
+                backgroundImage: `linear-gradient(rgba(0, 135, 0, 0.2), rgba(0, 88, 0, 0.3)), url(${backgroundImage})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 display: 'flex',
@@ -117,7 +116,7 @@ const LoginPage = () => {
                                     />
                                 </Box>
                                 <Box mb={2} sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                                <KeyIcon sx={{ fontSize: 38, color: 'action.active', mr: 1, my: 0.5 }} />
+                                <LockIcon sx={{ fontSize: 38, color: 'action.active', mr: 1, my: 0.5 }} />
                                     <TextField
                                         id="password"
                                         label="Password"
