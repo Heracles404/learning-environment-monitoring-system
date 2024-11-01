@@ -134,22 +134,7 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            <Item
-              title="FAQ Page"
-              to="/faq"
-              icon={<HelpOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />            
-            <Item
-              title="Sign Out"
-              to="/"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-              onClick={handleLogout}
-            />
-
+            
             <Typography
               variant="h6"
               color={colors.grey[300]}
@@ -202,11 +187,7 @@ const Sidebar = () => {
             >
               Monitor
             </Typography>
-            <SubMenu
-              title="Analytics"
-              icon={<BarChartOutlinedIcon />}
-              style={{ color: colors.grey[100] }}
-            >
+
               <Item
                 title="Heat Index"
                 to="/bar"
@@ -242,7 +223,29 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />
-            </SubMenu>
+            <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+            >
+              Other
+            </Typography>
+            <Item
+              title="FAQ Page"
+              to="/faq"
+              icon={<HelpOutlineOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />            
+            <Item
+              title="Sign Out"
+              to="/"
+              icon={<PersonOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+              onClick={handleLogout}
+            />
+
           </Box>
         </Menu>
       </ProSidebar>
