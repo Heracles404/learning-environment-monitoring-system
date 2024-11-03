@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Typography, useTheme, useMediaQuery  } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
@@ -46,6 +46,8 @@ const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
   const navigate = useNavigate();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const [isSidebarVisible, setIsSidebarVisible] = useState(!isSmallScreen);
 
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
@@ -53,89 +55,106 @@ const Sidebar = () => {
   };
 
   return (
-    <Box
-      sx={{
-        "& .pro-sidebar-inner": {
-          background: `${colors.greenAccent[800]} !important`,
-        },
-        "& .pro-icon-wrapper": {
-          backgroundColor: "transparent !important",
-        },
-        "& .pro-inner-item": {
-          padding: "5px 35px 5px 20px !important",
-        },
-        "& .pro-inner-item:hover": {
-          color: `${colors.greenAccent[500]} !important`,
-        },
-        "& .pro-menu-item.active": {
-          color: `${colors.greenAccent[500]} !important`,
-        },
-      }}
-    >
-      <ProSidebar collapsed={isCollapsed}>
-        <Menu iconShape="square">
-          <MenuItem
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
-            style={{
-              margin: "10px 0 20px 0",
-              color: colors.grey[100],
-            }}
-          >
+    
+    <Box>
+            <IconButton
+        onClick={() => setIsSidebarVisible(!isSidebarVisible)}
+        sx={{
+          display: { xs: "block", md: "none" }, // Show button on small screens
+          position: "fixed",
+          top: 10,
+          left: 10,
+          zIndex: 1300,
+        }}
+      >
+        <MenuOutlinedIcon />
+      </IconButton>
+      <Box
+        sx={{
+          display: { xs: isSidebarVisible ? "block" : "none", md: "block" }, // Hide sidebar on small screens unless toggled
+          "& .pro-sidebar-inner": {
+            background: `${colors.greenAccent[800]} !important`,
+          },
+          "& .pro-icon-wrapper": {
+            backgroundColor: "transparent !important",
+          },
+          "& .pro-inner-item": {
+            padding: "5px 35px 5px 20px !important",
+          },
+          "& .pro-inner-item:hover": {
+            color: `${colors.greenAccent[500]} !important`,
+          },
+          "& .pro-menu-item.active": {
+            color: `${colors.greenAccent[500]} !important`,
+          },
+        }}
+      >
+        <ProSidebar collapsed={isCollapsed}>
+          <Menu iconShape="square">
+            <MenuItem
+              sx={{
+                display: { xs: "block", md: "none" }, // Show button on small screens
+              }}            
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
+              style={{
+                margin: "10px 0 20px 0",
+                color: colors.grey[100],
+              }}
+            >
+              {!isCollapsed && (
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  ml="56px"
+                >
+                  {/* <Typography variant="h1" color={colors.grey[100]}>
+                    ADMIN
+                  </Typography> */}
+                  {/* <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
+                    <MenuOutlinedIcon />
+                  </IconButton> */}
+                </Box>
+              )}
+            </MenuItem>
+
             {!isCollapsed && (
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                ml="15px"
-              >
-                <Typography variant="h3" color={colors.grey[100]}>
-                  ADMIN
-                </Typography>
-                <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                  <MenuOutlinedIcon />
-                </IconButton>
+              <Box mb="25px">
+                <Box display="flex" justifyContent="center" alignItems="center">
+                  <img
+                    alt="profile-user"
+                    width="100px"
+                    height="100px"
+                    src={`../../assets/ESLIHS_Logo.png`}
+                    style={{ cursor: "pointer", borderRadius: "50%" }}
+                  />
+                </Box>
+                <Box textAlign="center">
+                  <Typography
+                    variant="h2"
+                    color={colors.grey[100]}
+                    fontWeight="bold"
+                    sx={{ m: "10px 0 0 0" }}
+                  >
+                    Rost
+                  </Typography>
+                  <Typography variant="h5" color={colors.greenAccent[500]}>
+                    Principal
+                  </Typography>
+                </Box>
               </Box>
             )}
-          </MenuItem>
 
-          {!isCollapsed && (
-            <Box mb="25px">
-              <Box display="flex" justifyContent="center" alignItems="center">
-                <img
-                  alt="profile-user"
-                  width="100px"
-                  height="100px"
-                  src={`../../assets/ESLIHS_Logo.png`}
-                  style={{ cursor: "pointer", borderRadius: "50%" }}
-                />
-              </Box>
-              <Box textAlign="center">
-                <Typography
-                  variant="h2"
-                  color={colors.grey[100]}
-                  fontWeight="bold"
-                  sx={{ m: "10px 0 0 0" }}
-                >
-                  Rost
-                </Typography>
-                <Typography variant="h5" color={colors.greenAccent[500]}>
-                  Principal
-                </Typography>
-              </Box>
-            </Box>
-          )}
-
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
-            <Item
-              title="Dashboard"
-              to="/dashboard"
-              icon={<HomeOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            
-            <Typography
+            <Box paddingLeft={isCollapsed ? undefined : "8%"}>
+              <Item
+                title="Dashboard"
+                to="/dashboard"
+                icon={<HomeOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+                          <Typography
               variant="h6"
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
@@ -143,14 +162,14 @@ const Sidebar = () => {
               Account
             </Typography>
             <Item
-              title="Users"
+              title="Access"
               to="/team"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Profile Form"
+              title="Edit Account"
               to="/form"
               icon={<PersonOutlinedIcon />}
               selected={selected}
@@ -162,17 +181,17 @@ const Sidebar = () => {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
-              Reports
+              Record
             </Typography>
             <Item
-              title="Members"
+              title="Users"
               to="/contacts"
               icon={<ContactsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Records"
+              title="Reports"
               to="/contacts"
               icon={<ReceiptLongIcon />}
               selected={selected}
@@ -245,10 +264,10 @@ const Sidebar = () => {
               setSelected={setSelected}
               onClick={handleLogout}
             />
-
-          </Box>
-        </Menu>
-      </ProSidebar>
+            </Box>
+          </Menu>
+        </ProSidebar>
+      </Box>
     </Box>
   );
 };
