@@ -70,7 +70,49 @@ async function httpDeleteUser(userName){
         };
     }
 }
-
+// user data
+export const user = [
+    {
+      id: 1,
+  
+      userID: 1,
+      userName: 'SirNicanor',
+      password: '123admin',
+      role: 'Principal',
+      firstName: 'Sir',
+      lastName: 'Reyes I',
+  
+      access: "Admin",
+      email: '1Reyes@gmail.com'
+    },
+    {
+      id: 2,
+  
+      userID: 2,
+      userName: 'SirNicanor',
+      password: '123admin',
+      role: 'Physical Facilitator Coordinator',
+      firstName: 'Nicanor',
+      lastName: 'Reyes II',
+  
+      access: "Manager",
+      email: '2Reyes@gmail.com'
+      
+    },
+    {
+      id: 3,
+  
+      userID: 3,
+      userName: 'SirNicanor',
+      password: '123admin',
+      role: 'SDRRM Coordinator',
+      firstName: 'Mr',
+      lastName: 'Reyes III',
+  
+      access: "User",
+      email: '3Reyes@gmail.com'
+    },
+  ];
 export {
     httpGetUser,
     httpGetAllUsers,

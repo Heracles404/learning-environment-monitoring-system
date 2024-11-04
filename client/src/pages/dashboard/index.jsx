@@ -5,7 +5,6 @@ import { mockTransactions } from "../../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
 import Header from "../../components/Header";
 import LineChart from "../../components/LineChart";
@@ -13,6 +12,14 @@ import GeographyChart from "../../components/GeographyChart";
 import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
+import GppGoodIcon from '@mui/icons-material/GppGood';
+
+import AirIcon from '@mui/icons-material/Air';
+import DeviceThermostatIcon from '@mui/icons-material/DeviceThermostat';
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import WbIncandescentIcon from '@mui/icons-material/WbIncandescent';
+import VolcanoIcon from '@mui/icons-material/Volcano';
+import Co2Icon from '@mui/icons-material/Co2';
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -25,7 +32,7 @@ const Dashboard = () => {
         <Header title="DASHBOARD" subtitle="Welcome to Edilberto S. Legaspi Integrated High School
         " />
 
-        <Box>
+        {/* <Box>
           <Button
             sx={{
               backgroundColor: colors.greenAccent[700],
@@ -38,7 +45,7 @@ const Dashboard = () => {
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
             Download Reports
           </Button>
-        </Box>
+        </Box> */}
       </Box>
 
       {/* GRID & CHARTS */}
@@ -50,73 +57,111 @@ const Dashboard = () => {
       >
         {/* ROW 1 */}
         <Box
-          gridColumn="span 3"
+          gridColumn="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
         >
           <StatBox
-            title="457"
-            subtitle="Grade 7"
+            title="GOOD"
+            subtitle="Heat Index"
             progress="0.75"
             increase="+14%"
             icon={
-              <PersonAddIcon
+              <DeviceThermostatIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
           />
         </Box>
         <Box
-          gridColumn="span 3"
+          gridColumn="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
         >
           <StatBox
-            title="431"
-            subtitle="Grade 8"
+            title="GOOD"
+            subtitle="Lighting"
             progress="0.50"
             increase="+21%"
             icon={
-              <PersonAddIcon
+              <WbIncandescentIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
           />
         </Box>
         <Box
-          gridColumn="span 3"
+          gridColumn="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
         >
           <StatBox
-            title="653"
-            subtitle="Grade 9"
+            title="GOOD"
+            subtitle="Oxygen"
             progress="0.30"
             increase="+5%"
             icon={
-              <PersonAddIcon
+              <AirIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
           />
         </Box>
         <Box
-          gridColumn="span 3"
+          gridColumn="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
         >
           <StatBox
-            title="500"
-            subtitle="Grade 10"
+            title="BAD"
+            subtitle="Carbon Dioxide"
             progress="0.80"
+            increase="+42%"
+            icon={
+              <Co2Icon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+        <Box
+          gridColumn="span 2"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title="BAD"
+            subtitle="Volcanic Smog"
+            progress="0.80"
+            increase="+41%"
+            icon={
+              <VolcanoIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+        <Box
+          gridColumn="span 2"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title="BAD"
+            subtitle="Head Count"
+            progress="0.90"
             increase="+43%"
             icon={
               <PersonAddIcon
@@ -157,9 +202,9 @@ const Dashboard = () => {
             </Box>
             <Box>
               <IconButton>
-                <DownloadOutlinedIcon
+                {/* <DownloadOutlinedIcon
                   sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                />
+                /> */}
               </IconButton>
             </Box>
           </Box>
@@ -197,9 +242,9 @@ const Dashboard = () => {
             </Box>
             <Box>
               <IconButton>
-                <DownloadOutlinedIcon
+                {/* <DownloadOutlinedIcon
                   sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                />
+                /> */}
               </IconButton>
             </Box>
           </Box>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Topbar from "./pages/global/Topbar";
 import Sidebar from "./pages/global/Sidebar";
 import Dashboard from "./pages/dashboard";
@@ -15,33 +15,154 @@ import Geography from "./pages/geography";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./pages/calendar/calendar";
+import Login from "./pages/Login";
+import LoginPage from "./pages/Login/Login";
+
+import Accounts from "./pages/Accounts";
+import Records from "./pages/Records";
 
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
+
+  const PrivateRoute = ({ children }) => {
+    return localStorage.getItem("auth") ? (
+      <>
+        <Sidebar isSidebar={isSidebar} />
+        <main className="content">
+          <Topbar setIsSidebar={setIsSidebar} />
+          {children}
+        </main>
+      </>
+    ) : (
+      <Navigate to="/" />
+    );
+  };
 
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
-          <Sidebar isSidebar={isSidebar} />
-          <main className="content">
-            <Topbar setIsSidebar={setIsSidebar} />
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/team" element={<Team />} />
-              <Route path="/contacts" element={<Contacts />} />
-              <Route path="/invoices" element={<Invoices />} />
-              <Route path="/form" element={<Form />} />
-              <Route path="/bar" element={<Bar />} />
-              <Route path="/pie" element={<Pie />} />
-              <Route path="/line" element={<Line />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/calendar" element={<Calendar />} />
-              <Route path="/geography" element={<Geography />} />
-            </Routes>
-          </main>
+          <Routes>
+            <Route 
+              path="/" 
+              element={<LoginPage />} 
+            />
+            {/* <Route 
+              path="/" 
+              element={<Login />} 
+            /> */}
+            <Route
+              path="/dashboard"
+              element={
+                <PrivateRoute>
+                  <Dashboard />
+                </PrivateRoute>
+              }
+            />
+           {/* one line: element={<PrivateRoute><Dashboard/></PrivateRoute>}/> */}
+                               
+            <Route
+              path="/accounts"
+              element={
+                <PrivateRoute>
+                  <Accounts />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/team"
+              element={
+                <PrivateRoute>
+                  <Team />
+                </PrivateRoute>
+              }
+            />
+            {/* Reference: Initial team code
+            <Route path="/team" element={<Team />} /> */}
+
+            {/* <Route
+              path="/contacts"
+              element={
+                <PrivateRoute>
+                  <Contacts />
+                </PrivateRoute>
+              }
+            /> */}
+            <Route
+              path="/records"
+              element={
+                <PrivateRoute>
+                  <Records />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/invoices"
+              element={
+                <PrivateRoute>
+                  <Invoices />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/form"
+              element={
+                <PrivateRoute>
+                  <Form />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/bar"
+              element={
+                <PrivateRoute>
+                  <Bar />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/pie"
+              element={
+                <PrivateRoute>
+                  <Pie />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/line"
+              element={
+                <PrivateRoute>
+                  <Line />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/faq"
+              element={
+                <PrivateRoute>
+                  <FAQ />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/calendar"
+              element={
+                <PrivateRoute>
+                  <Calendar />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/geography"
+              element={
+                <PrivateRoute>
+                  <Geography />
+                </PrivateRoute>
+              }
+            />
+          </Routes>
         </div>
       </ThemeProvider>
     </ColorModeContext.Provider>
