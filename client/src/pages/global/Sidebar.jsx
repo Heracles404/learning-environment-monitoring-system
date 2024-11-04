@@ -163,7 +163,7 @@ const Sidebar = () => {
             </Typography>
             <Item
               title="Access"
-              to="/team"
+              to="/accounts"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -185,14 +185,14 @@ const Sidebar = () => {
             </Typography>
             <Item
               title="Users"
-              to="/contacts"
+              to="/accounts"
               icon={<ContactsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Reports"
-              to="/contacts"
+              to="/records"
               icon={<ReceiptLongIcon />}
               selected={selected}
               setSelected={setSelected}

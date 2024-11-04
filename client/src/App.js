@@ -18,6 +18,9 @@ import Calendar from "./pages/calendar/calendar";
 import Login from "./pages/Login";
 import LoginPage from "./pages/Login/Login";
 
+import Accounts from "./pages/Accounts";
+import Records from "./pages/Records";
+
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
@@ -61,6 +64,14 @@ function App() {
            {/* one line: element={<PrivateRoute><Dashboard/></PrivateRoute>}/> */}
                                
             <Route
+              path="/accounts"
+              element={
+                <PrivateRoute>
+                  <Accounts />
+                </PrivateRoute>
+              }
+            />
+            <Route
               path="/team"
               element={
                 <PrivateRoute>
@@ -71,11 +82,19 @@ function App() {
             {/* Reference: Initial team code
             <Route path="/team" element={<Team />} /> */}
 
-            <Route
+            {/* <Route
               path="/contacts"
               element={
                 <PrivateRoute>
                   <Contacts />
+                </PrivateRoute>
+              }
+            /> */}
+            <Route
+              path="/records"
+              element={
+                <PrivateRoute>
+                  <Records />
                 </PrivateRoute>
               }
             />
