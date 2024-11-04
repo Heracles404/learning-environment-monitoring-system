@@ -46,7 +46,10 @@ const Dashboard = () => {
             Download Reports
           </Button>
         </Box> */}
+
+        
       </Box>
+
 
       {/* GRID & CHARTS */}
       <Box
@@ -67,7 +70,7 @@ const Dashboard = () => {
             title="GOOD"
             subtitle="Heat Index"
             progress="0.75"
-            increase="+14%"
+            // increase="+14%"
             icon={
               <DeviceThermostatIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -86,7 +89,7 @@ const Dashboard = () => {
             title="GOOD"
             subtitle="Lighting"
             progress="0.50"
-            increase="+21%"
+            // increase="+21%"
             icon={
               <WbIncandescentIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -105,7 +108,7 @@ const Dashboard = () => {
             title="GOOD"
             subtitle="Oxygen"
             progress="0.30"
-            increase="+5%"
+            // increase="+5%"
             icon={
               <AirIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -124,7 +127,7 @@ const Dashboard = () => {
             title="BAD"
             subtitle="Carbon Dioxide"
             progress="0.80"
-            increase="+42%"
+            // increase="+42%"
             icon={
               <Co2Icon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -143,7 +146,7 @@ const Dashboard = () => {
             title="BAD"
             subtitle="Volcanic Smog"
             progress="0.80"
-            increase="+41%"
+            // increase="+41%"
             icon={
               <VolcanoIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -162,7 +165,7 @@ const Dashboard = () => {
             title="BAD"
             subtitle="Head Count"
             progress="0.90"
-            increase="+43%"
+            // increase="+43%"
             icon={
               <PersonAddIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
