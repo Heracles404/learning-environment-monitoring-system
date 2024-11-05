@@ -4,8 +4,8 @@ let latestUserId = 1;
 
 const user = {
     _id: 1,
-    userName: 'SirNicanor',
-    password: '123admin',
+    userName: 'admin',
+    password: '123',
     role: 'Principal',
     firstName: 'Nicanor',
     lastName: 'Reyes II'
@@ -29,6 +29,15 @@ function getAllUsers(){
     return Array.from(users.values()).map(({password, ...userWithoutPassword}) => userWithoutPassword);
 }
 
+function authenticateUser (userName, password) {
+    for (const user of users.values()) {
+        if (user.userName === userName && user.password === password) {
+            const { password, ...userWithoutPassword } = user; // Exclude password
+            return userWithoutPassword; // Return user data without password
+        }
+    }
+    return null;
+}
 
 function getUserByUserName(userName) {
     // Find the user by userName
@@ -83,8 +92,9 @@ function updateUserByUserName(userName, updates) {
 module.exports = {
     existsUserName,
     getAllUsers,
+    authenticateUser,
     getUserByUserName,
     addNewUser,
     deleteUserByUserName,
-    updateUserByUserName
+    updateUserByUserName,
 }
