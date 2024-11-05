@@ -1,27 +1,38 @@
 import React from 'react';
 import { Box, Typography, TextField, Button, Link } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import backgroundImage from '../../imgs/ESLIHS_BG.png';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import LockIcon from '@mui/icons-material/Lock';
 
-const LoginPage = () => {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const navigate = useNavigate();
-  
-    const handleLogin = (e) => {
-      e.preventDefault();
-      // Add your authentication logic here
-      if (username === "admin" && password === "password") {
-        localStorage.setItem("auth", "true");
-        navigate("/dashboard");
-      } else {
-        alert("Invalid credentials");
-      }
-    };
+import {httpAuthenticateUser} from "../../hooks/users.requests";
+
+    const LoginPage = () => {
+        const [username, setUsername] = useState("");
+        const [password, setPassword] = useState("");
+        const [users, setUsers] = useState([]); // State to hold user data
+        const navigate = useNavigate();
+
+
+        const handleLogin = async (e) => {
+            e.preventDefault();
+
+            try {
+                const userData = await httpAuthenticateUser (username, password); // Call the authenticate function with username and password
+
+                if (userData.ok === false) {
+                    alert(userData.error || "Invalid credentials"); // Show error message if authentication fails
+                } else {
+                    localStorage.setItem("auth", "true");
+                    navigate("/dashboard"); // Navigate to the dashboard on successful authentication
+                }
+            } catch (error) {
+                console.error("Authentication error:", error);
+                alert("Authentication failed. Please try again later.");
+            }
+        };
 
     return (
         <Box

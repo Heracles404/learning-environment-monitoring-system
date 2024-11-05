@@ -1,5 +1,6 @@
 const {getAllUsers,
-    // getUser,
+    getUser,
+    authenticateUser,
     getUserByUserName,
     addNewUser,
     existsUserName,
@@ -19,6 +20,38 @@ function httpGetUser(req, res) {
         })
     }else {
         return res.status(201).json(getUserByUserName(userName))
+    }
+}
+
+
+
+function httpAuthenticateUser (req, res) {
+    const user = req.body;
+
+    // Check for missing required attributes
+    if (!user.userName || !user.password) {
+        return res.status(400).json({
+            error: 'Missing required attributes'
+        });
+    }
+
+    // Check if the user exists
+    if (!existsUserName(user.userName)) {
+        return res.status(400).json({
+            error: `User  does not exist.`
+        });
+    }
+
+    // Authenticate the user
+    const authenticatedUser  = authenticateUser (user.userName, user.password);
+
+    // Check if authentication was successful
+    if (authenticatedUser ) {
+        return res.status(200).json(authenticatedUser ); // Return user data without password
+    } else {
+        return res.status(401).json({
+            error: 'Invalid credentials'
+        });
     }
 }
 
@@ -73,6 +106,7 @@ function  httpUpdateUser(req, res){
 module.exports = {
     httpGetAllUsers,
     httpGetUser,
+    httpAuthenticateUser,
     httpAddNewUser,
     httpDeleteUser,
     httpUpdateUser

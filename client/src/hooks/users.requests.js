@@ -3,12 +3,42 @@ const API_URL = 'http://localhost:8000';
 
 async function httpGetUser(userName){
     const response = await fetch(`${API_URL}/users/${userName}`);
+    console.log(response.json());
     return await response.json();
 }
 
 async function httpGetAllUsers(){
     const response = await fetch(`${API_URL}/users`);
     return await response.json();
+}
+
+export async function httpAuthenticateUser (userName, password) {
+    try {
+        const response = await fetch(`${API_URL}/users/authenticate`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                userName,
+                password
+            }),
+        });
+
+        // Check if the response is OK (status in the range 200-299)
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Authentication failed');
+        }
+
+        return await response.json();
+    } catch (err) {
+        console.error(err);
+        return {
+            ok: false,
+            error: err.message,
+        };
+    }
 }
 
 async function httpAddNewUser(user){
@@ -70,49 +100,7 @@ async function httpDeleteUser(userName){
         };
     }
 }
-// user data
-export const user = [
-    {
-      id: 1,
-  
-      userID: 1,
-      userName: 'SirNicanor',
-      password: '123admin',
-      role: 'Principal',
-      firstName: 'Sir',
-      lastName: 'Reyes I',
-  
-      access: "Admin",
-      email: '1Reyes@gmail.com'
-    },
-    {
-      id: 2,
-  
-      userID: 2,
-      userName: 'SirNicanor',
-      password: '123admin',
-      role: 'Physical Facilitator Coordinator',
-      firstName: 'Nicanor',
-      lastName: 'Reyes II',
-  
-      access: "Manager",
-      email: '2Reyes@gmail.com'
-      
-    },
-    {
-      id: 3,
-  
-      userID: 3,
-      userName: 'SirNicanor',
-      password: '123admin',
-      role: 'SDRRM Coordinator',
-      firstName: 'Mr',
-      lastName: 'Reyes III',
-  
-      access: "User",
-      email: '3Reyes@gmail.com'
-    },
-  ];
+
 export {
     httpGetUser,
     httpGetAllUsers,

@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userName\": \"Juan\",\r\n    \"password\": \"123admin\",\r\n    \"role\": \"Principal\",\r\n    \"firstName\": \"Nicanor\",\r\n    \"lastName\": \"Reyes II\"\r\n}",
+							"raw": "{\r\n    \"userName\": \"Juan Jinx\",\r\n    \"password\": \"123admin\",\r\n    \"role\": \"Principal\",\r\n    \"firstName\": \"Nicanor\",\r\n    \"lastName\": \"Reyes II\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -104,7 +104,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"role\": \"Vice Principal\",\r\n    \"firstName\": \"Nicanorian\",\r\n\t\t\"password\": \"NewPassword\"\r\n}\r\n",
+							"raw": "{\r\n    \"role\": \"Vice Principal\",\r\n    \"firstName\": \"Nicanorian\",\r\n    \"password\": \"NewPassword\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -121,6 +121,35 @@
 							"path": [
 								"users",
 								"SirNicanor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /users/authenticate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"admin\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/users/authenticate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"users",
+								"authenticate"
 							]
 						}
 					},
