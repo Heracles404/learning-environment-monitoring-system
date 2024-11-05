@@ -410,7 +410,7 @@ export const mockPieData = [
 
 export const mockLineData = [
   {
-    id: "1",
+    id: "Room 1",
     color: tokens("dark").greenAccent[500],
     data: [
       { x: "2024-01-01", y: 101 },
@@ -428,7 +428,7 @@ export const mockLineData = [
     ],
   },
   {
-    id: "2",
+    id: "Room 2",
     color: tokens("dark").blueAccent[300],
     data: [
       { x: "2024-01-01", y: 212 },
@@ -446,7 +446,7 @@ export const mockLineData = [
     ],
   },
   {
-    id: "3",
+    id: "Room 3",
     color: tokens("dark").redAccent[200],
     data: [
       { x: "2024-01-01", y: 191 },
@@ -464,7 +464,7 @@ export const mockLineData = [
     ],
   },
   {
-    id: "4",
+    id: "Room 4",
     color: tokens("dark").greenAccent[500],
     data: [
       { x: "2024-01-01", y: 101 },
