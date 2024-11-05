@@ -209,36 +209,43 @@ const Sidebar = () => {
 
               <Item
                 title="Heat Index"
-                to="/bar"
-                icon={<BarChartOutlinedIcon />}
+                to="/HeatIndex"
+                icon={<TimelineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
-                title="Air Quality"
-                to="/line"
+                title="Oxygen"
+                to="/Oxygen"
+                icon={<TimelineOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="Carbon Dioxide"
+                to="/CarbonDioxide"
                 icon={<TimelineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
                 title="Lighting"
-                to="/bar"
-                icon={<BarChartOutlinedIcon />}
+                to="/Lighting"
+                icon={<TimelineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
                 title="Volcanic Smog"
-                to="/line"
+                to="/VolSmog"
                 icon={<TimelineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
                 title="Head Count"
-                to="/bar"
-                icon={<BarChartOutlinedIcon />}
+                to="/HeadCount"
+                icon={<TimelineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />

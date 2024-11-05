@@ -9,6 +9,14 @@ import Contacts from "./pages/contacts";
 import Bar from "./pages/bar";
 import Form from "./pages/form";
 import Line from "./pages/line";
+
+import CarbonDioxide from "./pages/Monitor/CarbonDioxide";
+import HeadCount from "./pages/Monitor/HeadCount";
+import HeatIndex from "./pages/Monitor/HeatIndex";
+import Lighting from "./pages/Monitor/Lighting";
+import Oxygen from "./pages/Monitor/Oxygen";
+import VolSmog from "./pages/Monitor/VolSmog";
+
 import Pie from "./pages/pie";
 import FAQ from "./pages/faq";
 import Geography from "./pages/geography";
@@ -135,6 +143,54 @@ function App() {
               element={
                 <PrivateRoute>
                   <Line />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/CarbonDioxide"
+              element={
+                <PrivateRoute>
+                  <CarbonDioxide />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/HeadCount"
+              element={
+                <PrivateRoute>
+                  <HeadCount />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/HeatIndex"
+              element={
+                <PrivateRoute>
+                  <HeatIndex />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/Lighting"
+              element={
+                <PrivateRoute>
+                  <Lighting />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/Oxygen"
+              element={
+                <PrivateRoute>
+                  <Oxygen />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/VolSmog"
+              element={
+                <PrivateRoute>
+                  <VolSmog />
                 </PrivateRoute>
               }
             />
