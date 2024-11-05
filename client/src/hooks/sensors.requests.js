@@ -6,7 +6,6 @@ async function httpGetAllReadouts(){
     return await response.json();
 }
 
-// nag cconflict sa hardcoded "id" kaya cinomment ko muna
 async function httpGetReadoutById(_id){
     const response = await fetch(`${API_URL}/sensors/${_id}`);
     return await response.json();
@@ -81,3 +80,12 @@ async function httpDeleteAllReadouts(){
     }
 }
 
+export {
+    httpGetAllReadouts,
+    httpGetReadoutById,
+    httpGetReadoutsByDate,
+    httpGetReadoutsByTime,
+    httpNewReadouts,
+    httpDeleteReadout,
+    httpDeleteAllReadouts
+}

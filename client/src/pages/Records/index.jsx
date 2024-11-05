@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {httpGetAllReadouts} from "../../hooks/sensors.requests";
 import { Box } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
@@ -10,20 +11,32 @@ const Records = () => {
   const colors = tokens(theme.palette.mode);
   const [rows, setRows] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:8000/httpGetAllReadouts');
-        const data = await response.json();
-        // Add a unique id property to each row
-        const rowsWithId = data.map((item, index) => ({ ...item, id: index + 1 }));
-        setRows(rowsWithId);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, []);
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await httpGetAllReadouts(); // Fetch data from API
+            const formattedData = data.map(readout => ({
+                id: readout._id,
+                date: readout.date,
+                time: readout.time,
+                temperature: readout.temperature,
+                humidity: readout.humidity,
+                heatIndex: readout.heatIndex,
+                lighting: readout.lighting,
+                headCount: readout.headCount,
+                oxygen: readout.oxygen,
+                carbonDioxide: readout.carbonDioxide,
+                sulfurDioxide: readout.sulfurDioxide,
+                particulateMatter: readout.particulateMatter,
+                indoorAir: readout.indoorAir,
+                outdoorAir: readout.outdoorAir,
+                temp: readout.temp,
+                remarks: readout.remarks,
+            }));
+            setRows(formattedData); // Set the formatted data to state
+        };
+
+        fetchData(); // Call the fetch function
+    }, []); // Empty dependency array to run only once on mount
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.2 },
