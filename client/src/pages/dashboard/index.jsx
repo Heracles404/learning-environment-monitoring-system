@@ -1,5 +1,6 @@
-
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import Grid from '@mui/material/Grid2';
+
 import { tokens } from "../../theme";
 import { mockTransactions } from "../../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
@@ -21,6 +22,13 @@ import WbIncandescentIcon from '@mui/icons-material/WbIncandescent';
 import VolcanoIcon from '@mui/icons-material/Volcano';
 import Co2Icon from '@mui/icons-material/Co2';
 
+import OxygenChart from "../../components/LineCharts/Oxygen";
+import CarbonDioxideChart from "../../components/LineCharts/CarbonDioxide";
+import VolSmogChart from "../../components/LineCharts/VolSmog";
+import HeatIndexChart from "../../components/LineCharts/HeatIndex";
+import LightingChart from "../../components/LineCharts/Lighting";
+import HeadCountChart from "../../components/LineCharts/HeadCount";
+
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -28,7 +36,10 @@ const Dashboard = () => {
   return (
     <Box m="20px">
       {/* HEADER */}
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box 
+      display="flex" 
+      // justifyContent="space-between"
+       alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to Edilberto S. Legaspi Integrated High School
         " />
 
@@ -46,28 +57,27 @@ const Dashboard = () => {
             Download Reports
           </Button>
         </Box> */}
+
+        
       </Box>
 
+
       {/* GRID & CHARTS */}
-      <Box
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="140px"
-        gap="20px"
-      >
-        {/* ROW 1 */}
+    <Grid container columnSpacing={{ xs: 1, sm: 1, md: 3 }}>
+      <Grid item>
         <Box
-          gridColumn="span 2"
+          // gridColumn="span 2"        
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
+          sx={{height: '95px'}}
         >
           <StatBox
             title="GOOD"
             subtitle="Heat Index"
             progress="0.75"
-            increase="+14%"
+            // increase="+14%"
             icon={
               <DeviceThermostatIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -75,18 +85,22 @@ const Dashboard = () => {
             }
           />
         </Box>
+        </Grid>
+        <Grid item>
         <Box
-          gridColumn="span 2"
+          // gridColumn="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
+          sx={{height: '95px'}}
+
         >
           <StatBox
             title="GOOD"
             subtitle="Lighting"
             progress="0.50"
-            increase="+21%"
+            // increase="+21%"
             icon={
               <WbIncandescentIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -94,18 +108,22 @@ const Dashboard = () => {
             }
           />
         </Box>
+        </Grid>
+        <Grid item>
         <Box
-          gridColumn="span 2"
+          // gridColumn="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
+          sx={{height: '95px'}}
+
         >
           <StatBox
             title="GOOD"
             subtitle="Oxygen"
             progress="0.30"
-            increase="+5%"
+            // increase="+5%"
             icon={
               <AirIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -113,18 +131,22 @@ const Dashboard = () => {
             }
           />
         </Box>
+        </Grid>
+        <Grid item>
         <Box
-          gridColumn="span 2"
+          // gridColumn="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
+          sx={{height: '95px'}}
+
         >
           <StatBox
             title="BAD"
             subtitle="Carbon Dioxide"
             progress="0.80"
-            increase="+42%"
+            // increase="+42%"
             icon={
               <Co2Icon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -132,18 +154,22 @@ const Dashboard = () => {
             }
           />
         </Box>
+        </Grid>
+        <Grid item>
         <Box
-          gridColumn="span 2"
+          // gridColumn="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
+          sx={{height: '95px'}}
+
         >
           <StatBox
             title="BAD"
             subtitle="Volcanic Smog"
             progress="0.80"
-            increase="+41%"
+            // increase="+41%"
             icon={
               <VolcanoIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -151,18 +177,22 @@ const Dashboard = () => {
             }
           />
         </Box>
-        <Box
-          gridColumn="span 2"
+        </Grid>
+        <Grid item>
+          <Box
+          // gridColumn="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
+          sx={{height: '95px'}}
+
         >
           <StatBox
             title="BAD"
             subtitle="Head Count"
             progress="0.90"
-            increase="+43%"
+            // increase="+43%"
             icon={
               <PersonAddIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -170,8 +200,8 @@ const Dashboard = () => {
             }
           />
         </Box>
-
-        {/* ROW 2 */}
+        </Grid>
+        <Grid>
         <Box
           gridColumn="span 6"
           gridRow="span 2"
@@ -197,21 +227,65 @@ const Dashboard = () => {
                 fontWeight="bold"
                 color={colors.greenAccent[500]}
               >
-                Oxygen, Carbon Dioxide
+                Oxygen
               </Typography>
             </Box>
             <Box>
               <IconButton>
-                {/* <DownloadOutlinedIcon
+                <DownloadOutlinedIcon
                   sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                /> */}
+                />
               </IconButton>
             </Box>
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} />
+            <OxygenChart isDashboard={true} />
           </Box>
         </Box>
+        </Grid>
+        <Grid>
+        <Box
+          gridColumn="span 6"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+        >
+          <Box
+            mt="25px"
+            p="0 30px"
+            display="flex "
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Box>
+              <Typography
+                variant="h5"
+                fontWeight="600"
+                color={colors.grey[100]}
+              >
+                Air Quality
+              </Typography>
+              <Typography
+                variant="h3"
+                fontWeight="bold"
+                color={colors.greenAccent[500]}
+              >
+                Carbon Dioxide
+              </Typography>
+            </Box>
+            <Box>
+              <IconButton>
+                <DownloadOutlinedIcon
+                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
+                />
+              </IconButton>
+            </Box>
+          </Box>
+          <Box height="250px" m="-20px 0 0 0">
+            <CarbonDioxideChart isDashboard={true} />
+          </Box>
+        </Box>
+        </Grid>
+        <Grid>
         <Box
           gridColumn="span 6"
           gridRow="span 2"
@@ -242,68 +316,145 @@ const Dashboard = () => {
             </Box>
             <Box>
               <IconButton>
-                {/* <DownloadOutlinedIcon
+                <DownloadOutlinedIcon
                   sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                /> */}
+                />
               </IconButton>
             </Box>
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} />
+            <VolSmogChart isDashboard={true} />
           </Box>
         </Box>
-
-        {/* ROW 3 */}
+        </Grid>
+        <Grid>
         <Box
-          gridColumn="span 4"
+          gridColumn="span 6"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ padding: "30px 30px 0 30px" }}
+          <Box
+            mt="25px"
+            p="0 30px"
+            display="flex "
+            justifyContent="space-between"
+            alignItems="center"
           >
-            Heat Index
-          </Typography>
-          <Box height="250px" mt="-20px">
-            <BarChart isDashboard={true} />
+            <Box>
+              <Typography
+                variant="h5"
+                fontWeight="600"
+                color={colors.grey[100]}
+              >
+                Heat Index
+              </Typography>
+              <Typography
+                variant="h3"
+                fontWeight="bold"
+                color={colors.greenAccent[500]}
+              >
+                Temperature, Humidity
+              </Typography>
+            </Box>
+            <Box>
+              <IconButton>
+                <DownloadOutlinedIcon
+                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
+                />
+              </IconButton>
+            </Box>
           </Box>
-        </Box>        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ padding: "30px 30px 0 30px" }}
-          >
-            Lighting
-          </Typography>
-          <Box height="250px" mt="-20px">
-            <BarChart isDashboard={true} />
+          <Box height="250px" m="-20px 0 0 0">
+            <HeatIndexChart isDashboard={true} />
           </Box>
         </Box>
-
+        </Grid>
+        <Grid>
         <Box
-          gridColumn="span 4"
+          gridColumn="span 6"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ padding: "30px 30px 0 30px" }}
+          <Box
+            mt="25px"
+            p="0 30px"
+            display="flex "
+            justifyContent="space-between"
+            alignItems="center"
           >
-            Head Count
-          </Typography>
-          <Box height="250px" mt="-20px">
-            <BarChart isDashboard={true} />
+            <Box>
+              <Typography
+                variant="h5"
+                fontWeight="600"
+                color={colors.grey[100]}
+              >
+                Lighting
+              </Typography>
+              <Typography
+                variant="h3"
+                fontWeight="bold"
+                color={colors.greenAccent[500]}
+              >
+                Lux
+              </Typography>
+            </Box>
+            <Box>
+              <IconButton>
+                <DownloadOutlinedIcon
+                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
+                />
+              </IconButton>
+            </Box>
+          </Box>
+          <Box height="250px" m="-20px 0 0 0">
+            <LightingChart isDashboard={true} />
           </Box>
         </Box>
-        
-      </Box>
+        </Grid>
+        <Grid>
+        <Box
+          gridColumn="span 6"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+        >
+          <Box
+            mt="25px"
+            p="0 30px"
+            display="flex "
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Box>
+              <Typography
+                variant="h5"
+                fontWeight="600"
+                color={colors.grey[100]}
+              >
+                Head Count
+              </Typography>
+              <Typography
+                variant="h3"
+                fontWeight="bold"
+                color={colors.greenAccent[500]}
+              >
+                Students Present in Room
+              </Typography>
+            </Box>
+            <Box>
+              <IconButton>
+                <DownloadOutlinedIcon
+                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
+                />
+              </IconButton>
+            </Box>
+          </Box>
+          <Box height="250px" m="-20px 0 0 0">
+            <HeadCountChart isDashboard={true} />
+          </Box>
+        </Box>
+        </Grid>
+      </Grid>
+
     </Box>
   );
 };
