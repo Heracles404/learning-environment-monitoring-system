@@ -4,11 +4,41 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 
+import {httpAddNewUser} from "../../hooks/users.requests";
+import {useState} from "react";
+import {useNavigate} from "react-router-dom";
+
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const navigate = useNavigate(); // Hook for navigation
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleFormSubmit = (values) => {
-    console.log(values);
+  const handleCreate = async (values) => {
+
+    const userData = {
+      userName: values.email, // Assuming username is the email
+      password: values.contact, // Assuming password is the contact
+      role: values.address1, // Assuming role is stored in address1
+      firstName: values.firstName,
+      lastName: values.lastName,
+    };
+
+    try {
+      const response = await httpAddNewUser(userData);
+      if (response.ok) {
+        // Optionally, you can handle the success response here
+        console.log("User  created successfully");
+        navigate("/users"); // Redirect to user list or another page
+      } else {
+        // Handle error response
+        setErrorMessage("Failed to create user. Please try again.");
+      }
+    } catch (error) {
+      // Catch any unexpected errors
+      setErrorMessage("An error occurred. Please try again.");
+      console.error("Error creating user:", error);
+    }
+
   };
 
   return (
@@ -16,7 +46,7 @@ const Form = () => {
       <Header title="CREATE USER" subtitle="Create a New User Profile" />
 
       <Formik
-        onSubmit={handleFormSubmit}
+        onSubmit={handleCreate}
         initialValues={initialValues}
         validationSchema={checkoutSchema}
       >
@@ -67,7 +97,7 @@ const Form = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Email"
+                label="Username"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.email}
@@ -80,7 +110,7 @@ const Form = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Contact Number"
+                label="Password"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.contact}
@@ -90,10 +120,23 @@ const Form = () => {
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
+                  fullWidth
+                  variant="filled"
+                  type="text"
+                  label="Confirm Password"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.contact}
+                  name="contact"
+                  error={!!touched.contact && !!errors.contact}
+                  helperText={touched.contact && errors.contact}
+                  sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Address 1"
+                label="Role"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.address1}
@@ -102,19 +145,7 @@ const Form = () => {
                 helperText={touched.address1 && errors.address1}
                 sx={{ gridColumn: "span 4" }}
               />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Address 2"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.address2}
-                name="address2"
-                error={!!touched.address2 && !!errors.address2}
-                helperText={touched.address2 && errors.address2}
-                sx={{ gridColumn: "span 4" }}
-              />
+
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">

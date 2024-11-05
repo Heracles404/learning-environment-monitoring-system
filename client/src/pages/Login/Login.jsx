@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography, TextField, Button, Link } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import backgroundImage from '../../imgs/ESLIHS_BG.png';
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -12,7 +12,7 @@ import {httpAuthenticateUser} from "../../hooks/users.requests";
     const LoginPage = () => {
         const [username, setUsername] = useState("");
         const [password, setPassword] = useState("");
-        const [users, setUsers] = useState([]); // State to hold user data
+        // const [users, setUsers] = useState([]); // State to hold user data
         const navigate = useNavigate();
 
 
