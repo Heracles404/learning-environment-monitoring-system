@@ -4,14 +4,41 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 
-import {httpAddNewUser, httpAuthenticateUser} from "../../hooks/users.requests";
+import {httpAddNewUser} from "../../hooks/users.requests";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const navigate = useNavigate(); // Hook for navigation
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleCreate = (values) => {
+  const handleCreate = async (values) => {
+
+    const userData = {
+      userName: values.email, // Assuming username is the email
+      password: values.contact, // Assuming password is the contact
+      role: values.address1, // Assuming role is stored in address1
+      firstName: values.firstName,
+      lastName: values.lastName,
+    };
+
+    try {
+      const response = await httpAddNewUser(userData);
+      if (response.ok) {
+        // Optionally, you can handle the success response here
+        console.log("User  created successfully");
+        navigate("/users"); // Redirect to user list or another page
+      } else {
+        // Handle error response
+        setErrorMessage("Failed to create user. Please try again.");
+      }
+    } catch (error) {
+      // Catch any unexpected errors
+      setErrorMessage("An error occurred. Please try again.");
+      console.error("Error creating user:", error);
+    }
+
   };
 
   return (
