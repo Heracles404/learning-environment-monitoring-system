@@ -4,7 +4,7 @@ import { tokens } from "../../theme";
 import { useEffect, useState } from 'react';
 import { httpGetAllReadouts } from "../../hooks/sensors.requests"; // Adjust the import path as necessary
 
-const CarbonDioxideChart = ({ isCustomLineColors = false, isDashboard = false }) => {
+const CarbonDioxideChart = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [data, setData] = useState([]);
@@ -14,28 +14,25 @@ const CarbonDioxideChart = ({ isCustomLineColors = false, isDashboard = false })
       try {
         console.log("Fetching CO2 data...");
         const fetchedData = await httpGetAllReadouts();
-        console.log("Fetched data:", fetchedData);
+        console.log("Fetched data:", fetchedData); // Log the entire fetched data
 
         // Transform fetched data into the format expected by ResponsiveLine
-        const transformedData = [];
+        const transformedData = [{
+          id: "Carbon Dioxide",
+          color: tokens("dark").greenAccent[500], // Customize color
+          data: []
+        }];
 
+        // Loop through the fetched data and extract carbon dioxide values
         fetchedData.forEach(item => {
-          const roomIndex = transformedData.findIndex(d => d.id === item.room);
-          const dataPoint = { x: item.date, y: item.value };
-
-          if (roomIndex === -1) {
-            // If the room doesn't exist, create a new entry
-            transformedData.push({
-              id: item.room,
-              color: tokens("dark").greenAccent[500], // You can customize colors based on room
-              data: [dataPoint],
-            });
-          } else {
-            // If the room exists, push the new data point to the existing room's data
-            transformedData[roomIndex].data.push(dataPoint);
-          }
+          const dataPoint = {
+            x: new Date(item.date + ' ' + item.time).toISOString(), // Combine date and time for x-axis
+            y: item.carbonDioxide // Access the carbonDioxide property
+          };
+          transformedData[0].data.push(dataPoint); // Push data point to the existing entry
         });
 
+        console.log("Transformed CO2 data for chart:", transformedData); // Log the transformed data for the chart
         setData(transformedData);
       } catch (error) {
         console.error("Error fetching CO2 data:", error);
@@ -46,7 +43,7 @@ const CarbonDioxideChart = ({ isCustomLineColors = false, isDashboard = false })
   }, []);
 
   return (
-    <div>
+    <div style={{ height: '400px', width: '100%' }}> {/* Set a fixed height for visibility */}
       {data.length > 0 ? (
         <ResponsiveLine
           data={data}
@@ -83,14 +80,14 @@ const CarbonDioxideChart = ({ isCustomLineColors = false, isDashboard = false })
               },
             },
           }}
-          colors={isDashboard ? { datum: "color" } : { scheme: "nivo" }}
+          colors={{ datum: "color" }}
           margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-          xScale={{ type: "time", format: "%Y-%m-%d", precision: "day" }}
+          xScale={{ type: "time", format: "%Y-%m-%dT%H:%M:%S.%LZ", precision: "day" }}
           yScale={{
             type: "linear",
             min: "auto",
             max: "auto",
-            stacked: true,
+            stacked: false,
             reverse: false,
           }}
           axisBottom={{
@@ -98,7 +95,7 @@ const CarbonDioxideChart = ({ isCustomLineColors = false, isDashboard = false })
             tickSize: 0,
             tickPadding: 5,
             tickRotation: 0,
-            legend: isDashboard ? undefined : "Date",
+            legend: "Date",
             legendOffset: 36,
             legendPosition: "middle",
             format: "%b %d",
@@ -109,7 +106,7 @@ const CarbonDioxideChart = ({ isCustomLineColors = false, isDashboard = false })
             tickSize: 3,
             tickPadding: 5,
             tickRotation: 0,
-            legend: isDashboard ? undefined : "PP M (parts per million)",
+            legend: "PPM (parts per million)",
             legendOffset: -40,
             legendPosition: "middle",
           }}
@@ -123,34 +120,35 @@ const CarbonDioxideChart = ({ isCustomLineColors = false, isDashboard = false })
           areaBaselineValue={0}
           areaOpacity={0.1}
           useMesh={true}
-          legends={[
-            {
-              anchor: "bottom",
-              direction: "row",
-              justify: false,
-              translateX: 0,
-              translateY: 56,
-              itemsSpacing: 0,
-              itemDirection: "left-to-right",
-              itemWidth: 80,
-              itemHeight: 20,
-              itemOpacity: 0.85,
-              symbolSize: 12,
-              symbolShape: "circle",
-              symbolBorderColor: "rgba(0, 0, 0, .5)",
-              effects: [
-                {
-                  on: "hover",
-                  style: {
-                    itemOpacity: 1,
+          legends ={[
+              {
+                anchor: "bottom-right",
+                direction: "column",
+                justify: false,
+                translateX: 100,
+                translateY: 0,
+                itemsSpacing: 0,
+                itemDirection: "left-to-right",
+                itemWidth: 80,
+                itemHeight: 20,
+                itemOpacity: 0.75,
+                symbolSize: 12,
+                symbolShape: "circle",
+                symbolBorderColor: "rgba(0, 0, 0, .5)",
+                effects: [
+                  {
+                    on: "hover",
+                    style: {
+                      itemBackground: "rgba(0, 0, 0, .03)",
+                      itemOpacity: 1,
+                    },
                   },
-                },
-              ],
-            },
-          ]}
+                ],
+              },
+            ]}
         />
       ) : (
-        <p>Loading...</p> // Optional loading indicator
+        <p>No data available for Carbon Dioxide.</p>
       )}
     </div>
   );
