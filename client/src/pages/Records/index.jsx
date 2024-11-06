@@ -5,6 +5,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 const Records = () => {
   const theme = useTheme();
@@ -55,6 +56,20 @@ const Records = () => {
     { field: "outdoorAir", headerName: "Outdoor Air", flex: 2, cellClassName: "role-column--cell" },
     { field: "temp", headerName: "Temp", flex: 2, cellClassName: "role-column--cell" },
     { field: "remarks", headerName: "Remarks", flex: 2, cellClassName: "role-column--cell" },
+    {
+      field: "delete",
+      headerName: "", 
+      flex: 0.1,
+      renderCell: (params) => (
+        <button 
+        // onClick={() => handleDelete(params.row.id)} 
+        style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+          <DeleteOutlineIcon style={{ 
+            color: 'red', 
+            fontSize: '20px' }} />
+        </button>
+      ),
+    },
   ];
 
   return (
@@ -74,7 +89,8 @@ const Records = () => {
           "& .MuiDataGrid-toolbarContainer .MuiButton-text": { color: `${colors.grey[100]} !important` },
         }}
       >
-        <DataGrid rows={rows} 
+        <DataGrid checkboxSelection
+        rows={rows} 
         columns={columns} 
         components={{ Toolbar: GridToolbar }} />
       </Box>
