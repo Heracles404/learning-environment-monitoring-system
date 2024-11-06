@@ -1,11 +1,56 @@
 import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import { mockLineData as data } from "../../data/mockData";
+import { useEffect, useState } from 'react';
+import { httpGetAllReadouts } from "../../hooks/sensors.requests"; // Adjust the import path as necessary
 
 const VolSmogChart = ({ isCustomLineColors = false, isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log("Fetching Particulate Matter data...");
+        const fetchedData = await httpGetAllReadouts(); // Fetch data from the same API
+        console.log("Fetched data:", fetchedData); // Log the entire fetched data
+
+        // Transform fetched data into the format expected by ResponsiveLine
+        const transformedData = [{
+          id: "Particulate Matter",
+          color: colors.greenAccent?.[500] || '#00FF00', // Fallback color
+          data: []
+        }];
+
+        // Loop through the fetched data and extract particulate matter values
+        fetchedData.forEach(item => {
+          // Check if the required properties exist
+          if (item.date && item.time && item.particulateMatter !== undefined) {
+            const dataPoint = {
+              x: new Date(item.date + ' ' + item.time).toISOString(), // Combine date and time for x-axis
+              y: item.particulateMatter // Access the particulate matter property
+            };
+            transformedData[0].data.push(dataPoint); // Push data point to the existing entry
+          } else {
+            console.warn("Missing data for item:", item); // Log a warning for missing data
+          }
+        });
+
+        console.log("Transformed Particulate Matter data for chart:", transformedData); // Log the transformed data for the chart
+        setData(transformedData);
+      } catch (error) {
+        console.error("Error fetching Particulate Matter data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Check if data is empty or not in the expected format
+  if (!data.length || !data[0].data.length) {
+    return <p>No data available for Particulate Matter.</p>;
+  }
 
   return (
     <ResponsiveLine
@@ -45,7 +90,7 @@ const VolSmogChart = ({ isCustomLineColors = false, isDashboard = false }) => {
       }}
       colors={isDashboard ? { datum: "color" } : { scheme: "nivo" }}
       margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-      xScale={{ type: "time", format: "%Y-%m-%d", precision: "day" }}
+      xScale={{ type: "time", format: "%Y-%m-%dT%H:%M:%S.%LZ", precision: "day" }}
       yScale={{
         type: "linear",
         min: "auto",
@@ -80,7 +125,7 @@ const VolSmogChart = ({ isCustomLineColors = false, isDashboard = false }) => {
       pointBorderWidth={2}
       pointBorderColor={{ from: "serieColor" }}
       pointLabelYOffset={-12}
-      useMesh={true}
+      useMesh={true }
       legends={[
         {
           anchor: "bottom-right",

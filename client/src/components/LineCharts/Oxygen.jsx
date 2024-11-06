@@ -1,11 +1,46 @@
 import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import { mockLineData as data } from "../../data/mockData";
+import { useEffect, useState } from 'react';
+import { httpGetAllReadouts } from "../../hooks/sensors.requests"; // Adjust the import path as necessary
 
 const OxygenChart = ({ isCustomLineColors = false, isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log("Fetching oxygen data...");
+        const fetchedData = await httpGetAllReadouts(); // Fetch data from the same API
+        console.log("Fetched data:", fetchedData); // Log the entire fetched data
+
+        // Transform fetched data into the format expected by ResponsiveLine
+        const transformedData = [{
+          id: "Oxygen",
+          color: colors.redAccent?.[500] || '#FF4500', // Fallback color
+          data: []
+        }];
+
+        // Loop through the fetched data and extract oxygen values
+        fetchedData.forEach(item => {
+          const dataPoint = {
+            x: new Date(item.date + ' ' + item.time).toISOString(), // Combine date and time for x-axis
+            y: item.oxygen // Access the oxygen property
+          };
+          transformedData[0].data.push(dataPoint); // Push data point to the existing entry
+        });
+
+        console.log("Transformed oxygen data for chart:", transformedData); // Log the transformed data for the chart
+        setData(transformedData);
+      } catch (error) {
+        console.error("Error fetching oxygen data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <ResponsiveLine
@@ -45,7 +80,7 @@ const OxygenChart = ({ isCustomLineColors = false, isDashboard = false }) => {
       }}
       colors={isDashboard ? { datum: "color" } : { scheme: "nivo" }}
       margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-      xScale={{ type: "time", format: "%Y-%m-%d", precision: "day" }}
+      xScale={{ type: "time", format: "%Y-%m-%dT%H:%M:%S.%LZ", precision: "day" }}
       yScale={{
         type: "linear",
         min: "auto",
@@ -98,7 +133,7 @@ const OxygenChart = ({ isCustomLineColors = false, isDashboard = false }) => {
           symbolBorderColor: "rgba(0, 0, 0, .5)",
           effects: [
             {
-              on: "hover",
+              on : "hover",
               style: {
                 itemBackground: "rgba(0, 0, 0, .03)",
                 itemOpacity: 1,
