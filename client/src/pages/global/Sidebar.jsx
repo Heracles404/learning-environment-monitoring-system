@@ -18,6 +18,7 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import LegendToggleIcon from '@mui/icons-material/LegendToggle';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 const Item = ({ title, to, icon, selected, setSelected, onClick }) => {
   const theme = useTheme();
@@ -266,7 +267,7 @@ const Sidebar = () => {
             <Item
               title="Sign Out"
               to="/"
-              icon={<PersonOutlinedIcon />}
+              icon={<ExitToAppIcon />}
               selected={selected}
               setSelected={setSelected}
               onClick={handleLogout}
