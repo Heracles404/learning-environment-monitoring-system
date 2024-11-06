@@ -201,7 +201,11 @@ const Dashboard = () => {
           />
         </Box>
         </Grid>
-        <Grid>
+      </Grid>
+
+      {/* Charts Container*/}
+      <Grid container columnSpacing={{ xs: 1, sm: 1, md: 3 }}>
+      <Grid>
         <Box
           gridColumn="span 6"
           gridRow="span 2"
@@ -213,6 +217,7 @@ const Dashboard = () => {
             display="flex "
             justifyContent="space-between"
             alignItems="center"
+            sx={{width: '400px', }}
           >
             <Box>
               <Typography

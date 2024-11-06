@@ -96,7 +96,7 @@ const Sidebar = () => {
               sx={{
                 display: { xs: "block", md: "none" }, // Show button on small screens
               }}            
-              onClick={() => setIsCollapsed(!isCollapsed)}
+              // onClick={() => setIsCollapsed(!isCollapsed)}
               icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
               style={{
                 margin: "10px 0 20px 0",
