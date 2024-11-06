@@ -16,29 +16,34 @@ const Form = () => {
   const handleCreate = async (values) => {
 
     const userData = {
-      userName: values.email, // Assuming username is the email
-      password: values.contact, // Assuming password is the contact
-      role: values.address1, // Assuming role is stored in address1
+      userName: values.userName,
+      password: values.password,
+      confirmPassword: values.confirmPassword,
+      role: values.role,
       firstName: values.firstName,
       lastName: values.lastName,
     };
 
-    try {
-      const response = await httpAddNewUser(userData);
-      if (response.ok) {
-        // Optionally, you can handle the success response here
-        console.log("User  created successfully");
-        navigate("/users"); // Redirect to user list or another page
-      } else {
-        // Handle error response
-        setErrorMessage("Failed to create user. Please try again.");
-      }
-    } catch (error) {
-      // Catch any unexpected errors
-      setErrorMessage("An error occurred. Please try again.");
-      console.error("Error creating user:", error);
+    if (userData.password !== userData.confirmPassword){
+      alert('Passwords do not match')
     }
-
+    else  {
+      try {
+        const response = await httpAddNewUser(userData);
+        if (response.ok) {
+          // Optionally, you can handle the success response here
+          console.log("User  created successfully");
+          navigate("/users"); // Redirect to user list or another page
+        } else {
+          // Handle error response
+          setErrorMessage("Failed to create user. Please try again.");
+        }
+      } catch (error) {
+        // Catch any unexpected errors
+        setErrorMessage("An error occurred. Please try again.");
+        console.error("Error creating user:", error);
+      }
+    }
   };
 
   return (
@@ -68,82 +73,82 @@ const Form = () => {
               }}
             >
               <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="First Name"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.firstName}
-                name="firstName"
-                error={!!touched.firstName && !!errors.firstName}
-                helperText={touched.firstName && errors.firstName}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Last Name"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.lastName}
-                name="lastName"
-                error={!!touched.lastName && !!errors.lastName}
-                helperText={touched.lastName && errors.lastName}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Username"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.email}
-                name="email"
-                error={!!touched.email && !!errors.email}
-                helperText={touched.email && errors.email}
-                sx={{ gridColumn: "span 4" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Password"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.contact}
-                name="contact"
-                error={!!touched.contact && !!errors.contact}
-                helperText={touched.contact && errors.contact}
-                sx={{ gridColumn: "span 4" }}
+                  fullWidth
+                  variant="filled"
+                  type="text"
+                  label="First Name"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.firstName}
+                  name="firstName"
+                  error={!!touched.firstName && !!errors.firstName}
+                  helperText={touched.firstName && errors.firstName}
+                  sx={{ gridColumn: "span 2" }}
               />
               <TextField
                   fullWidth
                   variant="filled"
                   type="text"
-                  label="Confirm Password"
+                  label="Last Name"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  value={values.contact}
-                  name="contact"
-                  error={!!touched.contact && !!errors.contact}
-                  helperText={touched.contact && errors.contact}
+                  value={values.lastName}
+                  name="lastName"
+                  error={!!touched.lastName && !!errors.lastName}
+                  helperText={touched.lastName && errors.lastName}
+                  sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                  fullWidth
+                  variant="filled"
+                  type="text"
+                  label="Username"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.userName} // Updated value
+                  name="userName" // Updated name
+                  error={!!touched.userName && !!errors.userName} // Updated error check
+                  helperText={touched.userName && errors.userName} // Updated helper text
                   sx={{ gridColumn: "span 4" }}
               />
               <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Role"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.address1}
-                name="address1"
-                error={!!touched.address1 && !!errors.address1}
-                helperText={touched.address1 && errors.address1}
-                sx={{ gridColumn: "span 4" }}
+                  fullWidth
+                  variant="filled"
+                  type="password" // Changed to password type
+                  label="Password"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.password} // Updated value
+                  name="password" // Updated name
+                  error={!!touched.password && !!errors.password} // Updated error check
+                  helperText={touched.password && errors.password} // Updated helper text
+                  sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                  fullWidth
+                  variant="filled"
+                  type="password" // Changed to password type
+                  label="Confirm Password"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.confirmPassword} // Updated value
+                  name="confirmPassword" // Updated name
+                  error={!!touched.confirmPassword && !!errors.confirmPassword} // Updated error check
+                  helperText={touched.confirmPassword && errors.confirmPassword} // Updated helper text
+                  sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                  fullWidth
+                  variant="filled"
+                  type="text"
+                  label="Role"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.role} // Updated value
+                  name="role" // Updated name
+                  error={!!touched.role && !!errors.role} // Updated error check
+                  helperText={touched.role && errors.role} // Updated helper text
+                  sx={{ gridColumn: "span 4" }}
               />
 
             </Box>
@@ -165,21 +170,17 @@ const phoneRegExp =
 const checkoutSchema = yup.object().shape({
   firstName: yup.string().required("required"),
   lastName: yup.string().required("required"),
-  email: yup.string().email("invalid email").required("required"),
-  contact: yup
-    .string()
-    .matches(phoneRegExp, "Phone number is not valid")
-    .required("required"),
-  address1: yup.string().required("required"),
-  address2: yup.string().required("required"),
+  userName: yup.string().required("required"),
+  password: yup.string().required("required"),
+  role: yup.string().required("required"),
 });
 const initialValues = {
   firstName: "",
   lastName: "",
-  email: "",
-  contact: "",
-  address1: "",
-  address2: "",
+  userName: "",
+  password: "",
+  confirmPassword: "",
+  role: "",
 };
 
 export default Form;
