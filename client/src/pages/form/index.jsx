@@ -30,10 +30,12 @@ const Form = () => {
     else  {
       try {
         const response = await httpAddNewUser(userData);
-        if (response.ok) {
+        if(response.status === 400){
+          alert ('Username already exists.')
+        }else if(response.ok) {
           // Optionally, you can handle the success response here
           console.log("User  created successfully");
-          navigate("/users"); // Redirect to user list or another page
+          navigate("/accounts");
         } else {
           // Handle error response
           setErrorMessage("Failed to create user. Please try again.");
