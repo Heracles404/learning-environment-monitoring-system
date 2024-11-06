@@ -5,7 +5,7 @@ import { tokens } from "../../theme";
 import {httpGetAllUsers} from "../../hooks/users.requests";
 import Header from "../../components/Header";
 import {useEffect, useState} from "react";
-
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 const Accounts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -38,6 +38,20 @@ const Accounts = () => {
       cellClassName: "role-column--cell", 
       // to change color of text
     },
+    {
+        field: "delete",
+        headerName: "", 
+        flex: 0.5,
+        renderCell: (params) => (
+          <button 
+        //   onClick={() => handleDelete(params.row.id)} 
+          style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+            <DeleteOutlineIcon style={{ 
+                color: 'red', 
+                fontSize: '20px' }} />
+          </button>
+        ),
+      },
   ];
 
     useEffect(() => {
@@ -88,7 +102,7 @@ const Accounts = () => {
                     },
                 }}
             >
-                <DataGrid rows={rows} columns={columns} /> {/* Use the state variable here */}
+                <DataGrid checkboxSelection rows={rows} columns={columns} /> {/* Use the state variable here */}
             </Box>
         </Box>
     );
