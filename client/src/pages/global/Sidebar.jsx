@@ -18,6 +18,7 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import LegendToggleIcon from '@mui/icons-material/LegendToggle';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 const Item = ({ title, to, icon, selected, setSelected, onClick }) => {
   const theme = useTheme();
@@ -95,7 +96,7 @@ const Sidebar = () => {
               sx={{
                 display: { xs: "block", md: "none" }, // Show button on small screens
               }}            
-              onClick={() => setIsCollapsed(!isCollapsed)}
+              // onClick={() => setIsCollapsed(!isCollapsed)}
               icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
               style={{
                 margin: "10px 0 20px 0",
@@ -266,7 +267,7 @@ const Sidebar = () => {
             <Item
               title="Sign Out"
               to="/"
-              icon={<PersonOutlinedIcon />}
+              icon={<ExitToAppIcon />}
               selected={selected}
               setSelected={setSelected}
               onClick={handleLogout}
