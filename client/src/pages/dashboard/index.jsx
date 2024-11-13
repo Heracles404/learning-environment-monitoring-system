@@ -34,7 +34,7 @@ const Dashboard = () => {
   const colors = tokens(theme.palette.mode);
 
   return (
-    <Box m="20px">
+    <Box m="0 5px 0 25px">
       {/* HEADER */}
       <Box 
       display="flex" 
@@ -62,16 +62,29 @@ const Dashboard = () => {
       </Box>
 
 
-      {/* GRID & CHARTS */}
-    <Grid container columnSpacing={{ xs: 1, sm: 1, md: 3 }}>
-      <Grid item>
+      {/* STATUS */}
+    <Grid container 
+    display='flex'
+    justifyContent ="space-evenly"
+    alignContent="space-evenly"
+    rowSpacing={1}
+    columnSpacing={{ xs: 1, sm: 3, md: 3 }}>
+      <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
         <Box
           // gridColumn="span 2"        
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
-          sx={{height: '95px'}}
+          sx={{height: '112px', 
+            width: {
+              xs: 136, // 0
+              sm: 110, // 600
+              md: 136, // 900
+              lg: 136, // 1200
+              xl: 136, // 1536
+          },
+          }}
         >
           <StatBox
             title="GOOD"
@@ -86,14 +99,22 @@ const Dashboard = () => {
           />
         </Box>
         </Grid>
-        <Grid item>
+        <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
         <Box
           // gridColumn="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
-          sx={{height: '95px'}}
+          sx={{height: '112px', 
+            width: {
+              xs: 136, // 0
+              sm: 110, // 600
+              md: 136, // 900
+              lg: 136, // 1200
+              xl: 136, // 1536
+          },
+          }}
 
         >
           <StatBox
@@ -109,14 +130,22 @@ const Dashboard = () => {
           />
         </Box>
         </Grid>
-        <Grid item>
+        <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
         <Box
           // gridColumn="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
-          sx={{height: '95px'}}
+          sx={{height: '112px', 
+            width: {
+              xs: 136, // 0
+              sm: 110, // 600
+              md: 136, // 900
+              lg: 136, // 1200
+              xl: 136, // 1536
+          },
+          }}
 
         >
           <StatBox
@@ -132,14 +161,22 @@ const Dashboard = () => {
           />
         </Box>
         </Grid>
-        <Grid item>
+        <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
         <Box
           // gridColumn="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
-          sx={{height: '95px'}}
+          sx={{height: '112px', 
+            width: {
+              xs: 136, // 0
+              sm: 110, // 600
+              md: 136, // 900
+              lg: 136, // 1200
+              xl: 136, // 1536
+          },
+          }}
 
         >
           <StatBox
@@ -155,14 +192,22 @@ const Dashboard = () => {
           />
         </Box>
         </Grid>
-        <Grid item>
+        <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
         <Box
           // gridColumn="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
-          sx={{height: '95px'}}
+          sx={{height: '112px', 
+            width: {
+              xs: 136, // 0
+              sm: 110, // 600
+              md: 136, // 900
+              lg: 136, // 1200
+              xl: 136, // 1536
+          },
+          }}
 
         >
           <StatBox
@@ -178,14 +223,23 @@ const Dashboard = () => {
           />
         </Box>
         </Grid>
-        <Grid item>
+        <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
+
           <Box
           // gridColumn="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
-          sx={{height: '95px'}}
+          sx={{height: '112px', 
+            width: {
+              xs: 136, // 0
+              sm: 110, // 600
+              md: 136, // 900
+              lg: 136, // 1200
+              xl: 136, // 1536
+          },
+          }}
 
         >
           <StatBox
@@ -212,12 +266,12 @@ const Dashboard = () => {
           backgroundColor={colors.primary[400]}
         >
           <Box
-            mt="25px"
+            mt="15px" // margin
             p="0 30px"
             display="flex "
             justifyContent="space-between"
             alignItems="center"
-            sx={{width: '400px', }}
+            sx={{width: '300px',  height: '70px'}} // charts
           >
             <Box>
               <Typography
@@ -235,13 +289,13 @@ const Dashboard = () => {
                 Oxygen
               </Typography>
             </Box>
-            <Box>
+            {/* <Box>
               <IconButton>
                 <DownloadOutlinedIcon
                   sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
                 />
               </IconButton>
-            </Box>
+            </Box> */}
           </Box>
           <Box height="250px" m="-20px 0 0 0">
             <OxygenChart isDashboard={true} />
@@ -255,11 +309,12 @@ const Dashboard = () => {
           backgroundColor={colors.primary[400]}
         >
           <Box
-            mt="25px"
+            mt="15px" // margin
             p="0 30px"
             display="flex "
             justifyContent="space-between"
             alignItems="center"
+            sx={{width: '300px',  height: '70px'}} // charts
           >
             <Box>
               <Typography
@@ -277,13 +332,13 @@ const Dashboard = () => {
                 Carbon Dioxide
               </Typography>
             </Box>
-            <Box>
+            {/* <Box>
               <IconButton>
                 <DownloadOutlinedIcon
                   sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
                 />
               </IconButton>
-            </Box>
+            </Box> */}
           </Box>
           <Box height="250px" m="-20px 0 0 0">
             <CarbonDioxideChart isDashboard={true} />
@@ -297,11 +352,13 @@ const Dashboard = () => {
           backgroundColor={colors.primary[400]}
         >
           <Box
-            mt="25px"
+            mt="15px" // margin
             p="0 30px"
             display="flex "
             justifyContent="space-between"
             alignItems="center"
+            sx={{width: '300px',  height: '70px'}} // charts
+
           >
             <Box>
               <Typography
@@ -319,13 +376,13 @@ const Dashboard = () => {
                 Particulate Matters 2.5, 5, 10
               </Typography>
             </Box>
-            <Box>
+            {/* <Box>
               <IconButton>
                 <DownloadOutlinedIcon
                   sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
                 />
               </IconButton>
-            </Box>
+            </Box> */}
           </Box>
           <Box height="250px" m="-20px 0 0 0">
             <VolSmogChart isDashboard={true} />
@@ -339,11 +396,13 @@ const Dashboard = () => {
           backgroundColor={colors.primary[400]}
         >
           <Box
-            mt="25px"
+            mt="15px" // margin
             p="0 30px"
             display="flex "
             justifyContent="space-between"
             alignItems="center"
+            sx={{width: '300px',  height: '70px'}} // charts
+
           >
             <Box>
               <Typography
@@ -361,13 +420,13 @@ const Dashboard = () => {
                 Temperature, Humidity
               </Typography>
             </Box>
-            <Box>
+            {/* <Box>
               <IconButton>
                 <DownloadOutlinedIcon
                   sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
                 />
               </IconButton>
-            </Box>
+            </Box> */}
           </Box>
           <Box height="250px" m="-20px 0 0 0">
             <HeatIndexChart isDashboard={true} />
@@ -381,11 +440,13 @@ const Dashboard = () => {
           backgroundColor={colors.primary[400]}
         >
           <Box
-            mt="25px"
+            mt="15px" // margin
             p="0 30px"
             display="flex "
             justifyContent="space-between"
             alignItems="center"
+            sx={{width: '300px',  height: '70px'}} // charts
+
           >
             <Box>
               <Typography
@@ -403,13 +464,13 @@ const Dashboard = () => {
                 Lux
               </Typography>
             </Box>
-            <Box>
+            {/* <Box>
               <IconButton>
                 <DownloadOutlinedIcon
                   sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
                 />
               </IconButton>
-            </Box>
+            </Box> */}
           </Box>
           <Box height="250px" m="-20px 0 0 0">
             <LightingChart isDashboard={true} />
@@ -423,11 +484,13 @@ const Dashboard = () => {
           backgroundColor={colors.primary[400]}
         >
           <Box
-            mt="25px"
+            mt="15px" // margin
             p="0 30px"
             display="flex "
             justifyContent="space-between"
             alignItems="center"
+            sx={{width: '300px',  height: '70px'}} // charts
+
           >
             <Box>
               <Typography
@@ -445,13 +508,13 @@ const Dashboard = () => {
                 Students Present in Room
               </Typography>
             </Box>
-            <Box>
+            {/* <Box>
               <IconButton>
                 <DownloadOutlinedIcon
                   sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
                 />
               </IconButton>
-            </Box>
+            </Box> */}
           </Box>
           <Box height="250px" m="-20px 0 0 0">
             <HeadCountChart isDashboard={true} />
