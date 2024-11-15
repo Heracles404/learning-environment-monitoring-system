@@ -243,7 +243,7 @@ const Dashboard = () => {
 
         >
           <StatBox
-            title="BAD"
+            title="47"
             subtitle="Head Count"
             progress="0.90"
             // increase="+43%"
