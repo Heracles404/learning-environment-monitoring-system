@@ -44,7 +44,7 @@ const FAQ = () => {
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-          How to export in Records?
+          What is Records?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -57,7 +57,7 @@ const FAQ = () => {
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-          How to add event in Calendar
+          Bakit ang pogi ni Sir Ian at Sir Ilao?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -70,7 +70,7 @@ const FAQ = () => {
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-            Bakit ang pogi ni Sir Ilao?
+            Bakit ang ganda ni Ma'am Belen at Ma'am Rhea?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
