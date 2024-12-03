@@ -17,6 +17,9 @@ import Lighting from "./pages/Monitor/Lighting";
 import Oxygen from "./pages/Monitor/Oxygen";
 import VolSmog from "./pages/Monitor/VolSmog";
 
+import Device1 from "./pages/Monitor/Devices/Device1";
+import Device2 from "./pages/Monitor/Devices/Device2";
+
 import Pie from "./pages/pie";
 import FAQ from "./pages/faq";
 import Geography from "./pages/geography";
@@ -155,14 +158,6 @@ function App() {
               }
             />
             <Route
-              path="/HeadCount"
-              element={
-                <PrivateRoute>
-                  <HeadCount />
-                </PrivateRoute>
-              }
-            />
-            <Route
               path="/HeatIndex"
               element={
                 <PrivateRoute>
@@ -215,6 +210,22 @@ function App() {
               element={
                 <PrivateRoute>
                   <Geography />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/Device1"
+              element={
+                <PrivateRoute>
+                  <Device1 />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/Device2"
+              element={
+                <PrivateRoute>
+                  <Device2 />
                 </PrivateRoute>
               }
             />

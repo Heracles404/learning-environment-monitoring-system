@@ -157,6 +157,9 @@ const Sidebar = () => {
                   <Typography variant="h5" color={colors.greenAccent[500]}>
                     Principal
                   </Typography>
+                  <Typography variant="h5" color={colors.greenAccent[300]}>
+                    Status: Active
+                  </Typography>
                 </Box>
               </Box>
             )}
@@ -289,13 +292,6 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />              
-              {/* <Item
-                title="Head Count"
-                to="/HeadCount"
-                icon={<TimelineOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              /> */}
               </SubMenu>
   
             <SubMenu
@@ -304,19 +300,19 @@ const Sidebar = () => {
               style={{ color: colors.grey[100] }}
             >
               <Item
-                title="Device 1"
-                to="/HeatIndex"
+                title="Status"
+                to="/Device1"
                 icon={<DevicesIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
-              <Item
+              {/* <Item
                 title="Device 2"
-                to="/AirQuality"
+                to="/Device2"
                 icon={<DevicesIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />
+              /> */}
               </SubMenu>
             <Typography
               variant="h6"
