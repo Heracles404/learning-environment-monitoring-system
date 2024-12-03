@@ -7,7 +7,7 @@ import { UilTimes } from "@iconscout/react-unicons";
 import Chart from "react-apexcharts";
 
 // parent Card
-const CO2Card = (props) => {
+const HeatIndexCard = (props) => {
   const [] = useState(false);
   return (
     <LayoutGroup>
@@ -15,7 +15,6 @@ const CO2Card = (props) => {
     </LayoutGroup>
   );
 };
-
 
 // Expanded Card
 function ExpandedCard({ param, setExpanded }) {
@@ -89,4 +88,4 @@ function ExpandedCard({ param, setExpanded }) {
   );
 }
 
-export default CO2Card;
+export default HeatIndexCard;
