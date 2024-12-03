@@ -243,13 +243,13 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />
-              <Item
+              {/* <Item
                 title="Head Count"
                 to="/HeadCount"
                 icon={<TimelineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />
+              /> */}
             <Typography
               variant="h6"
               color={colors.grey[300]}

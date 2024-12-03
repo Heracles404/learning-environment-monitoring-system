@@ -1,4 +1,4 @@
-.CO2Cards{
+.Cards{
     display: flex;
     gap:10px;
 }
@@ -7,7 +7,7 @@
 }
 
 @media screen and (max-width:1200px) {
-    .CO2Cards{
+    .Cards{
         flex-direction: column;
     }
     .parentContainer{
@@ -16,7 +16,7 @@
 }
 
 @media screen and (max-width:768px) {
-    .CO2Cards{
+    .Cards{
         width: 90%;
     }
 
