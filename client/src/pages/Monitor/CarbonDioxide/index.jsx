@@ -6,52 +6,17 @@ import { tokens } from "../../../theme";
 import StatBox from "../../../components/StatBox";
 import Co2Icon from '@mui/icons-material/Co2';
 
+import CO2Cards from "../../../components/ChartCards/CarbonDioxide/CO2Cards";
+import ExpandedCard from "../../../components/ChartCards/CarbonDioxide/CO2Cards";
 const CarbonDioxide = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   return (
-    <Box m="20px">
-      <Box display="flex" justifyContent="space-between">
-      <Header title="Carbon Dioxide" subtitle="Line Chart"  />
-      <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
-        <Box
-          // gridColumn="span 2"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          sx={{height: '112px', 
-            width: {
-              xs: 136, // 0
-              sm: 110, // 600
-              md: 136, // 900
-              lg: 136, // 1200
-              xl: 136, // 1536
-          },
-          }}
-
-        >
-          <StatBox
-            title="BAD"
-            subtitle="Carbon Dioxide"
-            progress="0.80"
-            // increase="+42%"
-            icon={
-              <Co2Icon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        </Grid>
-      </Box>
-      
-        
-      <Box height="75vh">
-        <CarbonDioxideChart />
-      </Box>
-    </Box>
-  );
-};
+    <div className="MainContainer">
+      <div className="MainDash">
+        <h1>Carbon Dioxide</h1>
+        <CO2Cards/>
+      </div>
+    </div>
+  )
+}
 
 export default CarbonDioxide;

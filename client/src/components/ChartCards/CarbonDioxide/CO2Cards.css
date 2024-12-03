@@ -1,0 +1,23 @@
+.CO2Cards{
+    display: flex;
+    gap:10px;
+}
+.parentContainer{
+    width: 100%;
+}
+
+@media screen and (max-width:1200px) {
+    .CO2Cards{
+        flex-direction: column;
+    }
+    .parentContainer{
+        height: 9rem;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .CO2Cards{
+        width: 90%;
+    }
+
+}
