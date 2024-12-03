@@ -1,81 +1,65 @@
-/***************************************************************************
-  This is a library for the BME680 gas, humidity, temperature & pressure sensor
-
-  Designed specifically to work with the Adafruit BME680 Breakout
-  ----> http://www.adafruit.com/products/3660
-
-  These sensors use I2C or SPI to communicate, 2 or 4 pins are required
-  to interface.
-
-  Adafruit invests time and resources providing this open source code,
-  please support Adafruit and open-source hardware by purchasing products
-  from Adafruit!
-
-  Written by Limor Fried & Kevin Townsend for Adafruit Industries.
-  BSD license, all text above must be included in any redistribution
- ***************************************************************************/
-
 #include <Wire.h>
-#include <SPI.h>
 #include <Adafruit_Sensor.h>
-#include "Adafruit_BME680.h"
+#include <Adafruit_BME680.h>
 
-#define BME_SCK 13
-#define BME_MISO 12
-#define BME_MOSI 11
-#define BME_CS 10
-
-#define SEALEVELPRESSURE_HPA (1013.25)
-
-Adafruit_BME680 bme(&Wire); // I2C
-//Adafruit_BME680 bme(&Wire1); // example of I2C on another bus
-//Adafruit_BME680 bme(BME_CS); // hardware SPI
-//Adafruit_BME680 bme(BME_CS, BME_MOSI, BME_MISO,  BME_SCK);
+Adafruit_BME680 bme;  // Create an instance of the BME680 sensor
 
 void setup() {
   Serial.begin(9600);
-  while (!Serial);
-  Serial.println(F("BME680 test"));
-
+  
+  // Initialize the sensor
   if (!bme.begin()) {
-    Serial.println("Could not find a valid BME680 sensor, check wiring!");
+    Serial.println(F("Could not find a valid BME680 sensor, check wiring!"));
     while (1);
   }
 
-  // Set up oversampling and filter initialization
+  // Set up the sensor for sampling
   bme.setTemperatureOversampling(BME680_OS_8X);
   bme.setHumidityOversampling(BME680_OS_2X);
   bme.setPressureOversampling(BME680_OS_4X);
-  bme.setIIRFilterSize(BME680_FILTER_SIZE_3);
-  bme.setGasHeater(320, 150); // 320*C for 150 ms
+  bme.setGasHeater(320, 150);  // Heater settings (temperature in Celsius, time in ms)
+  Serial.println(F("BME680 IAQ Sensor"));
 }
 
 void loop() {
-  if (! bme.performReading()) {
-    Serial.println("Failed to perform reading :(");
-    return;
+  // Start a reading
+  if (bme.performReading()) {
+    // Get gas resistance value (lower means higher VOC concentration)
+    uint16_t gasResistance = bme.gas_resistance;
+
+    // Print the gas resistance value
+    Serial.print(F("Gas Resistance: "));
+    Serial.println(gasResistance / 1000);
+    Serial.print(F(" KOhms"));
+    // A simple way to estimate air quality based on gas resistance
+    String airQuality;
+    if (gasResistance < 50000) {
+      airQuality = "Poor air quality (High VOCs)";
+    } else if (gasResistance < 100000) {
+      airQuality = "Moderate air quality";
+    } else {
+      airQuality = "Good air quality (Low VOCs)";
+    }
+
+    // Output air quality based on gas resistance
+    Serial.print(F("Air Quality: "));
+    Serial.println(airQuality);
+
+    // Print other sensor data
+    Serial.print(F("Temperature: "));
+    Serial.print(bme.temperature);
+    Serial.println(F(" C"));
+
+    Serial.print(F("Humidity: "));
+    Serial.print(bme.humidity);
+    Serial.println(F(" %"));
+
+    Serial.print(F("Pressure: "));
+    Serial.print(bme.pressure / 100.0);  // Pressure in hPa
+    Serial.println(F(" hPa"));
+
+    delay(4000);  // Delay before the next reading
+  } else {
+    Serial.println(F("Failed to perform reading"));
   }
-  Serial.print("Temperature = ");
-  Serial.print(bme.temperature);
-  Serial.println(" *C");
-
-  Serial.print("Pressure = ");
-  Serial.print(bme.pressure / 100.0);
-  Serial.println(" hPa");
-
-  Serial.print("Humidity = ");
-  Serial.print(bme.humidity);
-  Serial.println(" %");
-
-  Serial.print("Gas = ");
-  Serial.print(bme.gas_resistance / 1000.0);
-  Serial.println(" KOhms");
-
-  Serial.print("Approx. Altitude = ");
-  Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
-  Serial.println(" m");
-
-  Serial.println();
-  delay(2000);
 }
-
