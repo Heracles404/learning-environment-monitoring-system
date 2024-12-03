@@ -59,12 +59,17 @@ function httpNewReadouts(req,res){
     const sensors = [
         'temperature',
         'humidity',
+        'heatIndex',
         'lighting',
-        'headCount',
-        'oxygen',
-        'carbonDioxide',
-        'sulfurDioxide',
-        'particulateMatter'
+        'voc',
+        'IAQIndex',
+        'pm25',
+        'pm10',
+        'OAQIndex',
+        'indoorAir',
+        'outdoorAir',
+        'temp',
+        'remarks'
     ];
 
     const readout = req.body;
