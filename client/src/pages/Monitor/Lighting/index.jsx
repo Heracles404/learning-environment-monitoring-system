@@ -1,16 +1,22 @@
-import { Box } from "@mui/material";
+import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import Header from "../../../components/Header";
-import LightingChart from "../../../components/LineCharts/Lighting";
+import CarbonDioxideChart from "../../../components/LineCharts/CarbonDioxide";
+import Grid from '@mui/material/Grid2';
+import { tokens } from "../../../theme";
+import StatBox from "../../../components/StatBox";
+import Co2Icon from '@mui/icons-material/Co2';
 
-const Lighting = () => {
+import LightingCards from "../../../components/ChartCards/Lighting/LightingCards";
+import ExpandedCard from "../../../components/ChartCards/AirQuality/CO2Cards";
+const LightingMonitor = () => {
   return (
-    <Box m="20px">
-      <Header title="Lighting" subtitle="Simple Line Chart" />
-      <Box height="75vh">
-        <LightingChart />
-      </Box>
-    </Box>
-  );
-};
+    <div className="MainContainer">
+      <div className="MainDash">
+        <h1>Lighting</h1>
+        <LightingCards/>
+      </div>
+    </div>
+  )
+}
 
-export default Lighting;
+export default LightingMonitor;

@@ -6,17 +6,17 @@ import { tokens } from "../../../theme";
 import StatBox from "../../../components/StatBox";
 import Co2Icon from '@mui/icons-material/Co2';
 
-import VolcanicSmogCards from "../../../components/ChartCards/VolcanicSmog/VolcanicSmogCards";
+import CO2Cards from "../../../components/ChartCards/AirQuality/CO2Cards";
 import ExpandedCard from "../../../components/ChartCards/AirQuality/CO2Cards";
-const VolSmogMonitor = () => {
+const CarbonDioxideMonitor = () => {
   return (
     <div className="MainContainer">
       <div className="MainDash">
-        <h1>Volcanic Smog</h1>
-        <VolcanicSmogCards/>
+        <h1>Air Quality</h1>
+        <CO2Cards/>
       </div>
     </div>
   )
 }
 
-export default VolSmogMonitor;
+export default CarbonDioxideMonitor;

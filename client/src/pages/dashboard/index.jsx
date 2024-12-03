@@ -243,7 +243,7 @@ const Dashboard = () => {
 
         >
           <StatBox
-            title="BAD"
+            title="47"
             subtitle="Head Count"
             progress="0.90"
             // increase="+43%"
@@ -298,7 +298,7 @@ const Dashboard = () => {
             </Box> */}
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            <OxygenChart isDashboard={true} />
+            <LineChart isDashboard={true} />
           </Box>
         </Box>
         </Grid>
@@ -341,7 +341,7 @@ const Dashboard = () => {
             </Box> */}
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            <CarbonDioxideChart isDashboard={true} />
+            <LineChart isDashboard={true} />
           </Box>
         </Box>
         </Grid>
@@ -385,7 +385,7 @@ const Dashboard = () => {
             </Box> */}
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            <VolSmogChart isDashboard={true} />
+            <LineChart isDashboard={true} />
           </Box>
         </Box>
         </Grid>
@@ -429,7 +429,7 @@ const Dashboard = () => {
             </Box> */}
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            <HeatIndexChart isDashboard={true} />
+            <LineChart isDashboard={true} />
           </Box>
         </Box>
         </Grid>
@@ -473,7 +473,7 @@ const Dashboard = () => {
             </Box> */}
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            <LightingChart isDashboard={true} />
+            <LineChart isDashboard={true} />
           </Box>
         </Box>
         </Grid>
@@ -517,7 +517,7 @@ const Dashboard = () => {
             </Box> */}
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            <HeadCountChart isDashboard={true} />
+            <LineChart isDashboard={true} />
           </Box>
         </Box>
         </Grid>
