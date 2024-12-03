@@ -216,19 +216,26 @@ const Sidebar = () => {
                 setSelected={setSelected}
               />
               <Item
+                title="Air Quality"
+                to="/AirQuality"
+                icon={<TimelineOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              {/* <Item
                 title="Oxygen"
                 to="/Oxygen"
                 icon={<TimelineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />
-              <Item
+              /> */}
+              {/* <Item
                 title="Carbon Dioxide"
                 to="/CarbonDioxide"
                 icon={<TimelineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />
+              /> */}
               <Item
                 title="Lighting"
                 to="/Lighting"

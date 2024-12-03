@@ -10,7 +10,7 @@ import Bar from "./pages/bar";
 import Form from "./pages/form";
 import Line from "./pages/line";
 
-import CarbonDioxide from "./pages/Monitor/CarbonDioxide";
+import CarbonDioxide from "./pages/Monitor/AirQuality";
 import HeadCount from "./pages/Monitor/HeadCount";
 import HeatIndex from "./pages/Monitor/HeatIndex";
 import Lighting from "./pages/Monitor/Lighting";
@@ -147,7 +147,7 @@ function App() {
               }
             />
             <Route
-              path="/CarbonDioxide"
+              path="/AirQuality"
               element={
                 <PrivateRoute>
                   <CarbonDioxide />

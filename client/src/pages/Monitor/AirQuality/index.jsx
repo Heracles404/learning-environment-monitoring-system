@@ -6,13 +6,13 @@ import { tokens } from "../../../theme";
 import StatBox from "../../../components/StatBox";
 import Co2Icon from '@mui/icons-material/Co2';
 
-import CO2Cards from "../../../components/ChartCards/CarbonDioxide/CO2Cards";
-import ExpandedCard from "../../../components/ChartCards/CarbonDioxide/CO2Cards";
+import CO2Cards from "../../../components/ChartCards/AirQuality/CO2Cards";
+import ExpandedCard from "../../../components/ChartCards/AirQuality/CO2Cards";
 const CarbonDioxide = () => {
   return (
     <div className="MainContainer">
       <div className="MainDash">
-        <h1>Carbon Dioxide</h1>
+        <h1>Air Quality</h1>
         <CO2Cards/>
       </div>
     </div>

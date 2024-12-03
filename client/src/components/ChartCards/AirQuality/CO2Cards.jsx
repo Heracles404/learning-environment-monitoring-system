@@ -2,7 +2,7 @@ import React from 'react'
 import './CO2Cards.css'
 import { CO2Data } from '../../../data/chartData' 
 
-import CO2Card from '../../ChartCard/CarbonDioxide/CO2Card'
+import CO2Card from '../../ChartCard/AirQuality/CO2Card'
 const CO2Cards = () => {
   return (
     <div className="Cards">
