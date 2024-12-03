@@ -25,12 +25,12 @@ void loop() {
   // Start a reading
   if (bme.performReading()) {
     // Get gas resistance value (lower means higher VOC concentration)
-    uint16_t gasResistance = bme.gas_resistance;
+    uint16_t gasResistance = bme.gas_resistance / 1000;
 
     // Print the gas resistance value
     Serial.print(F("Gas Resistance: "));
-    Serial.println(gasResistance / 1000);
-    Serial.print(F(" KOhms"));
+    Serial.print(gasResistance);
+    Serial.println(F(" KOhms"));
     // A simple way to estimate air quality based on gas resistance
     String airQuality;
     if (gasResistance < 50000) {
