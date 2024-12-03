@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./CO2Card.css";
+import "./LightingCard.css";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { motion, LayoutGroup } from "framer-motion";

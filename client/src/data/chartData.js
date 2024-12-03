@@ -65,7 +65,67 @@ export const CardsData = [
 // CarbonDioxide Cards Data
 export const CO2Data = [
   {
-    title: "Carbon Dioxide",
+    title: "Air Quality",
+    color: {
+      backGround: "linear-gradient(180deg, #1e5245 0%, #00cc00 100%)",
+      boxShadow: "0px 10px 20px 0px #e0c6f5",
+    },
+    // barValue: 70,
+    // value: "25,970",
+    png: UilUsdSquare,
+    series: [
+      {
+        name: "Air Quality",
+        data: [1, 5, 16, 20, 4, 26, 14, 2 ],
+      },
+    ],
+  },
+];
+
+// HeatIndex Cards Data
+export const HeatIndexData = [
+  {
+    title: "Heat Index",
+    color: {
+      backGround: "linear-gradient(180deg, #1e5245 0%, #00cc00 100%)",
+      boxShadow: "0px 10px 20px 0px #e0c6f5",
+    },
+    // barValue: 70,
+    // value: "25,970",
+    png: UilUsdSquare,
+    series: [
+      {
+        name: "Air Quality",
+        data: [1, 5, 16, 20, 4, 26, 14, 2 ],
+      },
+    ],
+  },
+];
+
+// Lighting Cards Data
+export const LightingData = [
+  {
+    title: "Lighting",
+    color: {
+      backGround: "linear-gradient(180deg, #1e5245 0%, #00cc00 100%)",
+      boxShadow: "0px 10px 20px 0px #e0c6f5",
+    },
+    // barValue: 70,
+    // value: "25,970",
+    png: UilUsdSquare,
+    series: [
+      {
+        name: "Air Quality",
+        data: [1, 5, 16, 20, 4, 26, 14, 2 ],
+      },
+    ],
+  },
+];
+
+// VolcanicSmog Cards Data
+export const VolcanicSmogData = [
+  {
+    title: "Volcanic Smog",
     color: {
       backGround: "linear-gradient(180deg, #1e5245 0%, #00cc00 100%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",

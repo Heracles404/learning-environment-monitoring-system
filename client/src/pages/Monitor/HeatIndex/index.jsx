@@ -6,14 +6,14 @@ import { tokens } from "../../../theme";
 import StatBox from "../../../components/StatBox";
 import Co2Icon from '@mui/icons-material/Co2';
 
-import CO2Cards from "../../../components/ChartCards/AirQuality/CO2Cards";
+import HeatIndexCards from "../../../components/ChartCards/HeatIndex/HeatIndexCards";
 import ExpandedCard from "../../../components/ChartCards/AirQuality/CO2Cards";
 const HeatIndexMonitor = () => {
   return (
     <div className="MainContainer">
       <div className="MainDash">
         <h1>Heat Index</h1>
-        <CO2Cards/>
+        <HeatIndexCards/>
       </div>
     </div>
   )

@@ -1,15 +1,15 @@
 import React from 'react'
-import './CO2Cards.css'
-import { CO2Data } from '../../../data/chartData' 
+import './HeatIndexCards.css'
+import { HeatIndexData } from '../../../data/chartData' 
 
-import CO2Card from '../../ChartCard/AirQuality/CO2Card'
+import HeatIndexCard from '../../ChartCard/HeatIndex/HeatIndexCard'
 const HeatIndexCards = () => {
   return (
     <div className="Cards">
-        {CO2Data.map((card,id)=>{
+        {HeatIndexData.map((card,id)=>{
             return(
                 <div className="parentContainer">
-                    <CO2Card
+                    <HeatIndexCard
                     title={card.title}
                     color={card.color}
                     barValue={card.barValue}
