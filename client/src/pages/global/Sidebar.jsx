@@ -18,7 +18,21 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import LegendToggleIcon from '@mui/icons-material/LegendToggle';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';import DevicesIcon from '@mui/icons-material/Devices';
+import MonitorIcon from '@mui/icons-material/Monitor';
+import PersonSearchOutlinedIcon from '@mui/icons-material/PersonSearchOutlined';
+
+import AirIcon from '@mui/icons-material/Air';
+import DeviceThermostatIcon from '@mui/icons-material/DeviceThermostat';
+import VolcanoIcon from '@mui/icons-material/Volcano';
+import VolcanoOutlinedIcon from '@mui/icons-material/VolcanoOutlined';
+import WbIncandescentOutlinedIcon from '@mui/icons-material/WbIncandescentOutlined';
+import DeviceHubOutlinedIcon from '@mui/icons-material/DeviceHubOutlined';
+
+import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined';
+import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 
 const Item = ({ title, to, icon, selected, setSelected, onClick }) => {
   const theme = useTheme();
@@ -155,13 +169,19 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />
-                          <Typography
+              
+              <Typography
               variant="h6"
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
-              Account
+              Admin
             </Typography>
+            <SubMenu
+              title="Accounts"
+              icon={<ManageAccountsOutlinedIcon />}
+              style={{ color: colors.grey[100] }}
+            >
             <Item
               title="Access"
               to="/accounts"
@@ -170,34 +190,48 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
             <Item
-              title="Edit Account"
+              title="Edit Access"
               to="/form"
               icon={<PersonOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
+            <Item
+              title="Create New Account"
+              to="/form"
+              icon={<PersonAddAltOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            </SubMenu>
 
             <Typography
               variant="h6"
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
-              Record
+              Information
             </Typography>
+            <SubMenu
+              title="Records"
+              icon={<LibraryBooksOutlinedIcon />}
+              style={{ color: colors.grey[100] }}
+            >
             <Item
               title="Users"
               to="/accounts"
-              icon={<ContactsOutlinedIcon />}
+              icon={<PersonSearchOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Reports"
               to="/records"
-              icon={<ReceiptLongIcon />}
+              icon={<ReceiptIcon />}
               selected={selected}
               setSelected={setSelected}
             />
+            </SubMenu>
 
 
             <Typography
@@ -207,18 +241,16 @@ const Sidebar = () => {
             >
               Monitor
             </Typography>
+            <SubMenu
+              title="Parameters"
+              icon={<DeviceHubOutlinedIcon />}
+              style={{ color: colors.grey[100] }}
+            >
 
-              <Item
-                title="Heat Index"
-                to="/HeatIndex"
-                icon={<TimelineOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
               <Item
                 title="Air Quality"
                 to="/AirQuality"
-                icon={<TimelineOutlinedIcon />}
+                icon={<AirIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
@@ -239,17 +271,24 @@ const Sidebar = () => {
               <Item
                 title="Lighting"
                 to="/Lighting"
-                icon={<TimelineOutlinedIcon />}
+                icon={<WbIncandescentOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
                 title="Volcanic Smog"
                 to="/VolSmog"
-                icon={<TimelineOutlinedIcon />}
+                icon={<VolcanoOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
+              <Item
+                title="Heat Index"
+                to="/HeatIndex"
+                icon={<DeviceThermostatIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />              
               {/* <Item
                 title="Head Count"
                 to="/HeadCount"
@@ -257,6 +296,28 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               /> */}
+              </SubMenu>
+  
+            <SubMenu
+              title="Devices"
+              icon={<DevicesIcon />}
+              style={{ color: colors.grey[100] }}
+            >
+              <Item
+                title="Device 1"
+                to="/HeatIndex"
+                icon={<DevicesIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="Device 2"
+                to="/AirQuality"
+                icon={<DevicesIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              </SubMenu>
             <Typography
               variant="h6"
               color={colors.grey[300]}
