@@ -1,109 +1,83 @@
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
-#include <Adafruit_BME680.h>
+#include "Adafruit_BME680.h"
 
-Adafruit_BME680 bme;  // Create an instance of the BME680 sensor
 
-// Define constants
-float hum_weighting = 0.25; // Humidity effect as 25% of the total air quality score
-float gas_weighting = 0.75; // Gas effect as 75% of the total air quality score
-float gas_reference = 2500; // Reference gas resistance
-float hum_reference = 40;   // Optimal humidity level
-int gas_lower_limit = 10000;  // Bad air quality limit for gas resistance
-int gas_upper_limit = 300000; // Good air quality limit for gas resistance
+Adafruit_BME680 bme;
+
+float Temperature;
+float Humidity;
+float Pressure;
+float Gas;
+float Altitude;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(9600); // Initialize serial communication
 
-  // Initialize the sensor
-  if (!bme.begin()) {
-    Serial.println(F("Could not find a valid BME680 sensor, check wiring!"));
+  if (!bme.begin(0x77)) {  // Make sure the sensor initializes
+    Serial.println(F("BME680 not found!"));
     while (1);
   }
 
-  // Set up the sensor for sampling
+  // Set up oversampling and filter initialization
   bme.setTemperatureOversampling(BME680_OS_8X);
   bme.setHumidityOversampling(BME680_OS_2X);
   bme.setPressureOversampling(BME680_OS_4X);
-  bme.setGasHeater(320, 150);  // Heater settings (temperature in Celsius, time in ms)
-
-  Serial.println(F("BME680 IAQ Sensor Initialized"));
+  bme.setIIRFilterSize(BME680_FILTER_SIZE_3);
+  bme.setGasHeater(320, 150); // 320°C for 150 ms
 }
 
 void loop() {
-  // Start a reading
-  if (bme.performReading()) {
-    // Get sensor values
-    float temperature = bme.temperature;
-    float humidity = bme.humidity;
-    float pressure = bme.pressure / 100.0; // Pressure in hPa
-    float gasResistance = bme.gas_resistance;
+  Serial.println(F("--------------------------------"));
+  bme680Readings();  // Call the readings function
+  delay(4000);
+}
 
-    // Calculate humidity score
-    int humidity_score;
-    if (humidity >= 38 && humidity <= 42) {
-      humidity_score = hum_weighting * 100; // Optimal humidity range
-    } else if (humidity < 38) {
-      humidity_score = hum_weighting / hum_reference * humidity * 100;
-    } else {
-      humidity_score = ((-hum_weighting / (100 - hum_reference) * humidity) + 0.416666) * 100;
-    }
-
-    // Calculate gas score
-    int gas_score = (gas_weighting / (gas_upper_limit - gas_lower_limit) * gasResistance - 
-                    (gas_lower_limit * (gas_weighting / (gas_upper_limit - gas_lower_limit)))) * 100;
-    if (gas_score > 75) gas_score = 75;
-    if (gas_score < 0) gas_score = 0;
-
-    // Combine results for the final IAQ score
-    float air_quality_score = humidity_score + gas_score;
-
-    // Determine air quality category
-    String IAQ_category;
-    int IAQ_score = (100 - air_quality_score) * 5;
-    if (IAQ_score >= 301) IAQ_category = "Hazardous";
-    else if (IAQ_score >= 201) IAQ_category = "Very Unhealthy";
-    else if (IAQ_score >= 176) IAQ_category = "Unhealthy";
-    else if (IAQ_score >= 151) IAQ_category = "Unhealthy for Sensitive Groups";
-    else if (IAQ_score >= 51) IAQ_category = "Moderate";
-    else IAQ_category = "Good";
-
-    // Print sensor readings and calculated scores
-    Serial.println(F("Sensor Readings:"));
-    Serial.print(F("  Temperature: "));
-    Serial.print(temperature);
-    Serial.println(F(" °C"));
-
-    Serial.print(F("  Humidity: "));
-    Serial.print(humidity);
-    Serial.println(F(" %"));
-
-    Serial.print(F("  Pressure: "));
-    Serial.print(pressure);
-    Serial.println(F(" hPa"));
-
-    Serial.print(F("  Gas Resistance: "));
-    Serial.print(gasResistance / 1000.0);
-    Serial.println(F(" KOhms"));
-
-    Serial.print(F("Humidity Score: "));
-    Serial.print(humidity_score);
-    Serial.println(F(" %"));
-
-    Serial.print(F("Gas Score: "));
-    Serial.print(gas_score);
-    Serial.println(F(" %"));
-
-    Serial.print(F("Air Quality Score: "));
-    Serial.print(air_quality_score);
-    Serial.println(F(" %"));
-
-    Serial.print(F("Air Quality Category: "));
-    Serial.println(IAQ_category);
-
-    Serial.println(F("-------------------------------------------"));
-    delay(4000);  // Delay before the next reading
+void bme680Readings() {
+  Temperature = bme.readTemperature();
+  if (isnan(Temperature)) {
+    Serial.println(F("Failed to read temperature"));
   } else {
-    Serial.println(F("Failed to perform reading"));
+    Serial.print(F("Temperature: "));
+    Serial.print(Temperature);
+    Serial.println(F(" *C"));
+  }
+
+  Humidity = bme.readHumidity();
+  if (isnan(Humidity)) {
+    Serial.println(F("Failed to read humidity"));
+  } else {
+    Serial.print(F("Humidity: "));
+    Serial.print(Humidity);
+    Serial.println(F(" %"));
+  }
+
+  Gas = (bme.gas_resistance / 1000.0);
+  if (isnan(Gas)) {
+    Serial.println(F("Failed to read gas resistance"));
+  } else {
+    Serial.print(F("Gas Resistance: "));
+    Serial.print(Gas);
+    Serial.println(F(" kOhms"));
+  }
+
+
+  Serial.println(F("Health Concern Level:"));
+  // IAQ based on Gas Resistance
+  if ((Gas > 0) && (Gas <= 50)) {
+    Serial.println(F(" GOOD"));
+  } else if ((Gas > 51) && (Gas <= 100)) {
+    Serial.println(F("MODERATE"));
+  } else if ((Gas > 101) && (Gas <= 150)) {
+    Serial.println(F("UNHEALTHY FOR SENSITIVE GROUPS"));
+  } else if ((Gas > 151) && (Gas <= 200)) {
+    Serial.println(F("UNHEALTHY"));
+  } else if ((Gas > 201) && (Gas <= 300)) {
+    Serial.println(F("VERY UNHEALTHY"));
+  } else if ((Gas > 301) && (Gas <= 500)) {
+    Serial.println(F("HAZARDOUS"));
   }
 }
+
+
+
