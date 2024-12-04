@@ -87,6 +87,7 @@ const Sidebar = () => {
       </IconButton>
       <Box
         sx={{
+          height: "100%",
           display: { xs: isSidebarVisible ? "block" : "none", md: "block" }, // Hide sidebar on small screens unless toggled
           "& .pro-sidebar-inner": {
             background: `${colors.greenAccent[800]} !important`,
