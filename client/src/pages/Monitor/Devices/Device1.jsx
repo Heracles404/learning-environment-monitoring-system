@@ -26,33 +26,16 @@ const Device1 = () => {
   const colors = tokens(theme.palette.mode);
 
   return (
-    <Box m="0 5px 0 25px">
+    <Box m="0 5px 0 25px"
+    width="50%"
+    >
       {/* HEADER */}
       <Box 
       display="flex" 
       // justifyContent="space-between"
        alignItems="center"
-       mb="40px">
-        
-        <Header title="Device Status" subtitle="Welcome to Edilberto S. Legaspi Integrated High School
-        " />
-
-        {/* <Box>
-          <Button
-            sx={{
-              backgroundColor: colors.greenAccent[700],
-              color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }}
-          >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Download Reports
-          </Button>
-        </Box> */}
-
-        
+       mb="10px">
+        <Header title="Device Status" subtitle="Sensors" />
       </Box>
 
     <Typography>
@@ -61,12 +44,13 @@ const Device1 = () => {
     {/* STATUS */}
     <Grid container 
     display='flex'
-    justifyContent ="space-evenly"
-    alignContent="space-evenly"
-    rowSpacing={1}
-    columnSpacing={{ xs: 1, sm: 3, md: 3 }}
-    mb="40px">
-      <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
+    justifyContent ="center"
+    alignContent="center"
+    rowSpacing={2}
+    // columnSpacing={{ xs: 1, sm: 3, md: 3 }}
+    mb="40px"
+    pl="5px">
+      <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 6 }}>
         <Box
           // gridColumn="span 2"        
           backgroundColor={colors.primary[400]}
@@ -78,13 +62,13 @@ const Device1 = () => {
               xs: 136, // 0
               sm: 110, // 600
               md: 136, // 900
-              lg: 136, // 1200
+              lg: 236, // 1200
               xl: 136, // 1536
           },
           }}
         >
           <StatBox
-            title="Working"
+            title="Active"
             subtitle="Device 1"
             progress="0.75"
             // increase="+14%"
@@ -96,7 +80,7 @@ const Device1 = () => {
           />
         </Box>
         </Grid>
-        <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
+        <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 6 }}>
         <Box
           // gridColumn="span 2"
           backgroundColor={colors.primary[400]}
@@ -108,14 +92,14 @@ const Device1 = () => {
               xs: 136, // 0
               sm: 110, // 600
               md: 136, // 900
-              lg: 136, // 1200
+              lg: 236, // 1200
               xl: 136, // 1536
           },
           }}
 
         >
           <StatBox
-            title="GOOD"
+            title="Working"
             subtitle="PMS5003"
             progress="0.50"
             // increase="+21%"
@@ -127,7 +111,7 @@ const Device1 = () => {
           />
         </Box>
         </Grid>
-        <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
+        <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 6 }}>
         <Box
           // gridColumn="span 2"
           backgroundColor={colors.primary[400]}
@@ -139,14 +123,14 @@ const Device1 = () => {
               xs: 136, // 0
               sm: 110, // 600
               md: 136, // 900
-              lg: 136, // 1200
+              lg: 236, // 1200
               xl: 136, // 1536
           },
           }}
 
         >
           <StatBox
-            title="GOOD"
+            title="Working"
             subtitle="BME 680"
             progress="0.30"
             // increase="+5%"
@@ -158,7 +142,7 @@ const Device1 = () => {
           />
         </Box>
         </Grid>
-        <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
+        <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 6 }}>
         <Box
           // gridColumn="span 2"
           backgroundColor={colors.primary[400]}
@@ -167,17 +151,17 @@ const Device1 = () => {
           justifyContent="center"
           sx={{height: '112px', 
             width: {
-              xs: 136, // 0
+              xs: 236, // 0
               sm: 110, // 600
               md: 136, // 900
-              lg: 136, // 1200
+              lg: 236, // 1200
               xl: 136, // 1536
           },
           }}
 
         >
           <StatBox
-            title="BAD"
+            title="Working"
             subtitle="GY-302"
             progress="0.80"
             // increase="+42%"
@@ -189,21 +173,21 @@ const Device1 = () => {
           />
         </Box>
         </Grid>
-        
-        
       </Grid>
 
       <Typography>
       Device 2
     </Typography>
-      {/* STATUS */}
+    {/* STATUS */}
     <Grid container 
     display='flex'
-    justifyContent ="space-evenly"
-    alignContent="space-evenly"
-    rowSpacing={1}
-    columnSpacing={{ xs: 1, sm: 3, md: 3 }}>
-      <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
+    justifyContent ="center"
+    alignContent="center"
+    rowSpacing={2}
+    // columnSpacing={{ xs: 1, sm: 3, md: 3 }}
+    mb="40px"
+    pl="5px">
+      <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 6 }}>
         <Box
           // gridColumn="span 2"        
           backgroundColor={colors.primary[400]}
@@ -215,13 +199,13 @@ const Device1 = () => {
               xs: 136, // 0
               sm: 110, // 600
               md: 136, // 900
-              lg: 136, // 1200
+              lg: 236, // 1200
               xl: 136, // 1536
           },
           }}
         >
           <StatBox
-            title="Working"
+            title="Active"
             subtitle="Device 2"
             progress="0.75"
             // increase="+14%"
@@ -233,7 +217,7 @@ const Device1 = () => {
           />
         </Box>
         </Grid>
-        <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
+        <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 6 }}>
         <Box
           // gridColumn="span 2"
           backgroundColor={colors.primary[400]}
@@ -245,14 +229,14 @@ const Device1 = () => {
               xs: 136, // 0
               sm: 110, // 600
               md: 136, // 900
-              lg: 136, // 1200
+              lg: 236, // 1200
               xl: 136, // 1536
           },
           }}
 
         >
           <StatBox
-            title="GOOD"
+            title="Working"
             subtitle="PMS5003"
             progress="0.50"
             // increase="+21%"
@@ -264,7 +248,7 @@ const Device1 = () => {
           />
         </Box>
         </Grid>
-        <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
+        <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 6 }}>
         <Box
           // gridColumn="span 2"
           backgroundColor={colors.primary[400]}
@@ -276,14 +260,14 @@ const Device1 = () => {
               xs: 136, // 0
               sm: 110, // 600
               md: 136, // 900
-              lg: 136, // 1200
+              lg: 236, // 1200
               xl: 136, // 1536
           },
           }}
 
         >
           <StatBox
-            title="GOOD"
+            title="Working"
             subtitle="BME 680"
             progress="0.30"
             // increase="+5%"
@@ -295,7 +279,7 @@ const Device1 = () => {
           />
         </Box>
         </Grid>
-        <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
+        <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 6 }}>
         <Box
           // gridColumn="span 2"
           backgroundColor={colors.primary[400]}
@@ -304,17 +288,17 @@ const Device1 = () => {
           justifyContent="center"
           sx={{height: '112px', 
             width: {
-              xs: 136, // 0
+              xs: 236, // 0
               sm: 110, // 600
               md: 136, // 900
-              lg: 136, // 1200
+              lg: 236, // 1200
               xl: 136, // 1536
           },
           }}
 
         >
           <StatBox
-            title="BAD"
+            title="Working"
             subtitle="GY-302"
             progress="0.80"
             // increase="+42%"
@@ -326,9 +310,8 @@ const Device1 = () => {
           />
         </Box>
         </Grid>
-        
-        
       </Grid>
+        
     </Box>
   );
 };
