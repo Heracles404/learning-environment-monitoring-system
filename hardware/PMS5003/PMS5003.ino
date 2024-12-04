@@ -2,8 +2,8 @@
 #include "PMS.h"
 
 // Define pins for SoftwareSerial
-const int rxPin = 2;  // RX pin for PMS sensor
-const int txPin = 3;  // TX pin for PMS sensor
+const int rxPin = 13;  // RX pin for PMS sensor
+const int txPin = 12;  // TX pin for PMS sensor
 
 SoftwareSerial pmsSerial(rxPin, txPin); // Create SoftwareSerial object
 PMS pms(pmsSerial);
