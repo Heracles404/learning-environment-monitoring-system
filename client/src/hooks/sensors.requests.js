@@ -38,19 +38,19 @@ async function httpNewReadouts(readout){
     }
 
     // Send Data Body
-    //     "temperature": 6,
-    //     "humidity": 33,
-    //     "heatIndex": 37,
-    //     "lighting": 160,
-    //     "headCount": 54,
-    //     "oxygen": 24,
-    //     "carbonDioxide": 600,
-    //     "sulfurDioxide": 30,
-    //     "particulateMatter": 15,
-    //     "indoorAir": "Good",
-    //     "outdoorAir": "Good",
-    //     "temp": "Good",
-    //     "remarks": "Good"
+    //  "temperature": 46,
+    //  "humidity": 33,
+    //  "heatIndex": 37,
+    //  "lighting": 160,
+    //  "voc": 70,
+    //  "IAQIndex": 72,
+    //  "pm25": 30,
+    //  "pm10": 15,
+    //  "OAQIndex": 80,
+    //  "indoorAir": "Good",
+    //  "outdoorAir": "Good",
+    //  "temp": "Good",
+    //  "remarks": "Good"
 }
 
 
