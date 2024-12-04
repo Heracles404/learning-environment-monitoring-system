@@ -15,12 +15,12 @@ export const CardsData = [
   {
     title: "Air Quality",
     color: {
-      backGround: "linear-gradient(180deg, #bb67ff 0%, #c484f3 100%)",
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     barValue: 70,
-    value: "25,970",
-    png: UilUsdSquare,
+    value: "Bad",
+    png: UilClipboardAlt,
     series: [
       {
         name: "Air Quality",
@@ -31,12 +31,12 @@ export const CardsData = [
   {
     title: "Temperature",
     color: {
-      backGround: "linear-gradient(180deg, #FF919D 0%, #FC929D 100%)",
-      boxShadow: "0px 10px 20px 0px #FDC0C7",
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
+      boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     barValue: 80,
-    value: "14,270",
-    png: UilMoneyWithdrawal,
+    value: "Bad",
+    png: UilClipboardAlt,
     series: [
       {
         name: "Temperature",
@@ -47,12 +47,27 @@ export const CardsData = [
   {
     title: "Light",
     color: {
-      backGround:
-        "linear-gradient(rgb(248, 212, 154) -146.42%, rgb(255 202 113) -46.42%)",
-      boxShadow: "0px 10px 20px 0px #F9D59B",
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
+      boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     barValue: 60,
-    value: "4,270",
+    value: "Good",
+    png: UilClipboardAlt,
+    series: [
+      {
+        name: "Light",
+        data: [10, 25, 15, 30, 12, 15, 20],
+      },
+    ],
+  },
+  {
+    title: "Volcanic Smog",
+    color: {
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
+      boxShadow: "0px 10px 20px 0px #e0c6f5",
+    },
+    barValue: 60,
+    value: "Good",
     png: UilClipboardAlt,
     series: [
       {
@@ -67,7 +82,7 @@ export const CO2Data = [
   {
     title: "Air Quality",
     color: {
-      backGround: "linear-gradient(180deg, #1e5245 0%, #00cc00 100%)",
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     // barValue: 70,
@@ -79,6 +94,12 @@ export const CO2Data = [
         data: [1, 5, 16, 20, 4, 26, 14, 2 ],
       },
     ],
+    series2: [
+      {
+        name: "Test",
+        data: [1, 5, 16, 20, 4, 26, 14, 2 ],
+      },
+    ],
   },
 ];
 
@@ -87,7 +108,7 @@ export const HeatIndexData = [
   {
     title: "Heat Index",
     color: {
-      backGround: "linear-gradient(180deg, #1e5245 0%, #00cc00 100%)",
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     // barValue: 70,
@@ -107,7 +128,7 @@ export const LightingData = [
   {
     title: "Lighting",
     color: {
-      backGround: "linear-gradient(180deg, #1e5245 0%, #00cc00 100%)",
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     // barValue: 70,
@@ -127,7 +148,7 @@ export const VolcanicSmogData = [
   {
     title: "Volcanic Smog",
     color: {
-      backGround: "linear-gradient(180deg, #1e5245 0%, #00cc00 100%)",
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     // barValue: 70,

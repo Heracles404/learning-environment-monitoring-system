@@ -20,7 +20,8 @@ import LegendToggleIcon from '@mui/icons-material/LegendToggle';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';import DevicesIcon from '@mui/icons-material/Devices';
+import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
+import DevicesIcon from '@mui/icons-material/Devices';
 import MonitorIcon from '@mui/icons-material/Monitor';
 import PersonSearchOutlinedIcon from '@mui/icons-material/PersonSearchOutlined';
 
