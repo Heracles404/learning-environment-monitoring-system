@@ -23,11 +23,11 @@ const Records = () => {
                 humidity: readout.humidity,
                 heatIndex: readout.heatIndex,
                 lighting: readout.lighting,
-                headCount: readout.headCount,
-                oxygen: readout.oxygen,
-                carbonDioxide: readout.carbonDioxide,
-                sulfurDioxide: readout.sulfurDioxide,
-                particulateMatter: readout.particulateMatter,
+                voc: readout.voc,
+                IAQIndex: readout.IAQIndex,
+                pm25: readout.pm25,
+                pm10: readout.pm10,
+                OAQIndex: readout.OAQIndex,
                 indoorAir: readout.indoorAir,
                 outdoorAir: readout.outdoorAir,
                 temp: readout.temp,
@@ -47,25 +47,27 @@ const Records = () => {
     { field: "humidity", headerName: "Humidity", flex: 2, cellClassName: "role-column--cell" },
     { field: "heatIndex", headerName: "Heat Index", flex: 2, cellClassName: "role-column--cell" },
     { field: "lighting", headerName: "Lighting", flex: 2, cellClassName: "role-column--cell" },
-    // { field: "headCount", headerName: "Head Count", flex: 2, cellClassName: "role-column--cell" },
-    { field: "oxygen", headerName: "Oxygen", flex: 2, cellClassName: "role-column--cell" },
-    { field: "carbonDioxide", headerName: "Carbon Dioxide", flex: 2, cellClassName: "role-column--cell" },
-    // { field: "sulfurDioxide", headerName: "Sulfur Dioxide", flex: 2, cellClassName: "role-column--cell" },
-    // { field: "particulateMatter", headerName: "Particulate Matter", flex: 2, cellClassName: "role-column--cell" },
-    // { field: "indoorAir", headerName: "Indoor Air", flex: 2, cellClassName: "role-column--cell" },
-    // { field: "outdoorAir", headerName: "Outdoor Air", flex: 2, cellClassName: "role-column--cell" },
-    // { field: "temp", headerName: "Temp", flex: 2, cellClassName: "role-column--cell" },
-    // { field: "remarks", headerName: "Remarks", flex: 2, cellClassName: "role-column--cell" },
-    {
+    { field: "voc", headerName: "Voc", flex: 2, cellClassName: "role-column--cell" },
+    { field: "IAQIndex", headerName: "IAQ Index", flex: 2, cellClassName: "role-column--cell" },
+    { field: "pm25", headerName: "PM 2.5", flex: 2, cellClassName: "role-column--cell" },
+    { field: "pm10", headerName: "PM 10", flex: 2, cellClassName: "role-column--cell" },
+    { field: "OAQIndex", headerName: "OAQ Index", flex: 2, cellClassName: "role-column--cell" },
+    { field: "indoorAir", headerName: "IAQ Stat", flex: 2, cellClassName: "role-column--cell" },
+    { field: "outdoorAir", headerName: "OAQ Stat", flex: 2, cellClassName: "role-column--cell" },
+    { field: "temp", headerName: "Temperature Stat", flex: 2, cellClassName: "role-column--cell" },
+    { field: "remarks", headerName: "Overall Stat", flex: 2, cellClassName: "role-column--cell" },
+
+
+      {
       field: "delete",
-      headerName: "", 
+      headerName: "",
       flex: 0.1,
       renderCell: (params) => (
-        <button 
-        // onClick={() => handleDelete(params.row.id)} 
+        <button
+        // onClick={() => handleDelete(params.row.id)}
         style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-          <DeleteOutlineIcon style={{ 
-            color: 'red', 
+          <DeleteOutlineIcon style={{
+            color: 'red',
             fontSize: '20px' }} />
         </button>
       ),
