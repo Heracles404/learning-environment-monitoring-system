@@ -22,7 +22,6 @@ import Device2 from "./pages/Monitor/Devices/Device2";
 
 import Pie from "./pages/pie";
 import FAQ from "./pages/faq";
-import Geography from "./pages/geography";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./pages/calendar/calendar";
@@ -214,14 +213,7 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route
-              path="/geography"
-              element={
-                <PrivateRoute>
-                  <Geography />
-                </PrivateRoute>
-              }
-            />
+            
             <Route
               path="/Device1"
               element={
