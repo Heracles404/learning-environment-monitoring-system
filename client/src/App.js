@@ -7,7 +7,7 @@ import Team from "./pages/team";
 import Invoices from "./pages/invoices";
 import Contacts from "./pages/contacts";
 import Bar from "./pages/bar";
-import Form from "./pages/form";
+import Form from "./pages/EditAccountForm";
 import Line from "./pages/line";
 
 import CarbonDioxide from "./pages/Monitor/AirQuality";
@@ -17,9 +17,11 @@ import Lighting from "./pages/Monitor/Lighting";
 import Oxygen from "./pages/Monitor/Oxygen";
 import VolSmog from "./pages/Monitor/VolSmog";
 
+import Device1 from "./pages/Monitor/Devices/Device1";
+import Device2 from "./pages/Monitor/Devices/Device2";
+
 import Pie from "./pages/pie";
 import FAQ from "./pages/faq";
-import Geography from "./pages/geography";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./pages/calendar/calendar";
@@ -28,6 +30,8 @@ import LoginPage from "./pages/Login/Login";
 
 import Accounts from "./pages/Accounts";
 import Records from "./pages/Records";
+import NewAccountForm from "./pages/CreateNewAccount";
+import PreviewAccounts from "./pages/Accounts/PreviewAccount";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -72,10 +76,18 @@ function App() {
            {/* one line: element={<PrivateRoute><Dashboard/></PrivateRoute>}/> */}
                                
             <Route
-              path="/accounts"
+              path="/Accounts"
               element={
                 <PrivateRoute>
                   <Accounts />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/Members"
+              element={
+                <PrivateRoute>
+                  <PreviewAccounts />
                 </PrivateRoute>
               }
             />
@@ -115,10 +127,18 @@ function App() {
               }
             />
             <Route
-              path="/form"
+              path="/EditAccount"
               element={
                 <PrivateRoute>
                   <Form />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/CreateNewAccount"
+              element={
+                <PrivateRoute>
+                  <NewAccountForm />
                 </PrivateRoute>
               }
             />
@@ -151,14 +171,6 @@ function App() {
               element={
                 <PrivateRoute>
                   <CarbonDioxide />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/HeadCount"
-              element={
-                <PrivateRoute>
-                  <HeadCount />
                 </PrivateRoute>
               }
             />
@@ -210,11 +222,20 @@ function App() {
                 </PrivateRoute>
               }
             />
+            
             <Route
-              path="/geography"
+              path="/Device1"
               element={
                 <PrivateRoute>
-                  <Geography />
+                  <Device1 />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/Device2"
+              element={
+                <PrivateRoute>
+                  <Device2 />
                 </PrivateRoute>
               }
             />

@@ -20,7 +20,8 @@ import LegendToggleIcon from '@mui/icons-material/LegendToggle';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';import DevicesIcon from '@mui/icons-material/Devices';
+import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
+import DevicesIcon from '@mui/icons-material/Devices';
 import MonitorIcon from '@mui/icons-material/Monitor';
 import PersonSearchOutlinedIcon from '@mui/icons-material/PersonSearchOutlined';
 
@@ -86,6 +87,7 @@ const Sidebar = () => {
       </IconButton>
       <Box
         sx={{
+          height: "100%",
           display: { xs: isSidebarVisible ? "block" : "none", md: "block" }, // Hide sidebar on small screens unless toggled
           "& .pro-sidebar-inner": {
             background: `${colors.greenAccent[800]} !important`,
@@ -157,6 +159,9 @@ const Sidebar = () => {
                   <Typography variant="h5" color={colors.greenAccent[500]}>
                     Principal
                   </Typography>
+                  <Typography variant="h5" color={colors.greenAccent[300]}>
+                    Status: Active
+                  </Typography>
                 </Box>
               </Box>
             )}
@@ -183,22 +188,22 @@ const Sidebar = () => {
               style={{ color: colors.grey[100] }}
             >
             <Item
-              title="Access"
-              to="/accounts"
-              icon={<PeopleOutlinedIcon />}
+              title="Users"
+              to="/Accounts"
+              icon={<PersonSearchOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Edit Access"
-              to="/form"
+              title="Edit Account"
+              to="/EditAccount"
               icon={<PersonOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Create New Account"
-              to="/form"
+              to="/CreateNewAccount"
               icon={<PersonAddAltOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -213,24 +218,25 @@ const Sidebar = () => {
               Information
             </Typography>
             <SubMenu
-              title="Records"
+              title="Record"
               icon={<LibraryBooksOutlinedIcon />}
               style={{ color: colors.grey[100] }}
             >
             <Item
-              title="Users"
-              to="/accounts"
+              title="Members"
+              to="/Members"
               icon={<PersonSearchOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Reports"
+              title="Parameters"
               to="/records"
               icon={<ReceiptIcon />}
               selected={selected}
               setSelected={setSelected}
             />
+            
             </SubMenu>
 
 
@@ -254,20 +260,6 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />
-              {/* <Item
-                title="Oxygen"
-                to="/Oxygen"
-                icon={<TimelineOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              /> */}
-              {/* <Item
-                title="Carbon Dioxide"
-                to="/CarbonDioxide"
-                icon={<TimelineOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              /> */}
               <Item
                 title="Lighting"
                 to="/Lighting"
@@ -289,13 +281,6 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />              
-              {/* <Item
-                title="Head Count"
-                to="/HeadCount"
-                icon={<TimelineOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              /> */}
               </SubMenu>
   
             <SubMenu
@@ -304,19 +289,19 @@ const Sidebar = () => {
               style={{ color: colors.grey[100] }}
             >
               <Item
-                title="Device 1"
-                to="/HeatIndex"
+                title="Status"
+                to="/Device1"
                 icon={<DevicesIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
-              <Item
+              {/* <Item
                 title="Device 2"
-                to="/AirQuality"
+                to="/Device2"
                 icon={<DevicesIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />
+              /> */}
               </SubMenu>
             <Typography
               variant="h6"

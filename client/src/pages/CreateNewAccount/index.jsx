@@ -8,7 +8,7 @@ import {httpAddNewUser} from "../../hooks/users.requests";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-const Form = () => {
+const NewAccountForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const navigate = useNavigate(); // Hook for navigation
   const [errorMessage, setErrorMessage] = useState("");
@@ -50,7 +50,7 @@ const Form = () => {
 
   return (
     <Box m="20px">
-      <Header title="CREATE USER" subtitle="Create a New User Profile" />
+      <Header title="CREATE NEW USER" subtitle="Create a New User Profile" />
 
       <Formik
         onSubmit={handleCreate}
@@ -85,7 +85,7 @@ const Form = () => {
                   name="firstName"
                   error={!!touched.firstName && !!errors.firstName}
                   helperText={touched.firstName && errors.firstName}
-                  sx={{ gridColumn: "span 2" }}
+                  sx={{ gridColumn: "span 3" }}
               />
               <TextField
                   fullWidth
@@ -98,7 +98,20 @@ const Form = () => {
                   name="lastName"
                   error={!!touched.lastName && !!errors.lastName}
                   helperText={touched.lastName && errors.lastName}
-                  sx={{ gridColumn: "span 2" }}
+                  sx={{ gridColumn: "span 1" }}
+              />
+              <TextField
+                  fullWidth
+                  variant="filled"
+                  type="text"
+                  label="Role"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.role} // Updated value
+                  name="role" // Updated name
+                  error={!!touched.role && !!errors.role} // Updated error check
+                  helperText={touched.role && errors.role} // Updated helper text
+                  sx={{ gridColumn: "span 4" }}
               />
               <TextField
                   fullWidth
@@ -124,7 +137,7 @@ const Form = () => {
                   name="password" // Updated name
                   error={!!touched.password && !!errors.password} // Updated error check
                   helperText={touched.password && errors.password} // Updated helper text
-                  sx={{ gridColumn: "span 4" }}
+                  sx={{ gridColumn: "span 2" }}
               />
               <TextField
                   fullWidth
@@ -137,21 +150,9 @@ const Form = () => {
                   name="confirmPassword" // Updated name
                   error={!!touched.confirmPassword && !!errors.confirmPassword} // Updated error check
                   helperText={touched.confirmPassword && errors.confirmPassword} // Updated helper text
-                  sx={{ gridColumn: "span 4" }}
+                  sx={{ gridColumn: "span 2" }}
               />
-              <TextField
-                  fullWidth
-                  variant="filled"
-                  type="text"
-                  label="Role"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.role} // Updated value
-                  name="role" // Updated name
-                  error={!!touched.role && !!errors.role} // Updated error check
-                  helperText={touched.role && errors.role} // Updated helper text
-                  sx={{ gridColumn: "span 4" }}
-              />
+              
 
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
@@ -185,4 +186,4 @@ const initialValues = {
   role: "",
 };
 
-export default Form;
+export default NewAccountForm;

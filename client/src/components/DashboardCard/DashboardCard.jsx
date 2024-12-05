@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Card.css";
+import "./DashboardCard.css";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { motion, LayoutGroup } from "framer-motion";
@@ -8,7 +8,7 @@ import Chart from "react-apexcharts";
 
 // parent Card
 
-const Card = (props) => {
+const DashboardCard = (props) => {
   const [expanded, setExpanded] = useState(false);
   return (
     <LayoutGroup>
@@ -43,7 +43,7 @@ function CompactCard({ param, setExpanded }) {
       </div>
       <div className="detail">
         <Png />
-        <span>${param.value}</span>
+        <span>{param.value}</span>
         <span>Last 24 hours</span>
       </div>
     </motion.div>
@@ -122,4 +122,4 @@ function ExpandedCard({ param, setExpanded }) {
   );
 }
 
-export default Card;
+export default DashboardCard;

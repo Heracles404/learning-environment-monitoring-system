@@ -7,7 +7,7 @@ import Header from "../../components/Header";
 import {useEffect, useState} from "react";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-const Accounts = () => {
+const PreviewAccounts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [rows, setRows] = useState([]);
@@ -39,35 +39,7 @@ const Accounts = () => {
       cellClassName: "role-column--cell", 
       // to change color of text
     },
-    {
-        field: "edit",
-        headerName:"",
-        flex: 0.5,
-        renderCell: (params) => (
-          <button 
-        //   onClick={() => handleDelete(params.row.id)} 
-          style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-            <EditOutlinedIcon style={{ 
-                color: 'orange', 
-                fontSize: '20px' }} />
-          </button>
-        ),
 
-    },
-    {
-        field: "delete",
-        headerName: "", 
-        flex: 0.5,
-        renderCell: (params) => (
-          <button 
-        //   onClick={() => handleDelete(params.row.id)} 
-          style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-            <DeleteOutlineIcon style={{ 
-                color: 'red', 
-                fontSize: '20px' }} />
-          </button>
-        ),
-      },
   ];
 
     useEffect(() => {
@@ -88,7 +60,7 @@ const Accounts = () => {
 
     return (
         <Box m="20px">
-            <Header title="ACCOUNTS" subtitle="Managing the Users" />
+            <Header title="USERS" subtitle="Viewing the Users" />
             <Box
                 m="40px 0 0 0"
                 height="75vh"
@@ -124,4 +96,4 @@ const Accounts = () => {
     );
 };
 
-export default Accounts;
+export default PreviewAccounts;

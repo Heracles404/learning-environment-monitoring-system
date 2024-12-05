@@ -1,17 +1,17 @@
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 
-import { tokens } from "../../theme";
-import { mockTransactions } from "../../data/mockData";
+import { mockTransactions } from "../../../data/mockData";
+import { tokens } from "../../../theme";
+
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import TrafficIcon from "@mui/icons-material/Traffic";
-import Header from "../../components/Header";
-import LineChart from "../../components/LineChart";
-import BarChart from "../../components/BarChart";
-import StatBox from "../../components/StatBox";
-import ProgressCircle from "../../components/ProgressCircle";
+import Header from "../../../components/Header";
+
+import StatBox from "../../../components/StatBox";
+import ProgressCircle from "../../../components/ProgressCircle";
 import GppGoodIcon from '@mui/icons-material/GppGood';
 
 import AirIcon from '@mui/icons-material/Air';
@@ -21,20 +21,7 @@ import WbIncandescentIcon from '@mui/icons-material/WbIncandescent';
 import VolcanoIcon from '@mui/icons-material/Volcano';
 import Co2Icon from '@mui/icons-material/Co2';
 
-import DashboardCards from "../../components/DashboardCards/DashboardCards";
-import DBRecords from "../../components/DashboardTables/DBRecords";
-import DBAccounts from "../../components/DashboardTables/DBAccounts";
-
-import DevicesIcon from '@mui/icons-material/Devices';
-
-import OxygenChart from "../../components/LineCharts/Oxygen";
-import CarbonDioxideChart from "../../components/LineCharts/CarbonDioxide";
-import VolSmogChart from "../../components/LineCharts/VolSmog";
-import HeatIndexChart from "../../components/LineCharts/HeatIndex";
-import LightingChart from "../../components/LineCharts/Lighting";
-import HeadCountChart from "../../components/LineCharts/HeadCount";
-
-const Dashboard = () => {
+const Device2 = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -45,7 +32,7 @@ const Dashboard = () => {
       display="flex" 
       // justifyContent="space-between"
        alignItems="center">
-        <Header title="DASHBOARD" subtitle="Welcome to Edilberto S. Legaspi Integrated High School
+        <Header title="Device 2" subtitle="Welcome to Edilberto S. Legaspi Integrated High School
         " />
 
         {/* <Box>
@@ -66,19 +53,14 @@ const Dashboard = () => {
         
       </Box>
 
-      <DashboardCards/>
-      <DBRecords/>
-      <DBAccounts/>
-      
-       {/* STATUS */}
+
+      {/* STATUS */}
     <Grid container 
     display='flex'
-    justifyContent ="center"
-    alignContent="space-between"
+    justifyContent ="space-evenly"
+    alignContent="space-evenly"
     rowSpacing={1}
-    columnSpacing={{ xs: 1, sm: 3, md: 3 }}
-    // pr="50px"
-    mb="30px">
+    columnSpacing={{ xs: 1, sm: 3, md: 3 }}>
       <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
         <Box
           // gridColumn="span 2"        
@@ -86,24 +68,23 @@ const Dashboard = () => {
           display="flex"
           alignItems="center"
           justifyContent="center"
-          sx={{
-            height: '112px', 
+          sx={{height: '112px', 
             width: {
               xs: 136, // 0
               sm: 110, // 600
               md: 136, // 900
-              lg: 156, // 1200
+              lg: 136, // 1200
               xl: 136, // 1536
           },
           }}
         >
           <StatBox
-            title="ACTIVE"
-            subtitle="Device 1"
+            title="GOOD"
+            subtitle="Heat Index"
             progress="0.75"
             // increase="+14%"
             icon={
-              <DevicesIcon
+              <DeviceThermostatIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -129,19 +110,19 @@ const Dashboard = () => {
 
         >
           <StatBox
-            title="ACTIVE"
-            subtitle="Device 2"
+            title="GOOD"
+            subtitle="Lighting"
             progress="0.50"
             // increase="+21%"
             icon={
-              <DevicesIcon
+              <WbIncandescentIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
           />
         </Box>
         </Grid>
-        {/* <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
+        <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
         <Box
           // gridColumn="span 2"
           backgroundColor={colors.primary[400]}
@@ -202,12 +183,42 @@ const Dashboard = () => {
             }
           />
         </Box>
-        </Grid> */}
+        </Grid>
+        <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
+        <Box
+          // gridColumn="span 2"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          sx={{height: '112px', 
+            width: {
+              xs: 136, // 0
+              sm: 110, // 600
+              md: 136, // 900
+              lg: 136, // 1200
+              xl: 136, // 1536
+          },
+          }}
+
+        >
+          <StatBox
+            title="BAD"
+            subtitle="Volcanic Smog"
+            progress="0.80"
+            // increase="+41%"
+            icon={
+              <VolcanoIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+        </Grid>
         
-      
       </Grid>
     </Box>
   );
 };
 
-export default Dashboard;
+export default Device2;

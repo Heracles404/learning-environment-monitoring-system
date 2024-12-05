@@ -6,8 +6,7 @@ import {httpGetAllUsers} from "../../hooks/users.requests";
 import Header from "../../components/Header";
 import {useEffect, useState} from "react";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-const Accounts = () => {
+const DBAccounts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [rows, setRows] = useState([]);
@@ -39,35 +38,7 @@ const Accounts = () => {
       cellClassName: "role-column--cell", 
       // to change color of text
     },
-    {
-        field: "edit",
-        headerName:"",
-        flex: 0.5,
-        renderCell: (params) => (
-          <button 
-        //   onClick={() => handleDelete(params.row.id)} 
-          style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-            <EditOutlinedIcon style={{ 
-                color: 'orange', 
-                fontSize: '20px' }} />
-          </button>
-        ),
-
-    },
-    {
-        field: "delete",
-        headerName: "", 
-        flex: 0.5,
-        renderCell: (params) => (
-          <button 
-        //   onClick={() => handleDelete(params.row.id)} 
-          style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-            <DeleteOutlineIcon style={{ 
-                color: 'red', 
-                fontSize: '20px' }} />
-          </button>
-        ),
-      },
+    
   ];
 
     useEffect(() => {
@@ -87,11 +58,12 @@ const Accounts = () => {
     }, []); // Empty dependency array to run only once on mount
 
     return (
-        <Box m="20px">
-            <Header title="ACCOUNTS" subtitle="Managing the Users" />
+        <Box m="5px">
+            <Header title="Accounts" />
             <Box
-                m="40px 0 0 0"
-                height="75vh"
+                m="10px 0 0 0"
+                height="30vh"
+                // width="65%"
                 sx={{
                     "& .MuiDataGrid-root": {
                         border: "none",
@@ -118,10 +90,12 @@ const Accounts = () => {
                     },
                 }}
             >
-                <DataGrid checkboxSelection rows={rows} columns={columns} /> {/* Use the state variable here */}
+                <DataGrid 
+                // checkboxSelection 
+                rows={rows} columns={columns} /> {/* Use the state variable here */}
             </Box>
         </Box>
     );
 };
 
-export default Accounts;
+export default DBAccounts;
