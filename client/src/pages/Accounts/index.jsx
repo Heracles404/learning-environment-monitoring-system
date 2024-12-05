@@ -6,6 +6,7 @@ import {httpGetAllUsers} from "../../hooks/users.requests";
 import Header from "../../components/Header";
 import {useEffect, useState} from "react";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 const Accounts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -37,6 +38,21 @@ const Accounts = () => {
       flex: 1.4,
       cellClassName: "role-column--cell", 
       // to change color of text
+    },
+    {
+        field: "edit",
+        headerName:"",
+        flex: 0.5,
+        renderCell: (params) => (
+          <button 
+        //   onClick={() => handleDelete(params.row.id)} 
+          style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+            <EditOutlinedIcon style={{ 
+                color: 'orange', 
+                fontSize: '20px' }} />
+          </button>
+        ),
+
     },
     {
         field: "delete",
