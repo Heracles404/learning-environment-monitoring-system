@@ -1,33 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./CO2Card.css";
-import { CircularProgressbar } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
 import { motion, LayoutGroup } from "framer-motion";
-import { UilTimes } from "@iconscout/react-unicons";
 import Chart from "react-apexcharts";
+import axios from "axios";
 
-// parent Card
 const CO2Card = (props) => {
-  const [] = useState(false);
   return (
     <LayoutGroup>
-        <ExpandedCard param={props}  />
+      <ExpandedCard param={props} />
     </LayoutGroup>
   );
 };
 
+function ExpandedCard({ param }) {
+  const [iaqData, setIaqData] = useState({ iaqIndexes: [], timestamps: [] });
 
-// Expanded Card
-function ExpandedCard({ param, setExpanded }) {
+  useEffect(() => {
+    const fetchIAQData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/sensors", {
+          headers: { "Cache-Control": "no-cache" }, // Disable caching
+        });
+
+        const iaqIndexes = response.data.map((item) => item.IAQIndex);
+        const timestamps = response.data.map((item) =>
+          new Date(`${item.date} ${item.time}`).getTime()
+        );
+
+        setIaqData({
+          iaqIndexes,
+          timestamps,
+        });
+      } catch (error) {
+        console.error("Error fetching IAQ data:", error);
+      }
+    };
+
+    fetchIAQData();
+
+    // Polling to fetch updated data every 30 seconds
+    const interval = setInterval(fetchIAQData, 30000);
+
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, []);
+
+  if (iaqData.iaqIndexes.length === 0 || iaqData.timestamps.length === 0) {
+    return <div>Loading...</div>;
+  }
+
   const data = {
     options: {
       chart: {
-        type: "area",
+        type: "line",
         height: "auto",
       },
       dropShadow: {
         enabled: false,
-        enabledOnSeries: undefined,
         top: 0,
         left: 0,
         blur: 3,
@@ -35,7 +63,7 @@ function ExpandedCard({ param, setExpanded }) {
         opacity: 0.35,
       },
       fill: {
-        colors: ["#fff"],
+        colors: ["#1e5245"],
         type: "gradient",
       },
       dataLabels: {
@@ -43,7 +71,7 @@ function ExpandedCard({ param, setExpanded }) {
       },
       stroke: {
         curve: "smooth",
-        colors: ["white"],
+        colors: ["#00cc00"],
       },
       tooltip: {
         x: {
@@ -55,17 +83,15 @@ function ExpandedCard({ param, setExpanded }) {
       },
       xaxis: {
         type: "datetime",
-        categories: [
-          "2018-09-19T00:00:00.000Z",
-          "2018-09-19T01:30:00.000Z",
-          "2018-09-19T02:30:00.000Z",
-          "2018-09-19T03:30:00.000Z",
-          "2018-09-19T04:30:00.000Z",
-          "2018-09-19T05:30:00.000Z",
-          "2018-09-19T06:30:00.000Z",
-        ],
+        categories: iaqData.timestamps,
       },
     },
+    series: [
+      {
+        name: "IAQ Index",
+        data: iaqData.iaqIndexes,
+      },
+    ],
   };
 
   return (
@@ -78,11 +104,11 @@ function ExpandedCard({ param, setExpanded }) {
       layoutId={`expandableCard-${param.title}`}
     >
       <div style={{ alignSelf: "flex-end", cursor: "pointer", color: "white" }}>
-        {/* <UilTimes onClick={setExpanded} /> X button sa top right */}
+        {/* <UilTimes onClick={setExpanded} /> */}
       </div>
       <span>{param.title}</span>
       <div className="chartContainer">
-        <Chart options={data.options} series={param.series} type="area" />
+        <Chart options={data.options} series={data.series} type="line" />
       </div>
       <span>Last 24 hours</span>
     </motion.div>

@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@iconscout/react-unicons": "^2.2.1",
     "node-fetch": "^3.3.2",
     "nodemon": "^3.1.7"
   },
