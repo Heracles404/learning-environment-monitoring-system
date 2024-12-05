@@ -7,7 +7,7 @@ import Team from "./pages/team";
 import Invoices from "./pages/invoices";
 import Contacts from "./pages/contacts";
 import Bar from "./pages/bar";
-import Form from "./pages/form";
+import Form from "./pages/EditAccountForm";
 import Line from "./pages/line";
 
 import CarbonDioxide from "./pages/Monitor/AirQuality";
@@ -31,6 +31,7 @@ import LoginPage from "./pages/Login/Login";
 
 import Accounts from "./pages/Accounts";
 import Records from "./pages/Records";
+import NewAccountForm from "./pages/CreateNewAccount";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -118,10 +119,18 @@ function App() {
               }
             />
             <Route
-              path="/form"
+              path="/EditAccount"
               element={
                 <PrivateRoute>
                   <Form />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/CreateNewAccount"
+              element={
+                <PrivateRoute>
+                  <NewAccountForm />
                 </PrivateRoute>
               }
             />

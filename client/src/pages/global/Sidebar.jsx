@@ -188,22 +188,22 @@ const Sidebar = () => {
               style={{ color: colors.grey[100] }}
             >
             <Item
-              title="Access"
+              title="Users"
               to="/accounts"
-              icon={<PeopleOutlinedIcon />}
+              icon={<PersonSearchOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Edit Access"
-              to="/form"
+              title="Edit Account"
+              to="/EditAccount"
               icon={<PersonOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Create New Account"
-              to="/form"
+              to="/CreateNewAccount"
               icon={<PersonAddAltOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -218,24 +218,25 @@ const Sidebar = () => {
               Information
             </Typography>
             <SubMenu
-              title="Records"
+              title="Record"
               icon={<LibraryBooksOutlinedIcon />}
               style={{ color: colors.grey[100] }}
             >
-            <Item
+            {/* <Item
               title="Users"
               to="/accounts"
               icon={<PersonSearchOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
             <Item
-              title="Reports"
+              title="Parameters"
               to="/records"
               icon={<ReceiptIcon />}
               selected={selected}
               setSelected={setSelected}
             />
+            
             </SubMenu>
 
 

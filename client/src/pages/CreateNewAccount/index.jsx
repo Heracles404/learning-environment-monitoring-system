@@ -8,7 +8,7 @@ import {httpAddNewUser} from "../../hooks/users.requests";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-const Form = () => {
+const NewAccountForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const navigate = useNavigate(); // Hook for navigation
   const [errorMessage, setErrorMessage] = useState("");
@@ -50,7 +50,7 @@ const Form = () => {
 
   return (
     <Box m="20px">
-      <Header title="CREATE USER" subtitle="Create a New User Profile" />
+      <Header title="CREATE NEW USER" subtitle="Create a New User Profile" />
 
       <Formik
         onSubmit={handleCreate}
@@ -185,4 +185,4 @@ const initialValues = {
   role: "",
 };
 
-export default Form;
+export default NewAccountForm;
