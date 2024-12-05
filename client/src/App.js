@@ -31,6 +31,7 @@ import LoginPage from "./pages/Login/Login";
 import Accounts from "./pages/Accounts";
 import Records from "./pages/Records";
 import NewAccountForm from "./pages/CreateNewAccount";
+import PreviewAccounts from "./pages/Accounts/PreviewAccount";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -75,10 +76,18 @@ function App() {
            {/* one line: element={<PrivateRoute><Dashboard/></PrivateRoute>}/> */}
                                
             <Route
-              path="/accounts"
+              path="/Accounts"
               element={
                 <PrivateRoute>
                   <Accounts />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/Members"
+              element={
+                <PrivateRoute>
+                  <PreviewAccounts />
                 </PrivateRoute>
               }
             />

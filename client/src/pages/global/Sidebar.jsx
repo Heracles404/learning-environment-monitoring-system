@@ -189,7 +189,7 @@ const Sidebar = () => {
             >
             <Item
               title="Users"
-              to="/accounts"
+              to="/Accounts"
               icon={<PersonSearchOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -222,13 +222,13 @@ const Sidebar = () => {
               icon={<LibraryBooksOutlinedIcon />}
               style={{ color: colors.grey[100] }}
             >
-            {/* <Item
-              title="Users"
-              to="/accounts"
+            <Item
+              title="Members"
+              to="/Members"
               icon={<PersonSearchOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            /> */}
+            />
             <Item
               title="Parameters"
               to="/records"
@@ -260,20 +260,6 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />
-              {/* <Item
-                title="Oxygen"
-                to="/Oxygen"
-                icon={<TimelineOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              /> */}
-              {/* <Item
-                title="Carbon Dioxide"
-                to="/CarbonDioxide"
-                icon={<TimelineOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              /> */}
               <Item
                 title="Lighting"
                 to="/Lighting"

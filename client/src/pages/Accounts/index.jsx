@@ -88,7 +88,7 @@ const Accounts = () => {
 
     return (
         <Box m="20px">
-            <Header title="Accounts" subtitle="Managing the Users" />
+            <Header title="ACCOUNTS" subtitle="Managing the Users" />
             <Box
                 m="40px 0 0 0"
                 height="75vh"

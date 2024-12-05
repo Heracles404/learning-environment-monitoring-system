@@ -6,7 +6,8 @@ import {httpGetAllUsers} from "../../hooks/users.requests";
 import Header from "../../components/Header";
 import {useEffect, useState} from "react";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-const DBAccounts = () => {
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+const PreviewAccounts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [rows, setRows] = useState([]);
@@ -38,7 +39,7 @@ const DBAccounts = () => {
       cellClassName: "role-column--cell", 
       // to change color of text
     },
-    
+
   ];
 
     useEffect(() => {
@@ -58,12 +59,11 @@ const DBAccounts = () => {
     }, []); // Empty dependency array to run only once on mount
 
     return (
-        <Box m="5px">
-            <Header title="Accounts" />
+        <Box m="20px">
+            <Header title="USERS" subtitle="Viewing the Users" />
             <Box
-                m="10px 0 0 0"
-                height="30vh"
-                // width="65%"
+                m="40px 0 0 0"
+                height="75vh"
                 sx={{
                     "& .MuiDataGrid-root": {
                         border: "none",
@@ -90,12 +90,10 @@ const DBAccounts = () => {
                     },
                 }}
             >
-                <DataGrid 
-                // checkboxSelection 
-                rows={rows} columns={columns} /> {/* Use the state variable here */}
+                <DataGrid checkboxSelection rows={rows} columns={columns} /> {/* Use the state variable here */}
             </Box>
         </Box>
     );
 };
 
-export default DBAccounts;
+export default PreviewAccounts;
