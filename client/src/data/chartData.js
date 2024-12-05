@@ -83,7 +83,7 @@ export const CO2Data = [
   {
     title: "Air Quality",
     color: {
-      backGround: "linear-gradient(180deg, #1e5245 0%, #00cc00 100%)",
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     png: UilUsdSquare,  // Use the imported icon
@@ -101,7 +101,7 @@ export const HeatIndexData = [
   {
     title: "Heat Index",
     color: {
-      backGround: "linear-gradient(180deg, #1e5245 0%, #00cc00 100%)",
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     png: UilUsdSquare,  // Use the imported icon
@@ -119,7 +119,7 @@ export const LightingData = [
   {
     title: "Lighting",
     color: {
-      backGround: "linear-gradient(180deg, #1e5245 0%, #00cc00 100%)",
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     png: UilUsdSquare,  // Use the imported icon
@@ -137,7 +137,7 @@ export const VolcanicSmogData = [
   {
     title: "Volcanic Smog",
     color: {
-      backGround: "linear-gradient(180deg, #1e5245 0%, #00cc00 100%)",
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     png: UilUsdSquare,  // Use the imported icon
