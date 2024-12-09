@@ -42,7 +42,7 @@ const Item = ({ title, to, icon, selected, setSelected, onClick }) => {
     <MenuItem
       active={selected === title}
       style={{
-        color: colors.grey[100],
+        color: colors.greenAccent[100],
       }}
       onClick={() => {
         setSelected(title);
@@ -104,6 +104,12 @@ const Sidebar = () => {
           "& .pro-menu-item.active": {
             color: `${colors.greenAccent[500]} !important`,
           },
+          "& .pro-item-content": {
+            color: `${colors.grey[100]} `,
+          },
+          "& .pro-icon": {
+            color: `${colors.grey[100]} `,
+          },
         }}
       >
         <ProSidebar collapsed={isCollapsed}>
@@ -116,7 +122,7 @@ const Sidebar = () => {
               icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
               style={{
                 margin: "10px 0 20px 0",
-                color: colors.grey[100],
+                color: colors.greenAccent[100],
               }}
             >
               {!isCollapsed && (
@@ -126,7 +132,7 @@ const Sidebar = () => {
                   alignItems="center"
                   ml="56px"
                 >
-                  {/* <Typography variant="h1" color={colors.grey[100]}>
+                  {/* <Typography variant="h1" color={colors.greenAccent[100]}>
                     ADMIN
                   </Typography> */}
                   {/* <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -150,7 +156,7 @@ const Sidebar = () => {
                 <Box textAlign="center">
                   <Typography
                     variant="h2"
-                    color={colors.grey[100]}
+                    color={colors.greenAccent[100]}
                     fontWeight="bold"
                     sx={{ m: "10px 0 0 0" }}
                   >
@@ -177,7 +183,7 @@ const Sidebar = () => {
               
               <Typography
               variant="h6"
-              color={colors.grey[300]}
+              color={colors.greenAccent[400]}
               sx={{ m: "15px 0 5px 20px" }}
             >
               Admin
@@ -185,7 +191,7 @@ const Sidebar = () => {
             <SubMenu
               title="Accounts"
               icon={<ManageAccountsOutlinedIcon />}
-              style={{ color: colors.grey[100] }}
+              style={{ color: colors.greenAccent[100] }}
             >
             <Item
               title="Users"
@@ -212,7 +218,7 @@ const Sidebar = () => {
 
             <Typography
               variant="h6"
-              color={colors.grey[300]}
+              color={colors.greenAccent[400]}
               sx={{ m: "15px 0 5px 20px" }}
             >
               Information
@@ -220,7 +226,7 @@ const Sidebar = () => {
             <SubMenu
               title="Record"
               icon={<LibraryBooksOutlinedIcon />}
-              style={{ color: colors.grey[100] }}
+              style={{ color: colors.greenAccent[100] }}
             >
             <Item
               title="Members"
@@ -242,7 +248,7 @@ const Sidebar = () => {
 
             <Typography
               variant="h6"
-              color={colors.grey[300]}
+              color={colors.greenAccent[400]}
               sx={{ m: "15px 0 5px 20px" }}
             >
               Monitor
@@ -250,7 +256,7 @@ const Sidebar = () => {
             <SubMenu
               title="Parameters"
               icon={<DeviceHubOutlinedIcon />}
-              style={{ color: colors.grey[100] }}
+              style={{ color: colors.greenAccent[100] }}
             >
 
               <Item
@@ -286,7 +292,7 @@ const Sidebar = () => {
             <SubMenu
               title="Devices"
               icon={<DevicesIcon />}
-              style={{ color: colors.grey[100] }}
+              style={{ color: colors.greenAccent[100] }}
             >
               <Item
                 title="Status"
@@ -305,7 +311,7 @@ const Sidebar = () => {
               </SubMenu>
             <Typography
               variant="h6"
-              color={colors.grey[300]}
+              color={colors.greenAccent[400]}
               sx={{ m: "15px 0 5px 20px" }}
             >
               Other

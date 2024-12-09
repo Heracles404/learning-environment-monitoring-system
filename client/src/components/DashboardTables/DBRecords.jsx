@@ -16,22 +16,22 @@ const DBRecords = () => {
         const fetchData = async () => {
             const data = await httpGetAllReadouts(); // Fetch data from API
             const formattedData = data.map(readout => ({
-                id: readout._id,
-                date: readout.date,
-                time: readout.time,
-                temperature: readout.temperature,
-                humidity: readout.humidity,
-                heatIndex: readout.heatIndex,
-                lighting: readout.lighting,
-                headCount: readout.headCount,
-                oxygen: readout.oxygen,
-                carbonDioxide: readout.carbonDioxide,
-                sulfurDioxide: readout.sulfurDioxide,
-                particulateMatter: readout.particulateMatter,
-                indoorAir: readout.indoorAir,
-                outdoorAir: readout.outdoorAir,
-                temp: readout.temp,
-                remarks: readout.remarks,
+              id: readout._id,
+              date: readout.date,
+              time: readout.time,
+              temperature: readout.temperature,
+              humidity: readout.humidity,
+              heatIndex: readout.heatIndex,
+              lighting: readout.lighting,
+              voc: readout.voc,
+              IAQIndex: readout.IAQIndex,
+              pm25: readout.pm25,
+              pm10: readout.pm10,
+              OAQIndex: readout.OAQIndex,
+              indoorAir: readout.indoorAir,
+              outdoorAir: readout.outdoorAir,
+              temp: readout.temp,
+              remarks: readout.remarks,
             }));
             setRows(formattedData); // Set the formatted data to state
         };
@@ -47,29 +47,16 @@ const DBRecords = () => {
     { field: "humidity", headerName: "Humidity", flex: 2, cellClassName: "role-column--cell" },
     { field: "heatIndex", headerName: "Heat Index", flex: 2, cellClassName: "role-column--cell" },
     { field: "lighting", headerName: "Lighting", flex: 2, cellClassName: "role-column--cell" },
-    // { field: "headCount", headerName: "Head Count", flex: 2, cellClassName: "role-column--cell" },
-    // { field: "oxygen", headerName: "Oxygen", flex: 2, cellClassName: "role-column--cell" },
-    // { field: "carbonDioxide", headerName: "Carbon Dioxide", flex: 2, cellClassName: "role-column--cell" },
-    // { field: "sulfurDioxide", headerName: "Sulfur Dioxide", flex: 2, cellClassName: "role-column--cell" },
-    // { field: "particulateMatter", headerName: "Particulate Matter", flex: 2, cellClassName: "role-column--cell" },
-    // { field: "indoorAir", headerName: "Indoor Air", flex: 2, cellClassName: "role-column--cell" },
-    // { field: "outdoorAir", headerName: "Outdoor Air", flex: 2, cellClassName: "role-column--cell" },
-    // { field: "temp", headerName: "Temp", flex: 2, cellClassName: "role-column--cell" },
-    // { field: "remarks", headerName: "Remarks", flex: 2, cellClassName: "role-column--cell" },
-    // {
-    //   field: "delete",
-    //   headerName: "", 
-    //   flex: 0.1,
-    //   renderCell: (params) => (
-    //     <button 
-    //     // onClick={() => handleDelete(params.row.id)} 
-    //     style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-    //       <DeleteOutlineIcon style={{ 
-    //         color: 'red', 
-    //         fontSize: '20px' }} />
-    //     </button>
-    //   ),
-    // },
+    { field: "voc", headerName: "Voc", flex: 2, cellClassName: "role-column--cell" },
+    { field: "IAQIndex", headerName: "IAQ Index", flex: 2, cellClassName: "role-column--cell" },
+    { field: "pm25", headerName: "PM 2.5", flex: 2, cellClassName: "role-column--cell" },
+    { field: "pm10", headerName: "PM 10", flex: 2, cellClassName: "role-column--cell" },
+    { field: "OAQIndex", headerName: "OAQ Index", flex: 2, cellClassName: "role-column--cell" },
+    { field: "indoorAir", headerName: "IAQ Stat", flex: 2, cellClassName: "role-column--cell" },
+    { field: "outdoorAir", headerName: "OAQ Stat", flex: 2, cellClassName: "role-column--cell" },
+    { field: "temp", headerName: "Temperature Stat", flex: 2, cellClassName: "role-column--cell" },
+    { field: "remarks", headerName: "Overall Stat", flex: 2, cellClassName: "role-column--cell" },
+
   ];
 
   return (

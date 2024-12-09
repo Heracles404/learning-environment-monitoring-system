@@ -130,7 +130,7 @@ const Form = () => {
                   fullWidth
                   variant="filled"
                   type="password" // Changed to password type
-                  label="Password"
+                  label="Old Password"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.password} // Updated value
@@ -143,7 +143,7 @@ const Form = () => {
                   fullWidth
                   variant="filled"
                   type="password" // Changed to password type
-                  label="Confirm Password"
+                  label="New Password"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.confirmPassword} // Updated value
