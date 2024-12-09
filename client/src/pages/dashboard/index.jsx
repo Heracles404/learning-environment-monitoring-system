@@ -47,7 +47,7 @@ const Dashboard = () => {
       display="flex" 
       justifyContent="space-between"
        alignItems="space-between">
-        <Header title="DASHBOARD" subtitle="Welcome to Edilberto S. Legaspi Integrated High School
+        <Header title="DASHBOARD" subtitle="Welcome to Edilberto S. Legaspi Integrated High School Dashboard
         " />
 
         {/* STATUS */}

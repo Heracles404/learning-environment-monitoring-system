@@ -60,7 +60,7 @@ const PreviewAccounts = () => {
 
     return (
         <Box m="20px">
-            <Header title="USERS" subtitle="Viewing the Users" />
+            <Header title="MEMBERS" subtitle="Viewing the Members" />
             <Box
                 m="40px 0 0 0"
                 height="75vh"
