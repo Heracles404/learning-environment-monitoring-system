@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userName\": \"Juan Jinx\",\r\n    \"password\": \"123admin\",\r\n    \"role\": \"Principal\",\r\n    \"firstName\": \"Nicanor\",\r\n    \"lastName\": \"Reyes II\"\r\n}",
+							"raw": "{\r\n    \"userName\": \"Juan\",\r\n    \"password\": \"123admin\",\r\n    \"role\": \"Principal\",\r\n    \"firstName\": \"Nicanor\",\r\n    \"lastName\": \"Reyes II\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -170,7 +170,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"temperature\": 46,\r\n    \"humidity\": 33,\r\n    \"heatIndex\": 37,\r\n    \"lighting\": 160,\r\n    \"voc\": 70,\r\n    \"IAQIndex\": 72,\r\n    \"pm25\": 30,\r\n    \"pm10\": 15,\r\n    \"OAQIndex\": 80,\r\n    \"indoorAir\": \"Good\",\r\n    \"outdoorAir\": \"Good\",\r\n    \"temp\": \"Good\",\r\n    \"remarks\": \"Good\"\r\n}",
+							"raw": "{\r\n    // For remarks and Index - set conditions in arduino\r\n    \"temperature\": 46,\r\n    \"humidity\": 33,\r\n    \"heatIndex\": 37,\r\n    \"lighting\": 160,\r\n    \"voc\": 70,\r\n    \"IAQIndex\": 72,\r\n    // \"pm25\": 30,\r\n    // \"pm10\": 15,\r\n    // \"OAQIndex\": 80,\r\n    \"indoorAir\": \"Good\",\r\n    \"outdoorAir\": \"Good\",\r\n    \"temp\": \"Good\"\r\n    // \"remarks\": \"Good\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -340,6 +340,193 @@
 							"port": "8000",
 							"path": [
 								"sensors"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vog",
+			"item": [
+				{
+					"name": "POST /vog",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    // For remarks and Index - set conditions in arduino\r\n\r\n    \"pm25\": 30,\r\n    \"pm10\": 15,\r\n    \"OAQIndex\": 80,\r\n    \"remarks\": \"Good\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/vog",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"vog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /vogs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/vog",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"vog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /vog",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/vog/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"vog",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /date vog",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/vog/date/date?startDate=10/10/2024&endDate=10/25/2024",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"vog",
+								"date",
+								"date"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "10/10/2024"
+								},
+								{
+									"key": "endDate",
+									"value": "10/25/2024"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /time vog",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/vog/time/03:15 PM",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"vog",
+								"time",
+								"03:15 PM"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /vog",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/vog/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"vog",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /all vog",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/vog",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"vog"
 							]
 						}
 					},
