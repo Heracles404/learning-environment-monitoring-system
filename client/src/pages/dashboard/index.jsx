@@ -35,6 +35,7 @@ import VolSmogChart from "../../components/LineCharts/VolSmog";
 import HeatIndexChart from "../../components/LineCharts/HeatIndex";
 import LightingChart from "../../components/LineCharts/Lighting";
 import HeadCountChart from "../../components/LineCharts/HeadCount";
+import DBVog from "../../components/DashboardTables/DBVog";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -159,6 +160,7 @@ const Dashboard = () => {
       <DashboardCards/>
       <DBRecords/>
       <DBAccounts/>
+      <DBVog/>
       
        
     </Box>
