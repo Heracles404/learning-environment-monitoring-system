@@ -2,8 +2,8 @@
 #include <ESP8266HTTPClient.h>
 
 // Replace with your network credentials
-const char* ssid = "12345";
-const char* password = "Gear.123";
+const char* ssid = "IoT";
+const char* password = "AccessPoint.2024";
 
 void setup() {
   Serial.begin(9600);
@@ -35,7 +35,7 @@ void sendPostRequest() {
     Serial.println("WiFi connected, preparing POST request...");
 
     // Specify the URL
-    String url = "http://192.168.159.196:8000/vog";
+    String url = "http://192.168.68.101:8000/vog";
     http.begin(client, url);
 
     // http.begin(client, "http://jsonplaceholder.typicode.com/posts");

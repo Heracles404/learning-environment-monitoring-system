@@ -6,9 +6,9 @@
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
 
-const char* ssid = "AccessPoint";
-const char* password = "IoT@2025";
-const char* host = "http://192.168.1.3";  // Ensure the scheme (http/https) is correct
+const char* ssid = "IoT";
+const char* password = "AccessPoint.2024";
+const char* host = "http://192.168.68.101";  // Ensure the scheme (http/https) is correct
 const int port = 8000;
 const char* endpoint = "/vog";
 
