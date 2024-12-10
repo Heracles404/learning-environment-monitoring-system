@@ -13,7 +13,6 @@ const readout  = {
     heatIndex: 37,
 
     lighting: 160,
-    oxygen: 24,
     voc: 70,
     IAQIndex: 72,
 

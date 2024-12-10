@@ -3,6 +3,9 @@
 // Inclusions for ESP01
 #include <SoftwareSerial.h>
 
+// API Inclusions
+#include <ArduinoJson.h>
+
 // Inclusions for BME
 #include <Adafruit_Sensor.h>
 #include "Adafruit_BME680.h"
@@ -21,15 +24,18 @@ Adafruit_BME680 bme;
 BH1750 lightMeter;
 
 // ESP01 Variables
-const char* wifiSSID = "PLDTHOMEFIBR2X9KX";
-const char* wifiPassword = "PLDTWIFID4kzQ";
+const char* ssid = "IoT";
+const char* password = "AccessPoint.2024";
 
-// BME Variables
-float Temperature;
-float Humidity;
-float Pressure;
-float Gas;
-float Altitude;
+// API Components
+const char* host = "http://192.168.68.101";
+const int port = 8000;
+const char* endpoint = "/sensors";
+
+// Variables
+float temperature, humidity, gas, lux;
+int heatIndex;
+String indoorAir, temp;
 
 
 void setup() {
@@ -61,8 +67,8 @@ void setup() {
 void loop() {
   Serial.println(F("--------------------------------"));
   bme680Readings(); 
-  lux();
-  delay(4000);
+  luxFunc();
+  delay(3000);
 }
 
 void wifiInit(){  
@@ -74,9 +80,9 @@ void wifiInit(){
 
   // Connect to WiFi
   ESP8266.print("AT+CWJAP=\"");
-  ESP8266.print(wifiSSID);
+  ESP8266.print(ssid);
   ESP8266.print("\",\"");
-  ESP8266.print(wifiPassword);
+  ESP8266.print(password);
   ESP8266.println("\"");
   ESP8266.setTimeout(5000);
 
@@ -88,59 +94,97 @@ void wifiInit(){
 }
 
 void bme680Readings() {
-  Temperature = bme.readTemperature();
-  if (isnan(Temperature)) {
+  temperature = bme.readTemperature();
+  if (isnan(temperature)) {
     Serial.println(F("Failed to read temperature"));
   } else {
     Serial.print(F("Temperature: "));
-    Serial.print(Temperature);
+    Serial.print(temperature);
     Serial.println(F(" *C"));
   }
 
-  Humidity = bme.readHumidity();
-  if (isnan(Humidity)) {
+  humidity = bme.readHumidity();
+  if (isnan(humidity)) {
     Serial.println(F("Failed to read humidity"));
   } else {
     Serial.print(F("Humidity: "));
-    Serial.print(Humidity);
+    Serial.print(humidity);
     Serial.println(F(" %"));
   }
 
-  Gas = (bme.gas_resistance / 1000.0);
-  if (isnan(Gas)) {
+   // Heat Index Calculation
+  heatIndex = calculateHeatIndex(temperature, humidity);
+  Serial.print(F("Heat Index: "));
+  Serial.print(heatIndex);
+  Serial.println(F(" *C")); 
+
+  Serial.print(F("Temperature Concern Level: "));
+  if ((heatIndex >= 18) && (heatIndex <= 22)) {
+    temp = "COOL";
+  } else if ((heatIndex > 22) && (heatIndex <= 27)) {
+    temp = "COMFORTABLE";
+  } else if ((heatIndex > 27) && (heatIndex <= 30)) {
+    temp = "WARM";
+  } else if ((heatIndex > 30) && (heatIndex <= 33)) {
+    temp = "UNCOMFORTABLY HOT";
+  } else if (heatIndex > 33) {
+    temp = "EXTREMELY HOT";
+  } else if (heatIndex < 18) {
+    temp = "COLD";
+  }
+  Serial.println(temp);
+
+  gas = (bme.gas_resistance / 1000.0);
+  if (isnan(gas)) {
     Serial.println(F("Failed to read gas resistance"));
   } else {
     Serial.print(F("Gas Resistance: "));
-    Serial.print(Gas);
+    Serial.print(gas);
     Serial.println(F(" kOhms"));
   }
 
-
-  Serial.print(F("Health Concern Level: "));
+  Serial.print(F("AQ Concern Level: "));
   // IAQ based on Gas Resistance
-  if ((Gas > 0) && (Gas <= 50)) {
-    Serial.println(F("GOOD"));
-  } else if ((Gas > 51) && (Gas <= 100)) {
-    Serial.println(F("MODERATE"));
-  } else if ((Gas > 101) && (Gas <= 150)) {
-    Serial.println(F("UNHEALTHY FOR SENSITIVE GROUPS"));
-  } else if ((Gas > 151) && (Gas <= 200)) {
-    Serial.println(F("UNHEALTHY"));
-  } else if ((Gas > 201) && (Gas <= 300)) {
-    Serial.println(F("VERY UNHEALTHY"));
-  } else if ((Gas > 301) && (Gas <= 500)) {
-    Serial.println(F("HAZARDOUS"));
+  if ((gas > 0) && (gas <= 50)) {
+    indoorAir = "GOOD";
+  } else if ((gas > 51) && (gas <= 100)) {
+    indoorAir = "MODERATE";
+  } else if ((gas > 101) && (gas <= 150)) {
+    indoorAir = "UNHEALTHY FOR SENSITIVE GROUPS";
+  } else if ((gas > 151) && (gas <= 200)) {
+    indoorAir = "UNHEALTHY";
+  } else if ((gas > 201) && (gas <= 300)) {
+    indoorAir = "VERY UNHEALTHY";
+  } else if ((gas > 301) && (gas <= 500)) {
+    indoorAir = "HAZARDOUS";
   }
+  Serial.println(indoorAir);
+
   delay(1000);
 }
 
-
-void lux() {
-  float lux = lightMeter.readLightLevel();
+void luxFunc() {
+  lux = lightMeter.readLightLevel();
   Serial.print("Light: ");
   Serial.print(lux);
   Serial.println(" lx");
   delay(1000);
 }
 
+int calculateHeatIndex(float T, float H) {
+  // Heat Index calculation based on temperature (T) and humidity (H)
+  // Formula Constants
+  float c1 = -8.78469475556;
+  float c2 = 1.61139411;
+  float c3 = 2.33854883889;
+  float c4 = -0.14611605;
+  float c5 = -0.012308094;
+  float c6 = -0.0164248277778;
+  float c7 = 0.002211732;
+  float c8 = 0.00072546;
+  float c9 = -0.000003582;
 
+  // Calculate the Heat Index
+  float HI = c1 + (c2 * T) + (c3 * H) + (c4 * T * H) + (c5 * T * T) + (c6 * H * H) + (c7 * T * T * H) + (c8 * T * H * H) + (c9 * T * T * H * H);
+  return round(HI);  // Return rounded value of heat index
+}

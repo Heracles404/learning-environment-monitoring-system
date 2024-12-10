@@ -8,7 +8,7 @@
 
 const char* ssid = "IoT";
 const char* password = "AccessPoint.2024";
-const char* host = "http://192.168.68.101";  // Ensure the scheme (http/https) is correct
+const char* host = "http://192.168.68.101";
 const int port = 8000;
 const char* endpoint = "/vog";
 
