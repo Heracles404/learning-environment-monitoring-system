@@ -25,13 +25,8 @@ const Records = () => {
                 lighting: readout.lighting,
                 voc: readout.voc,
                 IAQIndex: readout.IAQIndex,
-                pm25: readout.pm25,
-                pm10: readout.pm10,
-                OAQIndex: readout.OAQIndex,
                 indoorAir: readout.indoorAir,
-                outdoorAir: readout.outdoorAir,
                 temp: readout.temp,
-                remarks: readout.remarks,
             }));
             setRows(formattedData); // Set the formatted data to state
         };
@@ -49,13 +44,8 @@ const Records = () => {
     { field: "lighting", headerName: "Lighting", flex: 2, cellClassName: "role-column--cell" },
     { field: "voc", headerName: "Voc", flex: 2, cellClassName: "role-column--cell" },
     { field: "IAQIndex", headerName: "IAQ Index", flex: 2, cellClassName: "role-column--cell" },
-    { field: "pm25", headerName: "PM 2.5", flex: 2, cellClassName: "role-column--cell" },
-    { field: "pm10", headerName: "PM 10", flex: 2, cellClassName: "role-column--cell" },
-    { field: "OAQIndex", headerName: "OAQ Index", flex: 2, cellClassName: "role-column--cell" },
     { field: "indoorAir", headerName: "IAQ Stat", flex: 2, cellClassName: "role-column--cell" },
-    { field: "outdoorAir", headerName: "OAQ Stat", flex: 2, cellClassName: "role-column--cell" },
     { field: "temp", headerName: "Temperature Stat", flex: 2, cellClassName: "role-column--cell" },
-    { field: "remarks", headerName: "Overall Stat", flex: 2, cellClassName: "role-column--cell" },
 
 
       {
