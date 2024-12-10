@@ -8,17 +8,12 @@ const readout  = {
     _id: 1,
     date: "10/16/2024",
     time: "03:15 PM",
-    temperature: 36,
-    humidity: 33,
-    heatIndex: 37,
 
-    lighting: 160,
-    oxygen: 24,
-    voc: 70,
-    IAQIndex: 72,
+    pm25: 30,
+    pm10: 15,
+    OAQIndex: 80,
 
-    indoorAir: "Good",
-    temp: "Good",
+    remarks: "Good"
 }
 
 readouts.set(readout._id, readout);
@@ -59,6 +54,7 @@ function newReadouts(readout){
         _id: latestReadoutId,
         date: currentDateTime.toLocaleDateString(), // Format date
         time: currentDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), // Format time to include only hour and minute
+        // time: currentDateTime.toLocaleTimeString(), // Format time
         ...readout
     };
 
