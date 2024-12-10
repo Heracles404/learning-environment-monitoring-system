@@ -170,7 +170,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    // For remarks and Index - set conditions in arduino\r\n    \"temperature\": 46,\r\n    \"humidity\": 33,\r\n    \"heatIndex\": 37,\r\n    \"lighting\": 160,\r\n    \"voc\": 70,\r\n    \"IAQIndex\": 72,\r\n    // \"pm25\": 30,\r\n    // \"pm10\": 15,\r\n    // \"OAQIndex\": 80,\r\n    \"indoorAir\": \"Good\",\r\n    \"outdoorAir\": \"Good\",\r\n    \"temp\": \"Good\"\r\n    // \"remarks\": \"Good\"\r\n}",
+							"raw": "{\r\n    // For remarks and Index - set conditions in arduino\r\n    \"temperature\": 46,\r\n    \"humidity\": 33,\r\n    \"heatIndex\": 37,\r\n    \"lighting\": 160,\r\n    \"voc\": 70,\r\n    \"IAQIndex\": 72,\r\n    \"indoorAir\": \"Good\",\r\n    \"temp\": \"Good\"\r\n    \r\n    // \"outdoorAir\": \"Good\",\r\n    // \"pm25\": 30,\r\n    // \"pm10\": 15,\r\n    // \"OAQIndex\": 80,// \"remarks\": \"Good\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
