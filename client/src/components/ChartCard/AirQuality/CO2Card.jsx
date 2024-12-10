@@ -14,6 +14,8 @@ const CO2Card = (props) => {
 
 function ExpandedCard({ param }) {
   const [iaqData, setIaqData] = useState({ iaqIndexes: [], timestamps: [] });
+  const [startDate, setStartDate] = useState("");  // State for start date
+  const [endDate, setEndDate] = useState("");      // State for end date
 
   useEffect(() => {
     const fetchIAQData = async () => {
@@ -22,9 +24,22 @@ function ExpandedCard({ param }) {
           headers: { "Cache-Control": "no-cache" }, // Disable caching
         });
 
-        const iaqIndexes = response.data.map((item) => item.IAQIndex);
-        const timestamps = response.data.map((item) =>
-          new Date(`${item.date} ${item.time}`).getTime()
+        // Log the response data for debugging
+        console.log(response.data);
+
+        let filteredData = response.data;
+
+        // Filter data based on the selected date range
+        if (startDate && endDate) {
+          filteredData = filteredData.filter((item) => {
+            const timestamp = new Date(`${item.date} ${item.time}`).getTime();
+            return timestamp >= new Date(startDate).getTime() && timestamp <= new Date(endDate).getTime();
+          });
+        }
+
+        const iaqIndexes = filteredData.map((item) => item.IAQIndex);
+        const timestamps = filteredData.map((item) =>
+          new Date(`${item.date} ${item.time}`).getTime()  // Corrected string interpolation
         );
 
         setIaqData({
@@ -42,7 +57,7 @@ function ExpandedCard({ param }) {
     const interval = setInterval(fetchIAQData, 30000);
 
     return () => clearInterval(interval); // Cleanup interval on component unmount
-  }, []);
+  }, [startDate, endDate]); // Add startDate and endDate as dependencies
 
   if (iaqData.iaqIndexes.length === 0 || iaqData.timestamps.length === 0) {
     return <div>Loading...</div>;
@@ -103,10 +118,24 @@ function ExpandedCard({ param }) {
       }}
       layoutId={`expandableCard-${param.title}`}
     >
-      <div style={{ alignSelf: "flex-end", cursor: "pointer", color: "white" }}>
-        {/* <UilTimes onClick={setExpanded} /> */}
-      </div>
       <span>{param.title}</span>
+      
+      {/* Date Filter UI */}
+      <div className="dateFilter">
+        <input
+          type="date"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+          placeholder="Start Date"
+        />
+        <input
+          type="date"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+          placeholder="End Date"
+        />
+      </div>
+
       <div className="chartContainer">
         <Chart options={data.options} series={data.series} type="line" />
       </div>
