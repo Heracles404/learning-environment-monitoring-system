@@ -1,8 +1,7 @@
 import React from 'react'
 import './VolcanicSmogCards.css'
 import { VolcanicSmogData } from '../../../data/chartData' 
-
-import VolcanicSmogCard from '../../ChartCard/AirQuality/CO2Card'
+import VolcanicSmogCard from '../../ChartCard/VolcanicSmog/VolcanicSmogCard'
 
 const VolcanicSmogCards = () => {
   return (

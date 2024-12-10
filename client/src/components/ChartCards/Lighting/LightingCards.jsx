@@ -3,6 +3,7 @@ import './LightingCards.css'
 import { LightingData } from '../../../data/chartData' 
 
 import CO2Card from '../../ChartCard/AirQuality/CO2Card'
+import LightingCard from '../../ChartCard/Lighting/LightingCard'
 
 const LightingCards = () => {
   return (
@@ -10,7 +11,7 @@ const LightingCards = () => {
         {LightingData.map((card,id)=>{
             return(
                 <div className="parentContainer">
-                    <CO2Card
+                    <LightingCard
                     title={card.title}
                     color={card.color}
                     barValue={card.barValue}
