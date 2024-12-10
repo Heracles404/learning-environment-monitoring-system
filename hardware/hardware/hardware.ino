@@ -28,12 +28,12 @@ const char* ssid = "IoT";
 const char* password = "AccessPoint.2024";
 
 // API Components
-const char* host = "http://192.168.68.101";
+const char* host = "192.168.68.101";  // Remove "http://"
 const int port = 8000;
 const char* endpoint = "/sensors";
 
 // Variables
-float temperature, humidity, gas, lux;
+float temperature, humidity, voc, IAQIndex, lux;
 int heatIndex;
 String indoorAir, temp;
 
@@ -55,7 +55,6 @@ void setup() {
   // Set up oversampling and filter initialization
   bme.setTemperatureOversampling(BME680_OS_8X);
   bme.setHumidityOversampling(BME680_OS_2X);
-  bme.setPressureOversampling(BME680_OS_4X);
   bme.setIIRFilterSize(BME680_FILTER_SIZE_3);
   bme.setGasHeater(320, 150); // 320°C for 150 ms
 
@@ -68,6 +67,7 @@ void loop() {
   Serial.println(F("--------------------------------"));
   bme680Readings(); 
   luxFunc();
+  sendDataToServer(temperature, humidity, voc, lux, IAQIndex, heatIndex, indoorAir, temp);
   delay(3000);
 }
 
@@ -134,33 +134,54 @@ void bme680Readings() {
   }
   Serial.println(temp);
 
-  gas = (bme.gas_resistance / 1000.0);
-  if (isnan(gas)) {
+  voc = (bme.gas_resistance / 1000.0);
+  if (isnan(voc)) {
     Serial.println(F("Failed to read gas resistance"));
   } else {
     Serial.print(F("Gas Resistance: "));
-    Serial.print(gas);
+    Serial.print(voc);
     Serial.println(F(" kOhms"));
   }
 
+  IAQIndex = calculateIAQ(voc);
+
+  Serial.print(F("IAQ Index: "));
+  Serial.println(IAQIndex);
+
   Serial.print(F("AQ Concern Level: "));
   // IAQ based on Gas Resistance
-  if ((gas > 0) && (gas <= 50)) {
+  if ((IAQIndex > 0) && (IAQIndex <= 50)) {
     indoorAir = "GOOD";
-  } else if ((gas > 51) && (gas <= 100)) {
+  } else if ((IAQIndex > 51) && (IAQIndex <= 100)) {
     indoorAir = "MODERATE";
-  } else if ((gas > 101) && (gas <= 150)) {
+  } else if ((IAQIndex > 101) && (IAQIndex <= 150)) {
     indoorAir = "UNHEALTHY FOR SENSITIVE GROUPS";
-  } else if ((gas > 151) && (gas <= 200)) {
+  } else if ((IAQIndex > 151) && (IAQIndex <= 200)) {
     indoorAir = "UNHEALTHY";
-  } else if ((gas > 201) && (gas <= 300)) {
+  } else if ((IAQIndex > 201) && (IAQIndex <= 300)) {
     indoorAir = "VERY UNHEALTHY";
-  } else if ((gas > 301) && (gas <= 500)) {
+  } else if ((IAQIndex > 301) && (IAQIndex <= 500)) {
     indoorAir = "HAZARDOUS";
   }
   Serial.println(indoorAir);
 
-  delay(1000);
+  delay(4000);
+}
+
+float calculateIAQ(float GasResistance) {
+  // Define your maximum and minimum gas resistance values (in kOhms)
+  const float R_max = 500.0;   // Maximum gas resistance (worst air quality)
+  const float R_min = 10.0;    // Minimum gas resistance (best air quality)
+  
+  // Define IAQ range
+  const int IAQ_max = 500;   // Maximum IAQ index (best air quality)
+  const int IAQ_min = 0;     // Minimum IAQ index (worst air quality)
+
+  // Logarithmic mapping of gas resistance to IAQ index
+  float logR = log(R_max / GasResistance);  // Logarithmic transformation
+  float IAQ = (logR * (IAQ_max - IAQ_min)) / log(R_max / R_min);  // Calculate IAQ index
+
+  return IAQ;
 }
 
 void luxFunc() {
@@ -187,4 +208,54 @@ int calculateHeatIndex(float T, float H) {
   // Calculate the Heat Index
   float HI = c1 + (c2 * T) + (c3 * H) + (c4 * T * H) + (c5 * T * T) + (c6 * H * H) + (c7 * T * T * H) + (c8 * T * H * H) + (c9 * T * T * H * H);
   return round(HI);  // Return rounded value of heat index
+}
+
+// Helper function to print response from ESP8266
+void printResponse() {
+  while (ESP8266.available()) {
+    Serial.write(ESP8266.read()); // Print all data received from ESP8266
+  }
+}
+
+void sendDataToServer(float temperature, float humidity, float voc, float lux, float IAQIndex, int heatIndex, String indoorAir, String temp) {
+  ESP8266.print("AT+CIPSTART=\"TCP\",\"");
+  ESP8266.print(host);
+  ESP8266.print("\",");
+  ESP8266.println(port);
+  delay(2000);  // Increased delay to ensure connection
+
+  String jsonBody = "{";
+  jsonBody += "\"temperature\":" + String(temperature) + ",";
+  jsonBody += "\"humidity\":" + String(humidity) + ",";
+  jsonBody += "\"heatIndex\":" + String(heatIndex) + ",";
+  jsonBody += "\"lighting\":" + String(lux) + ",";
+  jsonBody += "\"voc\":" + String(voc) + ",";
+  jsonBody += "\"IAQIndex\":" + String(IAQIndex) + ",";
+  jsonBody += "\"indoorAir\":\"" + indoorAir + "\",";
+  jsonBody += "\"temp\":\"" + temp + "\"";
+  jsonBody += "}";
+
+  // Print the JSON body for debugging
+  Serial.println(jsonBody);
+
+  String postRequest = "POST " + String(endpoint) + " HTTP/1.1\r\n";
+  postRequest += "Host: " + String(host) + "\r\n";
+  postRequest += "Content-Type: application/json\r\n";
+  postRequest += "Content-Length: " + String(jsonBody.length()) + "\r\n\r\n";
+  postRequest += jsonBody;
+
+  ESP8266.print("AT+CIPSEND=");
+  ESP8266.println(postRequest.length());
+  delay(1000);  // Wait for the response
+
+  // Read the response from the ESP8266 to ensure it's ready to send the data
+  printResponse();
+
+  ESP8266.print(postRequest);
+  delay(1000);  // Give ESP8266 time to send the data
+  printResponse();  // Print the response after sending data
+
+  ESP8266.println("AT+CIPCLOSE");
+  delay(1000);
+  Serial.println("POST request sent.");
 }
