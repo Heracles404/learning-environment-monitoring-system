@@ -52,7 +52,7 @@ function httpGetReadoutsByTime(req, res) {
 // Function to create a new readout (called when posting data)
 function httpNewReadouts(req, res) {
     const sensors = [
-        'pm25', 'pm10', 'OAQIndex', 'remarks'
+        'pm25', 'pm10', 'OAQIndex', 'level'
     ];
 
     const readout = req.body;

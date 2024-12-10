@@ -22,7 +22,7 @@ const VOGRecords = () => {
                 pm25: readout.pm25,
                 pm10: readout.pm10,
                 OAQIndex: readout.OAQIndex,
-                remarks: readout.remarks,
+                level: readout.level,
             }));
             setRows(formattedData); // Set the formatted data to state
         };
@@ -37,7 +37,7 @@ const VOGRecords = () => {
         { field: "pm25", headerName: "PM 2.5", flex: 2, cellClassName: "role-column--cell" },
         { field: "pm10", headerName: "PM 10.0", flex: 2, cellClassName: "role-column--cell" },
         { field: "OAQIndex", headerName: "OAQ Index", flex: 2, cellClassName: "role-column--cell" },
-        { field: "remarks", headerName: "Remarks", flex: 2, cellClassName: "role-column--cell" },
+        { field: "level", headerName: "Concern Level", flex: 2, cellClassName: "role-column--cell" },
 
 
         {

@@ -13,7 +13,7 @@ const vogReadout  = {
     pm10: 15,
     OAQIndex: 80,
 
-    remarks: "Good"
+    level: "2"
 }
 
 vogReadouts.set(vogReadout._id, vogReadout);
