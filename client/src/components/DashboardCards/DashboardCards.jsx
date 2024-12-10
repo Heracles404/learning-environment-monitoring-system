@@ -1,7 +1,6 @@
 import React from 'react'
 import './DashboardCards.css'
 import { CardsData } from '../../data/chartData'
-import Dashboard from '../DashboardCard/DashboardCard'
 import DashboardCard from '../DashboardCard/DashboardCard'
 
 
