@@ -40,20 +40,20 @@ const VOGRecords = () => {
         { field: "remarks", headerName: "Remarks", flex: 2, cellClassName: "role-column--cell" },
 
 
-        {
-            field: "delete",
-            headerName: "",
-            flex: 0.1,
-            renderCell: (params) => (
-                <button
-                    // onClick={() => handleDelete(params.row.id)}
-                    style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                    <DeleteOutlineIcon style={{
-                        color: 'red',
-                        fontSize: '20px' }} />
-                </button>
-            ),
-        },
+        // {
+        //     field: "delete",
+        //     headerName: "",
+        //     flex: 0.1,
+        //     renderCell: (params) => (
+        //         <button
+        //             // onClick={() => handleDelete(params.row.id)}
+        //             style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+        //             <DeleteOutlineIcon style={{
+        //                 color: 'red',
+        //                 fontSize: '20px' }} />
+        //         </button>
+        //     ),
+        // },
     ];
 
     return (
