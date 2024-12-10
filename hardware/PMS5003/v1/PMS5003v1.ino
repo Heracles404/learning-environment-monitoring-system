@@ -87,12 +87,15 @@ int concernLevel(int idx){
 void dataDisplay(){
   Serial.print(F("PM 2.5 (ug/m3): "));
     Serial.println(pm25);
+
+    Serial.print(F("PM2.5 Index: "));
+    Serial.println(idx25);
     
     Serial.print(F("PM 10.0 (ug/m3): "));
     Serial.println(pm10);
 
-    Serial.print(F("OAQ Index: "));
-    Serial.println(max(idx25, idx10));
+    Serial.print(F("PM10 Index: "));
+    Serial.println(idx10);
 
     Serial.print(F("Concern Level: "));
     Serial.println(level);

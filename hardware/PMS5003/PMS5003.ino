@@ -4,10 +4,13 @@
 // Internet Components
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
+#include <ArduinoJson.h>
 
-const char* ssid = "AccessPoint";
-const char* password = "IoT@2025";
-const char* host = "http://192.168.1.3";
+const char* ssid = "IoT";
+const char* password = "AccessPoint.2024";
+const char* host = "http://192.168.68.101";  // Ensure the scheme (http/https) is correct
+const int port = 8000;
+const char* endpoint = "/vog";
 
 // PMS Components
 const int rxNode = D1;  
@@ -70,35 +73,34 @@ void loop() {
     Serial.println(F("No data."));
   }
 
-  Serial.println(F("Going to sleep for 5 seconds."));
   pms.sleep();
-  delay(5000);
+
+  sendDataToServer(pm25, pm10, max(idx25, idx10), level);
+
+  delay(2000);
 }
 
-int concernLevel(int idx){
-    if (idx > 300) return 6;
-    else if (idx > 200) return 5;
-    else if (idx > 150) return 4;
-    else if (idx > 100) return 3;
-    else if (idx > 50) return 2;
-    else return 1;
+int concernLevel(int idx) {
+  if (idx > 300) return 6;
+  else if (idx > 200) return 5;
+  else if (idx > 150) return 4;
+  else if (idx > 100) return 3;
+  else if (idx > 50) return 2;
+  else return 1;
 }
 
-void dataDisplay(){
+void dataDisplay() {
   Serial.print(F("PM 2.5 (ug/m3): "));
-    Serial.println(pm25);
-
-    Serial.print(F("PM2.5 Index: "));
-    Serial.println(idx25);
+  Serial.println(pm25);
     
-    Serial.print(F("PM 10.0 (ug/m3): "));
-    Serial.println(pm10);
+  Serial.print(F("PM 10.0 (ug/m3): "));
+  Serial.println(pm10);
 
-    Serial.print(F("PM10 Index: "));
-    Serial.println(idx10);
+  Serial.print(F("OAQ Index: "));
+  Serial.println(max(idx25, idx10));
 
-    Serial.print(F("Concern Level: "));
-    Serial.println(level);
+  Serial.print(F("Concern Level: "));
+  Serial.println(level);
 }
 
 int calculateAQI(float concentration, String pollutant) {
@@ -118,4 +120,46 @@ int calculateAQI(float concentration, String pollutant) {
     else return 301;
   }
   return -1;
+}
+
+void sendDataToServer(float pm25, float pm10, int OAQIndex, int level) {
+  if (WiFi.status() == WL_CONNECTED) {
+    WiFiClient client;
+    HTTPClient http;
+    String url = String(host) + ":" + String(port) + endpoint;
+
+    http.begin(client, url); // Use WiFiClient object
+    http.addHeader("Content-Type", "application/json");
+
+    // Construct JSON payload
+    StaticJsonDocument<200> jsonDoc;
+    jsonDoc["pm25"] = pm25;
+    jsonDoc["pm10"] = pm10;
+    jsonDoc["OAQIndex"] = OAQIndex;
+    jsonDoc["level"] = level;
+
+    String requestBody;
+    serializeJson(jsonDoc, requestBody);
+
+    Serial.print(F("Sending POST request to: "));
+    Serial.println(url);
+    Serial.print(F("Payload: "));
+    Serial.println(requestBody);
+
+    int httpResponseCode = http.POST(requestBody);
+
+    if (httpResponseCode > 0) {
+      Serial.print(F("Response code: "));
+      Serial.println(httpResponseCode);
+      Serial.print(F("Response: "));
+      Serial.println(http.getString());
+    } else {
+      Serial.print(F("Error sending POST request. Code: "));
+      Serial.println(httpResponseCode);
+    }
+
+    http.end();
+  }else {
+      Serial.print(F("WiFi not connected"));
+  }
 }
