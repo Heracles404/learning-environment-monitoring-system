@@ -7,7 +7,7 @@ import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-const Records = () => {
+const VOGRecords = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [rows, setRows] = useState([]);
@@ -58,7 +58,7 @@ const Records = () => {
 
     return (
         <Box m="20px">
-            <Header title="Records" subtitle="Managing the Records" />
+            <Header title="VOG Records" subtitle="Managing the VOG Records" />
             <Box
                 m="40px 0 0 0"
                 height="75vh"
@@ -82,4 +82,4 @@ const Records = () => {
     );
 };
 
-export default Records;
+export default VOGRecords;

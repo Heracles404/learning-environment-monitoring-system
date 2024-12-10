@@ -32,6 +32,7 @@ import Accounts from "./pages/Accounts";
 import Records from "./pages/Records";
 import NewAccountForm from "./pages/CreateNewAccount";
 import PreviewAccounts from "./pages/Accounts/PreviewAccount";
+import VOGRecords from "./pages/Records/vog_record";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -223,6 +224,14 @@ function App() {
               }
             />
             
+            <Route
+              path="/VOG_records"
+              element={
+                <PrivateRoute>
+                  <VOGRecords />
+                </PrivateRoute>
+              }
+            />
             <Route
               path="/Device1"
               element={
