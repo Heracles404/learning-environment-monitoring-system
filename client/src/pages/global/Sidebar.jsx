@@ -242,6 +242,13 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+            <Item
+              title="VOG"
+              to="/VOG_records"
+              icon={<ReceiptIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
             
             </SubMenu>
 
