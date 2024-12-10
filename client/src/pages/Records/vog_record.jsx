@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {httpGetAllReadouts} from "../../hooks/sensors.requests";
+import {httpGetAllReadouts} from "../../hooks/vog.requests";
 import { Box } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
@@ -19,14 +19,10 @@ const Records = () => {
                 id: readout._id,
                 date: readout.date,
                 time: readout.time,
-                temperature: readout.temperature,
-                humidity: readout.humidity,
-                heatIndex: readout.heatIndex,
-                lighting: readout.lighting,
-                voc: readout.voc,
-                IAQIndex: readout.IAQIndex,
-                indoorAir: readout.indoorAir,
-                temp: readout.temp,
+                pm25: readout.pm25,
+                pm10: readout.pm10,
+                OAQIndex: readout.OAQIndex,
+                remarks: readout.remarks,
             }));
             setRows(formattedData); // Set the formatted data to state
         };
@@ -38,14 +34,10 @@ const Records = () => {
         { field: "id", headerName: "ID", flex: 0.2 },
         { field: "date", headerName: "Date", flex: 2 },
         { field: "time", headerName: "Time", flex: 2 },
-        { field: "temperature", headerName: "Temperature", flex: 2, cellClassName: "role-column--cell" },
-        { field: "humidity", headerName: "Humidity", flex: 2, cellClassName: "role-column--cell" },
-        { field: "heatIndex", headerName: "Heat Index", flex: 2, cellClassName: "role-column--cell" },
-        { field: "lighting", headerName: "Lighting", flex: 2, cellClassName: "role-column--cell" },
-        { field: "voc", headerName: "Voc", flex: 2, cellClassName: "role-column--cell" },
-        { field: "IAQIndex", headerName: "IAQ Index", flex: 2, cellClassName: "role-column--cell" },
-        { field: "indoorAir", headerName: "IAQ Stat", flex: 2, cellClassName: "role-column--cell" },
-        { field: "temp", headerName: "Temperature Stat", flex: 2, cellClassName: "role-column--cell" },
+        { field: "pm25", headerName: "PM 2.5", flex: 2, cellClassName: "role-column--cell" },
+        { field: "pm10", headerName: "PM 10.0", flex: 2, cellClassName: "role-column--cell" },
+        { field: "OAQIndex", headerName: "OAQ Index", flex: 2, cellClassName: "role-column--cell" },
+        { field: "remarks", headerName: "Remarks", flex: 2, cellClassName: "role-column--cell" },
 
 
         {
