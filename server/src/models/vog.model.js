@@ -1,10 +1,10 @@
-const readouts = new Map();
+const vogReadouts = new Map();
 
 let latestReadoutId = 1;
 
 const currentDateTime = new Date();
 
-const readout  = {
+const vogReadout  = {
     _id: 1,
     date: "10/16/2024",
     time: "03:15 PM",
@@ -16,19 +16,19 @@ const readout  = {
     remarks: "Good"
 }
 
-readouts.set(readout._id, readout);
+vogReadouts.set(vogReadout._id, vogReadout);
 
 function getAllReadouts(){
-    console.log(readouts);
-    return Array.from(readouts.values());
+    console.log(vogReadouts);
+    return Array.from(vogReadouts.values());
 }
 
 function existsId(readoutId){
-    return readouts.has(readoutId);
+    return vogReadouts.has(readoutId);
 }
 
 function getReadoutById(readoutId){
-    return readouts.get(readoutId);
+    return vogReadouts.get(readoutId);
 }
 
 
@@ -36,7 +36,7 @@ function getReadoutsByDate(startDate, endDate) {
     const start = new Date(startDate);
     const end = new Date(endDate);
 
-    return Array.from(readouts.values()).filter(readout => {
+    return Array.from(vogReadouts.values()).filter(readout => {
         const readoutDate = new Date(readout.date);
         return readoutDate >= start && readoutDate <= end;
     });
@@ -44,7 +44,7 @@ function getReadoutsByDate(startDate, endDate) {
 
 
 function getReadoutsByTime(time){
-    return Array.from(readouts.values()).filter(readout => readout.time === time);
+    return Array.from(vogReadouts.values()).filter(readout => readout.time === time);
 }
 
 function newReadouts(readout){
@@ -54,23 +54,22 @@ function newReadouts(readout){
         _id: latestReadoutId,
         date: currentDateTime.toLocaleDateString(), // Format date
         time: currentDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), // Format time to include only hour and minute
-        // time: currentDateTime.toLocaleTimeString(), // Format time
         ...readout
     };
 
-    readouts.set(newReadout._id, newReadout);
+    vogReadouts.set(newReadout._id, newReadout);
 
-    console.log(readouts);
+    console.log(vogReadouts);
 }
 
 function deleteReadout(id){
-    readouts.delete(id);
-    console.log(readouts);
+    vogReadouts.delete(id);
+    console.log(vogReadouts);
 }
 
 function deleteAllReadouts(){
-    readouts.clear();
-    console.log(readouts);
+    vogReadouts.clear();
+    console.log(vogReadouts);
 }
 
 module.exports = {
