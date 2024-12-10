@@ -2,7 +2,6 @@
 #include <Adafruit_Sensor.h>
 #include "Adafruit_BME680.h"
 
-
 Adafruit_BME680 bme;
 
 float Temperature;
@@ -10,6 +9,7 @@ float Humidity;
 float Pressure;
 float Gas;
 float Altitude;
+float IAQIndex;
 
 void setup() {
   Serial.begin(9600); // Initialize serial communication
@@ -52,7 +52,7 @@ void bme680Readings() {
     Serial.println(F(" %"));
   }
 
-  Gas = (bme.gas_resistance / 1000.0);
+  Gas = (bme.gas_resistance / 1000.0);  // Convert gas resistance to kOhms
   if (isnan(Gas)) {
     Serial.println(F("Failed to read gas resistance"));
   } else {
@@ -61,23 +61,40 @@ void bme680Readings() {
     Serial.println(F(" kOhms"));
   }
 
+  // Calculate IAQ based on gas resistance
+  IAQIndex = calculateIAQ(Gas);
+
+  Serial.print(F("IAQ Index: "));
+  Serial.println(IAQIndex);
 
   Serial.println(F("Health Concern Level:"));
-  // IAQ based on Gas Resistance
-  if ((Gas > 0) && (Gas <= 50)) {
-    Serial.println(F(" GOOD"));
-  } else if ((Gas > 51) && (Gas <= 100)) {
-    Serial.println(F("MODERATE"));
-  } else if ((Gas > 101) && (Gas <= 150)) {
-    Serial.println(F("UNHEALTHY FOR SENSITIVE GROUPS"));
-  } else if ((Gas > 151) && (Gas <= 200)) {
-    Serial.println(F("UNHEALTHY"));
-  } else if ((Gas > 201) && (Gas <= 300)) {
-    Serial.println(F("VERY UNHEALTHY"));
-  } else if ((Gas > 301) && (Gas <= 500)) {
-    Serial.println(F("HAZARDOUS"));
+  if (IAQIndex >= 0 && IAQIndex <= 50) {
+    Serial.println(F("GOOD"));
+  } else if (IAQIndex > 50 && IAQIndex <= 100) {
+    Serial.println(F("AVERAGE"));
+  } else if (IAQIndex > 100 && IAQIndex <= 150) {
+    Serial.println(F("LITTLE BAD"));
+  } else if (IAQIndex > 150 && IAQIndex <= 200) {
+    Serial.println(F("BAD"));
+  } else if (IAQIndex > 200 && IAQIndex <= 300) {
+    Serial.println(F("WORSE"));
+  } else if (IAQIndex > 300 && IAQIndex <= 500) {
+    Serial.println(F("VERY BAD"));
   }
 }
 
+float calculateIAQ(float GasResistance) {
+  // Define your maximum and minimum gas resistance values (in kOhms)
+  const float R_max = 500.0;   // Maximum gas resistance (worst air quality)
+  const float R_min = 10.0;    // Minimum gas resistance (best air quality)
+  
+  // Define IAQ range
+  const int IAQ_max = 500;   // Maximum IAQ index (best air quality)
+  const int IAQ_min = 0;     // Minimum IAQ index (worst air quality)
 
+  // Logarithmic mapping of gas resistance to IAQ index
+  float logR = log(R_max / GasResistance);  // Logarithmic transformation
+  float IAQ = (logR * (IAQ_max - IAQ_min)) / log(R_max / R_min);  // Calculate IAQ index
 
+  return IAQ;
+}
