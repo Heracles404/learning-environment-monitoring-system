@@ -1,32 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./LightingCard.css";
-import { CircularProgressbar } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
 import { motion, LayoutGroup } from "framer-motion";
-import { UilTimes } from "@iconscout/react-unicons";
 import Chart from "react-apexcharts";
+import axios from "axios";
 
-// parent Card
 const LightingCard = (props) => {
-  const [] = useState(false);
   return (
     <LayoutGroup>
-        <ExpandedCard param={props}  />
+      <ExpandedCard param={props} />
     </LayoutGroup>
   );
 };
 
-// Expanded Card
-function ExpandedCard({ param, setExpanded }) {
+function ExpandedCard({ param }) {
+  const [lightingData, setLightingData] = useState({ lightingValues: [], timestamps: [] });
+
+  useEffect(() => {
+    const fetchLightingData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/sensors", {
+          headers: { "Cache-Control": "no-cache" }, // Disable caching
+        });
+
+        const lightingValues = response.data.map((item) => item.lighting);
+        const timestamps = response.data.map((item) =>
+          new Date(`${item.date} ${item.time}`).getTime()
+        );
+
+        setLightingData({
+          lightingValues,
+          timestamps,
+        });
+      } catch (error) {
+        console.error("Error fetching lighting data:", error);
+      }
+    };
+
+    fetchLightingData();
+
+    // Polling to fetch updated data every 30 seconds
+    const interval = setInterval(fetchLightingData, 30000);
+
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, []);
+
+  if (lightingData.lightingValues.length === 0 || lightingData.timestamps.length === 0) {
+    return <div>Loading...</div>;
+  }
+
   const data = {
     options: {
       chart: {
-        type: "area",
+        type: "line",
         height: "auto",
       },
       dropShadow: {
         enabled: false,
-        enabledOnSeries: undefined,
         top: 0,
         left: 0,
         blur: 3,
@@ -34,7 +63,7 @@ function ExpandedCard({ param, setExpanded }) {
         opacity: 0.35,
       },
       fill: {
-        colors: ["#fff"],
+        colors: ["#ffcc00"],
         type: "gradient",
       },
       dataLabels: {
@@ -42,7 +71,7 @@ function ExpandedCard({ param, setExpanded }) {
       },
       stroke: {
         curve: "smooth",
-        colors: ["white"],
+        colors: ["#ffaa00"],
       },
       tooltip: {
         x: {
@@ -54,17 +83,15 @@ function ExpandedCard({ param, setExpanded }) {
       },
       xaxis: {
         type: "datetime",
-        categories: [
-          "2018-09-19T00:00:00.000Z",
-          "2018-09-19T01:30:00.000Z",
-          "2018-09-19T02:30:00.000Z",
-          "2018-09-19T03:30:00.000Z",
-          "2018-09-19T04:30:00.000Z",
-          "2018-09-19T05:30:00.000Z",
-          "2018-09-19T06:30:00.000Z",
-        ],
+        categories: lightingData.timestamps,
       },
     },
+    series: [
+      {
+        name: "Lighting",
+        data: lightingData.lightingValues,
+      },
+    ],
   };
 
   return (
@@ -77,11 +104,11 @@ function ExpandedCard({ param, setExpanded }) {
       layoutId={`expandableCard-${param.title}`}
     >
       <div style={{ alignSelf: "flex-end", cursor: "pointer", color: "white" }}>
-        {/* <UilTimes onClick={setExpanded} /> X button sa top right */}
+        {/* <UilTimes onClick={setExpanded} /> */}
       </div>
       <span>{param.title}</span>
       <div className="chartContainer">
-        <Chart options={data.options} series={param.series} type="area" />
+        <Chart options={data.options} series={data.series} type="line" />
       </div>
       <span>Last 24 hours</span>
     </motion.div>
