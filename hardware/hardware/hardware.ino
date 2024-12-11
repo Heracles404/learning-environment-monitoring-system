@@ -28,7 +28,7 @@ const char* ssid = "IoT";
 const char* password = "AccessPoint.2024";
 
 // API Components
-const char* host = "192.168.68.101";  // Remove "http://"
+const char* host = "192.168.68.100";  // Remove "http://"
 const int port = 8000;
 const char* endpoint = "/sensors";
 
@@ -238,7 +238,7 @@ void sendDataToServer(float temperature, float humidity, float voc, float lux, f
   // Print the JSON body for debugging
   Serial.println(jsonBody);
 
-  String postRequest = "POST " + String(endpoint) + " HTTP/1.1\r\n";
+  String postRequest = "POST /sensors HTTP/1.1\r\n";
   postRequest += "Host: " + String(host) + "\r\n";
   postRequest += "Content-Type: application/json\r\n";
   postRequest += "Content-Length: " + String(jsonBody.length()) + "\r\n\r\n";

@@ -12,7 +12,7 @@ const char* host = "http://192.168.68.101";
 const int port = 8000;
 const char* endpoint = "/vog";
 
-// PMS Components
+// PMS Constants
 const int rxNode = D1;  
 const int txNode = D2;  
 
