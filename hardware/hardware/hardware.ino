@@ -1,7 +1,11 @@
+// General Inclusion
 #include <Wire.h>
 
-// Inclusions for ESP01
+// Internet Components
 #include <SoftwareSerial.h>
+#include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
+#include <ArduinoJson.h>
 
 // API Inclusions
 #include <ArduinoJson.h>
@@ -12,10 +16,10 @@
 
 // Inclusions for BH1750
 #include <BH1750.h>
-#include <Wire.h>
 
 // ESP01 Components
-SoftwareSerial ESP8266(2, 3); // RX, TX
+const int sdaPin = D1;  
+const int sclPin = D2;  
 
 // BME Components
 Adafruit_BME680 bme;
@@ -28,7 +32,7 @@ const char* ssid = "IoT";
 const char* password = "AccessPoint.2024";
 
 // API Components
-const char* host = "192.168.68.100";  // Remove "http://"
+const char* host = "http://192.168.68.100";
 const int port = 8000;
 const char* endpoint = "/sensors";
 
@@ -37,16 +41,18 @@ float temperature, humidity, voc, IAQIndex, lux;
 int heatIndex;
 String indoorAir, temp;
 
+#define alertPin D3
 
 void setup() {
-  Serial.begin(115200); // Initialize serial communication
+  Serial.begin(9600); // Initialize serial communication
   Serial.println(F("Please Wait..."));
+  
+  Wire.begin(sdaPin, sclPin);
 
   // Wifi Setup
-  ESP8266.begin(115200);
   wifiInit();
 
-  // BME Setup
+  // // BME Setup
   if (!bme.begin(0x77)) {  // Make sure the sensor initializes
     Serial.println(F("BME680 not found!"));
     while (1);
@@ -59,38 +65,48 @@ void setup() {
   bme.setGasHeater(320, 150); // 320°C for 150 ms
 
   // BH1750 Set up
-  Wire.begin();
   lightMeter.begin();
+
+  pinMode(alertPin, OUTPUT);
+  digitalWrite(alertPin, HIGH);
 }
 
 void loop() {
   Serial.println(F("--------------------------------"));
   bme680Readings(); 
   luxFunc();
-  sendDataToServer(temperature, humidity, voc, lux, IAQIndex, heatIndex, indoorAir, temp);
-  delay(3000);
+  Serial.println(F("--------------------------------"));
+  sendDataToServer(temperature, humidity, voc, IAQIndex, lux, heatIndex, indoorAir, temp); 
+
+  // Check and set alert signal
+  if (indoorAir == "UNHEALTHY" || indoorAir == "VERY UNHEALTHY" || 
+      indoorAir == "HAZARDOUS" || temp == "UNCOMFORTABLY HOT" || 
+      temp == "EXTREMELY HOT") {
+      digitalWrite(alertPin, LOW); // Send low signal
+      Serial.println(F("Alert: Low signal sent to pin D3."));
+  } else {
+      digitalWrite(alertPin, HIGH); // Default state
+      Serial.println(F("Alert: Conditions normal."));
+  }
+
+  delay(15000);
 }
 
 void wifiInit(){  
-  // WiFi connection setup
-  ESP8266.println("AT+RST");
-  delay(1000);
-  ESP8266.println("AT+CWMODE=3");
-  delay(1000);
+  Serial.println();
+  Serial.print(F("Connecting to "));
+  Serial.println(ssid);
 
-  // Connect to WiFi
-  ESP8266.print("AT+CWJAP=\"");
-  ESP8266.print(ssid);
-  ESP8266.print("\",\"");
-  ESP8266.print(password);
-  ESP8266.println("\"");
-  ESP8266.setTimeout(5000);
+  WiFi.begin(ssid, password);  
 
-  // Wait for connection
-  while (!ESP8266.find("WIFI CONNECTED")) {
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
     Serial.print(".");
   }
-  Serial.println("WiFi Connected!");
+  Serial.println(F(""));
+  Serial.println(F("WiFi connected"));
+  Serial.print(F("IP address: "));
+  Serial.println(WiFi.localIP());  
 }
 
 void bme680Readings() {
@@ -165,7 +181,6 @@ void bme680Readings() {
   }
   Serial.println(indoorAir);
 
-  delay(4000);
 }
 
 float calculateIAQ(float GasResistance) {
@@ -189,7 +204,6 @@ void luxFunc() {
   Serial.print("Light: ");
   Serial.print(lux);
   Serial.println(" lx");
-  delay(1000);
 }
 
 int calculateHeatIndex(float T, float H) {
@@ -210,52 +224,48 @@ int calculateHeatIndex(float T, float H) {
   return round(HI);  // Return rounded value of heat index
 }
 
-// Helper function to print response from ESP8266
-void printResponse() {
-  while (ESP8266.available()) {
-    Serial.write(ESP8266.read()); // Print all data received from ESP8266
+void sendDataToServer(float temperature, float humidity, float voc, float IAQIndex, float lux, int heatIndex, String indoorAir, String temp) {
+  if (WiFi.status() == WL_CONNECTED) {
+    WiFiClient client;
+    HTTPClient http;
+    String url = String(host) + ":" + String(port) + endpoint;
+
+    http.begin(client, url); // Use WiFiClient object
+    http.addHeader("Content-Type", "application/json");
+
+    // Construct JSON payload
+    StaticJsonDocument<200> jsonDoc;
+    jsonDoc["temperature"] = temperature;
+    jsonDoc["humidity"] = humidity;
+    jsonDoc["voc"] = voc;
+    jsonDoc["IAQIndex"] = IAQIndex;
+    jsonDoc["lighting"] = lux;
+    jsonDoc["heatIndex"] = heatIndex;
+    jsonDoc["indoorAir"] = indoorAir;
+    jsonDoc["temp"] = temp;
+
+    String requestBody;
+    serializeJson(jsonDoc, requestBody);
+
+    Serial.print(F("Sending POST request to: "));
+    Serial.println(url);
+    Serial.print(F("Payload: "));
+    Serial.println(requestBody);
+
+    int httpResponseCode = http.POST(requestBody);
+
+    if (httpResponseCode > 0) {
+      Serial.print(F("Response code: "));
+      Serial.println(httpResponseCode);
+      Serial.print(F("Response: "));
+      Serial.println(http.getString());
+    } else {
+      Serial.print(F("Error sending POST request. Code: "));
+      Serial.println(httpResponseCode);
+    }
+
+    http.end();
+  }else {
+      Serial.print(F("WiFi not connected"));
   }
-}
-
-void sendDataToServer(float temperature, float humidity, float voc, float lux, float IAQIndex, int heatIndex, String indoorAir, String temp) {
-  ESP8266.print("AT+CIPSTART=\"TCP\",\"");
-  ESP8266.print(host);
-  ESP8266.print("\",");
-  ESP8266.println(port);
-  delay(2000);  // Increased delay to ensure connection
-
-  String jsonBody = "{";
-  jsonBody += "\"temperature\":" + String(temperature) + ",";
-  jsonBody += "\"humidity\":" + String(humidity) + ",";
-  jsonBody += "\"heatIndex\":" + String(heatIndex) + ",";
-  jsonBody += "\"lighting\":" + String(lux) + ",";
-  jsonBody += "\"voc\":" + String(voc) + ",";
-  jsonBody += "\"IAQIndex\":" + String(IAQIndex) + ",";
-  jsonBody += "\"indoorAir\":\"" + indoorAir + "\",";
-  jsonBody += "\"temp\":\"" + temp + "\"";
-  jsonBody += "}";
-
-  // Print the JSON body for debugging
-  Serial.println(jsonBody);
-
-  String postRequest = "POST /sensors HTTP/1.1\r\n";
-  postRequest += "Host: " + String(host) + "\r\n";
-  postRequest += "Content-Type: application/json\r\n";
-  postRequest += "Content-Length: " + String(jsonBody.length()) + "\r\n\r\n";
-  postRequest += jsonBody;
-
-  ESP8266.print("AT+CIPSEND=");
-  ESP8266.println(postRequest.length());
-  delay(1000);  // Wait for the response
-
-  // Read the response from the ESP8266 to ensure it's ready to send the data
-  printResponse();
-
-  ESP8266.print(postRequest);
-  delay(1000);  // Give ESP8266 time to send the data
-  printResponse();  // Print the response after sending data
-
-  ESP8266.println("AT+CIPCLOSE");
-  delay(1000);
-  Serial.println("POST request sent.");
 }
