@@ -135,19 +135,17 @@ void bme680Readings() {
   Serial.println(F(" *C")); 
 
   Serial.print(F("Temperature Concern Level: "));
-  if ((heatIndex >= 18) && (heatIndex <= 22)) {
-    temp = "COOL";
-  } else if ((heatIndex > 22) && (heatIndex <= 27)) {
-    temp = "COMFORTABLE";
-  } else if ((heatIndex > 27) && (heatIndex <= 30)) {
-    temp = "WARM";
-  } else if ((heatIndex > 30) && (heatIndex <= 33)) {
-    temp = "UNCOMFORTABLY HOT";
-  } else if (heatIndex > 33) {
-    temp = "EXTREMELY HOT";
-  } else if (heatIndex < 18) {
-    temp = "COLD";
-  }
+  if (heatIndex <= 27) {
+    temp = "NOT HAZARDOUS";
+  } else if ((heatIndex >= 28) && (heatIndex <= 32)) {
+    temp = "CAUTION";
+  } else if ((heatIndex >= 33) && (heatIndex <= 41)) {
+    temp = "EXTREME CAUTION";
+  } else if ((heatIndex >= 42) && (heatIndex <= 51)) {
+    temp = "DANGER";
+  } else if (heatIndex > 52) {
+    temp = "EXTREME DANGER";
+  } 
   Serial.println(temp);
 
   voc = (bme.gas_resistance / 1000.0);
