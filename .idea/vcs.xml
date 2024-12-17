@@ -2,5 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/hardware/fritzing.0.9.3b.64.pc/fritzing-parts" vcs="Git" />
   </component>
 </project>
