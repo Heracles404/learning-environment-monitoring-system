@@ -8,13 +8,21 @@
 
 const char* ssid = "IoT";
 const char* password = "AccessPoint.2024";
-const char* host = "http://192.168.68.101";
+const char* host = "http://192.168.68.106";
 const int port = 8000;
 const char* endpoint = "/vog";
 
+
+// Time Components
+#include "time.h"
+
+const char* ntpServer = "time.nist.gov"; // Reliable NTP server
+const long gmtOffset_sec = 8 * 3600;     // Adjust for your timezone (GMT+8)
+const int daylightOffset_sec = 0;        // No daylight saving time
+
 // PMS Constants
-const int rxNode = D1;  
-const int txNode = D2;  
+const int txNode = D4;  
+const int rxNode = D3;  
 
 SoftwareSerial pmsSerial(rxNode, txNode); 
 PMS pms(pmsSerial);
@@ -68,14 +76,13 @@ void loop() {
     level = concernLevel(max(idx25, idx10));
 
     dataDisplay();
-
+    sendDataToServer(pm25, pm10, max(idx25, idx10), level);
   } else {
     Serial.println(F("No data."));
   }
 
   pms.sleep();
 
-  sendDataToServer(pm25, pm10, max(idx25, idx10), level);
 
   delay(2000);
 }
