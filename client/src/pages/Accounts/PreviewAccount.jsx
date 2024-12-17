@@ -90,7 +90,9 @@ const PreviewAccounts = () => {
                     },
                 }}
             >
-                <DataGrid checkboxSelection rows={rows} columns={columns} /> {/* Use the state variable here */}
+                <DataGrid 
+                // checkboxSelection 
+                rows={rows} columns={columns} /> {/* Use the state variable here */}
             </Box>
         </Box>
     );

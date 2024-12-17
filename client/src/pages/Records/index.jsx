@@ -81,7 +81,8 @@ const Records = () => {
                     "& .MuiDataGrid-toolbarContainer .MuiButton-text": { color: `${colors.grey[100]} !important` },
                 }}
             >
-                <DataGrid checkboxSelection
+                <DataGrid 
+                // checkboxSelection
                           rows={rows}
                           columns={columns}
                           components={{ Toolbar: GridToolbar }} />
