@@ -18,8 +18,8 @@
 #include <BH1750.h>
 
 // ESP01 Components
-const int sdaPin = D1;  
-const int sclPin = D2;  
+const int sclPin = D1;  
+const int sdaPin = D2;  
 
 // BME Components
 Adafruit_BME680 bme;
@@ -32,7 +32,7 @@ const char* ssid = "IoT";
 const char* password = "AccessPoint.2024";
 
 // API Components
-const char* host = "http://192.168.68.100";
+const char* host = "http://192.168.68.106";
 const int port = 8000;
 const char* endpoint = "/sensors";
 
