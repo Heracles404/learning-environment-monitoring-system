@@ -28,6 +28,7 @@ SoftwareSerial pmsSerial(rxNode, txNode);
 PMS pms(pmsSerial);
 PMS::DATA data;
 
+String time;
 float pm25, pm10;
 int idx25, idx10, level;
 
@@ -76,7 +77,7 @@ void loop() {
     level = concernLevel(max(idx25, idx10));
 
     dataDisplay();
-    sendDataToServer(pm25, pm10, max(idx25, idx10), level);
+    sendDataToServer(time, pm25, pm10, max(idx25, idx10), level);
   } else {
     Serial.println(F("No data."));
   }
@@ -129,7 +130,7 @@ int calculateAQI(float concentration, String pollutant) {
   return -1;
 }
 
-void sendDataToServer(float pm25, float pm10, int OAQIndex, int level) {
+void sendDataToServer(String time, float pm25, float pm10, int OAQIndex, int level) {
   if (WiFi.status() == WL_CONNECTED) {
     WiFiClient client;
     HTTPClient http;
@@ -140,6 +141,7 @@ void sendDataToServer(float pm25, float pm10, int OAQIndex, int level) {
 
     // Construct JSON payload
     StaticJsonDocument<200> jsonDoc;
+    jsonDoc["time"] = time;
     jsonDoc["pm25"] = pm25;
     jsonDoc["pm10"] = pm10;
     jsonDoc["OAQIndex"] = OAQIndex;

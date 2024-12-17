@@ -17,6 +17,15 @@
 // Inclusions for BH1750
 #include <BH1750.h>
 
+
+// Inclusions for Time
+#include "time.h"
+
+// Time Components
+const char* ntpServer = "time.nist.gov"; // Reliable NTP server
+const long gmtOffset_sec = 8 * 3600;     // Adjust for your timezone (GMT+8)
+const int daylightOffset_sec = 0;        // No daylight saving time
+
 // ESP01 Components
 const int sclPin = D1;  
 const int sdaPin = D2;  
@@ -39,7 +48,7 @@ const char* endpoint = "/sensors";
 // Variables
 float temperature, humidity, voc, IAQIndex, lux;
 int heatIndex;
-String indoorAir, temp;
+String indoorAir, temp, time;
 
 #define alertPin D3
 
@@ -76,7 +85,7 @@ void loop() {
   bme680Readings(); 
   luxFunc();
   Serial.println(F("--------------------------------"));
-  sendDataToServer(temperature, humidity, voc, IAQIndex, lux, heatIndex, indoorAir, temp); 
+  sendDataToServer(time, temperature, humidity, voc, IAQIndex, lux, heatIndex, indoorAir, temp); 
 
   // Check and set alert signal
   if (indoorAir == "UNHEALTHY" || indoorAir == "VERY UNHEALTHY" || 
@@ -222,7 +231,7 @@ int calculateHeatIndex(float T, float H) {
   return round(HI);  // Return rounded value of heat index
 }
 
-void sendDataToServer(float temperature, float humidity, float voc, float IAQIndex, float lux, int heatIndex, String indoorAir, String temp) {
+void sendDataToServer(String time, float temperature, float humidity, float voc, float IAQIndex, float lux, int heatIndex, String indoorAir, String temp) {
   if (WiFi.status() == WL_CONNECTED) {
     WiFiClient client;
     HTTPClient http;
@@ -233,6 +242,7 @@ void sendDataToServer(float temperature, float humidity, float voc, float IAQInd
 
     // Construct JSON payload
     StaticJsonDocument<200> jsonDoc;
+    jsonDoc["time"] = time;
     jsonDoc["temperature"] = temperature;
     jsonDoc["humidity"] = humidity;
     jsonDoc["voc"] = voc;
