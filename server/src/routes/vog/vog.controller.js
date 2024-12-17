@@ -52,7 +52,7 @@ function httpGetReadoutsByTime(req, res) {
 // Function to create a new readout (called when posting data)
 function httpNewReadouts(req, res) {
     const sensors = [
-        'pm25', 'pm10', 'OAQIndex', 'level'
+        'time', 'pm25', 'pm10', 'OAQIndex', 'level'
     ];
 
     const readout = req.body;
@@ -67,13 +67,11 @@ function httpNewReadouts(req, res) {
     // Dynamically generate the date and time for each new readout
     const currentDateTime = new Date();
     const currentDate = currentDateTime.toLocaleDateString();  // Format date as "MM/DD/YYYY"
-    const currentTime = currentDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });  // Format time as "HH:MM AM/PM"
 
     // Include the date and time dynamically into the readout
     const readoutWithTimestamp = {
-        ...readout,
         date: currentDate,
-        time: currentTime
+        ...readout
     };
 
     // Call the model to insert the new readout, which now includes date and time dynamically
