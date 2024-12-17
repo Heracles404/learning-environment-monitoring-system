@@ -8,13 +8,13 @@
 
 const char* ssid = "IoT";
 const char* password = "AccessPoint.2024";
-const char* host = "http://192.168.68.101";
+const char* host = "http://192.168.68.106";
 const int port = 8000;
 const char* endpoint = "/vog";
 
 // PMS Constants
-const int rxNode = D1;  
-const int txNode = D2;  
+const int txNode = D3;  
+const int rxNode = D4;  
 
 SoftwareSerial pmsSerial(rxNode, txNode); 
 PMS pms(pmsSerial);
