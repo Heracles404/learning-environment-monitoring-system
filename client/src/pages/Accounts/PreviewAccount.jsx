@@ -1,98 +1,124 @@
-
-import { Box, Typography, useTheme } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import {httpGetAllUsers} from "../../hooks/users.requests";
+import { httpGetAllUsers } from "../../hooks/users.requests";
 import Header from "../../components/Header";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+
 const PreviewAccounts = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const [rows, setRows] = useState([]);
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+    const [rows, setRows] = useState([]);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const columns = [
-    { field: "id", headerName: "ID" },
-    {
-      field: "firstName",
-      headerName: "First Name",
-      flex: 1,
-      cellClassName: "name-column--cell",
-    },
-    {
-      field: "lastName",
-      headerName: "Last Name",
-      flex: 1,
-      cellClassName: "name-column--cell", 
-      // to change color of text
-    },
-      {
-          field: "userName",
-          headerName: "Username",
-          flex: 1,
-      },
-      {
-      field: "role",
-      headerName: "Role",
-      flex: 1.4,
-      cellClassName: "role-column--cell", 
-      // to change color of text
-    },
-
-  ];
+    const columns = [
+        { id: "id", label: "ID", minWidth: 60 },
+        { id: "firstName", label: "First Name", minWidth: 150, cellClassName: "name-column--cell" },
+        { id: "lastName", label: "Last Name", minWidth: 150, cellClassName: "name-column--cell" },
+        { id: "userName", label: "Username", minWidth: 150 },
+        { id: "role", label: "Role", minWidth: 150, cellClassName: "role-column--cell" },
+        
+    ];
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await httpGetAllUsers(); // Fetch data from API
-            const formattedData = data.map(user => ({
+            const data = await httpGetAllUsers();
+            const formattedData = data.map((user) => ({
                 id: user._id,
                 userName: user.userName,
                 role: user.role,
                 firstName: user.firstName,
                 lastName: user.lastName,
             }));
-            setRows(formattedData); // Set the formatted data to state
+            setRows(formattedData);
         };
 
-        fetchData(); // Call the fetch function
-    }, []); // Empty dependency array to run only once on mount
+        fetchData();
+    }, []);
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
 
     return (
         <Box m="20px">
             <Header title="MEMBERS" subtitle="Viewing the Members" />
-            <Box
-                m="40px 0 0 0"
-                height="75vh"
-                sx={{
-                    "& .MuiDataGrid-root": {
-                        border: "none",
-                    },
-                    "& .MuiDataGrid-cell": {
-                        borderBottom: "none",
-                    },
-                    "& .name-column--cell": {
-                        color: colors.greenAccent[300],
-                    },
-                    "& .MuiDataGrid-columnHeader": {
-                        backgroundColor: colors.greenAccent[700],
-                        borderBottom: "none",
-                    },
-                    "& .MuiDataGrid-virtualScroller": {
-                        backgroundColor: colors.primary[400],
-                    },
-                    "& .MuiDataGrid-footerContainer": {
-                        borderTop: "none",
-                        backgroundColor: colors.greenAccent[700],
-                    },
-                    "& .MuiCheckbox-root": {
-                        color: `${colors.greenAccent[200]} !important`,
-                    },
-                }}
-            >
-                <DataGrid 
-                // checkboxSelection 
-                rows={rows} columns={columns} /> {/* Use the state variable here */}
+            <Box mt="40px">
+                <Paper sx={{ width: "100%", overflow: "hidden" }}>
+                    <TableContainer sx={{ maxHeight: "65vh" }}>
+                        <Table stickyHeader>
+                        <caption>Internal Faculty Members of ESLIHSYY</caption>
+
+                            <TableHead>
+                                <TableRow>
+                                    {columns.map((column) => (
+                                        <TableCell
+                                            key={column.id}
+                                            align={column.align || "left"}
+                                            style={{
+                                                minWidth: column.minWidth,
+                                                fontWeight: "bold",
+                                                backgroundColor: colors.greenAccent[700],
+                                                color: colors.grey[100],
+                                            }}
+                                        >
+                                            {column.label}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {rows
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((row) => (
+                                        <TableRow hover key={row.id}>
+                                            {columns.map((column) => {
+                                                const value = row[column.id];
+                                                return (
+                                                    <TableCell
+                                                        key={column.id}
+                                                        align={column.align || "left"}
+                                                        // sx={{
+                                                        //     color:
+                                                        //         column.cellClassName === "name-column--cell"
+                                                        //             ? colors.greenAccent[300]
+                                                        //             : column.cellClassName === "role-column--cell"
+                                                        //             ? colors.greenAccent[500]
+                                                        //             : "inherit",
+                                                        // }}
+                                                    >
+                                                        {column.renderCell
+                                                            ? column.renderCell(row)
+                                                            : value}
+                                                    </TableCell>
+                                                );
+                                            })}
+                                        </TableRow>
+                                    ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[10, 25, 50]}
+                        component="div"
+                        count={rows.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                        sx={{
+                            backgroundColor: colors.greenAccent[700],
+                            color: colors.grey[100],
+                        }}
+                    />
+                </Paper>
             </Box>
         </Box>
     );
