@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import backgroundImage from '../../imgs/ESLIHS_BG.png';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import LockIcon from '@mui/icons-material/Lock';
+import { storeUserDataToLocalStorage } from "../global/LocalStorage";
 
 import { httpAuthenticateUser } from "../../hooks/users.requests";
 
@@ -23,6 +24,15 @@ const LoginPage = () => {
             } else {
                 localStorage.setItem("auth", "true");
                 localStorage.setItem("username", username);
+
+                try {
+                    await storeUserDataToLocalStorage(username);
+                    console.log("User data stored successfully.");
+                } catch (error) {
+                    console.error("Error storing user data:", error);
+                    alert("Failed to load additional user data.");
+                }
+
                 navigate(`/dashboard`); // Navigate to the dashboard on successful authentication
             }
         } catch (error) {
