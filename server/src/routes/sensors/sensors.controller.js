@@ -53,7 +53,7 @@ function httpGetReadoutsByTime(req, res) {
 function httpNewReadouts(req, res) {
     const sensors = [
         'time', 'temperature', 'humidity', 'heatIndex', 'lighting',
-        'voc', 'IAQIndex', 'indoorAir', 'temp'
+        'classroom', 'voc', 'IAQIndex', 'indoorAir', 'temp'
     ];
 
     const readout = req.body;

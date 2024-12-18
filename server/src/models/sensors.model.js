@@ -6,6 +6,7 @@ const currentDateTime = new Date();
 
 const readout  = {
     _id: 1,
+    classroom: "401",
     date: "10/16/2024",
     time: "03:15 PM",
     temperature: 36,
@@ -57,7 +58,6 @@ function newReadouts(readout){
     const newReadout = {
         _id: latestReadoutId,
         date: currentDateTime.toLocaleDateString(), // Format date
-        time: currentDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), // Format time to include only hour and minute
         ...readout
     };
 
