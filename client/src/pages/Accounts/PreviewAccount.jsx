@@ -52,7 +52,7 @@ const PreviewAccounts = () => {
             <Header title="MEMBERS" subtitle="Viewing the Members" />
             <Box mt="40px">
                 <Paper sx={{ width: "100%", overflow: "hidden" }}>
-                    <TableContainer sx={{ height: "65vh" }}>
+                    <TableContainer sx={{ maxHeight: "65vh" }}>
                         <Table stickyHeader>
                         <caption>Internal Faculty Members of ESLIHSYY</caption>
 

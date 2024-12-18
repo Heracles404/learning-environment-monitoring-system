@@ -93,7 +93,7 @@ const Accounts = () => {
       <Header title="ACCOUNTS" subtitle="Managing the Users" />
       <Box mt="40px">
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
-          <TableContainer sx={{ height: "65vh" }}>
+          <TableContainer sx={{ maxHeight: "65vh" }}>
             <Table stickyHeader>
             <caption>Authorized User Accounts of ESLIHS</caption>
               <TableHead>
