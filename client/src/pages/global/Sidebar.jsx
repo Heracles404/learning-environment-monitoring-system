@@ -186,7 +186,7 @@ const Sidebar = () => {
             </Typography>
             <SubMenu
               title="Accounts"
-              icon={<ManageAccountsOutlinedIcon />}
+              icon={<PersonOutlinedIcon />}
               style={{ color: colors.greenAccent[100] }}
             >
             <Item
@@ -199,7 +199,7 @@ const Sidebar = () => {
             <Item
                 title="Edit Account"
                 to={`/EditAccount/${username}`} // Use backticks for template literals
-                icon={<PersonOutlinedIcon />}
+                icon={< ManageAccountsOutlinedIcon/>}
                 selected={selected}
                 setSelected={setSelected}
                 />
@@ -234,14 +234,14 @@ const Sidebar = () => {
             <Item
               title="Parameters"
               to="/records"
-              icon={<ReceiptIcon />}
+              icon={<DeviceHubOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="VOG"
               to="/VOG_records"
-              icon={<ReceiptIcon />}
+              icon={<VolcanoOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
