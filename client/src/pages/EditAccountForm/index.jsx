@@ -13,7 +13,7 @@ const Form = () => {
   const navigate = useNavigate(); // Hook for navigation
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleCreate = async (values) => {
+  const handleSave = async (values) => {
 
     const userData = {
       userName: values.userName,
@@ -53,7 +53,7 @@ const Form = () => {
       <Header title="EDIT ACCOUNT" subtitle="Edit Existing Account Details" />
 
       <Formik
-        onSubmit={handleCreate}
+        onSubmit={handleSave}
         initialValues={initialValues}
         validationSchema={checkoutSchema}
       >
