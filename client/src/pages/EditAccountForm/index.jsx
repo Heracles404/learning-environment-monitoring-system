@@ -28,10 +28,9 @@ const Form = () => {
           firstName: userData.firstName || "",
           lastName: userData.lastName || "",
           userName: userData.userName || "",
-          password: "", // Leave password blank for security
+          role: userData.role || "",
           newPassword: "", // Leave confirmPassword blank for security
           confirmPassword: "", // Leave confirmPassword blank for security
-          role: userData.role || "",
         });
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -179,19 +178,6 @@ const Form = () => {
                       helperText={touched.confirmPassword && errors.confirmPassword}
                       sx={{ gridColumn: "span 2" }}
                   />
-                  <TextField
-                      fullWidth
-                      variant="filled"
-                      type="password"
-                      label="Password"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.password}
-                      name="password"
-                      error={!!touched.password && !!errors.password}
-                      helperText={touched.password && errors.password}
-                      sx={{ gridColumn: "span 2" }}
-                  />
                 </Box>
                 <Box display="flex" justifyContent="end" mt="20px">
                   <Button type="submit" color="secondary" variant="contained">
@@ -211,7 +197,6 @@ const checkoutSchema = yup.object().shape({
   lastName: yup.string().required("required"),
   userName: yup.string().required("required"),
   role: yup.string().required("required"),
-  password: yup.string().required("Enter Password to Confirm Changes"),
 });
 
 export default Form;
