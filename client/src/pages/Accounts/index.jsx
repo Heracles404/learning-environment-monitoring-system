@@ -3,7 +3,7 @@ import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, Tab
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { tokens } from "../../theme";
-import { httpGetAllUsers } from "../../hooks/users.requests";
+import { httpGetAllUsers, httpDeleteUser } from "../../hooks/users.requests";
 import Header from "../../components/Header";
 
 const Accounts = () => {
@@ -55,13 +55,25 @@ const Accounts = () => {
       minWidth: 80,
       align: "center",
       renderCell: (row) => (
-        <button
-          style={{ background: "none", border: "none", cursor: "pointer" }}
-        >
-          <DeleteOutlineIcon style={{ color: "red", fontSize: "20px" }} />
-        </button>
+          <button
+              style={{ background: "none", border: "none", cursor: "pointer" }}
+              onClick={async () => {
+                const confirmed = window.confirm(`Are you sure you want to delete ${row.userName}?`);
+                if (confirmed) {
+                  const response = await httpDeleteUser(row.userName);
+                  if (response.ok) {
+                    // Update the rows state to remove the deleted user
+                    setRows((prevRows) => prevRows.filter((user) => user.userName !== row.userName));
+                  } else {
+                    alert("Failed to delete user. Please try again.");
+                  }
+                }
+              }}
+          >
+            <DeleteOutlineIcon style={{ color: "red", fontSize: "20px" }} />
+          </button>
       ),
-    },
+    }
   ];
 
   const handleChangePage = (event, newPage) => {
