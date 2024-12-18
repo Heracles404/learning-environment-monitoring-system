@@ -228,13 +228,13 @@ const Sidebar = () => {
               icon={<LibraryBooksOutlinedIcon />}
               style={{ color: colors.greenAccent[100] }}
             >
-            <Item
+            {/* <Item
               title="Members"
               to="/Members"
               icon={<PersonSearchOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
             <Item
               title="Parameters"
               to="/records"
