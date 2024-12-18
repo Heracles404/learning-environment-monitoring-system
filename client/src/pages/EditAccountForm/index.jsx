@@ -29,6 +29,7 @@ const Form = () => {
           lastName: userData.lastName || "",
           userName: userData.userName || "",
           password: "", // Leave password blank for security
+          newPassword: "", // Leave confirmPassword blank for security
           confirmPassword: "", // Leave confirmPassword blank for security
           role: userData.role || "",
         });
@@ -44,32 +45,24 @@ const Form = () => {
   }, [userName]);
 
   const handleSave = async (values) => {
-    const userData = {
-      userName: values.userName,
-      password: values.password,
-      confirmPassword: values.confirmPassword,
-      role: values.role,
-      firstName: values.firstName,
-      lastName: values.lastName,
-    };
-
-    if (userData.password !== userData.confirmPassword) {
-      alert("Passwords do not match");
-    } else {
-      try {
-        const response = await httpUpdateUser(userData);
-        if (response.status === 400) {
-          alert("Username already exists.");
-        } else if (response.ok) {
-          console.log("User updated successfully");
-          navigate("/accounts");
+    try {
+      if (!values.newPassword) {
+        const { firstName, lastName, role, userName } = values;
+        await httpUpdateUser (userName, { firstName, lastName, role });
+        alert("User  details updated successfully.");
+        navigate(`/Accounts`);
+      } else {
+        if (values.newPassword !== values.confirmPassword) {
+          alert("Passwords do not match.");
         } else {
-          setErrorMessage("Failed to update user. Please try again.");
+          const { firstName, lastName, role, userName, newPassword } = values;
+          await httpUpdateUser (userName, { firstName, lastName, role, password: newPassword });
+          navigate(`/Accounts`);
         }
-      } catch (error) {
-        setErrorMessage("An error occurred. Please try again.");
-        console.error("Error updating user:", error);
       }
+    } catch (error) {
+      console.error("Error updating user data:", error);
+      setErrorMessage("Failed to update user data.");
     }
   };
 
@@ -164,26 +157,39 @@ const Form = () => {
                       fullWidth
                       variant="filled"
                       type="password"
-                      label="Old Password"
+                      label="New Password (Optional)"
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      value={values.password}
-                      name="password"
-                      error={!!touched.password && !!errors.password}
-                      helperText={touched.password && errors.password}
+                      value={values.newPassword}
+                      name="newPassword"
+                      error={!!touched.newPassword && !!errors.newPassword}
+                      helperText={touched.newPassword && errors.newPassword}
                       sx={{ gridColumn: "span 2" }}
                   />
                   <TextField
                       fullWidth
                       variant="filled"
                       type="password"
-                      label="New Password"
+                      label="Confirm New Password (Optional)"
                       onBlur={handleBlur}
                       onChange={handleChange}
                       value={values.confirmPassword}
                       name="confirmPassword"
                       error={!!touched.confirmPassword && !!errors.confirmPassword}
                       helperText={touched.confirmPassword && errors.confirmPassword}
+                      sx={{ gridColumn: "span 2" }}
+                  />
+                  <TextField
+                      fullWidth
+                      variant="filled"
+                      type="password"
+                      label="Password"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.password}
+                      name="password"
+                      error={!!touched.password && !!errors.password}
+                      helperText={touched.password && errors.password}
                       sx={{ gridColumn: "span 2" }}
                   />
                 </Box>
@@ -204,8 +210,8 @@ const checkoutSchema = yup.object().shape({
   firstName: yup.string().required("required"),
   lastName: yup.string().required("required"),
   userName: yup.string().required("required"),
-  password: yup.string().required("required"),
   role: yup.string().required("required"),
+  password: yup.string().required("Enter Password to Confirm Changes"),
 });
 
 export default Form;
