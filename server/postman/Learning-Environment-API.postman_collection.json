@@ -170,7 +170,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    // For remarks and Index - set conditions in arduino\r\n    \"temperature\": 46,\r\n    \"humidity\": 33,\r\n    \"heatIndex\": 37,\r\n    \"lighting\": 160,\r\n    \"voc\": 70,\r\n    \"IAQIndex\": 72,\r\n    \"indoorAir\": \"Good\",\r\n    \"temp\": \"Good\"\r\n}",
+							"raw": "{\r\n    // For remarks and Index - set conditions in arduino\r\n    \"time\": \"03:15 PM\",\r\n    \"temperature\": 46,\r\n    \"humidity\": 33,\r\n    \"heatIndex\": 37,\r\n    \"lighting\": 160,\r\n    \"voc\": 70,\r\n    \"IAQIndex\": 72,\r\n    \"indoorAir\": \"Good\",\r\n    \"temp\": \"Good\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -357,7 +357,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"pm25\": 30,\r\n    \"pm10\": 15,\r\n    \"OAQIndex\": 80,\r\n    \"level\": 1\r\n}",
+							"raw": "{\r\n    \"time\": \"03:15 PM\",\r\n    \"pm25\": 30,\r\n    \"pm10\": 15,\r\n    \"OAQIndex\": 80,\r\n    \"level\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -384,13 +384,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://192.168.68.101:8000/vog",
+							"raw": "http://localhost:8000/vog",
 							"protocol": "http",
 							"host": [
-								"192",
-								"168",
-								"68",
-								"101"
+								"localhost"
 							],
 							"port": "8000",
 							"path": [
