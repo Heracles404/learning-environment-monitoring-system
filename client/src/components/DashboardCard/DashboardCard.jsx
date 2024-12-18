@@ -13,20 +13,20 @@ const DashboardCard = (props) => {
   return (
     <LayoutGroup>
       {expanded ? (
-        <ExpandedCard param={props} setExpanded={() => setExpanded(false)} />
+        <DBExpandedCard param={props} setExpanded={() => setExpanded(false)} />
       ) : (
-        <CompactCard param={props} setExpanded={() => setExpanded(true)} />
+        <DBCompactCard param={props} setExpanded={() => setExpanded(true)} />
       )}
     </LayoutGroup>
   );
 };
 
 // Compact Card
-function CompactCard({ param, setExpanded }) {
+function DBCompactCard({ param, setExpanded }) {
   const Png = param.png;
   return (
     <motion.div
-      className="CompactCard"
+      className="DBCompactCard"
       style={{
         background: param.color.backGround,
         boxShadow: param.color.boxShadow,
@@ -51,7 +51,7 @@ function CompactCard({ param, setExpanded }) {
 }
 
 // Expanded Card
-function ExpandedCard({ param, setExpanded }) {
+function DBExpandedCard({ param, setExpanded }) {
   const data = {
     options: {
       chart: {
@@ -103,7 +103,7 @@ function ExpandedCard({ param, setExpanded }) {
 
   return (
     <motion.div
-      className="ExpandedCard"
+      className="DBExpandedCard"
       style={{
         background: param.color.backGround,
         boxShadow: param.color.boxShadow,
@@ -114,7 +114,7 @@ function ExpandedCard({ param, setExpanded }) {
         <UilTimes onClick={setExpanded} />
       </div>
       <span>{param.title}</span>
-      <div className="chartContainer">
+      <div className="DBchartContainer">
         <Chart options={data.options} series={param.series} type="area" />
       </div>
       <span>Last 24 hours</span>
