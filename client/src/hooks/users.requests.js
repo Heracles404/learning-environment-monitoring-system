@@ -2,9 +2,23 @@ const API_URL = 'http://localhost:8000';
 
 
 async function httpGetUser(userName){
-    const response = await fetch(`${API_URL}/users/${userName}`);
-    console.log(response.json());
-    return await response.json();
+    try {
+        const response = await fetch(`${API_URL}/users/${userName}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Ensure we only call response.json() once
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error in httpGetUser:", error);
+        throw error;
+    }
 }
 
 async function httpGetAllUsers(){
@@ -90,7 +104,7 @@ async function httpUpdateUser(userName, updates){
 
 async function httpDeleteUser(userName){
     try {
-        return await fetch(`${API_URL}/launches/${userName}`, {
+        return await fetch(`${API_URL}/users/${userName}`, {
             method: "DELETE",
         });
     } catch (err) {

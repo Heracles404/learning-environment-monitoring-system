@@ -128,7 +128,7 @@ function App() {
               }
             />
             <Route
-              path="/EditAccount"
+              path="/EditAccount/:userName"
               element={
                 <PrivateRoute>
                   <Form />

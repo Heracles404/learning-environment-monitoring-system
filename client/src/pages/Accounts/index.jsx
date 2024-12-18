@@ -3,12 +3,14 @@ import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, Tab
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { tokens } from "../../theme";
-import { httpGetAllUsers } from "../../hooks/users.requests";
+import { httpGetAllUsers, httpDeleteUser } from "../../hooks/users.requests";
 import Header from "../../components/Header";
+import { useNavigate } from "react-router-dom";
 
 const Accounts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
 
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);
@@ -42,11 +44,12 @@ const Accounts = () => {
       minWidth: 80,
       align: "center",
       renderCell: (row) => (
-        <button
-          style={{ background: "none", border: "none", cursor: "pointer" }}
-        >
-          <EditOutlinedIcon style={{ color: "orange", fontSize: "20px" }} />
-        </button>
+          <button
+              style={{ background: "none", border: "none", cursor: "pointer" }}
+              onClick={() => navigate(`../EditAccount/${row.userName}`)} // Navigate to edit page with user ID
+          >
+            <EditOutlinedIcon style={{ color: "orange", fontSize: "20px" }} />
+          </button>
       ),
     },
     {
@@ -55,13 +58,25 @@ const Accounts = () => {
       minWidth: 80,
       align: "center",
       renderCell: (row) => (
-        <button
-          style={{ background: "none", border: "none", cursor: "pointer" }}
-        >
-          <DeleteOutlineIcon style={{ color: "red", fontSize: "20px" }} />
-        </button>
+          <button
+              style={{ background: "none", border: "none", cursor: "pointer" }}
+              onClick={async () => {
+                const confirmed = window.confirm(`Are you sure you want to delete ${row.userName}?`);
+                if (confirmed) {
+                  const response = await httpDeleteUser(row.userName);
+                  if (response.ok) {
+                    // Update the rows state to remove the deleted user
+                    setRows((prevRows) => prevRows.filter((user) => user.userName !== row.userName));
+                  } else {
+                    alert("Failed to delete user. Please try again.");
+                  }
+                }
+              }}
+          >
+            <DeleteOutlineIcon style={{ color: "red", fontSize: "20px" }} />
+          </button>
       ),
-    },
+    }
   ];
 
   const handleChangePage = (event, newPage) => {
