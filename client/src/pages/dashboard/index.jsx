@@ -55,7 +55,7 @@ const Dashboard = () => {
 
       <DashboardCards/>
       <DBRecords/>
-      <DBAccounts/>
+      {/* <DBAccounts/> */}
       <DBVog/>
       
        
