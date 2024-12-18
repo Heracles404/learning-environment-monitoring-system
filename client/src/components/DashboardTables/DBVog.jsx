@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import {httpGetAllReadouts} from "../../hooks/vog.requests";
-import { Box } from "@mui/material";
+import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-const DBVog = () => {
+const DBVog  = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [rows, setRows] = useState([]);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,7 +24,7 @@ const DBVog = () => {
                 pm25: readout.pm25,
                 pm10: readout.pm10,
                 OAQIndex: readout.OAQIndex,
-                remarks: readout.remarks,
+                level: readout.level,
             }));
             setRows(formattedData); // Set the formatted data to state
         };
@@ -31,40 +33,98 @@ const DBVog = () => {
     }, []); // Empty dependency array to run only once on mount
 
     const columns = [
-        { field: "id", headerName: "ID", flex: 0.2 },
-        { field: "date", headerName: "Date", flex: 2 },
-        { field: "time", headerName: "Time", flex: 2 },
-        { field: "pm25", headerName: "PM 2.5", flex: 2, cellClassName: "role-column--cell" },
-        { field: "pm10", headerName: "PM 10.0", flex: 2, cellClassName: "role-column--cell" },
-        { field: "OAQIndex", headerName: "OAQ Index", flex: 2, cellClassName: "role-column--cell" },
-        { field: "remarks", headerName: "Remarks", flex: 2, cellClassName: "role-column--cell" },
-        
-    ];
+        { id: "id", label: "Room", minWidth: 60, },
+        { id: "date", label: "Date", minWidth: 100, },
+        { id: "time", label: "Time", minWidth: 100, },
+        { id: "pm25", label: "PM 2.5", minWidth: 150, cellClassName: "role-column--cell" },
+        { id: "pm10", label: "PM 10.0", minWidth: 150, cellClassName: "role-column--cell" },
+        { id: "OAQIndex", label: "OAQ Index", minWidth: 150, cellClassName: "role-column--cell" },
+        { id: "level", label: "Concern Level", minWidth: 150, cellClassName: "role-column--cell" },
 
+    ];
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
     return (
-        <Box m="20px">
-            <Header title="VOG Records" />
-            <Box
-                m="5px 0 0 0"
-                height="25vh"
-                sx={{
-                    "& .MuiDataGrid-root": { border: "none" },
-                    "& .MuiDataGrid-cell": { borderBottom: "none" },
-                    "& .name-column--cell": { color: colors.greenAccent[300] },
-                    "& .MuiDataGrid-columnHeader": { backgroundColor: colors.greenAccent[700], borderBottom: "none" },
-                    "& .MuiDataGrid-virtualScroller": { backgroundColor: colors.primary[400] },
-                    "& .MuiDataGrid-footerContainer": { borderTop: "none", backgroundColor: colors.greenAccent[700] },
-                    "& .MuiCheckbox-root": { color: `${colors.greenAccent[200]} !important` },
-                    "& .MuiDataGrid-toolbarContainer .MuiButton-text": { color: `${colors.grey[100]} !important` },
-                }}
-            >
-                <DataGrid 
-                          rows={rows}
-                          columns={columns}
-                          components={{ Toolbar: GridToolbar }} />
+        <Box m="5px">
+            <Header title="VOG Records" subtitle="Managing the VOG Records" />
+            <Box >
+                <Paper sx={{ width: "100%", overflow: "hidden" }}>
+                    <TableContainer sx={{ maxHeight: "30vh" }}>
+                        <Table stickyHeader>
+                        <caption>Record for Volcanic Smog Parameter</caption>
+
+                            <TableHead>
+                                <TableRow>
+                                    {columns.map((column) => (
+                                        <TableCell
+                                            key={column.id}
+                                            align={column.align || "left"}
+                                            style={{
+                                                minWidth: column.minWidth,
+                                                fontWeight: "bold",
+                                                backgroundColor: colors.greenAccent[700],
+                                                color: colors.grey[100],
+                                            }}
+                                        >
+                                            {column.label}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {rows
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((row) => (
+                                        <TableRow hover key={row.id}>
+                                            {columns.map((column) => {
+                                                const value = row[column.id];
+                                                return (
+                                                    <TableCell
+                                                        key={column.id}
+                                                        align={column.align || "left"}
+                                                        sx={{
+                                                            color:
+                                                                column.cellClassName === "name-column--cell"
+                                                                    ? colors.greenAccent[300]
+                                                                    : column.cellClassName === "role-column--cell"
+                                                                    ? colors.greenAccent[500]
+                                                                    : "inherit",
+                                                        }}
+                                                    >
+                                                        {column.renderCell
+                                                            ? column.renderCell(row)
+                                                            : value}
+                                                    </TableCell>
+                                                );
+                                            })}
+                                        </TableRow>
+                                    ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[10, 25, 50]}
+                        component="div"
+                        count={rows.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                        sx={{
+                            backgroundColor: colors.greenAccent[700],
+                            color: colors.grey[100],
+                        }}
+                    />
+                </Paper>
             </Box>
         </Box>
     );
 };
 
-export default DBVog;
+export default DBVog ;
