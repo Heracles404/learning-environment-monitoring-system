@@ -10,6 +10,11 @@ import{
     UilMoneyWithdrawal
 } from "@iconscout/react-unicons";
 
+import AirIcon from '@mui/icons-material/Air';
+import DeviceThermostatIcon from '@mui/icons-material/DeviceThermostat';
+import WbIncandescentIcon from '@mui/icons-material/WbIncandescent';
+import VolcanoIcon from '@mui/icons-material/Volcano';
+
 // Analytics Cards Data
 export const CardsData = [
   {
@@ -19,8 +24,8 @@ export const CardsData = [
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     barValue: 70,
-    value: "Bad",
-    png: UilClipboardAlt,
+    value: "BAD",
+    png: AirIcon,
     series: [
       {
         name: "Air Quality",
@@ -29,17 +34,17 @@ export const CardsData = [
     ],
   },
   {
-    title: "Temperature",
+    title: "Heat Index",
     color: {
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     barValue: 80,
-    value: "Bad",
-    png: UilClipboardAlt,
+    value: "BAD",
+    png: DeviceThermostatIcon,
     series: [
       {
-        name: "Temperature",
+        name: "Heat Index",
         data: [10, 100, 50, 70, 80, 30, 40],
       },
     ],
@@ -51,8 +56,8 @@ export const CardsData = [
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     barValue: 60,
-    value: "Good",
-    png: UilClipboardAlt,
+    value: "GOOD",
+    png: WbIncandescentIcon,
     series: [
       {
         name: "Light",
@@ -67,8 +72,8 @@ export const CardsData = [
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     barValue: 60,
-    value: "Good",
-    png: UilClipboardAlt,
+    value: "GOOD",
+    png: VolcanoIcon,
     series: [
       {
         name: "Light",
