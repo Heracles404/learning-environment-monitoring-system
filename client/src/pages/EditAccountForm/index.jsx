@@ -45,12 +45,13 @@ const Form = () => {
 
   const handleSave = async (values) => {
     const userData = {
-      userName: values.userName,
-      password: values.password,
-      confirmPassword: values.confirmPassword,
+      username: values.userName,
+      pw: values.password,
       role: values.role,
-      firstName: values.firstName,
-      lastName: values.lastName,
+      fname: values.firstName,
+      lname: values.lastName,
+      newPw: values.newPassword,
+      confirmPw: values.confirmPassword
     };
 
     if (userData.password !== userData.confirmPassword) {
@@ -164,26 +165,39 @@ const Form = () => {
                       fullWidth
                       variant="filled"
                       type="password"
-                      label="Old Password"
+                      label="New Password (Optional)"
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      value={values.password}
-                      name="password"
-                      error={!!touched.password && !!errors.password}
-                      helperText={touched.password && errors.password}
+                      value={values.newPassword}
+                      name="newPassword"
+                      error={!!touched.newPassword && !!errors.newPassword}
+                      helperText={touched.newPassword && errors.newPassword}
                       sx={{ gridColumn: "span 2" }}
                   />
                   <TextField
                       fullWidth
                       variant="filled"
                       type="password"
-                      label="New Password"
+                      label="Confirm New Password (Optional)"
                       onBlur={handleBlur}
                       onChange={handleChange}
                       value={values.confirmPassword}
                       name="confirmPassword"
                       error={!!touched.confirmPassword && !!errors.confirmPassword}
                       helperText={touched.confirmPassword && errors.confirmPassword}
+                      sx={{ gridColumn: "span 2" }}
+                  />
+                  <TextField
+                      fullWidth
+                      variant="filled"
+                      type="password"
+                      label="Password"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.password}
+                      name="password"
+                      error={!!touched.password && !!errors.password}
+                      helperText={touched.password && errors.password}
                       sx={{ gridColumn: "span 2" }}
                   />
                 </Box>
@@ -204,8 +218,8 @@ const checkoutSchema = yup.object().shape({
   firstName: yup.string().required("required"),
   lastName: yup.string().required("required"),
   userName: yup.string().required("required"),
-  password: yup.string().required("required"),
   role: yup.string().required("required"),
+  password: yup.string().required("Enter Password to Confirm Changes"),
 });
 
 export default Form;
