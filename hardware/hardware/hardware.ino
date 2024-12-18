@@ -48,7 +48,8 @@ const char* endpoint = "/sensors";
 // Variables
 float temperature, humidity, voc, IAQIndex, lux;
 int heatIndex;
-String indoorAir, temp, time;
+String indoorAir, temp, recordTime;
+const String classroom = "401";
 
 #define alertPin D3
 
@@ -85,7 +86,7 @@ void loop() {
   bme680Readings(); 
   luxFunc();
   Serial.println(F("--------------------------------"));
-  sendDataToServer(time, temperature, humidity, voc, IAQIndex, lux, heatIndex, indoorAir, temp); 
+  sendDataToServer(classroom, recordTime, temperature, humidity, voc, IAQIndex, lux, heatIndex, indoorAir, temp); 
 
   // Check and set alert signal
   if (indoorAir == "UNHEALTHY" || indoorAir == "VERY UNHEALTHY" || 
@@ -231,7 +232,7 @@ int calculateHeatIndex(float T, float H) {
   return round(HI);  // Return rounded value of heat index
 }
 
-void sendDataToServer(String time, float temperature, float humidity, float voc, float IAQIndex, float lux, int heatIndex, String indoorAir, String temp) {
+void sendDataToServer(String classroom, String recordTime, float temperature, float humidity, float voc, float IAQIndex, float lux, int heatIndex, String indoorAir, String temp) {
   if (WiFi.status() == WL_CONNECTED) {
     WiFiClient client;
     HTTPClient http;
@@ -242,7 +243,7 @@ void sendDataToServer(String time, float temperature, float humidity, float voc,
 
     // Construct JSON payload
     StaticJsonDocument<200> jsonDoc;
-    jsonDoc["time"] = time;
+    jsonDoc["time"] = recordTime;
     jsonDoc["temperature"] = temperature;
     jsonDoc["humidity"] = humidity;
     jsonDoc["voc"] = voc;
