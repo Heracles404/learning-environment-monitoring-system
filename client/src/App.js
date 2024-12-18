@@ -5,13 +5,11 @@ import Sidebar from "./pages/global/Sidebar";
 import Dashboard from "./pages/dashboard";
 import Team from "./pages/team";
 import Invoices from "./pages/invoices";
-import Contacts from "./pages/contacts";
 import Bar from "./pages/bar";
 import Form from "./pages/EditAccountForm";
 import Line from "./pages/line";
 
 import CarbonDioxide from "./pages/Monitor/AirQuality";
-import HeadCount from "./pages/Monitor/HeadCount";
 import HeatIndex from "./pages/Monitor/HeatIndex";
 import Lighting from "./pages/Monitor/Lighting";
 import Oxygen from "./pages/Monitor/Oxygen";
@@ -66,7 +64,7 @@ function App() {
               element={<Login />} 
             /> */}
             <Route
-              path="/dashboard"
+              path="/dashboard/:username"
               element={
                 <PrivateRoute>
                   <Dashboard />
@@ -99,17 +97,6 @@ function App() {
                 </PrivateRoute>
               }
             />
-            {/* Reference: Initial team code
-            <Route path="/team" element={<Team />} /> */}
-
-            {/* <Route
-              path="/contacts"
-              element={
-                <PrivateRoute>
-                  <Contacts />
-                </PrivateRoute>
-              }
-            /> */}
             <Route
               path="/records"
               element={
