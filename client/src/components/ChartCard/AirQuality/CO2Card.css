@@ -84,9 +84,9 @@
   }
   
   .chartContainer {
-    width: 80%;
+    width: 100%;
   }
-  
+  `
   @media screen and (max-width: 1200px) {
     .ExpandedCard {
       top: 2rem;
@@ -98,7 +98,7 @@
   @media screen and (max-width: 768px) {
     .ExpandedCard {
       top: 8rem;
-      height: 50%;
+      height: 30%;
       left: 25px;
       width: 80%;
     }
