@@ -5,10 +5,12 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { tokens } from "../../theme";
 import { httpGetAllUsers, httpDeleteUser } from "../../hooks/users.requests";
 import Header from "../../components/Header";
+import { useNavigate } from "react-router-dom";
 
 const Accounts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
 
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);
@@ -42,11 +44,12 @@ const Accounts = () => {
       minWidth: 80,
       align: "center",
       renderCell: (row) => (
-        <button
-          style={{ background: "none", border: "none", cursor: "pointer" }}
-        >
-          <EditOutlinedIcon style={{ color: "orange", fontSize: "20px" }} />
-        </button>
+          <button
+              style={{ background: "none", border: "none", cursor: "pointer" }}
+              onClick={() => navigate(`../EditAccount/${row.userName}`)} // Navigate to edit page with user ID
+          >
+            <EditOutlinedIcon style={{ color: "orange", fontSize: "20px" }} />
+          </button>
       ),
     },
     {
