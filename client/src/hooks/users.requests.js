@@ -90,7 +90,7 @@ async function httpUpdateUser(userName, updates){
 
 async function httpDeleteUser(userName){
     try {
-        return await fetch(`${API_URL}/launches/${userName}`, {
+        return await fetch(`${API_URL}/users/${userName}`, {
             method: "DELETE",
         });
     } catch (err) {
