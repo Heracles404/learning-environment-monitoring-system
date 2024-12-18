@@ -37,7 +37,7 @@ const Records = () => {
     }, []); // Empty dependency array to run only once on mount
 
     const columns = [
-        { id: "id", label: "ID", minWidth: 150, },
+        { id: "id", label: "ID", minWidth: 60, },
         { id: "date", label: "Date", minWidth: 150, },
         { id: "time", label: "Time", minWidth: 150, },
         { id: "temperature", label: "Temperature", minWidth: 150, cellClassName: "role-column--cell" },

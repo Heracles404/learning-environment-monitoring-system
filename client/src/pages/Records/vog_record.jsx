@@ -33,7 +33,7 @@ const VOGRecords = () => {
     }, []); // Empty dependency array to run only once on mount
 
     const columns = [
-        { id: "id", label: "ID", minWidth: 150, },
+        { id: "id", label: "ID", minWidth: 60, },
         { id: "date", label: "Date", minWidth: 150, },
         { id: "time", label: "Time", minWidth: 150, },
         { id: "pm25", label: "PM 2.5", minWidth: 150, cellClassName: "role-column--cell" },
