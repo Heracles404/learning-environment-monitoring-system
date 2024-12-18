@@ -73,6 +73,113 @@ const Form = () => {
     }
   };
 
+
+  return (
+    <Box m="20px">
+      <Header title="EDIT ACCOUNT" subtitle="Edit Existing Account Details" />
+
+      <Formik
+        onSubmit={handleCreate}
+        initialValues={initialValues}
+        validationSchema={checkoutSchema}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+        }) => (
+          <form onSubmit={handleSubmit}>
+            <Box
+              display="grid"
+              gap="30px"
+              gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+              sx={{
+                "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+              }}
+            >
+              <TextField
+                  fullWidth
+                  variant="filled"
+                  type="text"
+                  label="First Name"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.firstName}
+                  name="firstName"
+                  error={!!touched.firstName && !!errors.firstName}
+                  helperText={touched.firstName && errors.firstName}
+                  sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                  fullWidth
+                  variant="filled"
+                  type="text"
+                  label="Last Name"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.lastName}
+                  name="lastName"
+                  error={!!touched.lastName && !!errors.lastName}
+                  helperText={touched.lastName && errors.lastName}
+                  sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                  fullWidth
+                  variant="filled"
+                  type="text"
+                  label="Role"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.role} // Updated value
+                  name="role" // Updated name
+                  error={!!touched.role && !!errors.role} // Updated error check
+                  helperText={touched.role && errors.role} // Updated helper text
+                  sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                  fullWidth
+                  variant="filled"
+                  type="text"
+                  label="Username"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.userName} // Updated value
+                  name="userName" // Updated name
+                  error={!!touched.userName && !!errors.userName} // Updated error check
+                  helperText={touched.userName && errors.userName} // Updated helper text
+                  sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                  fullWidth
+                  variant="filled"
+                  type="password" // Changed to password type
+                  label="Old Password"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.password} // Updated value
+                  name="password" // Updated name
+                  error={!!touched.password && !!errors.password} // Updated error check
+                  helperText={touched.password && errors.password} // Updated helper text
+                  sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                  fullWidth
+                  variant="filled"
+                  type="password" // Changed to password type
+                  label="New Password"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.confirmPassword} // Updated value
+                  name="confirmPassword" // Updated name
+                  error={!!touched.confirmPassword && !!errors.confirmPassword} // Updated error check
+                  helperText={touched.confirmPassword && errors.confirmPassword} // Updated helper text
+                  sx={{ gridColumn: "span 2" }}
+              />
+              
+=======
   if (!initialValues) {
     return (
         <Box m="20px">
@@ -81,6 +188,7 @@ const Form = () => {
         </Box>
     );
   }
+
 
   return (
       <Box m="20px">

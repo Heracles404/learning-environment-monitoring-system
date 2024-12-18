@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {httpGetAllReadouts} from "../../hooks/sensors.requests";
-import { Box } from "@mui/material";
+import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
@@ -8,30 +8,27 @@ import { useTheme } from "@mui/material";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 const DBRecords = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const [rows, setRows] = useState([]);
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+    const [rows, setRows] = useState([]);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     useEffect(() => {
         const fetchData = async () => {
             const data = await httpGetAllReadouts(); // Fetch data from API
             const formattedData = data.map(readout => ({
-              id: readout._id,
-              date: readout.date,
-              time: readout.time,
-              temperature: readout.temperature,
-              humidity: readout.humidity,
-              heatIndex: readout.heatIndex,
-              lighting: readout.lighting,
-              voc: readout.voc,
-              IAQIndex: readout.IAQIndex,
-              pm25: readout.pm25,
-              pm10: readout.pm10,
-              OAQIndex: readout.OAQIndex,
-              indoorAir: readout.indoorAir,
-              outdoorAir: readout.outdoorAir,
-              temp: readout.temp,
-              remarks: readout.remarks,
+                id: readout._id,
+                date: readout.date,
+                time: readout.time,
+                temperature: readout.temperature,
+                humidity: readout.humidity,
+                heatIndex: readout.heatIndex,
+                lighting: readout.lighting,
+                voc: readout.voc,
+                IAQIndex: readout.IAQIndex,
+                indoorAir: readout.indoorAir,
+                temp: readout.temp,
             }));
             setRows(formattedData); // Set the formatted data to state
         };
@@ -39,46 +36,105 @@ const DBRecords = () => {
         fetchData(); // Call the fetch function
     }, []); // Empty dependency array to run only once on mount
 
-  const columns = [
-    { field: "id", headerName: "ID", flex: 0.2 },
-    { field: "date", headerName: "Date", flex: 2 },
-    { field: "time", headerName: "Time", flex: 2 },
-    { field: "temperature", headerName: "Temperature", flex: 2, cellClassName: "role-column--cell" },
-    { field: "humidity", headerName: "Humidity", flex: 2, cellClassName: "role-column--cell" },
-    { field: "heatIndex", headerName: "Heat Index", flex: 2, cellClassName: "role-column--cell" },
-    { field: "lighting", headerName: "Lighting", flex: 2, cellClassName: "role-column--cell" },
-    { field: "voc", headerName: "Voc", flex: 2, cellClassName: "role-column--cell" },
-    { field: "IAQIndex", headerName: "IAQ Index", flex: 2, cellClassName: "role-column--cell" },
-    { field: "indoorAir", headerName: "IAQ Stat", flex: 2, cellClassName: "role-column--cell" },
-    { field: "temp", headerName: "Temperature Stat", flex: 2, cellClassName: "role-column--cell" },
+    const columns = [
+        { id: "id", label: "Room", minWidth: 60, },
+        { id: "date", label: "Date", minWidth: 90, },
+        { id: "time", label: "Time", minWidth: 90, },
+        { id: "temperature", label: "Temperature", minWidth: 100, cellClassName: "role-column--cell" },
+        { id: "humidity", label: "Humidity", minWidth: 100, cellClassName: "role-column--cell" },
+        { id: "heatIndex", label: "Heat Index", minWidth: 100, cellClassName: "role-column--cell" },
+        { id: "lighting", label: "Lighting", minWidth: 100, cellClassName: "role-column--cell" },
+        { id: "voc", label: "Voc", minWidth: 100, cellClassName: "role-column--cell" },
+        { id: "IAQIndex", label: "IAQ Index", minWidth: 100, cellClassName: "role-column--cell" },
+        { id: "indoorAir", label: "IAQ Stat", minWidth: 100, cellClassName: "role-column--cell" },
+        { id: "temp", label: "Temperature Stat", minWidth: 100, cellClassName: "role-column--cell" },
 
-  ];
+    ];
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
 
-  return (
-    <Box m="3px">
-      <Header title="Paramaters"/>
-      <Box
-        m="5px 0 0 0"
-        height="25vh"
-        sx={{
-          "& .MuiDataGrid-root": { border: "none" },
-          "& .MuiDataGrid-cell": { borderBottom: "none" },
-          "& .name-column--cell": { color: colors.greenAccent[300] },
-          "& .MuiDataGrid-columnHeader": { backgroundColor: colors.greenAccent[700], borderBottom: "none" },
-          "& .MuiDataGrid-virtualScroller": { backgroundColor: colors.primary[400] },
-          "& .MuiDataGrid-footerContainer": { borderTop: "none", backgroundColor: colors.greenAccent[700] },
-          "& .MuiCheckbox-root": { color: `${colors.greenAccent[200]} !important` },
-          "& .MuiDataGrid-toolbarContainer .MuiButton-text": { color: `${colors.grey[100]} !important` },
-        }}
-      >
-        <DataGrid 
-        // checkboxSelection
-        rows={rows} 
-        columns={columns} 
-        components={{ Toolbar: GridToolbar }} />
-      </Box>
-    </Box>
-  );
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
+
+    return (
+        <Box m="5px">
+            <Header title="Records" subtitle="Managing the Records" />
+            <Box >
+                <Paper sx={{ width: "100%", overflow: "hidden" }}>
+                    <TableContainer sx={{ maxHeight: "30vh" }}>
+                        <Table stickyHeader>
+                        <caption>Record for Environmental Parameters</caption>
+                            <TableHead>
+                                <TableRow>
+                                    {columns.map((column) => (
+                                        <TableCell
+                                            key={column.id}
+                                            align={column.align || "left"}
+                                            style={{
+                                                minWidth: column.minWidth,
+                                                fontWeight: "bold",
+                                                backgroundColor: colors.greenAccent[700],
+                                                color: colors.grey[100],
+                                            }}
+                                        >
+                                            {column.label}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {rows
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((row) => (
+                                        <TableRow hover key={row.id}>
+                                            {columns.map((column) => {
+                                                const value = row[column.id];
+                                                return (
+                                                    <TableCell
+                                                        key={column.id}
+                                                        align={column.align || "left"}
+                                                        sx={{
+                                                            color:
+                                                                column.cellClassName === "name-column--cell"
+                                                                    ? colors.greenAccent[300]
+                                                                    : column.cellClassName === "role-column--cell"
+                                                                    ? colors.greenAccent[500]
+                                                                    : "inherit",
+                                                        }}
+                                                    >
+                                                        {column.renderCell
+                                                            ? column.renderCell(row)
+                                                            : value}
+                                                    </TableCell>
+                                                );
+                                            })}
+                                        </TableRow>
+                                    ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[10, 25, 50]}
+                        component="div"
+                        count={rows.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                        sx={{
+                            backgroundColor: colors.greenAccent[700],
+                            color: colors.grey[100],
+                        }}
+                    />
+                    
+                </Paper>
+                
+            </Box>
+        </Box>
+    );
 };
 
 export default DBRecords;
