@@ -25,7 +25,6 @@ import FAQ from "./pages/faq";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./pages/calendar/calendar";
-import Login from "./pages/Login";
 import LoginPage from "./pages/Login/Login";
 
 import Accounts from "./pages/Accounts";
