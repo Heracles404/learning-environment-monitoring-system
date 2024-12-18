@@ -42,7 +42,7 @@ const Dashboard = () => {
   const colors = tokens(theme.palette.mode);
 
   return (
-    <Box m="0 5px 0 25px">
+    <Box m="0 5px 0 25px" height="100vh" overflow="auto">
       {/* HEADER */}
       <Box 
       display="flex" 
@@ -54,7 +54,7 @@ const Dashboard = () => {
       </Box>
 
       <DashboardCards/>
-      <DBRecords/>
+      <DBRecords />
       {/* <DBAccounts/> */}
       <DBVog/>
       
