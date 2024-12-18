@@ -55,7 +55,7 @@ const VOGRecords = () => {
             <Header title="VOG Records" subtitle="Managing the VOG Records" />
             <Box mt="40px">
                 <Paper sx={{ width: "100%", overflow: "hidden" }}>
-                    <TableContainer sx={{ maxHeight: "65vh" }}>
+                    <TableContainer sx={{ height: "65vh" }}>
                         <Table stickyHeader>
                         <caption>Record for Volcanic Smog Parameter</caption>
 

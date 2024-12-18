@@ -64,7 +64,7 @@ const Records = () => {
             <Header title="Records" subtitle="Managing the Records" />
             <Box mt="40px">
                 <Paper sx={{ width: "100%", overflow: "hidden" }}>
-                    <TableContainer sx={{ maxHeight: "65vh" }}>
+                    <TableContainer sx={{ height: "65vh" }}>
                         <Table stickyHeader>
                         <caption>Record for Environmental Parameters</caption>
 
