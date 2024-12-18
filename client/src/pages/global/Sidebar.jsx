@@ -66,6 +66,9 @@ const Sidebar = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(!isSmallScreen);
 
   const username = localStorage.getItem("username");
+  const name = localStorage.getItem("firstname");
+  const role = localStorage.getItem("role");
+
 
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
@@ -134,12 +137,6 @@ const Sidebar = () => {
                   alignItems="center"
                   ml="56px"
                 >
-                  {/* <Typography variant="h1" color={colors.greenAccent[100]}>
-                    ADMIN
-                  </Typography> */}
-                  {/* <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                    <MenuOutlinedIcon />
-                  </IconButton> */}
                 </Box>
               )}
             </MenuItem>
@@ -162,13 +159,10 @@ const Sidebar = () => {
                     fontWeight="bold"
                     sx={{ m: "10px 0 0 0" }}
                   >
-                    Rost
+                      {`${name}`}
                   </Typography>
                   <Typography variant="h5" color={colors.greenAccent[500]}>
-                    Principal
-                  </Typography>
-                  <Typography variant="h5" color={colors.greenAccent[300]}>
-                    Status: Active
+                      {`${role}`}
                   </Typography>
                 </Box>
               </Box>
