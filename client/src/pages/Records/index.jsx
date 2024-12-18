@@ -37,17 +37,17 @@ const Records = () => {
     }, []); // Empty dependency array to run only once on mount
 
     const columns = [
-        { id: "id", label: "Room", minWidth: 60, },
-        { id: "date", label: "Date", minWidth: 90, },
-        { id: "time", label: "Time", minWidth: 90, },
-        { id: "temperature", label: "Temperature", minWidth: 100, cellClassName: "role-column--cell" },
-        { id: "humidity", label: "Humidity", minWidth: 100, cellClassName: "role-column--cell" },
-        { id: "heatIndex", label: "Heat Index", minWidth: 100, cellClassName: "role-column--cell" },
-        { id: "lighting", label: "Lighting", minWidth: 100, cellClassName: "role-column--cell" },
-        { id: "voc", label: "Voc", minWidth: 100, cellClassName: "role-column--cell" },
-        { id: "IAQIndex", label: "IAQ Index", minWidth: 100, cellClassName: "role-column--cell" },
-        { id: "indoorAir", label: "IAQ Stat", minWidth: 100, cellClassName: "role-column--cell" },
-        { id: "temp", label: "Temperature Stat", minWidth: 100, cellClassName: "role-column--cell" },
+        { id: "id", label: "ID", minWidth: 150, },
+        { id: "date", label: "Date", minWidth: 150, },
+        { id: "time", label: "Time", minWidth: 150, },
+        { id: "temperature", label: "Temperature", minWidth: 150, cellClassName: "role-column--cell" },
+        { id: "humidity", label: "Humidity", minWidth: 150, cellClassName: "role-column--cell" },
+        { id: "heatIndex", label: "Heat Index", minWidth: 150, cellClassName: "role-column--cell" },
+        { id: "lighting", label: "Lighting", minWidth: 150, cellClassName: "role-column--cell" },
+        { id: "voc", label: "Voc", minWidth: 150, cellClassName: "role-column--cell" },
+        { id: "IAQIndex", label: "IAQ Index", minWidth: 150, cellClassName: "role-column--cell" },
+        { id: "indoorAir", label: "IAQ Stat", minWidth: 150, cellClassName: "role-column--cell" },
+        { id: "temp", label: "Temperature Stat", minWidth: 150, cellClassName: "role-column--cell" },
 
     ];
     const handleChangePage = (event, newPage) => {
@@ -64,7 +64,7 @@ const Records = () => {
             <Header title="Records" subtitle="Managing the Records" />
             <Box mt="40px">
                 <Paper sx={{ width: "100%", overflow: "hidden" }}>
-                    <TableContainer sx={{ height: "65vh" }}>
+                    <TableContainer sx={{ maxHeight: "65vh" }}>
                         <Table stickyHeader>
                         <caption>Record for Environmental Parameters</caption>
 
