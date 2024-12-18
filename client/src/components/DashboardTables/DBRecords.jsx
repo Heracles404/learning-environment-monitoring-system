@@ -63,7 +63,15 @@ const DBRecords = () => {
         <Box m="5px">
             <Header title="Records" subtitle="Managing the Records" />
             <Box >
-                <Paper sx={{ width: "100%", overflow: "hidden" }}>
+                <Paper sx={{ 
+            width: {
+              xs: '99%' , // 0px and up
+              sm: '99%',  // 600px and up
+              md: '73.5%',  // 900px and up
+              lg: '100%', // 1200px and up
+              xl: '100%', // 1536px and up
+            }
+            , overflow: "hidden" }}>
                     <TableContainer sx={{ maxHeight: "65vh" }}>
                         <Table stickyHeader>
                         <caption>Record for Environmental Parameters</caption>
