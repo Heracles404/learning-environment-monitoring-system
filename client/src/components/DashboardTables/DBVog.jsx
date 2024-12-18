@@ -33,13 +33,13 @@ const DBVOGRecords = () => {
     }, []); // Empty dependency array to run only once on mount
 
     const columns = [
-        { id: "id", label: "ID", minWidth: 150, },
-        { id: "date", label: "Date", minWidth: 150, },
-        { id: "time", label: "Time", minWidth: 150, },
-        { id: "pm25", label: "PM 2.5", minWidth: 150, cellClassName: "role-column--cell" },
-        { id: "pm10", label: "PM 10.0", minWidth: 150, cellClassName: "role-column--cell" },
-        { id: "OAQIndex", label: "OAQ Index", minWidth: 150, cellClassName: "role-column--cell" },
-        { id: "level", label: "Concern Level", minWidth: 150, cellClassName: "role-column--cell" },
+        { id: "id", label: "Room", minWidth: 100, },
+        { id: "date", label: "Date", minWidth: 100, },
+        { id: "time", label: "Time", minWidth: 100, },
+        { id: "pm25", label: "PM 2.5", minWidth: 100, cellClassName: "role-column--cell" },
+        { id: "pm10", label: "PM 10.0", minWidth: 100, cellClassName: "role-column--cell" },
+        { id: "OAQIndex", label: "OAQ Index", minWidth: 100, cellClassName: "role-column--cell" },
+        { id: "level", label: "Concern Level", minWidth: 100, cellClassName: "role-column--cell" },
 
     ];
     const handleChangePage = (event, newPage) => {
@@ -51,9 +51,9 @@ const DBVOGRecords = () => {
         setPage(0);
     };
     return (
-        <Box m="20px">
+        <Box m="5px">
             <Header title="VOG Records" subtitle="Managing the VOG Records" />
-            <Box mt="40px">
+            <Box >
                 <Paper sx={{ width: "100%", overflow: "hidden" }}>
                     <TableContainer sx={{ maxHeight: "65vh" }}>
                         <Table stickyHeader>
