@@ -33,9 +33,9 @@ const VOGRecords = () => {
     }, []); // Empty dependency array to run only once on mount
 
     const columns = [
-        { id: "id", label: "ID", minWidth: 60, },
-        { id: "date", label: "Date", minWidth: 150, },
-        { id: "time", label: "Time", minWidth: 150, },
+        { id: "id", label: "Room", minWidth: 60, },
+        { id: "date", label: "Date", minWidth: 100, },
+        { id: "time", label: "Time", minWidth: 100, },
         { id: "pm25", label: "PM 2.5", minWidth: 150, cellClassName: "role-column--cell" },
         { id: "pm10", label: "PM 10.0", minWidth: 150, cellClassName: "role-column--cell" },
         { id: "OAQIndex", label: "OAQ Index", minWidth: 150, cellClassName: "role-column--cell" },
