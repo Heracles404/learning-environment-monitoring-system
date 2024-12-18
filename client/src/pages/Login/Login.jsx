@@ -22,7 +22,8 @@ const LoginPage = () => {
                 alert(userData.error || "Invalid credentials"); // Show error message if authentication fails
             } else {
                 localStorage.setItem("auth", "true");
-                navigate(`/dashboard/${username}`); // Navigate to the dashboard on successful authentication
+                localStorage.setItem("username", username);
+                navigate(`/dashboard`); // Navigate to the dashboard on successful authentication
             }
         } catch (error) {
             console.error("Authentication error:", error);
