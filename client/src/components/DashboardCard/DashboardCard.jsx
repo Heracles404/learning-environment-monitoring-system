@@ -42,8 +42,8 @@ function DBCompactCard({ param, setExpanded }) {
         <span>{param.title}</span>
       </div>
       <div className="detail">
-        <Png />
-        <span>{param.value}</span>
+      <Png style={{ width: '50px', height: '50px' }}/>
+      <span>{param.value}</span>
         <span>Last 24 hours</span>
       </div>
     </motion.div>
@@ -117,7 +117,7 @@ function DBExpandedCard({ param, setExpanded }) {
       <div className="DBchartContainer">
         <Chart options={data.options} series={param.series} type="area" />
       </div>
-      <span>Last 24 hours</span>
+      {/* <span>Last 24 hours</span> */}
     </motion.div>
   );
 }
