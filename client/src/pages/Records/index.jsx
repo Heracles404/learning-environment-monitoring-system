@@ -38,16 +38,16 @@ const Records = () => {
 
     const columns = [
         { id: "id", label: "ID", minWidth: 60, },
-        { id: "date", label: "Date", minWidth: 150, },
-        { id: "time", label: "Time", minWidth: 150, },
-        { id: "temperature", label: "Temperature", minWidth: 150, cellClassName: "role-column--cell" },
-        { id: "humidity", label: "Humidity", minWidth: 150, cellClassName: "role-column--cell" },
-        { id: "heatIndex", label: "Heat Index", minWidth: 150, cellClassName: "role-column--cell" },
-        { id: "lighting", label: "Lighting", minWidth: 150, cellClassName: "role-column--cell" },
-        { id: "voc", label: "Voc", minWidth: 150, cellClassName: "role-column--cell" },
-        { id: "IAQIndex", label: "IAQ Index", minWidth: 150, cellClassName: "role-column--cell" },
-        { id: "indoorAir", label: "IAQ Stat", minWidth: 150, cellClassName: "role-column--cell" },
-        { id: "temp", label: "Temperature Stat", minWidth: 150, cellClassName: "role-column--cell" },
+        { id: "date", label: "Date", minWidth: 100, },
+        { id: "time", label: "Time", minWidth: 100, },
+        { id: "temperature", label: "Temperature", minWidth: 100, cellClassName: "role-column--cell" },
+        { id: "humidity", label: "Humidity", minWidth: 100, cellClassName: "role-column--cell" },
+        { id: "heatIndex", label: "Heat Index", minWidth: 100, cellClassName: "role-column--cell" },
+        { id: "lighting", label: "Lighting", minWidth: 100, cellClassName: "role-column--cell" },
+        { id: "voc", label: "Voc", minWidth: 100, cellClassName: "role-column--cell" },
+        { id: "IAQIndex", label: "IAQ Index", minWidth: 100, cellClassName: "role-column--cell" },
+        { id: "indoorAir", label: "IAQ Stat", minWidth: 100, cellClassName: "role-column--cell" },
+        { id: "temp", label: "Temperature Stat", minWidth: 100, cellClassName: "role-column--cell" },
 
     ];
     const handleChangePage = (event, newPage) => {
