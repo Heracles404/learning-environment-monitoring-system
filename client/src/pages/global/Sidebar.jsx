@@ -65,6 +65,8 @@ const Sidebar = () => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [isSidebarVisible, setIsSidebarVisible] = useState(!isSmallScreen);
 
+  const username = localStorage.getItem("username");
+
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
     navigate("/"); 
@@ -201,12 +203,12 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
             <Item
-              title="Edit Account"
-              to="/EditAccount"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+                title="Edit Account"
+                to={`/EditAccount/${username}`} // Use backticks for template literals
+                icon={<PersonOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+                />
             <Item
               title="Create New Account"
               to="/CreateNewAccount"

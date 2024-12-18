@@ -64,7 +64,7 @@ function App() {
               element={<Login />} 
             /> */}
             <Route
-              path="/dashboard/:username"
+              path="/dashboard"
               element={
                 <PrivateRoute>
                   <Dashboard />
