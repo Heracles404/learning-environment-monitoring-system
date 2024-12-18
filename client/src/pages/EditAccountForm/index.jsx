@@ -29,6 +29,7 @@ const Form = () => {
           lastName: userData.lastName || "",
           userName: userData.userName || "",
           password: "", // Leave password blank for security
+          newPassword: "", // Leave confirmPassword blank for security
           confirmPassword: "", // Leave confirmPassword blank for security
           role: userData.role || "",
         });
@@ -44,33 +45,24 @@ const Form = () => {
   }, [userName]);
 
   const handleSave = async (values) => {
-    const userData = {
-      username: values.userName,
-      pw: values.password,
-      role: values.role,
-      fname: values.firstName,
-      lname: values.lastName,
-      newPw: values.newPassword,
-      confirmPw: values.confirmPassword
-    };
-
-    if (userData.password !== userData.confirmPassword) {
-      alert("Passwords do not match");
-    } else {
-      try {
-        const response = await httpUpdateUser(userData);
-        if (response.status === 400) {
-          alert("Username already exists.");
-        } else if (response.ok) {
-          console.log("User updated successfully");
-          navigate("/accounts");
+    try {
+      if (!values.newPassword) {
+        const { firstName, lastName, role, userName } = values;
+        await httpUpdateUser (userName, { firstName, lastName, role });
+        alert("User  details updated successfully.");
+        navigate(`/Accounts`);
+      } else {
+        if (values.newPassword !== values.confirmPassword) {
+          alert("Passwords do not match.");
         } else {
-          setErrorMessage("Failed to update user. Please try again.");
+          const { firstName, lastName, role, userName, newPassword } = values;
+          await httpUpdateUser (userName, { firstName, lastName, role, password: newPassword });
+          navigate(`/Accounts`);
         }
-      } catch (error) {
-        setErrorMessage("An error occurred. Please try again.");
-        console.error("Error updating user:", error);
       }
+    } catch (error) {
+      console.error("Error updating user data:", error);
+      setErrorMessage("Failed to update user data.");
     }
   };
 
