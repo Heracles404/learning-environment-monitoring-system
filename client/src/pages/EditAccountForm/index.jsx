@@ -104,6 +104,22 @@ const Form = () => {
                       fullWidth
                       variant="filled"
                       type="text"
+                      label="Username"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.userName}
+                      name="userName"
+                      error={!!touched.userName && !!errors.userName}
+                      helperText={touched.userName && errors.userName}
+                      sx={{ gridColumn: "span 4" }}
+                      InputProps={{
+                        readOnly: true
+                      }}
+                  />
+                  <TextField
+                      fullWidth
+                      variant="filled"
+                      type="text"
                       label="First Name"
                       onBlur={handleBlur}
                       onChange={handleChange}
@@ -137,19 +153,6 @@ const Form = () => {
                       name="role"
                       error={!!touched.role && !!errors.role}
                       helperText={touched.role && errors.role}
-                      sx={{ gridColumn: "span 4" }}
-                  />
-                  <TextField
-                      fullWidth
-                      variant="filled"
-                      type="text"
-                      label="Username"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.userName}
-                      name="userName"
-                      error={!!touched.userName && !!errors.userName}
-                      helperText={touched.userName && errors.userName}
                       sx={{ gridColumn: "span 4" }}
                   />
                   <TextField
