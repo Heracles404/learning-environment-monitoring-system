@@ -175,6 +175,7 @@ const checkoutSchema = yup.object().shape({
   lastName: yup.string().required("required"),
   userName: yup.string().required("required"),
   password: yup.string().required("required"),
+  confirmPassword: yup.string().required("required"),
   role: yup.string().required("required"),
 });
 const initialValues = {
