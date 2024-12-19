@@ -8,6 +8,10 @@ import {httpAddNewUser} from "../../hooks/users.requests";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
+import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 const NewAccountForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const navigate = useNavigate(); // Hook for navigation
@@ -74,6 +78,8 @@ const NewAccountForm = () => {
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               }}
             >
+              <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2"}}>
+                <BadgeOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
               <TextField
                   fullWidth
                   variant="filled"
@@ -87,6 +93,10 @@ const NewAccountForm = () => {
                   helperText={touched.firstName && errors.firstName}
                   sx={{ gridColumn: "span 2" }}
               />
+                
+              </Box>
+              <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2"}}>
+                <BadgeOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
               <TextField
                   fullWidth
                   variant="filled"
@@ -100,19 +110,26 @@ const NewAccountForm = () => {
                   helperText={touched.lastName && errors.lastName}
                   sx={{ gridColumn: "span 2" }}
               />
-              <TextField
-                  fullWidth
-                  variant="filled"
-                  type="text"
-                  label="Role"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.role} // Updated value
-                  name="role" // Updated name
-                  error={!!touched.role && !!errors.role} // Updated error check
-                  helperText={touched.role && errors.role} // Updated helper text
-                  sx={{ gridColumn: "span 4" }}
-              />
+
+              </Box>
+              <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 4"}}>
+                <AssignmentIndOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
+                <TextField
+                    fullWidth
+                    variant="filled"
+                    type="text"
+                    label="Role"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.role} // Updated value
+                    name="role" // Updated name
+                    error={!!touched.role && !!errors.role} // Updated error check
+                    helperText={touched.role && errors.role} // Updated helper text
+                    sx={{ gridColumn: "span 4" }}
+                />
+              </Box>
+              <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 4"}}>
+                <AccountCircleOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
               <TextField
                   fullWidth
                   variant="filled"
@@ -126,34 +143,39 @@ const NewAccountForm = () => {
                   helperText={touched.userName && errors.userName} // Updated helper text
                   sx={{ gridColumn: "span 4" }}
               />
-              <TextField
-                  fullWidth
-                  variant="filled"
-                  type="password" // Changed to password type
-                  label="Password"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.password} // Updated value
-                  name="password" // Updated name
-                  error={!!touched.password && !!errors.password} // Updated error check
-                  helperText={touched.password && errors.password} // Updated helper text
-                  sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                  fullWidth
-                  variant="filled"
-                  type="password" // Changed to password type
-                  label="Confirm Password"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.confirmPassword} // Updated value
-                  name="confirmPassword" // Updated name
-                  error={!!touched.confirmPassword && !!errors.confirmPassword} // Updated error check
-                  helperText={touched.confirmPassword && errors.confirmPassword} // Updated helper text
-                  sx={{ gridColumn: "span 2" }}
-              />
-              
-
+              </Box>
+              <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2"}}>
+                <LockOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
+                <TextField
+                    fullWidth
+                    variant="filled"
+                    type="password" // Changed to password type
+                    label="Password"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.password} // Updated value
+                    name="password" // Updated name
+                    error={!!touched.password && !!errors.password} // Updated error check
+                    helperText={touched.password && errors.password} // Updated helper text
+                    sx={{ gridColumn: "span 2" }}
+                />
+              </Box>
+              <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2"}}>
+                <LockOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
+                <TextField
+                    fullWidth
+                    variant="filled"
+                    type="password" // Changed to password type
+                    label="Confirm Password"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.confirmPassword} // Updated value
+                    name="confirmPassword" // Updated name
+                    error={!!touched.confirmPassword && !!errors.confirmPassword} // Updated error check
+                    helperText={touched.confirmPassword && errors.confirmPassword} // Updated helper text
+                    sx={{ gridColumn: "span 2" }}
+                />
+              </Box>
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
