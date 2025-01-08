@@ -121,32 +121,27 @@ const Sidebar = () => {
       >
         <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
-          {/* LOGO AND MENU ICON */}
-          <MenuItem
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            icon={isCollapsed ? <ArrowCircleRightOutlinedIcon /> : undefined}
-            style={{
-              margin: "10px 10px 20px 0",
-              color: colors.grey[100],
-            }}
-          >
-            {!isCollapsed && (
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                ml="15px"
-                mt="10px"
-              >
-                {/* <Typography variant="h3" color={colors.grey[100]}>
-                  ADMINIS
-                </Typography> */}
-                <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                  <ArrowCircleLeftOutlinedIcon  />
-                </IconButton>
-              </Box>
-            )}
-          </MenuItem>
+            <MenuItem
+              sx={{
+                display: { xs: "block", md: "none" }, // Show button on small screens
+              }}            
+              // onClick={() => setIsCollapsed(!isCollapsed)}
+              icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
+              style={{
+                margin: "10px 0 20px 0",
+                color: colors.greenAccent[100],
+              }}
+            >
+              {!isCollapsed && (
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  ml="56px"
+                >
+                </Box>
+              )}
+            </MenuItem>
 
             {!isCollapsed && (
               <Box mb="25px">
