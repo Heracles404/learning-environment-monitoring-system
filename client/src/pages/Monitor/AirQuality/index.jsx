@@ -10,12 +10,18 @@ import CO2Cards from "../../../components/ChartCards/AirQuality/CO2Cards";
 import ExpandedCard from "../../../components/ChartCards/AirQuality/CO2Cards";
 const CarbonDioxideMonitor = () => {
   return (
-    <div className="MainContainer">
-      <div className="MainDash">
-        <h1>Air Quality</h1>
-        <CO2Cards/>
-      </div>
-    </div>
+        <Box m="0 5px 0 5px" height="100vh" overflow="auto">
+      {/* HEADER */}
+      <Box 
+      display="flex" 
+      justifyContent="center"
+       alignItems="center"
+       textAlign="center"
+       >
+        <Header title="Air Quality" subtitle="Monitoring the Air Quality" />
+      </Box>
+      <CO2Cards/>
+    </Box> 
   )
 }
 

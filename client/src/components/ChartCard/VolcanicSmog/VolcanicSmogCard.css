@@ -60,7 +60,8 @@
 
 /* ExpandedCard */
 .ExpandedCard {
-  position: absolute;
+  position: sticky;
+  margin-left: 10%;
   width: 60%;
   height: 70vh;
   z-index: 9;
@@ -84,7 +85,7 @@
 }
 
 .chartContainer {
-  width: 80%;
+  width: 100%;
 }
 
 @media screen and (max-width: 1200px) {
@@ -98,7 +99,7 @@
 @media screen and (max-width: 768px) {
   .ExpandedCard {
     top: 8rem;
-    height: 50%;
+    height: 50vh;
     left: 25px;
     width: 80%;
   }

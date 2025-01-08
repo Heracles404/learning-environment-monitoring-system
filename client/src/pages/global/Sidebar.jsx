@@ -35,6 +35,8 @@ import DeviceHubOutlinedIcon from '@mui/icons-material/DeviceHubOutlined';
 import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined';
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 
+import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
+import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 const Item = ({ title, to, icon, selected, setSelected, onClick }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -118,7 +120,7 @@ const Sidebar = () => {
         }}
       >
         <ProSidebar collapsed={isCollapsed}>
-          <Menu iconShape="square">
+        <Menu iconShape="square">
             <MenuItem
               sx={{
                 display: { xs: "block", md: "none" }, // Show button on small screens
@@ -186,7 +188,7 @@ const Sidebar = () => {
             </Typography>
             <SubMenu
               title="Accounts"
-              icon={<ManageAccountsOutlinedIcon />}
+              icon={<PersonOutlinedIcon />}
               style={{ color: colors.greenAccent[100] }}
             >
             <Item
@@ -199,7 +201,7 @@ const Sidebar = () => {
             <Item
                 title="Edit Account"
                 to={`/EditAccount/${username}`} // Use backticks for template literals
-                icon={<PersonOutlinedIcon />}
+                icon={< ManageAccountsOutlinedIcon/>}
                 selected={selected}
                 setSelected={setSelected}
                 />
@@ -234,14 +236,14 @@ const Sidebar = () => {
             <Item
               title="Parameters"
               to="/records"
-              icon={<ReceiptIcon />}
+              icon={<DeviceHubOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="VOG"
               to="/VOG_records"
-              icon={<ReceiptIcon />}
+              icon={<VolcanoOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -292,7 +294,7 @@ const Sidebar = () => {
               />              
               </SubMenu>
   
-            <SubMenu
+            {/* <SubMenu
               title="Devices"
               icon={<DevicesIcon />}
               style={{ color: colors.greenAccent[100] }}
@@ -303,7 +305,7 @@ const Sidebar = () => {
                 icon={<DevicesIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />
+              /> */}
               {/* <Item
                 title="Device 2"
                 to="/Device2"
@@ -311,7 +313,7 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               /> */}
-              </SubMenu>
+              {/* </SubMenu> */}
             <Typography
               variant="h6"
               color={colors.greenAccent[400]}

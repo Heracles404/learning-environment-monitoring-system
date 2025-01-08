@@ -60,7 +60,7 @@
   
   /* ExpandedCard */
   .DBExpandedCard {
-    position: absolute;
+    position: fixed;
     width: 60%;
     height: 60vh;
     z-index: 9;

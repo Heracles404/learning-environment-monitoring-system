@@ -10,6 +10,10 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
+import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const navigate = useNavigate();
@@ -100,6 +104,8 @@ const Form = () => {
                       "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
                     }}
                 >
+                  <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 4"}}>
+                  <AccountCircleOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
                   <TextField
                       fullWidth
                       variant="filled"
@@ -116,6 +122,9 @@ const Form = () => {
                         readOnly: true
                       }}
                   />
+                  </Box>
+                  <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2"}}>
+                <BadgeOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
                   <TextField
                       fullWidth
                       variant="filled"
@@ -127,8 +136,11 @@ const Form = () => {
                       name="firstName"
                       error={!!touched.firstName && !!errors.firstName}
                       helperText={touched.firstName && errors.firstName}
-                      sx={{ gridColumn: "span 3" }}
+                      sx={{ gridColumn: "span 2" }}
                   />
+                  </Box>
+                  <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2"}}>
+                <BadgeOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
                   <TextField
                       fullWidth
                       variant="filled"
@@ -140,8 +152,11 @@ const Form = () => {
                       name="lastName"
                       error={!!touched.lastName && !!errors.lastName}
                       helperText={touched.lastName && errors.lastName}
-                      sx={{ gridColumn: "span 1" }}
+                      sx={{ gridColumn: "span 2" }}
                   />
+                  </Box>
+                  <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 4"}}>
+                <AssignmentIndOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
                   <TextField
                       fullWidth
                       variant="filled"
@@ -155,6 +170,9 @@ const Form = () => {
                       helperText={touched.role && errors.role}
                       sx={{ gridColumn: "span 4" }}
                   />
+                  </Box>
+                  <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2"}}>
+                <LockOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
                   <TextField
                       fullWidth
                       variant="filled"
@@ -168,6 +186,9 @@ const Form = () => {
                       helperText={touched.newPassword && errors.newPassword}
                       sx={{ gridColumn: "span 2" }}
                   />
+                  </Box>
+                  <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2"}}>
+                <LockOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
                   <TextField
                       fullWidth
                       variant="filled"
@@ -181,6 +202,7 @@ const Form = () => {
                       helperText={touched.confirmPassword && errors.confirmPassword}
                       sx={{ gridColumn: "span 2" }}
                   />
+                  </Box>  
                 </Box>
                 <Box display="flex" justifyContent="end" mt="20px">
                   <Button type="submit" color="secondary" variant="contained">

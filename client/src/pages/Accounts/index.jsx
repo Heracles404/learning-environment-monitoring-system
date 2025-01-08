@@ -93,9 +93,11 @@ const Accounts = () => {
       <Header title="ACCOUNTS" subtitle="Managing the Users" />
       <Box mt="40px">
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
+<Typography variant="caption" sx={{ ml: 2 }}>
+                        Records for Volcanic Smog Parameters
+                    </Typography>          
           <TableContainer sx={{ height: "65vh" }}>
             <Table stickyHeader>
-            <caption>Authorized User Accounts of ESLIHS</caption>
               <TableHead>
                 <TableRow>
                   {columns.map((column) => (
@@ -103,7 +105,7 @@ const Accounts = () => {
                       key={column.id}
                       style={{
                         minWidth: column.minWidth,
-                        fontWeight: "bold",
+                        // fontWeight: "bold",
                         backgroundColor: colors.greenAccent[700],
                         color: colors.grey[100],
                       }}
