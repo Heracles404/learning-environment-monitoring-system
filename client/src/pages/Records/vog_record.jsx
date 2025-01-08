@@ -11,14 +11,12 @@ const VOGRecords = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [rows, setRows] = useState([]);
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     useEffect(() => {
         const fetchData = async () => {
             const data = await httpGetAllReadouts(); // Fetch data from API
-            const formattedData = data.map(readout => ({
-                id: readout._id,
+            const formattedData = data.map((readout, index) => ({
+                id: readout._id || index, // Ensure `id` is unique
                 date: readout.date,
                 time: readout.time,
                 pm25: readout.pm25,
@@ -33,92 +31,87 @@ const VOGRecords = () => {
     }, []); // Empty dependency array to run only once on mount
 
     const columns = [
-        { id: "id", label: "ID", minWidth: 150, },
-        { id: "date", label: "Date", minWidth: 150, },
-        { id: "time", label: "Time", minWidth: 150, },
-        { id: "pm25", label: "PM 2.5", minWidth: 150, cellClassName: "role-column--cell" },
-        { id: "pm10", label: "PM 10.0", minWidth: 150, cellClassName: "role-column--cell" },
-        { id: "OAQIndex", label: "OAQ Index", minWidth: 150, cellClassName: "role-column--cell" },
-        { id: "level", label: "Concern Level", minWidth: 150, cellClassName: "role-column--cell" },
+        { field: "id", headerName: "ID", minWidth: 100, flex: 1  },
+        { field: "date", headerName: "Date", minWidth: 100, flex: 1 },
+        { field: "time", headerName: "Time", minWidth: 100, flex: 1 },
+        { field: "pm25", headerName: "PM 2.5", minWidth: 100, flex: 1 },
+        { field: "pm10", headerName: "PM 10.0", minWidth: 100, flex: 1 },
+        { field: "OAQIndex", headerName: "OAQ Index", minWidth: 100, flex: 1 },
+        { field: "level", headerName: "Concern Level", minWidth: 100, flex: 1 },
 
     ];
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
+    // const handleChangePage = (event, newPage) => {
+    //     setPage(newPage);
+    // };
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
+    // const handleChangeRowsPerPage = (event) => {
+    //     setRowsPerPage(+event.target.value);
+    //     setPage(0);
+    // };
     return (
         <Box m="20px">
             <Header title="VOG Records" subtitle="Managing the VOG Records" />
             <Box mt="40px">
-                <Paper sx={{ width: "100%", overflow: "hidden" }}>
-                    <TableContainer sx={{ height: "65vh" }}>
-                        <Table stickyHeader>
-                        <caption>Record for Volcanic Smog Parameter</caption>
+                <Paper sx={{ height: "70vh", width: "100%", overflow: "hidden" }}>
+                    <Typography variant="caption" sx={{ ml: 2 }}>
+                        Records for Volcanic Smog Parameters
+                    </Typography>
+                    <DataGrid
+                        rows={rows}
+                        columns={columns}
+                        // disableSelectionOnClick
 
-                            <TableHead>
-                                <TableRow>
-                                    {columns.map((column) => (
-                                        <TableCell
-                                            key={column.id}
-                                            align={column.align || "left"}
-                                            style={{
-                                                minWidth: column.minWidth,
-                                                fontWeight: "bold",
-                                                backgroundColor: colors.greenAccent[700],
-                                                color: colors.grey[100],
-                                            }}
-                                        >
-                                            {column.label}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {rows
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((row) => (
-                                        <TableRow hover key={row.id}>
-                                            {columns.map((column) => {
-                                                const value = row[column.id];
-                                                return (
-                                                    <TableCell
-                                                        key={column.id}
-                                                        align={column.align || "left"}
-                                                        sx={{
-                                                            color:
-                                                                column.cellClassName === "name-column--cell"
-                                                                    ? colors.greenAccent[300]
-                                                                    : column.cellClassName === "role-column--cell"
-                                                                    ? colors.greenAccent[500]
-                                                                    : "inherit",
-                                                        }}
-                                                    >
-                                                        {column.renderCell
-                                                            ? column.renderCell(row)
-                                                            : value}
-                                                    </TableCell>
-                                                );
-                                            })}
-                                        </TableRow>
-                                    ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    <TablePagination
+                        components={{
+                            Toolbar: GridToolbar,
+                        }}
+                        pageSize={10}
                         rowsPerPageOptions={[10, 25, 50]}
-                        component="div"
-                        count={rows.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
+                        // checkboxSelection
                         sx={{
-                            backgroundColor: colors.greenAccent[700],
-                            color: colors.grey[100],
+                            "& .MuiDataGrid-row:hover": {
+                                backgroundColor: colors.greenAccent[500],
+                            },
+                            
+                            "& .MuiDataGrid-row": {
+                                // backgroundColor: colors.greenAccent[500],
+                                pointerEvents: "none",
+  
+                            },
+                            "& .MuiDataGrid-row.Mui-selected": {
+                                backgroundColor: colors.greenAccent[500],
+
+                            },
+                            "& .MuiDataGrid-row.Mui-selected:hover": {
+                                backgroundColor: colors.greenAccent[500],
+                            },
+                            
+                            "& .MuiDataGrid-toolbarContainer": {
+                                backgroundColor: colors.greenAccent[500],
+                                // color: colors.grey[100],
+                            },
+                            "& .MuiDataGrid-root": {
+                            border: "none",
+                            },
+                            "& .MuiDataGrid-cell": {
+                                borderBottom: "none",
+                            },
+                            "& .name-column--cell": {
+                                color: colors.greenAccent[300],
+                            },
+                            "& .MuiDataGrid-columnHeader": {
+                                backgroundColor: colors.greenAccent[700],
+                                borderBottom: "none",
+                            },
+                            "& .MuiDataGrid-virtualScroller": {
+                                // backgroundColor: colors.primary[400],
+                            },
+                            "& .MuiDataGrid-footerContainer": {
+                                borderTop: "none",
+                                backgroundColor: colors.greenAccent[700],
+                            },
+                            "& .MuiCheckbox-root": {
+                                color: `${colors.greenAccent[200]} !important`,
+                            },
                         }}
                     />
                 </Paper>
