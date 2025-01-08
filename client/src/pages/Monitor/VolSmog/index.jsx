@@ -9,14 +9,21 @@ import Co2Icon from '@mui/icons-material/Co2';
 import VolcanicSmogCards from "../../../components/ChartCards/VolcanicSmog/VolcanicSmogCards";
 import ExpandedCard from "../../../components/ChartCards/AirQuality/CO2Cards";
 const VolSmogMonitor = () => {
-  return (
-    <div className="MainContainer">
-      <div className="MainDash">
-        <h1>Volcanic Smog</h1>
-        <VolcanicSmogCards/>
-      </div>
-    </div>
-  )
+
+return (
+  <Box m="0 5px 0 5px" height="100vh" overflow="auto">
+    {/* HEADER */}
+    <Box 
+    display="flex" 
+    justifyContent="center"
+    alignItems="center"
+    textAlign="center"
+    >
+      <Header title="Volcanic Smog" subtitle="Monitoring the Volcanic Smog" />
+    </Box>
+      <VolcanicSmogCards/>
+    </Box> 
+    )
 }
 
 export default VolSmogMonitor;

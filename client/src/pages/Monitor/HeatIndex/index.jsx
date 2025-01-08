@@ -9,13 +9,21 @@ import Co2Icon from '@mui/icons-material/Co2';
 import HeatIndexCards from "../../../components/ChartCards/HeatIndex/HeatIndexCards";
 import ExpandedCard from "../../../components/ChartCards/AirQuality/CO2Cards";
 const HeatIndexMonitor = () => {
-  return (
-    <div className="MainContainer">
-      <div className="MainDash">
-        <h1>Heat Index</h1>
-        <HeatIndexCards/>
-      </div>
-    </div>
+  
+
+return (
+  <Box m="0 5px 0 5px" height="100vh" overflow="auto">
+  {/* HEADER */}
+  <Box 
+  display="flex" 
+  justifyContent="center"
+  alignItems="center"
+  textAlign="center"
+  >
+    <Header title="Heat Index" subtitle="Monitoring the Heat Index" />
+  </Box>
+    <HeatIndexCards/>
+  </Box> 
   )
 }
 
