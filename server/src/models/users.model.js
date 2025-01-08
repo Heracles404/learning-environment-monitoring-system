@@ -11,7 +11,17 @@ const user = {
     lastName: 'Reyes II'
 }
 
+const user2 = {
+    _id: 2,
+    userName: 'teach',
+    password: '123',
+    role: 'Teacher',
+    firstName: 'Nicanor',
+    lastName: 'Reyes II'
+}
+
 users.set(user._id, user);
+users.set(user2._id, user2);
 
 function existsUserName(userName){
     console.log(users);
