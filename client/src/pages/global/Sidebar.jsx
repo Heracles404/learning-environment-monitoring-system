@@ -35,6 +35,8 @@ import DeviceHubOutlinedIcon from '@mui/icons-material/DeviceHubOutlined';
 import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined';
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 
+import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
+import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 const Item = ({ title, to, icon, selected, setSelected, onClick }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -118,28 +120,33 @@ const Sidebar = () => {
         }}
       >
         <ProSidebar collapsed={isCollapsed}>
-          <Menu iconShape="square">
-            <MenuItem
-              sx={{
-                display: { xs: "block", md: "none" }, // Show button on small screens
-              }}            
-              // onClick={() => setIsCollapsed(!isCollapsed)}
-              icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
-              style={{
-                margin: "10px 0 20px 0",
-                color: colors.greenAccent[100],
-              }}
-            >
-              {!isCollapsed && (
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  ml="56px"
-                >
-                </Box>
-              )}
-            </MenuItem>
+        <Menu iconShape="square">
+          {/* LOGO AND MENU ICON */}
+          <MenuItem
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            icon={isCollapsed ? <ArrowCircleRightOutlinedIcon /> : undefined}
+            style={{
+              margin: "10px 10px 20px 0",
+              color: colors.grey[100],
+            }}
+          >
+            {!isCollapsed && (
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                ml="15px"
+                mt="10px"
+              >
+                {/* <Typography variant="h3" color={colors.grey[100]}>
+                  ADMINIS
+                </Typography> */}
+                <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
+                  <ArrowCircleLeftOutlinedIcon  />
+                </IconButton>
+              </Box>
+            )}
+          </MenuItem>
 
             {!isCollapsed && (
               <Box mb="25px">
@@ -292,7 +299,7 @@ const Sidebar = () => {
               />              
               </SubMenu>
   
-            <SubMenu
+            {/* <SubMenu
               title="Devices"
               icon={<DevicesIcon />}
               style={{ color: colors.greenAccent[100] }}
@@ -303,7 +310,7 @@ const Sidebar = () => {
                 icon={<DevicesIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />
+              /> */}
               {/* <Item
                 title="Device 2"
                 to="/Device2"
@@ -311,7 +318,7 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               /> */}
-              </SubMenu>
+              {/* </SubMenu> */}
             <Typography
               variant="h6"
               color={colors.greenAccent[400]}
