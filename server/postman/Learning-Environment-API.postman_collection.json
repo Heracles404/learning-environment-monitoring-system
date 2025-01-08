@@ -58,7 +58,7 @@
 					"response": []
 				},
 				{
-					"name": "GET /user",
+					"name": "GET /userName",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -83,7 +83,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/users/Juan",
+							"raw": "http://localhost:8000/users/asjkdhasdjkh",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -91,7 +91,7 @@
 							"port": "8000",
 							"path": [
 								"users",
-								"Juan"
+								"asjkdhasdjkh"
 							]
 						}
 					},
@@ -170,7 +170,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    // For remarks and Index - set conditions in arduino\r\n    \"time\": \"03:15 PM\",\r\n    \"temperature\": 46,\r\n    \"humidity\": 33,\r\n    \"heatIndex\": 37,\r\n    \"lighting\": 160,\r\n    \"voc\": 70,\r\n    \"IAQIndex\": 72,\r\n    \"indoorAir\": \"Good\",\r\n    \"temp\": \"Good\"\r\n}",
+							"raw": "{\r\n    // For remarks and Index - set conditions in arduino\r\n    \"classroom\": \"401\",\r\n    \"time\": \"03:15 PM\",\r\n    \"temperature\": 46,\r\n    \"humidity\": 33,\r\n    \"heatIndex\": 90,\r\n    \"lighting\": 70,\r\n    \"voc\": 80,\r\n    \"IAQIndex\": 100,\r\n    \"indoorAir\": \"Good\",\r\n    \"temp\": \"Good\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
