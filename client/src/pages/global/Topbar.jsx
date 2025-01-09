@@ -17,7 +17,7 @@ const Topbar = () => {
   return (
     <Box display="flex" justifyContent="right" p={2}>
       {/* SEARCH BAR */}
-      <Box
+      {/* <Box
         display="flex"
         backgroundColor={colors.primary[400]}
         borderRadius="3px"
@@ -26,7 +26,7 @@ const Topbar = () => {
         <IconButton type="button" sx={{ p: 1 }}>
           <SearchIcon />
         </IconButton>
-      </Box>
+      </Box> */}
 
       {/* ICONS */}
       <Box display="flex">
