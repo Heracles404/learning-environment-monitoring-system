@@ -24,7 +24,7 @@ const LoginPage = () => {
             } else {
                 localStorage.setItem("auth", "true");
                 localStorage.setItem("username", username);
-
+                localStorage.setItem("role", userData.role);
                 try {
                     await storeUserDataToLocalStorage(username);
                     console.log("User data stored successfully.");
