@@ -168,7 +168,7 @@ const Sidebar = () => {
               color={colors.greenAccent[400]}
               sx={{ m: "15px 0 5px 20px" }}
             >
-              Admin
+              Account Control
             </Typography>
 
                 <SubMenu
