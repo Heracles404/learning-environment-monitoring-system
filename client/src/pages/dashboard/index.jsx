@@ -23,18 +23,11 @@ import Co2Icon from '@mui/icons-material/Co2';
 
 import DashboardCards from "../../components/DashboardCards/DashboardCards";
 import DBRecords from "../../components/DashboardTables/DBRecords";
-import DBAccounts from "../../components/DashboardTables/DBAccounts";
 
 import DevicesIcon from '@mui/icons-material/Devices';
 import RssFeedOutlinedIcon from '@mui/icons-material/RssFeedOutlined';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 
-import OxygenChart from "../../components/LineCharts/Oxygen";
-import CarbonDioxideChart from "../../components/LineCharts/CarbonDioxide";
-import VolSmogChart from "../../components/LineCharts/VolSmog";
-import HeatIndexChart from "../../components/LineCharts/HeatIndex";
-import LightingChart from "../../components/LineCharts/Lighting";
-import HeadCountChart from "../../components/LineCharts/HeadCount";
 import DBVog from "../../components/DashboardTables/DBVog";
 
 const Dashboard = () => {
