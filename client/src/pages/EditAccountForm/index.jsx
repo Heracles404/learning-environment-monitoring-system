@@ -1,4 +1,5 @@
 import { Box, Button, TextField } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material';
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -108,7 +109,7 @@ const Form = () => {
                   <AccountCircleOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
                   <TextField
                       fullWidth
-                      variant="filled"
+                      variant="outlined"
                       type="text"
                       label="Username"
                       onBlur={handleBlur}
@@ -127,7 +128,7 @@ const Form = () => {
                 <BadgeOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
                   <TextField
                       fullWidth
-                      variant="filled"
+                      variant="outlined"
                       type="text"
                       label="First Name"
                       onBlur={handleBlur}
@@ -143,7 +144,7 @@ const Form = () => {
                 <BadgeOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
                   <TextField
                       fullWidth
-                      variant="filled"
+                      variant="outlined"
                       type="text"
                       label="Last Name"
                       onBlur={handleBlur}
@@ -155,27 +156,34 @@ const Form = () => {
                       sx={{ gridColumn: "span 2" }}
                   />
                   </Box>
-                  <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 4"}}>
-                <AssignmentIndOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
-                  <TextField
-                      fullWidth
-                      variant="filled"
-                      type="text"
-                      label="Role"
+                  <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 4" }}>
+                  <AssignmentIndOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
+                  <FormControl fullWidth variant="outlined" sx={{ gridColumn: "span 4" }}>
+                    <InputLabel id="role-select-label">Role</InputLabel>
+                    <Select
+                      labelId="role-select-label"
+                      id="role-select"
+                      value={values.role} // Updated value
+                      onChange={handleChange} // Handles selection change
+                      name="role" // Field name
                       onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.role}
-                      name="role"
-                      error={!!touched.role && !!errors.role}
-                      helperText={touched.role && errors.role}
-                      sx={{ gridColumn: "span 4" }}
-                  />
-                  </Box>
+                      error={!!touched.role && !!errors.role} // Error check
+                    >
+                      <MenuItem value="Principal">Principal</MenuItem>
+                      <MenuItem value="Physical Facilitator Coordinator">Physical Facilitator Coordinator</MenuItem>
+                      <MenuItem value="SDRRM Coordinator">SDRRM Coordinator</MenuItem>
+                    </Select>
+                    {touched.role && errors.role && (
+                      <FormHelperText error>{errors.role}</FormHelperText> // Error text
+                    )}
+                  </FormControl>
+                </Box>
+
                   <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2"}}>
                 <LockOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
                   <TextField
                       fullWidth
-                      variant="filled"
+                      variant="outlined"
                       type="password"
                       label="New Password (Optional)"
                       onBlur={handleBlur}
@@ -191,7 +199,7 @@ const Form = () => {
                 <LockOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
                   <TextField
                       fullWidth
-                      variant="filled"
+                      variant="outlined"
                       type="password"
                       label="Confirm New Password (Optional)"
                       onBlur={handleBlur}
