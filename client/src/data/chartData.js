@@ -170,8 +170,8 @@ export const CO2Data = [
   {
     title: "CO2 Levels",
     color: {
-      backGround: "linear-gradient(180deg, #fceabb 0%, #f8b500 200%)",
-      boxShadow: "0px 10px 20px 0px #ffdea2",
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
+      boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     png: UilUsdSquare,
     series: [
@@ -204,8 +204,8 @@ export const HeatIndexData = [
   {
     title: "Heat Index",
     color: {
-      backGround: "linear-gradient(180deg, #fbc2eb 0%, #a18cd1 200%)",
-      boxShadow: "0px 10px 20px 0px #c7d2f3",
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
+      boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     png: UilUsdSquare,
     series: [
@@ -238,8 +238,8 @@ export const LightingData = [
   {
     title: "Lighting",
     color: {
-      backGround: "linear-gradient(180deg, #fbc2eb 0%, #e2c1ec 200%)",
-      boxShadow: "0px 10px 20px 0px #e6c4f5",
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
+      boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     png: UilUsdSquare,
     series: [
@@ -272,8 +272,8 @@ export const VolcanicSmogData = [
   {
     title: "Volcanic Smog",
     color: {
-      backGround: "linear-gradient(180deg, #fbc2eb 0%, #fed6e3 200%)",
-      boxShadow: "0px 10px 20px 0px #f2d3e2",
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
+      boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     png: UilUsdSquare,
     series: [
