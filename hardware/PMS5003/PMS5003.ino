@@ -31,6 +31,9 @@ String recordTime;
 float pm25, pm10;
 int idx25, idx10, level;
 
+// Time variables
+int lastPostMinute = -1;
+
 void wifiConfig() {
   Serial.println();
   Serial.print(F("Connecting to "));
@@ -63,7 +66,6 @@ String getFormattedTime() {
     return String(buffer);
 }
 
-
 void setup() {
   Serial.begin(9600); 
   pmsSerial.begin(9600); 
@@ -75,32 +77,57 @@ void setup() {
 }
 
 void loop() {
-  Serial.println(F("Waking up, wait 10 seconds for stable readings..."));
-  pms.wakeUp();
-  delay(10000);
+  // Update Time
+  String currentTime = getFormattedTime();
+  
+  // Get the current time from the struct tm
+  struct tm timeInfo;
+  if (!getLocalTime(&timeInfo)) {
+    Serial.println("Failed to obtain time");
+    return;
+  }
 
-  Serial.println(F("Send read request..."));
-  pms.requestRead();
+  // Get current hour and minute from timeInfo struct
+  int currentHour = timeInfo.tm_hour;   // Get the current hour (24-hour format)
+  int currentMinute = timeInfo.tm_min;  // Get the current minute
 
-  Serial.println(F("Wait max. 1 second for read..."));
-  if (pms.readUntil(data)) {
-    pm25 = data.PM_AE_UG_2_5;
-    pm10 = data.PM_AE_UG_10_0;
+  // Define target times for data posting
+  int targetHour1 = 14;  // 3:00 PM
+  int targetMinute1 = 51; // 0 minutes
 
-    idx25 = calculateAQI(pm25, "PM2.5");
-    idx10 = calculateAQI(pm10, "PM10");
+  int targetHour2 = 14;  // 4:00 PM
+  int targetMinute2 = 52; // 30 minutes
 
-    level = concernLevel(max(idx25, idx10));
+  // Check if it's time to post data (based on defined target times)
+  if ((currentHour == targetHour1 && currentMinute == targetMinute1 && lastPostMinute != currentMinute) ||
+      (currentHour == targetHour2 && currentMinute == targetMinute2 && lastPostMinute != currentMinute)) {
+    
+    // Wake up the sensor, get the readings, and send data
+    pms.wakeUp();
+    delay(10000);  // Wait for sensor to stabilize
+    pms.requestRead();
+    if (pms.readUntil(data)) {
+      pm25 = data.PM_AE_UG_2_5;
+      pm10 = data.PM_AE_UG_10_0;
 
-    recordTime = getFormattedTime(); // Fetch current time
-    dataDisplay();
-    sendDataToServer(recordTime, pm25, pm10, max(idx25, idx10), level);
-  } else {
-    Serial.println(F("No data."));
+      idx25 = calculateAQI(pm25, "PM2.5");
+      idx10 = calculateAQI(pm10, "PM10");
+
+      level = concernLevel(max(idx25, idx10));
+
+      recordTime = currentTime; // Use the updated time
+      dataDisplay();
+      sendDataToServer(recordTime, pm25, pm10, max(idx25, idx10), level);
+    } else {
+      Serial.println(F("No data."));
+    }
+
+    // Update last post minute to prevent duplicate posts
+    lastPostMinute = currentMinute;
   }
 
   pms.sleep();
-  delay(2000);
+  delay(2000); // Delay before the next loop cycle
 }
 
 int concernLevel(int idx) {
