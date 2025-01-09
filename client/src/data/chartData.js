@@ -33,7 +33,7 @@ const fetchData = async (key) => {
   }
 };
 
-// Cards Data
+// Cards Data with line colors for each room
 export const CardsData = [
   {
     title: "Air Quality",
@@ -46,56 +46,120 @@ export const CardsData = [
     png: AirIcon,
     series: [
       {
-        name: "Air Quality",
+        name: "Room 1 Air Quality",
         data: await fetchData("IAQIndex"),
+        color: "#FF5733", // Red line color for Room 1
+      },
+      {
+        name: "Room 2 Air Quality",
+        data: [72, 65, 80, 90, 85, 95, 88], // Hardcoded sample data
+        color: "#33FF57", // Green line color for Room 2
+      },
+      {
+        name: "Room 3 Air Quality",
+        data: [70, 75, 80, 85, 90, 95, 100], // Hardcoded sample data
+        color: "#3357FF", // Blue line color for Room 3
+      },
+      {
+        name: "Room 4 Air Quality",
+        data: [60, 65, 70, 75, 80, 85, 90], // Hardcoded sample data
+        color: "#FF33A1", // Pink line color for Room 4
       },
     ],
   },
   {
     title: "Temperature",
     color: {
-      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
-      boxShadow: "0px 10px 20px 0px #e0c6f5",
+      backGround: "linear-gradient(180deg, #ff9a9e 0%, #fad0c4 200%)",
+      boxShadow: "0px 10px 20px 0px #f9c6c9",
     },
     barValue: 80,
-    value: "BAD",
+    value: "HOT",
     png: DeviceThermostatIcon,
     series: [
       {
-        name: "Temperature",
+        name: "Room 1 Temperature",
         data: await fetchData("temperature"),
+        color: "#FF5733", // Red line color for Room 1
+      },
+      {
+        name: "Room 2 Temperature",
+        data: [29, 30, 31, 32, 33, 34, 35], // Hardcoded sample data
+        color: "#33FF57", // Green line color for Room 2
+      },
+      {
+        name: "Room 3 Temperature",
+        data: [28, 29, 30, 31, 32, 33, 34], // Hardcoded sample data
+        color: "#3357FF", // Blue line color for Room 3
+      },
+      {
+        name: "Room 4 Temperature",
+        data: [25, 26, 27, 28, 29, 30, 31], // Hardcoded sample data
+        color: "#FF33A1", // Pink line color for Room 4
       },
     ],
   },
   {
     title: "Light",
     color: {
-      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
-      boxShadow: "0px 10px 20px 0px #e0c6f5",
+      backGround: "linear-gradient(180deg, #fbc2eb 0%, #a6c1ee 200%)",
+      boxShadow: "0px 10px 20px 0px #d5e4f4",
     },
     barValue: 60,
-    value: "GOOD",
+    value: "BRIGHT",
     png: WbIncandescentIcon,
     series: [
       {
-        name: "Light",
+        name: "Room 1 Light",
         data: await fetchData("lighting"),
+        color: "#FF5733", // Red line color for Room 1
+      },
+      {
+        name: "Room 2 Light",
+        data: [120, 130, 150, 170, 160, 180, 190], // Hardcoded sample data
+        color: "#33FF57", // Green line color for Room 2
+      },
+      {
+        name: "Room 3 Light",
+        data: [110, 120, 130, 140, 150, 160, 170], // Hardcoded sample data
+        color: "#3357FF", // Blue line color for Room 3
+      },
+      {
+        name: "Room 4 Light",
+        data: [100, 110, 120, 130, 140, 150, 160], // Hardcoded sample data
+        color: "#FF33A1", // Pink line color for Room 4
       },
     ],
   },
   {
     title: "Volcanic Smog",
     color: {
-      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
-      boxShadow: "0px 10px 20px 0px #e0c6f5",
+      backGround: "linear-gradient(180deg, #a8edea 0%, #fed6e3 200%)",
+      boxShadow: "0px 10px 20px 0px #f2d3e2",
     },
-    barValue: 60,
-    value: "GOOD",
+    barValue: 50,
+    value: "SAFE",
     png: VolcanoIcon,
     series: [
       {
-        name: "Volcanic Smog",
+        name: "Room 1 Volcanic Smog",
         data: await fetchData("voc"),
+        color: "#FF5733", // Red line color for Room 1
+      },
+      {
+        name: "Room 2 Volcanic Smog",
+        data: [60, 65, 70, 75, 80, 85, 90], // Hardcoded sample data
+        color: "#33FF57", // Green line color for Room 2
+      },
+      {
+        name: "Room 3 Volcanic Smog",
+        data: [55, 60, 65, 70, 75, 80, 85], // Hardcoded sample data
+        color: "#3357FF", // Blue line color for Room 3
+      },
+      {
+        name: "Room 4 Volcanic Smog",
+        data: [50, 55, 60, 65, 70, 75, 80], // Hardcoded sample data
+        color: "#FF33A1", // Pink line color for Room 4
       },
     ],
   },
@@ -106,14 +170,30 @@ export const CO2Data = [
   {
     title: "CO2 Levels",
     color: {
-      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
-      boxShadow: "0px 10px 20px 0px #e0c6f5",
+      backGround: "linear-gradient(180deg, #fceabb 0%, #f8b500 200%)",
+      boxShadow: "0px 10px 20px 0px #ffdea2",
     },
-    png: UilUsdSquare, // Use the imported icon
+    png: UilUsdSquare,
     series: [
       {
-        name: "CO2 Levels",
+        name: "Room 1 CO2 Levels",
         data: await fetchData("CO2"),
+        color: "#FF5733", // Red line color for Room 1
+      },
+      {
+        name: "Room 2 CO2 Levels",
+        data: [400, 420, 430, 450, 470, 480, 490], // Hardcoded sample data
+        color: "#33FF57", // Green line color for Room 2
+      },
+      {
+        name: "Room 3 CO2 Levels",
+        data: [390, 400, 410, 420, 430, 440, 450], // Hardcoded sample data
+        color: "#3357FF", // Blue line color for Room 3
+      },
+      {
+        name: "Room 4 CO2 Levels",
+        data: [380, 390, 400, 410, 420, 430, 440], // Hardcoded sample data
+        color: "#FF33A1", // Pink line color for Room 4
       },
     ],
   },
@@ -124,14 +204,30 @@ export const HeatIndexData = [
   {
     title: "Heat Index",
     color: {
-      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
-      boxShadow: "0px 10px 20px 0px #e0c6f5",
+      backGround: "linear-gradient(180deg, #fbc2eb 0%, #a18cd1 200%)",
+      boxShadow: "0px 10px 20px 0px #c7d2f3",
     },
-    png: UilUsdSquare, // Use the imported icon
+    png: UilUsdSquare,
     series: [
       {
-        name: "Heat Index",
+        name: "Room 1 Heat Index",
         data: await fetchData("heatIndex"),
+        color: "#FF5733", // Red line color for Room 1
+      },
+      {
+        name: "Room 2 Heat Index",
+        data: [35, 36, 37, 38, 39, 40, 41], // Hardcoded sample data
+        color: "#33FF57", // Green line color for Room 2
+      },
+      {
+        name: "Room 3 Heat Index",
+        data: [34, 35, 36, 37, 38, 39, 40], // Hardcoded sample data
+        color: "#3357FF", // Blue line color for Room 3
+      },
+      {
+        name: "Room 4 Heat Index",
+        data: [33, 34, 35, 36, 37, 38, 39], // Hardcoded sample data
+        color: "#FF33A1", // Pink line color for Room 4
       },
     ],
   },
@@ -142,14 +238,30 @@ export const LightingData = [
   {
     title: "Lighting",
     color: {
-      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
-      boxShadow: "0px 10px 20px 0px #e0c6f5",
+      backGround: "linear-gradient(180deg, #fbc2eb 0%, #e2c1ec 200%)",
+      boxShadow: "0px 10px 20px 0px #e6c4f5",
     },
-    png: UilUsdSquare, // Use the imported icon
+    png: UilUsdSquare,
     series: [
       {
-        name: "Lighting",
+        name: "Room 1 Lighting",
         data: await fetchData("lighting"),
+        color: "#FF5733", // Red line color for Room 1
+      },
+      {
+        name: "Room 2 Lighting",
+        data: [60, 70, 75, 80, 90, 95, 100], // Hardcoded sample data
+        color: "#33FF57", // Green line color for Room 2
+      },
+      {
+        name: "Room 3 Lighting",
+        data: [50, 60, 70, 80, 90, 100, 110], // Hardcoded sample data
+        color: "#3357FF", // Blue line color for Room 3
+      },
+      {
+        name: "Room 4 Lighting",
+        data: [40, 50, 60, 70, 80, 90, 100], // Hardcoded sample data
+        color: "#FF33A1", // Pink line color for Room 4
       },
     ],
   },
@@ -160,14 +272,30 @@ export const VolcanicSmogData = [
   {
     title: "Volcanic Smog",
     color: {
-      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
-      boxShadow: "0px 10px 20px 0px #e0c6f5",
+      backGround: "linear-gradient(180deg, #fbc2eb 0%, #fed6e3 200%)",
+      boxShadow: "0px 10px 20px 0px #f2d3e2",
     },
-    png: UilUsdSquare, // Use the imported icon
+    png: UilUsdSquare,
     series: [
       {
-        name: "Volcanic Smog",
+        name: "Room 1 Volcanic Smog",
         data: await fetchData("voc"),
+        color: "#FF5733", // Red line color for Room 1
+      },
+      {
+        name: "Room 2 Volcanic Smog",
+        data: [50, 55, 60, 65, 70, 75, 80], // Hardcoded sample data
+        color: "#33FF57", // Green line color for Room 2
+      },
+      {
+        name: "Room 3 Volcanic Smog",
+        data: [45, 50, 55, 60, 65, 70, 75], // Hardcoded sample data
+        color: "#3357FF", // Blue line color for Room 3
+      },
+      {
+        name: "Room 4 Volcanic Smog",
+        data: [40, 45, 50, 55, 60, 65, 70], // Hardcoded sample data
+        color: "#FF33A1", // Pink line color for Room 4
       },
     ],
   },
