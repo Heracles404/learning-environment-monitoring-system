@@ -89,9 +89,9 @@ const Accounts = () => {
   };
 
   return (
-    <Box m="20px">
+    <Box m="5px 25px">
       <Header title="ACCOUNTS" subtitle="Managing the Users" />
-      <Box mt="40px">
+      <Box mt="1px">
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
 <Typography variant="caption" sx={{ ml: 2 }}>
                         Records for Volcanic Smog Parameters
