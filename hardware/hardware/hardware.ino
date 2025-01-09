@@ -17,7 +17,6 @@
 // Inclusions for BH1750
 #include <BH1750.h>
 
-
 // Inclusions for Time
 #include "time.h"
 
@@ -37,11 +36,11 @@ Adafruit_BME680 bme;
 BH1750 lightMeter;
 
 // ESP01 Variables
-const char* ssid = "IoT";
-const char* password = "AccessPoint.2024";
+const char* ssid = "TP-Link_883A";
+const char* password = "95379951";
 
 // API Components
-const char* host = "http://192.168.68.106";
+const char* host = "http://192.168.0.100";
 const int port = 8000;
 const char* endpoint = "/sensors";
 
@@ -62,7 +61,10 @@ void setup() {
   // Wifi Setup
   wifiInit();
 
-  // // BME Setup
+  // Time Initialization
+  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+
+  // BME Setup
   if (!bme.begin(0x77)) {  // Make sure the sensor initializes
     Serial.println(F("BME680 not found!"));
     while (1);
@@ -85,6 +87,12 @@ void loop() {
   Serial.println(F("--------------------------------"));
   bme680Readings(); 
   luxFunc();
+
+  // Get formatted time
+  recordTime = getFormattedTime();
+  Serial.print(F("Current Time: "));
+  Serial.println(recordTime);
+
   Serial.println(F("--------------------------------"));
   sendDataToServer(classroom, recordTime, temperature, humidity, voc, IAQIndex, lux, heatIndex, indoorAir, temp); 
 
@@ -100,6 +108,17 @@ void loop() {
   }
 
   delay(15000);
+}
+
+String getFormattedTime() {
+    struct tm timeInfo;
+    if (!getLocalTime(&timeInfo)) {
+        Serial.println("Failed to obtain time");
+        return "12:00 AM"; // Fallback value
+    }
+    char buffer[9];
+    strftime(buffer, sizeof(buffer), "%I:%M %p", &timeInfo); // Format: HH:MM AM/PM
+    return String(buffer);
 }
 
 void wifiInit(){  
@@ -233,48 +252,32 @@ int calculateHeatIndex(float T, float H) {
 }
 
 void sendDataToServer(String classroom, String recordTime, float temperature, float humidity, float voc, float IAQIndex, float lux, int heatIndex, String indoorAir, String temp) {
-  if (WiFi.status() == WL_CONNECTED) {
-    WiFiClient client;
-    HTTPClient http;
-    String url = String(host) + ":" + String(port) + endpoint;
+  HTTPClient http;
+  WiFiClient client;  // Create a WiFiClient object
 
-    http.begin(client, url); // Use WiFiClient object
-    http.addHeader("Content-Type", "application/json");
+  String url = String(host) + ":" + String(port) + String(endpoint);
+  http.begin(client, url.c_str());  // Pass the WiFiClient object and the URL
 
-    // Construct JSON payload
-    StaticJsonDocument<200> jsonDoc;
-    jsonDoc["time"] = recordTime;
-    jsonDoc["temperature"] = temperature;
-    jsonDoc["humidity"] = humidity;
-    jsonDoc["voc"] = voc;
-    jsonDoc["IAQIndex"] = IAQIndex;
-    jsonDoc["lighting"] = lux;
-    jsonDoc["heatIndex"] = heatIndex;
-    jsonDoc["indoorAir"] = indoorAir;
-    jsonDoc["temp"] = temp;
+  StaticJsonDocument<200> jsonDoc;
+  String jsonPayload;
 
-    String requestBody;
-    serializeJson(jsonDoc, requestBody);
+  jsonDoc["classroom"] = classroom;
+  jsonDoc["recordTime"] = recordTime;
+  jsonDoc["temperature"] = temperature;
+  jsonDoc["humidity"] = humidity;
+  jsonDoc["voc"] = voc;
+  jsonDoc["iaq"] = IAQIndex;
+  jsonDoc["lux"] = lux;
+  jsonDoc["heatIndex"] = heatIndex;
+  jsonDoc["indoorAir"] = indoorAir;
+  jsonDoc["temp"] = temp;
 
-    Serial.print(F("Sending POST request to: "));
-    Serial.println(url);
-    Serial.print(F("Payload: "));
-    Serial.println(requestBody);
+  serializeJson(jsonDoc, jsonPayload);
+  http.addHeader("Content-Type", "application/json");
+  int responseCode = http.POST(jsonPayload);
 
-    int httpResponseCode = http.POST(requestBody);
-
-    if (httpResponseCode > 0) {
-      Serial.print(F("Response code: "));
-      Serial.println(httpResponseCode);
-      Serial.print(F("Response: "));
-      Serial.println(http.getString());
-    } else {
-      Serial.print(F("Error sending POST request. Code: "));
-      Serial.println(httpResponseCode);
-    }
-
-    http.end();
-  }else {
-      Serial.print(F("WiFi not connected"));
-  }
+  Serial.print("Response Code: ");
+  Serial.println(responseCode);
+  http.end();
 }
+
