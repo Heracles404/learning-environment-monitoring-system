@@ -48,17 +48,11 @@ const Dashboard = () => {
       display="flex" 
       justifyContent="space-between"
        alignItems="space-between">
-        <Header title="DASHBOARD" subtitle="Welcome to Edilberto S. Legaspi Integrated High School Dashboard
-        " />
-  
+        <Header title="DASHBOARD" subtitle="Welcome to Edilberto S. Legaspi Integrated High School Dashboard" />
       </Box>
-
-      <DashboardCards/>
-      <DBRecords />
-      {/* <DBAccounts/> */}
-      <DBVog/>
-      
-       
+        <DashboardCards/>
+        <DBRecords />
+        <DBVog/>    
     </Box>
   );
 };
