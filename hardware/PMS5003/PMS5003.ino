@@ -6,29 +6,28 @@
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
 
-const char* ssid = "IoT";
-const char* password = "AccessPoint.2024";
-const char* host = "http://192.168.68.106";
-const int port = 8000;
-const char* endpoint = "/vog";
-
-
 // Time Components
 #include "time.h"
+
+const char* ssid = "TP-Link_883A";
+const char* password = "95379951";
+const char* host = "http://192.168.0.100";
+const int port = 8000;
+const char* endpoint = "/vog";
 
 const char* ntpServer = "time.nist.gov"; // Reliable NTP server
 const long gmtOffset_sec = 8 * 3600;     // Adjust for your timezone (GMT+8)
 const int daylightOffset_sec = 0;        // No daylight saving time
 
 // PMS Constants
-const int txNode = D4;  
-const int rxNode = D3;  
+const int txNode = D3;  
+const int rxNode = D4;  
 
 SoftwareSerial pmsSerial(rxNode, txNode); 
 PMS pms(pmsSerial);
 PMS::DATA data;
 
-String time;
+String recordTime;
 float pm25, pm10;
 int idx25, idx10, level;
 
@@ -49,11 +48,28 @@ void wifiConfig() {
   Serial.println(WiFi.localIP());  
 }
 
+void setupTime() {
+    configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+}
+
+String getFormattedTime() {
+    struct tm timeInfo;
+    if (!getLocalTime(&timeInfo)) {
+        Serial.println("Failed to obtain time");
+        return "12:00 AM"; // Fallback value
+    }
+    char buffer[9];
+    strftime(buffer, sizeof(buffer), "%I:%M %p", &timeInfo); // Format: HH:MM AM/PM
+    return String(buffer);
+}
+
+
 void setup() {
   Serial.begin(9600); 
   pmsSerial.begin(9600); 
 
   wifiConfig();
+  setupTime();
 
   pms.passiveMode();
 }
@@ -76,15 +92,14 @@ void loop() {
 
     level = concernLevel(max(idx25, idx10));
 
+    recordTime = getFormattedTime(); // Fetch current time
     dataDisplay();
-    sendDataToServer(time, pm25, pm10, max(idx25, idx10), level);
+    sendDataToServer(recordTime, pm25, pm10, max(idx25, idx10), level);
   } else {
     Serial.println(F("No data."));
   }
 
   pms.sleep();
-
-
   delay(2000);
 }
 
@@ -130,7 +145,7 @@ int calculateAQI(float concentration, String pollutant) {
   return -1;
 }
 
-void sendDataToServer(String time, float pm25, float pm10, int OAQIndex, int level) {
+void sendDataToServer(String recordTime, float pm25, float pm10, int OAQIndex, int level) {
   if (WiFi.status() == WL_CONNECTED) {
     WiFiClient client;
     HTTPClient http;
@@ -141,7 +156,7 @@ void sendDataToServer(String time, float pm25, float pm10, int OAQIndex, int lev
 
     // Construct JSON payload
     StaticJsonDocument<200> jsonDoc;
-    jsonDoc["time"] = time;
+    jsonDoc["time"] = recordTime;
     jsonDoc["pm25"] = pm25;
     jsonDoc["pm10"] = pm10;
     jsonDoc["OAQIndex"] = OAQIndex;
@@ -168,7 +183,7 @@ void sendDataToServer(String time, float pm25, float pm10, int OAQIndex, int lev
     }
 
     http.end();
-  }else {
-      Serial.print(F("WiFi not connected"));
+  } else {
+    Serial.print(F("WiFi not connected"));
   }
 }
