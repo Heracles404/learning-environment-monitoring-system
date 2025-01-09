@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { httpGetAllReadouts } from "../../hooks/sensors.requests";
-import { Box, Paper, Typography } from "@mui/material";
+import { Box,Button, Paper, Typography } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
+import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
+
 
 const Records = () => {
     const theme = useTheme();
@@ -48,9 +50,34 @@ const Records = () => {
     ];
 
     return (
-        <Box m="20px">
-            <Header title="Records" subtitle="Managing the Records" />
-            <Box mt="40px">
+        <Box m="5px 25px">
+            {/* HEADER */}
+      <Box 
+      display="flex" 
+      justifyContent="space-between"
+       alignItems="space-between">
+        <Header title="Records" subtitle="Managing the Records" />
+            
+        <Box>
+          <Button
+            sx={{
+              backgroundColor: colors.greenAccent[700],
+              // color: colors.grey[100],
+              color: "white",
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+            }}
+          >
+            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+            Download Reports
+          </Button>
+        </Box>
+
+       </Box>
+       
+            
+            <Box mt="1px">
                 <Paper sx={{ height: "70vh", width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
                         Records for Environmental Parameters

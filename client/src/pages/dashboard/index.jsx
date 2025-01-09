@@ -36,13 +36,118 @@ const Dashboard = () => {
 
   return (
     <Box m="0 5px 0 25px" height="100vh" overflow="auto">
+      
       {/* HEADER */}
       <Box 
       display="flex" 
       justifyContent="space-between"
        alignItems="space-between">
+        
         <Header title="DASHBOARD" subtitle="Welcome to Edilberto S. Legaspi Integrated High School Dashboard" />
+      {/* STATUS */}
+    <Grid container 
+    display='flex'
+    justifyContent ="space-between"
+    alignContent="space-between"
+    pr="120px"
+    ml="4px"
+    rowSpacing={1}
+    columnSpacing={{ xs: 1, sm: 3, md: 3 }}
+    // pr="50px"
+    mb="30px">
+      <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
+        <Box
+          // gridColumn="span 2"        
+          backgroundColor={colors.greenAccent[600]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          sx={{
+            borderRadius: '12px',
+            height: '62px', 
+            width: {
+              xs: 136, // 0
+              sm: 110, // 600
+              md: 136, // 900
+              lg: 136, // 1200
+              xl: 136, // 1536
+          },
+          }}
+        >
+          <StatBox
+            title="ACTIVE"
+            subtitle="Device 1"
+            // progress="0.75"
+            // increase="+14%"
+            // icon={
+            //   <DevicesIcon
+            //     sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            //   />
+            // }
+            icon2={
+              <RssFeedOutlinedIcon 
+                sx={{ color: "#00cc00 " , fontSize: "46px" }}
+              />
+            }
+          />
+        </Box>
+        </Grid>
+        <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
+        <Box
+          // gridColumn="span 2"
+          backgroundColor={colors.greenAccent[600]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          sx={{
+            borderRadius: '12px',
+            height: '62px', 
+            width: {
+              xs: 136, // 0
+              sm: 110, // 600
+              md: 136, // 900
+              lg: 136, // 1200
+              xl: 136, // 1536
+          },
+          }}
+
+        >
+          <StatBox
+            title="ALERT"
+            subtitle="Device 2"
+            // progress="0.50"
+            // increase="+21%"
+            // icon={
+            //   <DevicesIcon
+            //     sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            //   />
+            // }
+            icon2={
+              <WarningAmberOutlinedIcon
+                sx={{ color: colors.redAccent[600], fontSize: "46px" }}
+              />
+            }
+          />
+        </Box>
+        </Grid>
+      </Grid>
+
+        {/* <Box>
+          <Button
+            sx={{
+              backgroundColor: colors.greenAccent[700],
+              color: colors.grey[100],
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+            }}
+          >
+            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+            Download Reports
+          </Button>
+        </Box> */}
       </Box>
+      
         <DashboardCards/>
         <DBRecords />
         <DBVog/>    
