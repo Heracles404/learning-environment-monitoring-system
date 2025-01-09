@@ -5,29 +5,15 @@ import { Link, useNavigate } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
-import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
-import LegendToggleIcon from '@mui/icons-material/LegendToggle';
-import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
-import ReceiptIcon from '@mui/icons-material/Receipt';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
-import DevicesIcon from '@mui/icons-material/Devices';
-import MonitorIcon from '@mui/icons-material/Monitor';
 import PersonSearchOutlinedIcon from '@mui/icons-material/PersonSearchOutlined';
 
 import AirIcon from '@mui/icons-material/Air';
 import DeviceThermostatIcon from '@mui/icons-material/DeviceThermostat';
-import VolcanoIcon from '@mui/icons-material/Volcano';
 import VolcanoOutlinedIcon from '@mui/icons-material/VolcanoOutlined';
 import WbIncandescentOutlinedIcon from '@mui/icons-material/WbIncandescentOutlined';
 import DeviceHubOutlinedIcon from '@mui/icons-material/DeviceHubOutlined';
@@ -35,8 +21,6 @@ import DeviceHubOutlinedIcon from '@mui/icons-material/DeviceHubOutlined';
 import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined';
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 
-import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
-import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 const Item = ({ title, to, icon, selected, setSelected, onClick }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -186,35 +170,41 @@ const Sidebar = () => {
             >
               Admin
             </Typography>
-            <SubMenu
-              title="Accounts"
-              icon={<PersonOutlinedIcon />}
-              style={{ color: colors.greenAccent[100] }}
-            >
-            <Item
-              title="Users"
-              to="/Accounts"
-              icon={<PersonSearchOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-                title="Edit Account"
-                to={`/EditAccount/${username}`} // Use backticks for template literals
-                icon={< ManageAccountsOutlinedIcon/>}
-                selected={selected}
-                setSelected={setSelected}
-                />
-            <Item
-              title="Create New Account"
-              to="/CreateNewAccount"
-              icon={<PersonAddAltOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            </SubMenu>
 
-            <Typography
+                <SubMenu
+                    title="Accounts"
+                    icon={<PersonOutlinedIcon />}
+                    style={{ color: colors.greenAccent[100] }}
+                >
+                    {(role.toUpperCase() === "PRINCIPAL" || role.toUpperCase() === "ADMIN") && (
+                        <>
+                            <Item
+                                title="Users"
+                                to="/Accounts"
+                                icon={<PersonSearchOutlinedIcon />}
+                                selected={selected}
+                                setSelected={setSelected}
+                            />
+                            <Item
+                                title="Create New Account"
+                                to="/CreateNewAccount"
+                                icon={<PersonAddAltOutlinedIcon />}
+                                selected={selected}
+                                setSelected={setSelected}
+                            />
+                        </>
+                    )}
+                    <Item
+                        title="Edit Account"
+                        to={`/EditAccount/${username}`} // Use backticks for template literals
+                        icon={<ManageAccountsOutlinedIcon />}
+                        selected={selected}
+                        setSelected={setSelected}
+                    />
+                </SubMenu>
+
+
+                <Typography
               variant="h6"
               color={colors.greenAccent[400]}
               sx={{ m: "15px 0 5px 20px" }}
