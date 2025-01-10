@@ -41,7 +41,10 @@ const Dashboard = () => {
       <Box 
       display="flex" 
       justifyContent="space-between"
-       alignItems="space-between">
+       alignItems="space-between"
+       sx={{
+        flexDirection: { xs: 'column', sm: 'row' }
+      }}>
         
         <Header title="DASHBOARD" subtitle="Welcome to Edilberto S. Legaspi Integrated High School Dashboard" />
       {/* STATUS */}
@@ -55,7 +58,7 @@ const Dashboard = () => {
     columnSpacing={{ xs: 1, sm: 3, md: 3 }}
     // pr="50px"
     mb="30px">
-      <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
+      <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 2 }}>
         <Box
           // gridColumn="span 2"        
           backgroundColor={colors.greenAccent[600]}
@@ -92,7 +95,7 @@ const Dashboard = () => {
           />
         </Box>
         </Grid>
-        <Grid item size={{ xs: 6, sm: 4, md: 4, lg: 2 }}>
+        <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 2 }} >
         <Box
           // gridColumn="span 2"
           backgroundColor={colors.greenAccent[600]}
