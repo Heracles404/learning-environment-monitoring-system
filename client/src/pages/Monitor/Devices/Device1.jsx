@@ -1,317 +1,165 @@
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
-import Grid from '@mui/material/Grid2';
-
-import { mockTransactions } from "../../../data/mockData";
+import React, { useEffect, useState } from "react";
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Typography, useTheme } from "@mui/material";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { tokens } from "../../../theme";
-
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import TrafficIcon from "@mui/icons-material/Traffic";
+import { httpGetAllUsers, httpDeleteUser } from "../../../hooks/users.requests";
 import Header from "../../../components/Header";
-
-import StatBox from "../../../components/StatBox";
-import ProgressCircle from "../../../components/ProgressCircle";
-import GppGoodIcon from '@mui/icons-material/GppGood';
-
-import AirIcon from '@mui/icons-material/Air';
-import DeviceThermostatIcon from '@mui/icons-material/DeviceThermostat';
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import WbIncandescentIcon from '@mui/icons-material/WbIncandescent';
-import VolcanoIcon from '@mui/icons-material/Volcano';
-import Co2Icon from '@mui/icons-material/Co2';
+import { useNavigate } from "react-router-dom";
 
 const Device1 = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
+
+  const [rows, setRows] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await httpGetAllUsers(); // Fetch data from API
+      const formattedData = data.map(user => ({
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        userName: user.userName,
+        role: user.role,
+      }));
+      setRows(formattedData);
+    };
+
+    fetchData(); // Fetch data when component mounts
+  }, []);
+
+  const columns = [
+    { id: "id", label: "ID", minWidth: 60 },
+    { id: "classroom", label: "Classroom", minWidth: 150 },
+    { id: "status", label: "Status", minWidth: 150 },
+    // { id: "userName", label: "Username", minWidth: 150 },
+    // { id: "role", label: "Role", minWidth: 120 },
+    {
+      id: "edit",
+      label: "Edit",
+      minWidth: 80,
+      align: "center",
+      renderCell: (row) => (
+          <button
+              style={{ background: "none", border: "none", cursor: "pointer" }}
+              onClick={() => navigate(`../EditAccount/${row.userName}`)} // Navigate to edit page with user ID
+          >
+            <EditOutlinedIcon style={{ color: "orange", fontSize: "20px" }} />
+          </button>
+      ),
+    },
+    {
+      id: "delete",
+      label: "Delete",
+      minWidth: 80,
+      align: "center",
+      renderCell: (row) => (
+          <button
+              style={{ background: "none", border: "none", cursor: "pointer" }}
+              onClick={async () => {
+                const confirmed = window.confirm(`Are you sure you want to delete ${row.userName}?`);
+                if (confirmed) {
+                  const response = await httpDeleteUser(row.userName);
+                  if (response.ok) {
+                    // Update the rows state to remove the deleted user
+                    setRows((prevRows) => prevRows.filter((user) => user.userName !== row.userName));
+                  } else {
+                    alert("Failed to delete user. Please try again.");
+                  }
+                }
+              }}
+          >
+            <DeleteOutlineIcon style={{ color: "red", fontSize: "20px" }} />
+          </button>
+      ),
+    }
+  ];
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
 
   return (
-    <Box m="0 5px 0 25px"
-    width="50%"
-    >
-      {/* HEADER */}
-      <Box 
-      display="flex" 
-      // justifyContent="space-between"
-       alignItems="center"
-       mb="10px">
-        <Header title="Device Status" subtitle="Sensors" />
+    <Box m="5px 25px">
+      <Header title="DEVICES" subtitle="Managing the Device" />
+      <Box mt="1px">
+        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+<Typography variant="caption" sx={{ ml: 2 }}>
+                         Device Information
+                    </Typography>          
+          <TableContainer sx={{ height: "65vh" }}>
+            <Table stickyHeader>
+              <TableHead>
+                <TableRow>
+                  {columns.map((column) => (
+                    <TableCell
+                      key={column.id}
+                      style={{
+                        minWidth: column.minWidth,
+                        // fontWeight: "bold",
+                        backgroundColor: colors.greenAccent[700],
+                        color: colors.grey[100],
+                      }}
+                      align={column.align || "left"}
+                    >
+                      {column.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => (
+                    <TableRow hover key={row.id}>
+                      {columns.map((column) => {
+                        const value = row[column.id];
+                        return (
+                          <TableCell
+                            key={column.id}
+                            align={column.align || "left"}
+                            sx={{
+                              color:
+                                column.id === "role"
+                                  ? colors.greenAccent[300]
+                                  : "inherit",
+                            }}
+                          >
+                            {column.renderCell
+                              ? column.renderCell(row)
+                              : value}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[10, 25, 50]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            sx={{
+              backgroundColor: colors.greenAccent[700],
+              color: colors.grey[100],
+            }}
+          />
+        </Paper>
       </Box>
-
-    <Typography>
-      Device 1
-    </Typography>
-    {/* STATUS */}
-    <Grid container 
-    display='flex'
-    justifyContent ="center"
-    alignContent="center"
-    rowSpacing={2}
-    // columnSpacing={{ xs: 1, sm: 3, md: 3 }}
-    mb="40px"
-    pl="5px">
-      <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 6 }}>
-        <Box
-          // gridColumn="span 2"        
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          sx={{height: '112px', 
-            width: {
-              xs: 136, // 0
-              sm: 110, // 600
-              md: 136, // 900
-              lg: 236, // 1200
-              xl: 136, // 1536
-          },
-          }}
-        >
-          <StatBox
-            title="Active"
-            subtitle="Device 1"
-            progress="0.75"
-            // increase="+14%"
-            icon={
-              <DeviceThermostatIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        </Grid>
-        <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 6 }}>
-        <Box
-          // gridColumn="span 2"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          sx={{height: '112px', 
-            width: {
-              xs: 136, // 0
-              sm: 110, // 600
-              md: 136, // 900
-              lg: 236, // 1200
-              xl: 136, // 1536
-          },
-          }}
-
-        >
-          <StatBox
-            title="Working"
-            subtitle="PMS5003"
-            progress="0.50"
-            // increase="+21%"
-            icon={
-              <WbIncandescentIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        </Grid>
-        <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 6 }}>
-        <Box
-          // gridColumn="span 2"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          sx={{height: '112px', 
-            width: {
-              xs: 136, // 0
-              sm: 110, // 600
-              md: 136, // 900
-              lg: 236, // 1200
-              xl: 136, // 1536
-          },
-          }}
-
-        >
-          <StatBox
-            title="Working"
-            subtitle="BME 680"
-            progress="0.30"
-            // increase="+5%"
-            icon={
-              <AirIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        </Grid>
-        <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 6 }}>
-        <Box
-          // gridColumn="span 2"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          sx={{height: '112px', 
-            width: {
-              xs: 236, // 0
-              sm: 110, // 600
-              md: 136, // 900
-              lg: 236, // 1200
-              xl: 136, // 1536
-          },
-          }}
-
-        >
-          <StatBox
-            title="Working"
-            subtitle="GY-302"
-            progress="0.80"
-            // increase="+42%"
-            icon={
-              <Co2Icon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        </Grid>
-      </Grid>
-
-      <Typography>
-      Device 2
-    </Typography>
-    {/* STATUS */}
-    <Grid container 
-    display='flex'
-    justifyContent ="center"
-    alignContent="center"
-    rowSpacing={2}
-    // columnSpacing={{ xs: 1, sm: 3, md: 3 }}
-    mb="40px"
-    pl="5px">
-      <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 6 }}>
-        <Box
-          // gridColumn="span 2"        
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          sx={{height: '112px', 
-            width: {
-              xs: 136, // 0
-              sm: 110, // 600
-              md: 136, // 900
-              lg: 236, // 1200
-              xl: 136, // 1536
-          },
-          }}
-        >
-          <StatBox
-            title="Active"
-            subtitle="Device 2"
-            progress="0.75"
-            // increase="+14%"
-            icon={
-              <DeviceThermostatIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        </Grid>
-        <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 6 }}>
-        <Box
-          // gridColumn="span 2"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          sx={{height: '112px', 
-            width: {
-              xs: 136, // 0
-              sm: 110, // 600
-              md: 136, // 900
-              lg: 236, // 1200
-              xl: 136, // 1536
-          },
-          }}
-
-        >
-          <StatBox
-            title="Working"
-            subtitle="PMS5003"
-            progress="0.50"
-            // increase="+21%"
-            icon={
-              <WbIncandescentIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        </Grid>
-        <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 6 }}>
-        <Box
-          // gridColumn="span 2"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          sx={{height: '112px', 
-            width: {
-              xs: 136, // 0
-              sm: 110, // 600
-              md: 136, // 900
-              lg: 236, // 1200
-              xl: 136, // 1536
-          },
-          }}
-
-        >
-          <StatBox
-            title="Working"
-            subtitle="BME 680"
-            progress="0.30"
-            // increase="+5%"
-            icon={
-              <AirIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        </Grid>
-        <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 6 }}>
-        <Box
-          // gridColumn="span 2"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          sx={{height: '112px', 
-            width: {
-              xs: 236, // 0
-              sm: 110, // 600
-              md: 136, // 900
-              lg: 236, // 1200
-              xl: 136, // 1536
-          },
-          }}
-
-        >
-          <StatBox
-            title="Working"
-            subtitle="GY-302"
-            progress="0.80"
-            // increase="+42%"
-            icon={
-              <Co2Icon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        </Grid>
-      </Grid>
-        
     </Box>
   );
 };

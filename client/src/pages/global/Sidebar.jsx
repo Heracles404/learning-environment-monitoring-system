@@ -18,6 +18,8 @@ import VolcanoOutlinedIcon from '@mui/icons-material/VolcanoOutlined';
 import WbIncandescentOutlinedIcon from '@mui/icons-material/WbIncandescentOutlined';
 import DeviceHubOutlinedIcon from '@mui/icons-material/DeviceHubOutlined';
 
+import DevicesOutlinedIcon from '@mui/icons-material/DevicesOutlined';
+
 import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined';
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 
@@ -239,6 +241,26 @@ const Sidebar = () => {
             />
             
             </SubMenu>
+            <SubMenu
+              title="Devices"
+              icon={<DevicesOutlinedIcon />}
+              style={{ color: colors.greenAccent[100] }}
+            >
+              <Item
+                title="Status"
+                to="/Device1"
+                icon={<DevicesOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              {/* <Item
+                title="Device 2"
+                to="/Device2"
+                icon={<DevicesIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              /> */}
+              </SubMenu>
 
 
             <Typography
@@ -284,26 +306,7 @@ const Sidebar = () => {
               />              
               </SubMenu>
   
-            {/* <SubMenu
-              title="Devices"
-              icon={<DevicesIcon />}
-              style={{ color: colors.greenAccent[100] }}
-            >
-              <Item
-                title="Status"
-                to="/Device1"
-                icon={<DevicesIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              /> */}
-              {/* <Item
-                title="Device 2"
-                to="/Device2"
-                icon={<DevicesIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              /> */}
-              {/* </SubMenu> */}
+            
             <Typography
               variant="h6"
               color={colors.greenAccent[400]}

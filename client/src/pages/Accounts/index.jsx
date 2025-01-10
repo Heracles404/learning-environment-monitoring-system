@@ -94,7 +94,7 @@ const Accounts = () => {
       <Box mt="1px">
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
 <Typography variant="caption" sx={{ ml: 2 }}>
-                        Records for Volcanic Smog Parameters
+                         Account User Record
                     </Typography>          
           <TableContainer sx={{ height: "65vh" }}>
             <Table stickyHeader>
