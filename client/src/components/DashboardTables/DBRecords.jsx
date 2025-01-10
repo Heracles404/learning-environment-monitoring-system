@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {httpGetAllReadouts} from "../../hooks/sensors.requests";
-import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination } from "@mui/material";
+import { httpGetAllReadouts } from "../../hooks/sensors.requests";
+import { Box, Typography, Paper } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
@@ -16,7 +16,8 @@ const DBRecords = () => {
         const fetchData = async () => {
             const data = await httpGetAllReadouts();
             const formattedData = data.map((readout, index) => ({
-                id: readout._id || index, // Ensure `id` is unique
+                id: readout._id || index, // Use `classroom` instead of `id`
+                classroom: readout.classroom,   // Add classroom to the row data
                 date: readout.date,
                 time: readout.time,
                 temperature: readout.temperature,
@@ -35,7 +36,7 @@ const DBRecords = () => {
     }, []);
 
     const columns = [
-        { field: "id", headerName: "Room", minWidth: 100, flex: 1 },
+        { field: "classroom", headerName: "Classroom", minWidth: 100, flex: 1 },  // Updated header to Classroom
         { field: "date", headerName: "Date", minWidth: 100, flex: 1 },
         { field: "time", headerName: "Time", minWidth: 100, flex: 1 },
         { field: "temperature", headerName: "Temperature", minWidth: 100, flex: 1 },
@@ -51,7 +52,7 @@ const DBRecords = () => {
     return (
         <Box m="5px">
             <Header title="Records" subtitle="Managing the Records" />
-            <Box >
+            <Box>
                 <Paper sx={{ maxHeight: "65vh", width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
                         Records for Environmental Parameters
@@ -59,38 +60,29 @@ const DBRecords = () => {
                     <DataGrid
                         rows={rows}
                         columns={columns}
-                        // disableSelectionOnClick
-
                         components={{
                             Toolbar: GridToolbar,
                         }}
                         pageSize={10}
                         rowsPerPageOptions={[10, 25, 50]}
-                        // checkboxSelection
                         sx={{
                             "& .MuiDataGrid-row:hover": {
                                 backgroundColor: colors.greenAccent[500],
                             },
-                            
                             "& .MuiDataGrid-row": {
-                                // backgroundColor: colors.greenAccent[500],
                                 pointerEvents: "none",
-  
                             },
                             "& .MuiDataGrid-row.Mui-selected": {
                                 backgroundColor: colors.greenAccent[500],
-
                             },
                             "& .MuiDataGrid-row.Mui-selected:hover": {
                                 backgroundColor: colors.greenAccent[500],
                             },
-                            
                             "& .MuiDataGrid-toolbarContainer": {
                                 backgroundColor: colors.greenAccent[500],
-                                // color: colors.grey[100],
                             },
                             "& .MuiDataGrid-root": {
-                            border: "none",
+                                border: "none",
                             },
                             "& .MuiDataGrid-cell": {
                                 borderBottom: "none",

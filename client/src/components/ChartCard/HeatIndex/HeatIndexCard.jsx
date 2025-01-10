@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./HeatIndexCard.css";
 import { motion, LayoutGroup } from "framer-motion";
 import Chart from "react-apexcharts";
-import axios from "axios";
+import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
 
 const HeatIndexCard = (props) => {
   return (
@@ -18,12 +18,11 @@ function ExpandedCard({ param }) {
   useEffect(() => {
     const fetchHeatIndexData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/sensors", {
-          headers: { "Cache-Control": "no-cache" }, // Disable caching
-        });
+        const response = await httpGetAllReadouts();
 
-        const values = response.data.map((item) => item.heatIndex);
-        const timestamps = response.data.map((item) =>
+
+        const values = response.map((item) => item.heatIndex);
+        const timestamps = response.map((item) =>
           new Date(`${item.date} ${item.time}`).getTime()
         );
 

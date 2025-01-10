@@ -15,23 +15,34 @@ import DeviceThermostatIcon from "@mui/icons-material/DeviceThermostat";
 import WbIncandescentIcon from "@mui/icons-material/WbIncandescent";
 import VolcanoIcon from "@mui/icons-material/Volcano";
 
-import axios from "axios";
+import { httpGetAllReadouts } from "../hooks/sensors.requests.js";
+
+
 
 // Function to fetch real-time data
 const fetchData = async (key) => {
   try {
-    const response = await axios.get("http://localhost:8000/sensors", {
-      headers: { "Cache-Control": "no-cache" }, // Disable caching
-    });
 
+    const response = await httpGetAllReadouts(); 
+    console.log("check sensor response:", response)
     // Map data to the required key
-    const data = response.data.map((item) => item[key]);
+    const data = response.map((item) => item[key]);
+    console.log("check sensor data:", data);
     return data;
   } catch (error) {
     console.error(`Error fetching ${key} data:`, error);
     return []; // Return an empty array on error
   }
 };
+
+// Sample data
+const classroomData = await fetchData("IAQIndex").classroom;
+console.log("ito", classroomData);
+
+// Append "Room" to each classroom name
+// const updatedClassroomData = classroomData.map(classroom => classroom + " Room");
+
+// console.log(updatedClassroomData);
 
 // Cards Data with line colors for each room
 export const CardsData = [
@@ -52,19 +63,19 @@ export const CardsData = [
       },
       {
         name: "Room 2 Air Quality",
-        data: [72, 65, 80, 90, 85, 95, 88], // Hardcoded sample data
+        data: await fetchData("IAQIndex"), // Hardcoded sample data
         color: "#33FF57", // Green line color for Room 2
       },
-      {
-        name: "Room 3 Air Quality",
-        data: [70, 75, 80, 85, 90, 95, 100], // Hardcoded sample data
-        color: "#3357FF", // Blue line color for Room 3
-      },
-      {
-        name: "Room 4 Air Quality",
-        data: [60, 65, 70, 75, 80, 85, 90], // Hardcoded sample data
-        color: "#FF33A1", // Pink line color for Room 4
-      },
+      // {
+      //   name: "Room 3 Air Quality",
+      //   data: [70, 75, 80, 85, 90, 95, 100], // Hardcoded sample data
+      //   color: "#3357FF", // Blue line color for Room 3
+      // },
+      // {
+      //   name: "Room 4 Air Quality",
+      //   data: [60, 65, 70, 75, 80, 85, 90], // Hardcoded sample data
+      //   color: "#FF33A1", // Pink line color for Room 4
+      // },
     ],
   },
   {
@@ -84,19 +95,19 @@ export const CardsData = [
       },
       {
         name: "Room 2 Temperature",
-        data: [29, 30, 31, 32, 33, 34, 35], // Hardcoded sample data
+        data: await fetchData("temperature"), // Hardcoded sample data
         color: "#33FF57", // Green line color for Room 2
       },
-      {
-        name: "Room 3 Temperature",
-        data: [28, 29, 30, 31, 32, 33, 34], // Hardcoded sample data
-        color: "#3357FF", // Blue line color for Room 3
-      },
-      {
-        name: "Room 4 Temperature",
-        data: [25, 26, 27, 28, 29, 30, 31], // Hardcoded sample data
-        color: "#FF33A1", // Pink line color for Room 4
-      },
+      // {
+      //   name: "Room 3 Temperature",
+      //   data: [28, 29, 30, 31, 32, 33, 34], // Hardcoded sample data
+      //   color: "#3357FF", // Blue line color for Room 3
+      // },
+      // {
+      //   name: "Room 4 Temperature",
+      //   data: [25, 26, 27, 28, 29, 30, 31], // Hardcoded sample data
+      //   color: "#FF33A1", // Pink line color for Room 4
+      // },
     ],
   },
   {
@@ -116,19 +127,19 @@ export const CardsData = [
       },
       {
         name: "Room 2 Light",
-        data: [120, 130, 150, 170, 160, 180, 190], // Hardcoded sample data
+        data: await fetchData("lighting"), // Hardcoded sample data
         color: "#33FF57", // Green line color for Room 2
       },
-      {
-        name: "Room 3 Light",
-        data: [110, 120, 130, 140, 150, 160, 170], // Hardcoded sample data
-        color: "#3357FF", // Blue line color for Room 3
-      },
-      {
-        name: "Room 4 Light",
-        data: [100, 110, 120, 130, 140, 150, 160], // Hardcoded sample data
-        color: "#FF33A1", // Pink line color for Room 4
-      },
+      // {
+      //   name: "Room 3 Light",
+      //   data: [110, 120, 130, 140, 150, 160, 170], // Hardcoded sample data
+      //   color: "#3357FF", // Blue line color for Room 3
+      // },
+      // {
+      //   name: "Room 4 Light",
+      //   data: [100, 110, 120, 130, 140, 150, 160], // Hardcoded sample data
+      //   color: "#FF33A1", // Pink line color for Room 4
+      // },
     ],
   },
   {
@@ -148,19 +159,19 @@ export const CardsData = [
       },
       {
         name: "Room 2 Volcanic Smog",
-        data: [60, 65, 70, 75, 80, 85, 90], // Hardcoded sample data
+        data: await fetchData("voc"), // Hardcoded sample data
         color: "#33FF57", // Green line color for Room 2
       },
-      {
-        name: "Room 3 Volcanic Smog",
-        data: [55, 60, 65, 70, 75, 80, 85], // Hardcoded sample data
-        color: "#3357FF", // Blue line color for Room 3
-      },
-      {
-        name: "Room 4 Volcanic Smog",
-        data: [50, 55, 60, 65, 70, 75, 80], // Hardcoded sample data
-        color: "#FF33A1", // Pink line color for Room 4
-      },
+      // {
+      //   name: "Room 3 Volcanic Smog",
+      //   data: [55, 60, 65, 70, 75, 80, 85], // Hardcoded sample data
+      //   color: "#3357FF", // Blue line color for Room 3
+      // },
+      // {
+      //   name: "Room 4 Volcanic Smog",
+      //   data: [50, 55, 60, 65, 70, 75, 80], // Hardcoded sample data
+      //   color: "#FF33A1", // Pink line color for Room 4
+      // },
     ],
   },
 ];
@@ -182,19 +193,19 @@ export const CO2Data = [
       },
       {
         name: "Room 2 CO2 Levels",
-        data: [400, 420, 430, 450, 470, 480, 490], // Hardcoded sample data
+        data: await fetchData("CO2"), // Hardcoded sample data
         color: "#33FF57", // Green line color for Room 2
       },
-      {
-        name: "Room 3 CO2 Levels",
-        data: [390, 400, 410, 420, 430, 440, 450], // Hardcoded sample data
-        color: "#3357FF", // Blue line color for Room 3
-      },
-      {
-        name: "Room 4 CO2 Levels",
-        data: [380, 390, 400, 410, 420, 430, 440], // Hardcoded sample data
-        color: "#FF33A1", // Pink line color for Room 4
-      },
+      // {
+      //   name: "Room 3 CO2 Levels",
+      //   data: [390, 400, 410, 420, 430, 440, 450], // Hardcoded sample data
+      //   color: "#3357FF", // Blue line color for Room 3
+      // },
+      // {
+      //   name: "Room 4 CO2 Levels",
+      //   data: [380, 390, 400, 410, 420, 430, 440], // Hardcoded sample data
+      //   color: "#FF33A1", // Pink line color for Room 4
+      // },
     ],
   },
 ];
@@ -219,16 +230,16 @@ export const HeatIndexData = [
         data: [35, 36, 37, 38, 39, 40, 41], // Hardcoded sample data
         color: "#33FF57", // Green line color for Room 2
       },
-      {
-        name: "Room 3 Heat Index",
-        data: [34, 35, 36, 37, 38, 39, 40], // Hardcoded sample data
-        color: "#3357FF", // Blue line color for Room 3
-      },
-      {
-        name: "Room 4 Heat Index",
-        data: [33, 34, 35, 36, 37, 38, 39], // Hardcoded sample data
-        color: "#FF33A1", // Pink line color for Room 4
-      },
+      // {
+      //   name: "Room 3 Heat Index",
+      //   data: [34, 35, 36, 37, 38, 39, 40], // Hardcoded sample data
+      //   color: "#3357FF", // Blue line color for Room 3
+      // },
+      // {
+      //   name: "Room 4 Heat Index",
+      //   data: [33, 34, 35, 36, 37, 38, 39], // Hardcoded sample data
+      //   color: "#FF33A1", // Pink line color for Room 4
+      // },
     ],
   },
 ];
@@ -253,16 +264,16 @@ export const LightingData = [
         data: [60, 70, 75, 80, 90, 95, 100], // Hardcoded sample data
         color: "#33FF57", // Green line color for Room 2
       },
-      {
-        name: "Room 3 Lighting",
-        data: [50, 60, 70, 80, 90, 100, 110], // Hardcoded sample data
-        color: "#3357FF", // Blue line color for Room 3
-      },
-      {
-        name: "Room 4 Lighting",
-        data: [40, 50, 60, 70, 80, 90, 100], // Hardcoded sample data
-        color: "#FF33A1", // Pink line color for Room 4
-      },
+      // {
+      //   name: "Room 3 Lighting",
+      //   data: [50, 60, 70, 80, 90, 100, 110], // Hardcoded sample data
+      //   color: "#3357FF", // Blue line color for Room 3
+      // },
+      // {
+      //   name: "Room 4 Lighting",
+      //   data: [40, 50, 60, 70, 80, 90, 100], // Hardcoded sample data
+      //   color: "#FF33A1", // Pink line color for Room 4
+      // },
     ],
   },
 ];
@@ -287,16 +298,16 @@ export const VolcanicSmogData = [
         data: [50, 55, 60, 65, 70, 75, 80], // Hardcoded sample data
         color: "#33FF57", // Green line color for Room 2
       },
-      {
-        name: "Room 3 Volcanic Smog",
-        data: [45, 50, 55, 60, 65, 70, 75], // Hardcoded sample data
-        color: "#3357FF", // Blue line color for Room 3
-      },
-      {
-        name: "Room 4 Volcanic Smog",
-        data: [40, 45, 50, 55, 60, 65, 70], // Hardcoded sample data
-        color: "#FF33A1", // Pink line color for Room 4
-      },
+      // {
+      //   name: "Room 3 Volcanic Smog",
+      //   data: [45, 50, 55, 60, 65, 70, 75], // Hardcoded sample data
+      //   color: "#3357FF", // Blue line color for Room 3
+      // },
+      // {
+      //   name: "Room 4 Volcanic Smog",
+      //   data: [40, 45, 50, 55, 60, 65, 70], // Hardcoded sample data
+      //   color: "#FF33A1", // Pink line color for Room 4
+      // },
     ],
   },
 ];

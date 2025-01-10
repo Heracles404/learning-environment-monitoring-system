@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './DashboardCards.css';
 import { CardsData } from '../../data/chartData';
 import DashboardCard from '../DashboardCard/DashboardCard';
-import axios from 'axios';
+import { httpGetAllReadouts } from "../../hooks/sensors.requests.js";
 
 const DashboardCards = () => {
   const [cardData, setCardData] = useState([]);
@@ -11,11 +11,9 @@ const DashboardCards = () => {
   useEffect(() => {
     const fetchCardData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/sensors');
-        const data = response.data;
-
+         const response = await httpGetAllReadouts();
         // Get the latest data (assuming the last item in the array is the newest)
-        const latestData = data[data.length - 1];
+        const latestData = response[response.length - 1];
 
         // Check if the latest data is new (based on unique `_id` or timestamp)
         if (!lastUpdated || latestData._id !== lastUpdated) {
@@ -62,9 +60,7 @@ const DashboardCards = () => {
     // Fetch data initially and set an interval for periodic updates
     fetchCardData();
 
-    const interval = setInterval(fetchCardData, 10000); // Check for updates every 10 seconds
 
-    return () => clearInterval(interval); // Cleanup interval on component unmount
   }, [lastUpdated]);
 
   return (

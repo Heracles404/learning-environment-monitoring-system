@@ -18,6 +18,7 @@ const Records = () => {
             const data = await httpGetAllReadouts();
             const formattedData = data.map((readout, index) => ({
                 id: readout._id || index, // Ensure `id` is unique
+                classroom: readout.classroom,
                 date: readout.date,
                 time: readout.time,
                 temperature: readout.temperature,
@@ -36,7 +37,7 @@ const Records = () => {
     }, []);
 
     const columns = [
-        { field: "id", headerName: "Room", minWidth: 100, flex: 1 },
+        { field: "classroom", headerName: "Room", minWidth: 100, flex: 1 },
         { field: "date", headerName: "Date", minWidth: 100, flex: 1 },
         { field: "time", headerName: "Time", minWidth: 100, flex: 1 },
         { field: "temperature", headerName: "Temperature", minWidth: 100, flex: 1 },
