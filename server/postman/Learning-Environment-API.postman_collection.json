@@ -689,7 +689,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/devices/delete/1",
+							"raw": "http://localhost:8000/devices/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -697,7 +697,6 @@
 							"port": "8000",
 							"path": [
 								"devices",
-								"delete",
 								"1"
 							]
 						}
@@ -714,7 +713,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"classroom\": \"4020\",\r\n    \"status\": \"inactive\"\r\n}",
+							"raw": "{\r\n    \"classroom\": \"40210\",\r\n    \"status\": \"inactive\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -722,7 +721,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/devices/update/2",
+							"raw": "http://localhost:8000/devices/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -730,8 +729,7 @@
 							"port": "8000",
 							"path": [
 								"devices",
-								"update",
-								"2"
+								"1"
 							]
 						}
 					},
