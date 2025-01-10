@@ -1,4 +1,6 @@
-const { newDevice, existsId, getAllDevices, getDeviceById, getActive } = require('../../models/device.model');
+const { newDevice, existsId,
+    getAllDevices, getDeviceById, getActive, getInactive,
+    getDeviceByClassroom, updateDevice, deleteDevice} = require('../../models/device.model');
 
 function httpGetAllDevices(req, res) {
     return res.status(200).json(getAllDevices());
@@ -41,19 +43,80 @@ function httpGetDeviceById(req, res) {
     }
 }
 
-function httpGetActive(req, res){
-    const activeDevices = getActive();
+function httpGetDeviceByClassroom(req, res) {
+    const classroom = req.params.classroom;
 
-    if (activeDevices.length === 0) {
-        return res.status(404).json({ message: "No active devices found" });
+    const devicesInClassroom = getDeviceByClassroom(classroom);
+
+    if (devicesInClassroom.length === 0) {
+        return res.status(404).json({ message: 'No devices found in classroom ' + classroom });
     }
 
-    return res.status(200).json(activeDevices);
+    return res.status(200).json(devicesInClassroom);
 }
 
+function httpGetActive(req, res) {
+    const activeDevices = getActive();
+    const activeCount = activeDevices.length;
+
+    if (activeCount === 0) {
+        return res.status(404).json({ count: "0" });
+    }
+
+    return res.status(200).json({ count: activeCount });
+}
+
+function httpGetInactive(req, res) {
+    const inactiveDevices = getInactive();
+    const inactiveCount = inactiveDevices.length;
+
+    if (inactiveCount === 0) {
+        return res.status(404).json({ count: "0" });
+    }
+
+    return res.status(200).json({ count: inactiveCount });
+}
+
+function httpDeleteDevice(req, res) {
+    const deviceId = Number(req.params.id);
+
+    if (isNaN(deviceId)) {
+        return res.status(400).json({ error: 'Invalid device ID' });
+    }
+
+    if (deleteDevice(deviceId)) {
+        return res.status(200).json({ message: 'Deleted successfully.' });
+    } else {
+        return res.status(404).json({ message: 'Device not found.' });
+    }
+}
+
+function httpUpdateDevice(req, res) {
+    const deviceId = Number(req.params.id);
+    const updatedData = req.body;
+
+    if (isNaN(deviceId)) {
+        return res.status(400).json({ error: 'Invalid device ID' });
+    }
+
+    const updatedDevice = updateDevice(deviceId, updatedData);
+
+    if (updatedDevice) {
+        return res.status(200).json({
+            message: 'Device updated successfully',
+            device: updatedDevice
+        });
+    } else {
+        return res.status(404).json({ message: 'Device not found' });
+    }
+}
 module.exports = {
     httpNewDevice,
     httpGetAllDevices,
     httpGetDeviceById,
-    httpGetActive
+    httpGetDeviceByClassroom,
+    httpGetActive,
+    httpGetInactive,
+    httpDeleteDevice,
+    httpUpdateDevice
 };
