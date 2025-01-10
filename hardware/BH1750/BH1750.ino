@@ -5,14 +5,14 @@ BH1750 lightMeter;
 
 void setup() {
   Serial.begin(115200); // Higher baud rate for ESP8266
-  Wire.begin(D1, D2); // SDA and SCL pins (D1 = SDA, D2 = SCL on NodeMCU)
+  Wire.begin(D1, D2);   // SDA and SCL pins (D1 = SDA, D2 = SCL on NodeMCU)
 
   // Initialize BH1750 sensor
   if (lightMeter.begin(BH1750::CONTINUOUS_HIGH_RES_MODE, 0x23)) {
     Serial.println(F("BH1750 initialized successfully"));
   } else {
     Serial.println(F("Error initializing BH1750"));
-    while (1); // Stop execution
+    while (1);
   }
 }
 

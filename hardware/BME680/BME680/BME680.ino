@@ -89,12 +89,9 @@ float calculateIAQ(float GasResistance) {
   const float R_min = 10.0;    // Minimum gas resistance (best air quality)
   
   // Define IAQ range
-  const int IAQ_max = 500;   // Maximum IAQ index (best air quality)
-  const int IAQ_min = 0;     // Minimum IAQ index (worst air quality)
+  const int IAQ_max = 500;    // Maximum IAQ index (best air quality)
 
-  // Logarithmic mapping of gas resistance to IAQ index
-  float logR = log(R_max / GasResistance);  // Logarithmic transformation
-  float IAQ = (logR * (IAQ_max - IAQ_min)) / log(R_max / R_min);  // Calculate IAQ index
-
+  float logR = log(R_max / GasResistance);  
+  float IAQ = (logR * (IAQ_max - IAQ_min)) / log(R_max / R_min); 
   return IAQ;
 }
