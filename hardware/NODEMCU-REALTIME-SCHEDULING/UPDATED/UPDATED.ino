@@ -12,11 +12,11 @@ const long gmtOffset_sec = 8 * 3600;     // Adjust for your timezone (GMT+8)
 const int daylightOffset_sec = 0;        // No daylight saving time
 
 // WiFi Credentials
-const char* ssid = "IoT";
-const char* password = "AccessPoint.2024";
+const char* ssid = "TP-Link_883A";
+const char* password = "95379951";
 
 // Server Components
-const char* host = "http://192.168.68.101";
+const char* host = "http://192.168.0.100";
 const int port = 8000;
 const char* endpoint = "/sensors";
 
@@ -29,6 +29,10 @@ float temperature, humidity, voc, IAQIndex, lux;
 int heatIndex;
 String indoorAir, temp, CurrentTime;  // Global CurrentTime variable
 int lastPostHour = -1;  // To track when the last post was made
+int lastPostMinute = -1;  // To track the last post minute
+
+// Forward declaration of wifiInit function
+void wifiInit();  
 
 void setup() {
   Serial.begin(9600); 
@@ -58,18 +62,19 @@ void loop() {
   // Update Time
   updateTime();
 
-  // Check if it's time to post the data at specific times (2:36 PM, 2:45 PM, and 3:00 PM)
+  // Get the current hour and minute
   int currentHour = getCurrentHour();
   int currentMinute = getCurrentMinute();
 
   // Define target times
-  int targetHour1 = 15;  // 3:00 PM
-  int targetMinute1 = 15; // 36 minutes
-  int targetHour2 = 15;  // 3:00 PM
-  int targetMinute2 = 20; // 45 minutes
-  int targetHour3 = 15;  // 3:00 PM
-  int targetMinute3 = 25; // 0 minutes
-  int lastPostMinute = -1;
+  int targetHour1 = 14;  // 3:00 PM
+  int targetMinute1 = 17; // 36 minutes
+
+  int targetHour2 = 14;  // 3:00 PM
+  int targetMinute2 = 45; // 45 minutes
+
+  int targetHour3 = 14;  // 3:00 PM
+  int targetMinute3 = 0; // 0 minutes
 
   // Updated condition to check for 3 specific post times
   if ((currentHour == targetHour1 && currentMinute == targetMinute1 && lastPostMinute != currentMinute) ||
@@ -92,7 +97,6 @@ void loop() {
 
   delay(60000); // Delay for 1 minute to check time again
 }
-
 
 void wifiInit() {
   Serial.printf("Connecting to %s\n", ssid);
