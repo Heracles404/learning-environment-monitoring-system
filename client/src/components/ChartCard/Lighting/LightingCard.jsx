@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./LightingCard.css";
 import { motion, LayoutGroup } from "framer-motion";
 import Chart from "react-apexcharts";
-import axios from "axios";
+import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
 
 const LightingCard = (props) => {
   return (
@@ -18,12 +18,10 @@ function ExpandedCard({ param }) {
   useEffect(() => {
     const fetchLightingData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/sensors", {
-          headers: { "Cache-Control": "no-cache" }, // Disable caching
-        });
+        const response = await httpGetAllReadouts();
 
-        const lightingValues = response.data.map((item) => item.lighting);
-        const timestamps = response.data.map((item) =>
+        const lightingValues = response.map((item) => item.lighting);
+        const timestamps = response.map((item) =>
           new Date(`${item.date} ${item.time}`).getTime()
         );
 

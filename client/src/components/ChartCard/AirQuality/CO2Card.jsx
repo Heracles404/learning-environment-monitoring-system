@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./CO2Card.css";
 import { motion, LayoutGroup } from "framer-motion";
 import Chart from "react-apexcharts";
-import axios from "axios";
+import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
 
 const CO2Card = (props) => {
   return (
@@ -18,15 +18,16 @@ function ExpandedCard({ param }) {
   useEffect(() => {
     const fetchIAQData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/sensors", {
-          headers: { "Cache-Control": "no-cache" }, // Disable caching
-        });
+        // Fetch data using the hook
+        const response = await httpGetAllReadouts();
 
-        const iaqIndexes = response.data.map((item) => item.IAQIndex);
-        const timestamps = response.data.map((item) =>
+        // Process the fetched data
+        const iaqIndexes = response.map((item) => item.IAQIndex);
+        const timestamps = response.map((item) =>
           new Date(`${item.date} ${item.time}`).getTime()
         );
 
+        // Update the state with processed data
         setIaqData({
           iaqIndexes,
           timestamps,
@@ -104,7 +105,7 @@ function ExpandedCard({ param }) {
       layoutId={`expandableCard-${param.title}`}
     >
       <div style={{ alignSelf: "flex-end", cursor: "pointer", color: "white" }}>
-        {/* <UilTimes onClick={setExpanded} /> */}
+        {/* Optional close button */}
       </div>
       <span>{param.title}</span>
       <div className="chartContainer">
@@ -116,6 +117,3 @@ function ExpandedCard({ param }) {
 }
 
 export default CO2Card;
-
-
-//test commit
