@@ -55,7 +55,10 @@ const Records = () => {
       <Box 
       display="flex" 
       justifyContent="space-between"
-       alignItems="space-between">
+       alignItems="space-between"
+       sx={{
+        flexDirection: { xs: 'column', sm: 'row' }
+      }}>
         <Header title="Records" subtitle="Managing the Records" />
             
         <Box>

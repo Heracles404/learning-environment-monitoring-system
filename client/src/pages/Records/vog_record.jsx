@@ -55,7 +55,10 @@ const VOGRecords = () => {
       <Box 
       display="flex" 
       justifyContent="space-between"
-       alignItems="space-between">
+       alignItems="space-between"
+       sx={{
+        flexDirection: { xs: 'column', sm: 'row' }
+      }}>
                   <Header title="VOG Records" subtitle="Managing the VOG Records" />
             
         <Box>

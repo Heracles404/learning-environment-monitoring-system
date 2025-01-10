@@ -253,6 +253,13 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />
+              <Item
+                title="Create Device"
+                to="/CreateDevice"
+                icon={<DevicesOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
               {/* <Item
                 title="Device 2"
                 to="/Device2"
