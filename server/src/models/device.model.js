@@ -36,14 +36,41 @@ function getDeviceById(deviceId){
     return devices.get(deviceId);
 }
 
-function getActive(){
-    return Array.from(devices.values()).filter(device => device.status === "active");
+function getDeviceByClassroom(classroom) {
+    return Array.from(devices.values()).filter(device => device.classroom === classroom);
 }
+
+function getActive(){
+    return Array.from(devices.values()).filter(device => device.status.toUpperCase() === "ACTIVE");
+}
+
+function getInactive(){
+    return Array.from(devices.values()).filter(device => device.status.toUpperCase() === "INACTIVE");
+}
+
+function deleteDevice(deviceId) {
+    return devices.delete(deviceId);
+}
+
+function updateDevice(deviceId, updatedData) {
+    if (devices.has(deviceId)) {
+        const existingDevice = devices.get(deviceId);
+        const updatedDevice = { ...existingDevice, ...updatedData };
+        devices.set(deviceId, updatedDevice);
+        return updatedDevice;
+    }
+    return null; // Return null if the device does not exist
+}
+
 
 module.exports = {
     newDevice,
     existsId,
     getAllDevices,
     getDeviceById,
-    getActive
+    getDeviceByClassroom,
+    getActive,
+    getInactive,
+    deleteDevice,
+    updateDevice
 }
