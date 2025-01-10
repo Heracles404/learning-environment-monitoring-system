@@ -11,8 +11,8 @@ deviceRouter.get('/getInactive', httpGetInactive);
 deviceRouter.get('/:id', httpGetDeviceById);
 deviceRouter.get('/classroom/:classroom', httpGetDeviceByClassroom);
 
-deviceRouter.delete('/delete/:id', httpDeleteDevice);
-deviceRouter.patch('/update/:id', httpUpdateDevice);
+deviceRouter.delete('/:id', httpDeleteDevice);
+deviceRouter.patch('/:id', httpUpdateDevice);
 
 deviceRouter.post('/', httpNewDevice);
 
