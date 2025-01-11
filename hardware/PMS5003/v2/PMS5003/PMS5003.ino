@@ -9,9 +9,9 @@
 // Time Components
 #include "time.h"
 
-const char* ssid = "TP-Link_883A";
-const char* password = "95379951";
-const char* host = "http://192.168.0.100";
+const char* ssid = "ACM2";
+const char* password = "0495452821@2024";
+const char* host = "http://192.168.1.31";
 const int port = 8000;
 const char* endpoint = "/vog";
 
@@ -92,15 +92,27 @@ void loop() {
   int currentMinute = timeInfo.tm_min;  // Get the current minute
 
   // Define target times for data posting
-  int targetHour1 = 14;  // 3:00 PM
-  int targetMinute1 = 51; // 0 minutes
+  int targetHour1 = 11;  // Example: 11:50 AM
+  int targetMinute1 = 57;
 
-  int targetHour2 = 14;  // 4:00 PM
-  int targetMinute2 = 52; // 30 minutes
+  int targetHour2 = 11;  // Example: 11:51 AM
+  int targetMinute2 = 58;
+
+  int targetHour3 = 11;  // Example: 3:00 PM
+  int targetMinute3 = 59;
+
+  int targetHour4 = 12;  // Example: 6:30 PM
+  int targetMinute4 = 1;
+
+  int targetHour5 = 12;  // Example: 8:45 PM
+  int targetMinute5 = 2;
 
   // Check if it's time to post data (based on defined target times)
   if ((currentHour == targetHour1 && currentMinute == targetMinute1 && lastPostMinute != currentMinute) ||
-      (currentHour == targetHour2 && currentMinute == targetMinute2 && lastPostMinute != currentMinute)) {
+      (currentHour == targetHour2 && currentMinute == targetMinute2 && lastPostMinute != currentMinute) ||
+      (currentHour == targetHour3 && currentMinute == targetMinute3 && lastPostMinute != currentMinute) ||
+      (currentHour == targetHour4 && currentMinute == targetMinute4 && lastPostMinute != currentMinute) ||
+      (currentHour == targetHour5 && currentMinute == targetMinute5 && lastPostMinute != currentMinute)) {
     
     // Wake up the sensor, get the readings, and send data
     pms.wakeUp();
