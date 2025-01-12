@@ -31,6 +31,13 @@ String recordTime;
 float pm25, pm10;
 int idx25, idx10, level;
 
+// Calibration coefficients
+float a_pm25 = 0.887;
+float b_pm25 = -0.633;
+
+float a_pm10 = 0.900;
+float b_pm10 = -0.040;
+
 // Time variables
 int lastPostMinute = -1;
 
@@ -88,39 +95,41 @@ void loop() {
   }
 
   // Get current hour and minute from timeInfo struct
-  int currentHour = timeInfo.tm_hour;   // Get the current hour (24-hour format)
-  int currentMinute = timeInfo.tm_min;  // Get the current minute
+int currentHour = timeInfo.tm_hour;   // Get the current hour (24-hour format)
+int currentMinute = timeInfo.tm_min;  // Get the current minute
 
-  // Define target times for data posting
-  int targetHour1 = 12;  // Example: 11:50 AM
-  int targetMinute1 = 23;
+// Define target times for data posting
+int targetHour1 = 18;  // Example: 6:11 PM
+int targetMinute1 = 42;
 
-  int targetHour2 = 12;  // Example: 11:51 AM
-  int targetMinute2 = 24;
+int targetHour2 = 18;  // Example: 6:12 PM
+int targetMinute2 = 43;
 
-  int targetHour3 = 12;  // Example: 3:00 PM
-  int targetMinute3 = 25;
+int targetHour3 = 18;  // Example: 7:00 PM
+int targetMinute3 = 44;
 
-  int targetHour4 = 12;  // Example: 6:30 PM
-  int targetMinute4 = 26;
+int targetHour4 = 18;  // Example: 8:30 PM
+int targetMinute4 = 45;
 
-  int targetHour5 = 12;  // Example: 8:45 PM
-  int targetMinute5 = 27;
+int targetHour5 = 18;  // Example: 9:45 PM
+int targetMinute5 = 46;
 
-  // Check if it's time to post data (based on defined target times)
-  if ((currentHour == targetHour1 && currentMinute == targetMinute1 && lastPostMinute != currentMinute) ||
-      (currentHour == targetHour2 && currentMinute == targetMinute2 && lastPostMinute != currentMinute) ||
-      (currentHour == targetHour3 && currentMinute == targetMinute3 && lastPostMinute != currentMinute) ||
-      (currentHour == targetHour4 && currentMinute == targetMinute4 && lastPostMinute != currentMinute) ||
-      (currentHour == targetHour5 && currentMinute == targetMinute5 && lastPostMinute != currentMinute)) {
+// Check if it's time to post data (based on defined target times)
+if ((currentHour == targetHour1 && currentMinute == targetMinute1 && lastPostMinute != currentMinute) ||
+    (currentHour == targetHour2 && currentMinute == targetMinute2 && lastPostMinute != currentMinute) ||
+    (currentHour == targetHour3 && currentMinute == targetMinute3 && lastPostMinute != currentMinute) ||
+    (currentHour == targetHour4 && currentMinute == targetMinute4 && lastPostMinute != currentMinute) ||
+    (currentHour == targetHour5 && currentMinute == targetMinute5 && lastPostMinute != currentMinute)) {
+
     
     // Wake up the sensor, get the readings, and send data
     pms.wakeUp();
     delay(10000);  // Wait for sensor to stabilize
     pms.requestRead();
     if (pms.readUntil(data)) {
-      pm25 = data.PM_AE_UG_2_5;
-      pm10 = data.PM_AE_UG_10_0;
+      // Apply calibration
+      pm25 = a_pm25 * data.PM_AE_UG_2_5 + b_pm25;
+      pm10 = a_pm10 * data.PM_AE_UG_10_0 + b_pm10;
 
       idx25 = calculateAQI(pm25, "PM2.5");
       idx10 = calculateAQI(pm10, "PM10");
@@ -245,4 +254,4 @@ void sendDataToServer(String recordTime, float pm25, float pm10, int OAQIndex, i
     Serial.print(F("WiFi not connected"));
   }
 }
-//puke
+//test
