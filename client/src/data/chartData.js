@@ -35,6 +35,7 @@ const fetchData = async (key) => {
 };
 
 // Function to fetch devices and construct air quality data
+// Function to fetch devices and construct air quality data
 const fetchAirQualityData = async () => {
   const devices = await httpGetAllDevices(); // Fetch all devices
   const activeDevices = devices.filter(device => device.status === "active"); // Filter for active devices
@@ -48,7 +49,50 @@ const fetchAirQualityData = async () => {
   return airQualitySeries;
 };
 
+const fetchTempData = async () => {
+  const devices = await httpGetAllDevices(); // Fetch all devices
+  const activeDevices = devices.filter(device => device.status === "active"); // Filter for active devices
+
+  const TemperatureSeries = await Promise.all(activeDevices.map(async (device) => ({
+    name: `${device.classroom} Temperature`, // Use the classroom name from the device
+    data: await fetchData("temperature"), // Fetch air quality index data
+    color: getRandomColor(), // Random color for each classroom
+  })));
+
+  return TemperatureSeries;
+};
+
+const fetchLightData = async () => {
+  const devices = await httpGetAllDevices(); // Fetch all devices
+  const activeDevices = devices.filter(device => device.status === "active"); // Filter for active devices
+
+  const LightSeries = await Promise.all(activeDevices.map(async (device) => ({
+    name: `${device.classroom} Light`, // Use the classroom name from the device
+    data: await fetchData("lighting"), // Fetch air quality index data
+    color: getRandomColor(), // Random color for each classroom
+  })));
+
+  return LightSeries;
+};
+
+const fetchVOCData = async () => {
+  const devices = await httpGetAllDevices(); // Fetch all devices
+  const activeDevices = devices.filter(device => device.status === "active"); // Filter for active devices
+
+  const VOCSeries = await Promise.all(activeDevices.map(async (device) => ({
+    name: `${device.classroom} Volcanic Smog`, // Use the classroom name from the device
+    data: await fetchData("voc"), // Fetch air quality index data
+    color: getRandomColor(), // Random color for each classroom
+  })));
+
+  return VOCSeries;
+};
+
+const VOCData = await fetchVOCData()
+const LightData = await fetchLightData()
 const airQualityData = await fetchAirQualityData()
+const TemperatureData = await fetchTempData()
+
 
 export const CardsData = [
   {
@@ -62,87 +106,43 @@ export const CardsData = [
     png: AirIcon,
     series: airQualityData, // Use the dynamically fetched air quality data
   },
+
   {
     title: "Temperature",
     color: {
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
-    barValue: 80,
-    value: "HOT",
+    barValue: 70, // You can adjust this based on your logic
+    value: "BAD", // You can adjust this based on your logic
     png: DeviceThermostatIcon,
-    series: [
-      {
-        name: "Room 1 Temperature",
-        data: await fetchData("temperature"),
-        color: "#FF5733", // Red line color for Room 1
-      }
-    ],
+    series: TemperatureData, // Use the dynamically fetched air quality data
   },
+
   {
     title: "Light",
     color: {
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
-    barValue: 60,
-    value: "BRIGHT",
+    barValue: 70, // You can adjust this based on your logic
+    value: "BAD", // You can adjust this based on your logic
     png: WbIncandescentIcon,
-    series: [
-      {
-        name: "Room 1 Light",
-        data: await fetchData("lighting"),
-        color: "#FF5733", // Red line color for Room 1
-      },
-      {
-        name: "Room 2 Light",
-        data: await fetchData("lighting"), // Hardcoded sample data
-        color: "#33FF57", // Green line color for Room 2
-      },
-      // {
-      //   name: "Room 3 Light",
-      //   data: [110, 120, 130, 140, 150, 160, 170], // Hardcoded sample data
-      //   color: "#3357FF", // Blue line color for Room 3
-      // },
-      // {
-      //   name: "Room 4 Light",
-      //   data: [100, 110, 120, 130, 140, 150, 160], // Hardcoded sample data
-      //   color: "#FF33A1", // Pink line color for Room 4
-      // },
-    ],
+    series: LightData, // Use the dynamically fetched air quality data
   },
+
   {
     title: "Volcanic Smog",
     color: {
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
-    barValue: 50,
-    value: "SAFE",
+    barValue: 70, // You can adjust this based on your logic
+    value: "BAD", // You can adjust this based on your logic
     png: VolcanoIcon,
-    series: [
-      {
-        name: "Room 1 Volcanic Smog",
-        data: await fetchData("voc"),
-        color: "#FF5733", // Red line color for Room 1
-      },
-      {
-        name: "Room 2 Volcanic Smog",
-        data: await fetchData("voc"), // Hardcoded sample data
-        color: "#33FF57", // Green line color for Room 2
-      },
-      // {
-      //   name: "Room 3 Volcanic Smog",
-      //   data: [55, 60, 65, 70, 75, 80, 85], // Hardcoded sample data
-      //   color: "#3357FF", // Blue line color for Room 3
-      // },
-      // {
-      //   name: "Room 4 Volcanic Smog",
-      //   data: [50, 55, 60, 65, 70, 75, 80], // Hardcoded sample data
-      //   color: "#FF33A1", // Pink line color for Room 4
-      // },
-    ],
+    series: VOCData, // Use the dynamically fetched air quality data
   },
+
 ];
 
 // CO2 Cards Data
