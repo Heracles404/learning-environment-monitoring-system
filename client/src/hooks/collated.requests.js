@@ -36,4 +36,4 @@ async function httpFetchAllReadouts() {
     }
 }
 
-export default httpFetchAllReadouts;
+export {httpFetchAllReadouts}
