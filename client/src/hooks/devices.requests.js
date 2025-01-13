@@ -33,7 +33,7 @@ async function httpGetActive(){
 
 async function httpUpdateDevice(_id, updates){
     try {
-        return await fetch(`${API_URL}/users/${_id}`, {
+        return await fetch(`${API_URL}/devices/${_id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
