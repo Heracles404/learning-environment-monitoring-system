@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { httpGetAllReadouts } from "../../hooks/vog.requests";
+import { httpGetAllReadouts, httpDeleteReadout, httpDeleteAllReadouts } from "../../hooks/vog.requests";
 import { Box, Button, Typography, Paper, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
@@ -80,6 +80,20 @@ const VOGRecords = () => {
     const handleOpenDialog = () => setOpen(true);
     const handleCloseDialog = () => setOpen(false);
 
+    const handleDelete = async (id) => {
+        const response = await httpDeleteReadout(id);
+        if (response.ok) {
+            setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+        }
+    };
+
+    const handleDeleteAll = async () => {
+        const response = await httpDeleteAllReadouts();
+        if (response.ok) {
+            setRows([]);
+        }
+    };
+
     return (
         <Box m="5px 25px">
             {/* HEADER */}
@@ -95,6 +109,7 @@ const VOGRecords = () => {
 
                 <Box>
                     <Button
+                        onClick={handleDeleteAll}
                         sx={{
                             backgroundColor: colors.redAccent[700],
                             color: "white",
@@ -105,7 +120,7 @@ const VOGRecords = () => {
                         }}
                     >
                         <DeleteOutlinedIcon sx={{ mr: "10px" }} />
-                        Delete Reports
+                        Delete All Reports
                     </Button>
                     <Button
                         onClick={handleOpenDialog}
@@ -139,6 +154,14 @@ const VOGRecords = () => {
                         pageSize={10}
                         rowsPerPageOptions={[10, 25, 50]}
                         checkboxSelection
+                        renderCell={(params) => (
+                            <Button
+                                color="error"
+                                onClick={() => handleDelete(params.row.id)}
+                            >
+                                Delete
+                            </Button>
+                        )}
                         sx={{
                             "& .MuiDataGrid-row:hover": {
                                 backgroundColor: colors.greenAccent[500],

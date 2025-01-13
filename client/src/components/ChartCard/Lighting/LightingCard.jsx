@@ -36,10 +36,9 @@ function ExpandedCard({ param }) {
 
     fetchLightingData();
 
-    // Polling to fetch updated data every 30 seconds
-    const interval = setInterval(fetchLightingData, 30000);
+  
 
-    return () => clearInterval(interval); // Cleanup interval on component unmount
+
   }, []);
 
   if (lightingData.lightingValues.length === 0 || lightingData.timestamps.length === 0) {

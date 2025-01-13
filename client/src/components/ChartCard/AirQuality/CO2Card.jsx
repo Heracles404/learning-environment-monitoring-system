@@ -39,10 +39,7 @@ function ExpandedCard({ param }) {
 
     fetchIAQData();
 
-    // Polling to fetch updated data every 30 seconds
-    const interval = setInterval(fetchIAQData, 30000);
 
-    return () => clearInterval(interval); // Cleanup interval on component unmount
   }, []);
 
   if (iaqData.iaqIndexes.length === 0 || iaqData.timestamps.length === 0) {

@@ -37,10 +37,7 @@ function ExpandedCard({ param }) {
 
     fetchHeatIndexData();
 
-    // Polling to fetch updated data every 30 seconds
-    const interval = setInterval(fetchHeatIndexData, 30000);
 
-    return () => clearInterval(interval); // Cleanup interval on component unmount
   }, []);
 
   if (heatIndexData.values.length === 0 || heatIndexData.timestamps.length === 0) {

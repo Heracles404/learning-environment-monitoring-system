@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./VolcanicSmogCard.css";
 import { motion, LayoutGroup } from "framer-motion";
 import Chart from "react-apexcharts";
-import axios from "axios";
+import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
 
 const VolcanicSmogCard = (props) => {
   return (
@@ -16,14 +16,13 @@ function ExpandedCard({ param }) {
   const [vocData, setVocData] = useState({ vocValues: [], timestamps: [] });
 
   useEffect(() => {
-    const fetchVocData = async () => {
+    const fetchVOCData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/sensors", {
-          headers: { "Cache-Control": "no-cache" }, // Disable caching
-        });
+        const response = await httpGetAllReadouts();
 
-        const vocValues = response.data.map((item) => item.voc);
-        const timestamps = response.data.map((item) =>
+        // Use the correct key `voc` for the data
+        const vocValues = response.map((item) => item.voc);
+        const timestamps = response.map((item) =>
           new Date(`${item.date} ${item.time}`).getTime()
         );
 
@@ -36,12 +35,7 @@ function ExpandedCard({ param }) {
       }
     };
 
-    fetchVocData();
-
-    // Polling to fetch updated data every 30 seconds
-    const interval = setInterval(fetchVocData, 30000);
-
-    return () => clearInterval(interval); // Cleanup interval on component unmount
+    fetchVOCData();
   }, []);
 
   if (vocData.vocValues.length === 0 || vocData.timestamps.length === 0) {
