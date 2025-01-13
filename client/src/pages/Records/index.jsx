@@ -108,6 +108,7 @@ const Records = () => {
                             fontSize: "14px",
                             fontWeight: "bold",
                             padding: "10px 20px",
+                            margin: "5px"
                         }}
                     >
                         <DownloadOutlinedIcon sx={{ mr: "10px" }} />
@@ -136,7 +137,6 @@ const Records = () => {
                                 backgroundColor: colors.greenAccent[500],
                             },
                             "& .MuiDataGrid-row": {
-                                pointerEvents: "none",
                                 // backgroundColor: colors.greenAccent[500],
                                 // pointerEvents: "none",
                             },

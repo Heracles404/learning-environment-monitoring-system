@@ -32,7 +32,6 @@ const VOGRecords = () => {
     }, []); // Empty dependency array to run only once on mount
 
     const columns = [
-        { field: "id", headerName: "ID", minWidth: 100, flex: 1 },
         { field: "id", headerName: "Room", minWidth: 100, flex: 1  },
         { field: "date", headerName: "Date", minWidth: 100, flex: 1 },
         { field: "time", headerName: "Time", minWidth: 100, flex: 1 },
@@ -128,7 +127,6 @@ const VOGRecords = () => {
                                 backgroundColor: colors.greenAccent[500],
                             },
                             "& .MuiDataGrid-row": {
-                                pointerEvents: "none",
                                 // backgroundColor: colors.greenAccent[500],
                                 // pointerEvents: "none",
   
