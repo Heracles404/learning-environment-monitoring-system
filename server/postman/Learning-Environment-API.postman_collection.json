@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userName\": \"Juan\",\r\n    \"password\": \"123admin\",\r\n    \"role\": \"Principal\",\r\n    \"firstName\": \"Nicanor\",\r\n    \"lastName\": \"Reyes II\"\r\n}",
+							"raw": "{\r\n    \"userName\": \"admin\",\r\n    \"password\": \"123\",\r\n    \"role\": \"Principal\",\r\n    \"firstName\": \"Nicanor\",\r\n    \"lastName\": \"Reyes II\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -63,7 +63,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/users/Juan",
+							"raw": "http://localhost:8000/users/user",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -71,7 +71,7 @@
 							"port": "8000",
 							"path": [
 								"users",
-								"Juan"
+								"user"
 							]
 						}
 					},
@@ -83,7 +83,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/users/asjkdhasdjkh",
+							"raw": "http://localhost:8000/users/user",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -91,7 +91,7 @@
 							"port": "8000",
 							"path": [
 								"users",
-								"asjkdhasdjkh"
+								"user"
 							]
 						}
 					},
@@ -112,7 +112,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/users/SirNicanor",
+							"raw": "http://localhost:8000/users/user",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -120,7 +120,7 @@
 							"port": "8000",
 							"path": [
 								"users",
-								"SirNicanor"
+								"user"
 							]
 						}
 					},
@@ -167,7 +167,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    // For remarks and Index - set conditions in arduino\r\n    \"classroom\": \"401\",\r\n    \"time\": \"03:15 PM\",\r\n    \"temperature\": 520,\r\n    \"humidity\": 80,\r\n    \"heatIndex\": 90,\r\n    \"lighting\": 70,\r\n    \"voc\": 80,\r\n    \"IAQIndex\": 100,\r\n    \"indoorAir\": \"Good\",\r\n    \"temp\": \"Good\"\r\n}",
+							"raw": "{\r\n    // For remarks and Index - set conditions in arduino\r\n    \"classroom\": \"401\",\r\n    \"time\": \"04:15 PM\",\r\n    \"temperature\": 220,\r\n    \"humidity\": 890,\r\n    \"heatIndex\": 910,\r\n    \"lighting\": 702,\r\n    \"voc\": 830,\r\n    \"IAQIndex\": 59,\r\n    \"indoorAir\": \"Good\",\r\n    \"temp\": \"Good\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -213,7 +213,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/sensors/2",
+							"raw": "http://localhost:8000/sensors/6784c02e41b861f39f8ba3fd",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -221,7 +221,7 @@
 							"port": "8000",
 							"path": [
 								"sensors",
-								"2"
+								"6784c02e41b861f39f8ba3fd"
 							]
 						}
 					},
@@ -266,7 +266,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/sensors/date/date?startDate=10/10/2024&endDate=10/25/2024",
+							"raw": "http://localhost:8000/sensors/date/date?startDate=10/10/2024&endDate=1/13/2025",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -284,7 +284,7 @@
 								},
 								{
 									"key": "endDate",
-									"value": "10/25/2024"
+									"value": "1/13/2025"
 								}
 							]
 						}
@@ -421,7 +421,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/vog/2",
+							"raw": "http://localhost:8000/vog/6784cac9192190ef8e929e23",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -429,7 +429,7 @@
 							"port": "8000",
 							"path": [
 								"vog",
-								"2"
+								"6784cac9192190ef8e929e23"
 							]
 						}
 					},
@@ -517,7 +517,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/vog/1",
+							"raw": "http://localhost:8000/vog/6784cac9192190ef8e929e23",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -525,7 +525,7 @@
 							"port": "8000",
 							"path": [
 								"vog",
-								"1"
+								"6784cac9192190ef8e929e23"
 							]
 						}
 					},
@@ -564,7 +564,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/devices/5",
+							"raw": "http://localhost:8000/devices/6784a289880acfb9947c0544",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -572,7 +572,7 @@
 							"port": "8000",
 							"path": [
 								"devices",
-								"5"
+								"6784a289880acfb9947c0544"
 							]
 						}
 					},
@@ -634,7 +634,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"classroom\": \"403\",\r\n    \"status\": \"active\"\r\n}",
+							"raw": "{\r\n    \"classroom\": \"1401\",\r\n    \"status\": \"inactive\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -710,7 +710,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/devices/1",
+							"raw": "http://localhost:8000/devices/6784a5e6e8ef76da77152b17",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -718,7 +718,7 @@
 							"port": "8000",
 							"path": [
 								"devices",
-								"1"
+								"6784a5e6e8ef76da77152b17"
 							]
 						}
 					},
@@ -734,7 +734,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"classroom\": \"40210\",\r\n    \"status\": \"inactive\"\r\n}",
+							"raw": "{\r\n    \"classroom\": \"402\",\r\n    \"status\": \"inactive\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -742,7 +742,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/devices/1",
+							"raw": "http://localhost:8000/devices/6784a2ae880acfb9947c054a",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -750,7 +750,7 @@
 							"port": "8000",
 							"path": [
 								"devices",
-								"1"
+								"6784a2ae880acfb9947c054a"
 							]
 						}
 					},
