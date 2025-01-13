@@ -6,6 +6,7 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 
 
 const Records = () => {
@@ -65,6 +66,22 @@ const Records = () => {
         <Box>
           <Button
             sx={{
+              backgroundColor: colors.redAccent[700],
+              // color: colors.grey[100],
+              color: "white",
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+              margin: "5px"
+
+            }}
+          >
+            <DeleteOutlinedIcon sx={{ mr: "10px" }} />
+            Delete Reports
+          </Button>
+        
+          <Button
+            sx={{
               backgroundColor: colors.greenAccent[700],
               // color: colors.grey[100],
               color: "white",
@@ -89,14 +106,14 @@ const Records = () => {
                     <DataGrid
                         rows={rows}
                         columns={columns}
-                        // disableSelectionOnClick
+                        disableSelectionOnClick
 
                         components={{
                             Toolbar: GridToolbar,
                         }}
                         pageSize={10}
                         rowsPerPageOptions={[10, 25, 50]}
-                        // checkboxSelection
+                        checkboxSelection
                         sx={{
                             "& .MuiDataGrid-row:hover": {
                                 backgroundColor: colors.greenAccent[500],
@@ -104,7 +121,7 @@ const Records = () => {
                             
                             "& .MuiDataGrid-row": {
                                 // backgroundColor: colors.greenAccent[500],
-                                pointerEvents: "none",
+                                // pointerEvents: "none",
   
                             },
                             "& .MuiDataGrid-row.Mui-selected": {
