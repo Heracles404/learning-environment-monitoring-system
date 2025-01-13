@@ -6,6 +6,7 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 
 const Records = () => {
     const theme = useTheme();
@@ -36,14 +37,14 @@ const Records = () => {
     }, []);
 
     const columns = [
-        { field: "classroom", headerName: "Room", minWidth: 100, flex: 1 },
-        { field: "date", headerName: "Date", minWidth: 100, flex: 1 },
-        { field: "time", headerName: "Time", minWidth: 100, flex: 1 },
+        { field: "classroom", headerName: "Room", minWidth: 98, flex: 1 },
+        { field: "date", headerName: "Date", minWidth: 91, flex: 1 },
+        { field: "time", headerName: "Time", minWidth: 94, flex: 1 },
         { field: "temperature", headerName: "Temperature", minWidth: 100, flex: 1 },
         { field: "humidity", headerName: "Humidity", minWidth: 100, flex: 1 },
         { field: "heatIndex", headerName: "Heat Index", minWidth: 100, flex: 1 },
         { field: "lighting", headerName: "Lighting", minWidth: 100, flex: 1 },
-        { field: "voc", headerName: "VOC", minWidth: 100, flex: 1 },
+        { field: "voc", headerName: "VOC", minWidth: 91, flex: 1 },
         { field: "IAQIndex", headerName: "IAQ Index", minWidth: 100, flex: 1 },
         { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
         { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
@@ -85,6 +86,21 @@ const Records = () => {
 
                 <Box>
                     <Button
+                      sx={{
+                          backgroundColor: colors.redAccent[700],
+                          // color: colors.grey[100],
+                          color: "white",
+                          fontSize: "14px",
+                          fontWeight: "bold",
+                          padding: "10px 32.5px",
+                          margin: "5px"
+
+                        }}
+                        >
+                        <DeleteOutlinedIcon sx={{ mr: "10px" }} />
+                        Delete Reports
+                    </Button>
+                    <Button
                         onClick={handleDownload}
                         sx={{
                             backgroundColor: colors.greenAccent[700],
@@ -108,17 +124,21 @@ const Records = () => {
                     <DataGrid
                         rows={rows}
                         columns={columns}
+                        disableSelectionOnClick
                         components={{
                             Toolbar: GridToolbar,
                         }}
                         pageSize={10}
                         rowsPerPageOptions={[10, 25, 50]}
+                        checkboxSelection
                         sx={{
                             "& .MuiDataGrid-row:hover": {
                                 backgroundColor: colors.greenAccent[500],
                             },
                             "& .MuiDataGrid-row": {
                                 pointerEvents: "none",
+                                // backgroundColor: colors.greenAccent[500],
+                                // pointerEvents: "none",
                             },
                             "& .MuiDataGrid-row.Mui-selected": {
                                 backgroundColor: colors.greenAccent[500],

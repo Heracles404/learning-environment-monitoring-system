@@ -9,9 +9,9 @@
 // Time Components
 #include "time.h"
 
-const char* ssid = "TP-Link_883A";
-const char* password = "95379951";
-const char* host = "http://192.168.0.100";
+const char* ssid = "ACM2";
+const char* password = "0495452821@2024";
+const char* host = "http://192.168.1.31";
 const int port = 8000;
 const char* endpoint = "/vog";
 
@@ -30,6 +30,13 @@ PMS::DATA data;
 String recordTime;
 float pm25, pm10;
 int idx25, idx10, level;
+
+// Calibration coefficients
+float a_pm25 = 0.887;
+float b_pm25 = -0.633;
+
+float a_pm10 = 0.900;
+float b_pm10 = -0.040;
 
 // Time variables
 int lastPostMinute = -1;
@@ -88,27 +95,41 @@ void loop() {
   }
 
   // Get current hour and minute from timeInfo struct
-  int currentHour = timeInfo.tm_hour;   // Get the current hour (24-hour format)
-  int currentMinute = timeInfo.tm_min;  // Get the current minute
+int currentHour = timeInfo.tm_hour;   // Get the current hour (24-hour format)
+int currentMinute = timeInfo.tm_min;  // Get the current minute
 
-  // Define target times for data posting
-  int targetHour1 = 14;  // 3:00 PM
-  int targetMinute1 = 51; // 0 minutes
+// Define target times for data posting
+int targetHour1 = 18;  // Example: 6:11 PM
+int targetMinute1 = 42;
 
-  int targetHour2 = 14;  // 4:00 PM
-  int targetMinute2 = 52; // 30 minutes
+int targetHour2 = 18;  // Example: 6:12 PM
+int targetMinute2 = 43;
 
-  // Check if it's time to post data (based on defined target times)
-  if ((currentHour == targetHour1 && currentMinute == targetMinute1 && lastPostMinute != currentMinute) ||
-      (currentHour == targetHour2 && currentMinute == targetMinute2 && lastPostMinute != currentMinute)) {
+int targetHour3 = 18;  // Example: 7:00 PM
+int targetMinute3 = 44;
+
+int targetHour4 = 18;  // Example: 8:30 PM
+int targetMinute4 = 45;
+
+int targetHour5 = 18;  // Example: 9:45 PM
+int targetMinute5 = 46;
+
+// Check if it's time to post data (based on defined target times)
+if ((currentHour == targetHour1 && currentMinute == targetMinute1 && lastPostMinute != currentMinute) ||
+    (currentHour == targetHour2 && currentMinute == targetMinute2 && lastPostMinute != currentMinute) ||
+    (currentHour == targetHour3 && currentMinute == targetMinute3 && lastPostMinute != currentMinute) ||
+    (currentHour == targetHour4 && currentMinute == targetMinute4 && lastPostMinute != currentMinute) ||
+    (currentHour == targetHour5 && currentMinute == targetMinute5 && lastPostMinute != currentMinute)) {
+
     
     // Wake up the sensor, get the readings, and send data
     pms.wakeUp();
     delay(10000);  // Wait for sensor to stabilize
     pms.requestRead();
     if (pms.readUntil(data)) {
-      pm25 = data.PM_AE_UG_2_5;
-      pm10 = data.PM_AE_UG_10_0;
+      // Apply calibration
+      pm25 = a_pm25 * data.PM_AE_UG_2_5 + b_pm25;
+      pm10 = a_pm10 * data.PM_AE_UG_10_0 + b_pm10;
 
       idx25 = calculateAQI(pm25, "PM2.5");
       idx10 = calculateAQI(pm10, "PM10");
@@ -154,22 +175,41 @@ void dataDisplay() {
 }
 
 int calculateAQI(float concentration, String pollutant) {
+  struct AQIRange {
+    float cLow, cHigh;
+    int iLow, iHigh;
+  };
+  
+  AQIRange rangesPM25[] = {
+    {0.0, 12.0, 0, 50}, {12.1, 35.4, 51, 100}, {35.5, 55.4, 101, 150},
+    {55.5, 150.4, 151, 200}, {150.5, 250.4, 201, 300},
+    {250.5, 350.4, 301, 400}, {350.5, 500.4, 401, 500}};
+    
+  AQIRange rangesPM10[] = {
+    {0, 54, 0, 50}, {55, 154, 51, 100}, {155, 254, 101, 150},
+    {255, 354, 151, 200}, {355, 424, 201, 300},
+    {425, 504, 301, 400}, {505, 604, 401, 500}};
+  
+  AQIRange *ranges;
+  int size;
+  
   if (pollutant == "PM2.5") {
-    if (concentration <= 12.0) return map(concentration, 0.0, 12.0, 0, 50);
-    else if (concentration <= 35.4) return map(concentration, 12.1, 35.4, 51, 100);
-    else if (concentration <= 55.4) return map(concentration, 35.5, 55.4, 101, 150);
-    else if (concentration <= 150.4) return map(concentration, 55.5, 150.4, 151, 200);
-    else if (concentration <= 250.4) return map(concentration, 150.5, 250.4, 201, 300);
-    else return 301;  
+    ranges = rangesPM25;
+    size = sizeof(rangesPM25) / sizeof(rangesPM25[0]);
   } else if (pollutant == "PM10") {
-    if (concentration <= 54) return map(concentration, 0.0, 54, 0, 50);
-    else if (concentration <= 154) return map(concentration, 55, 154, 51, 100);
-    else if (concentration <= 254) return map(concentration, 155, 254, 101, 150);
-    else if (concentration <= 354) return map(concentration, 255, 354, 151, 200);
-    else if (concentration <= 424) return map(concentration, 355, 424, 201, 300);
-    else return 301;
+    ranges = rangesPM10;
+    size = sizeof(rangesPM10) / sizeof(rangesPM10[0]);
+  } else {
+    return -1; // Invalid pollutant
   }
-  return -1;
+  
+  for (int i = 0; i < size; i++) {
+    if (concentration >= ranges[i].cLow && concentration <= ranges[i].cHigh) {
+      return round((ranges[i].iHigh - ranges[i].iLow) / 
+             (ranges[i].cHigh - ranges[i].cLow) * (concentration - ranges[i].cLow) + ranges[i].iLow);
+    }
+  }
+  return 501; // Out of range
 }
 
 void sendDataToServer(String recordTime, float pm25, float pm10, int OAQIndex, int level) {
@@ -214,3 +254,4 @@ void sendDataToServer(String recordTime, float pm25, float pm10, int OAQIndex, i
     Serial.print(F("WiFi not connected"));
   }
 }
+//test
