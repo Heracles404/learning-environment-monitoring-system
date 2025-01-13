@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { httpGetAllReadouts } from "../../hooks/sensors.requests";
-import { Box,Button, Paper, Typography } from "@mui/material";
+import { Box, Button, Paper, Typography } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-
 
 const Records = () => {
     const theme = useTheme();
@@ -50,37 +49,57 @@ const Records = () => {
         { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
     ];
 
+    const handleDownload = () => {
+        // Convert rows to CSV format
+        const csvHeaders = columns.map((col) => col.headerName).join(",");
+        const csvRows = rows.map((row) =>
+            columns.map((col) => row[col.field] || "").join(",")
+        );
+        const csvContent = [csvHeaders, ...csvRows].join("\n");
+
+        // Create a blob and trigger download
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "records_report.csv";
+        link.style.display = "none";
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     return (
         <Box m="5px 25px">
             {/* HEADER */}
-      <Box 
-      display="flex" 
-      justifyContent="space-between"
-       alignItems="space-between"
-       sx={{
-        flexDirection: { xs: 'column', sm: 'row' }
-      }}>
-        <Header title="Records" subtitle="Managing the Records" />
-            
-        <Box>
-          <Button
-            sx={{
-              backgroundColor: colors.greenAccent[700],
-              // color: colors.grey[100],
-              color: "white",
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }}
-          >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Download Reports
-          </Button>
-        </Box>
+            <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="space-between"
+                sx={{
+                    flexDirection: { xs: "column", sm: "row" },
+                }}
+            >
+                <Header title="Records" subtitle="Managing the Records" />
 
-       </Box>
-       
-            
+                <Box>
+                    <Button
+                        onClick={handleDownload}
+                        sx={{
+                            backgroundColor: colors.greenAccent[700],
+                            color: "white",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                            padding: "10px 20px",
+                        }}
+                    >
+                        <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+                        Download Reports
+                    </Button>
+                </Box>
+            </Box>
+
             <Box mt="1px">
                 <Paper sx={{ height: "70vh", width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
@@ -89,38 +108,29 @@ const Records = () => {
                     <DataGrid
                         rows={rows}
                         columns={columns}
-                        // disableSelectionOnClick
-
                         components={{
                             Toolbar: GridToolbar,
                         }}
                         pageSize={10}
                         rowsPerPageOptions={[10, 25, 50]}
-                        // checkboxSelection
                         sx={{
                             "& .MuiDataGrid-row:hover": {
                                 backgroundColor: colors.greenAccent[500],
                             },
-                            
                             "& .MuiDataGrid-row": {
-                                // backgroundColor: colors.greenAccent[500],
                                 pointerEvents: "none",
-  
                             },
                             "& .MuiDataGrid-row.Mui-selected": {
                                 backgroundColor: colors.greenAccent[500],
-
                             },
                             "& .MuiDataGrid-row.Mui-selected:hover": {
                                 backgroundColor: colors.greenAccent[500],
                             },
-                            
                             "& .MuiDataGrid-toolbarContainer": {
                                 backgroundColor: colors.greenAccent[500],
-                                // color: colors.grey[100],
                             },
                             "& .MuiDataGrid-root": {
-                            border: "none",
+                                border: "none",
                             },
                             "& .MuiDataGrid-cell": {
                                 borderBottom: "none",
@@ -131,9 +141,6 @@ const Records = () => {
                             "& .MuiDataGrid-columnHeader": {
                                 backgroundColor: colors.greenAccent[700],
                                 borderBottom: "none",
-                            },
-                            "& .MuiDataGrid-virtualScroller": {
-                                // backgroundColor: colors.primary[400],
                             },
                             "& .MuiDataGrid-footerContainer": {
                                 borderTop: "none",
