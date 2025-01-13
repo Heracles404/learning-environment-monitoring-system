@@ -1,76 +1,51 @@
-const devices = new Map();
+const device = require('../schema/deviceSchema');
 
-let latestDeviceId = 1;
-
-const device  = {
-    _id: 1,
-    classroom: "401",
-    status: "active"
+async function newDevice(deviceData) {
+    const newDevice = new device(deviceData);
+    await newDevice.save();
+    console.log('New device added:', newDevice);
 }
 
-devices.set(device._id, device);
-
-function newDevice(device){
-    latestDeviceId++;
-
-    const newReadout = {
-        _id: latestDeviceId,
-        ...device
-    };
-
-    devices.set(newReadout._id, newReadout);
-
-    console.log(devices);
+async function getAllDevices() {
+    return await device.find({});
 }
 
-function getAllDevices(){
-    console.log(devices);
-    return Array.from(devices.values());
+async function existsId(deviceId) {
+    return await device.exists({ _id: deviceId });
 }
 
-function existsId(deviceId){
-    return devices.has(deviceId);
+async function getDeviceById(deviceId) {
+    return await device.findById(deviceId);
 }
 
-function getDeviceById(deviceId){
-    return devices.get(deviceId);
+async function getDeviceByClassroom(classroom) {
+    return await device.find({ classroom });
 }
 
-function getDeviceByClassroom(classroom) {
-    return Array.from(devices.values()).filter(device => device.classroom === classroom);
+async function getActive() {
+    return await device.find({ status: 'active' });
 }
 
-function getActive(){
-    return Array.from(devices.values()).filter(device => device.status.toUpperCase() === "ACTIVE");
+async function getInactive() {
+    return await device.find({ status: 'inactive' });
 }
 
-function getInactive(){
-    return Array.from(devices.values()).filter(device => device.status.toUpperCase() === "INACTIVE");
+async function deleteDevice(deviceId) {
+    return await device.findByIdAndDelete(deviceId);
 }
 
-function deleteDevice(deviceId) {
-    return devices.delete(deviceId);
+async function updateDevice(deviceId, updatedData) {
+    return await device.findByIdAndUpdate(deviceId, updatedData, { new: true });
 }
-
-function updateDevice(deviceId, updatedData) {
-    if (devices.has(deviceId)) {
-        const existingDevice = devices.get(deviceId);
-        const updatedDevice = { ...existingDevice, ...updatedData };
-        devices.set(deviceId, updatedDevice);
-        return updatedDevice;
-    }
-    return null; // Return null if the device does not exist
-}
-
 
 module.exports = {
     newDevice,
-    existsId,
     getAllDevices,
+    existsId,
     getDeviceById,
     getDeviceByClassroom,
     getActive,
     getInactive,
     deleteDevice,
-    updateDevice
-}
+    updateDevice,
+};
