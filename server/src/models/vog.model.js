@@ -1,75 +1,55 @@
-const vogReadouts = new Map();
+const VOGReadout = require('../schema/vogSchema');
 
-let latestReadoutId = 1;
-
-const currentDateTime = new Date();
-
-const vogReadout  = {
-    _id: 1,
-    date: "10/16/2024",
-    time: "03:15 PM",
-
-    pm25: 30,
-    pm10: 15,
-    OAQIndex: 80,
-
-    level: "2"
+// Function to get all readouts
+async function getAllReadouts() {
+    const readouts = await VOGReadout.find().lean(); // Use .lean() to return plain objects
+    return readouts;
 }
 
-vogReadouts.set(vogReadout._id, vogReadout);
-
-function getAllReadouts(){
-    console.log(vogReadouts);
-    return Array.from(vogReadouts.values());
+// Function to check if a readout ID exists
+async function existsId(readoutId) {
+    return await VOGReadout.exists({ _id: readoutId });
 }
 
-function existsId(readoutId){
-    return vogReadouts.has(readoutId);
+// Function to get a readout by ID
+async function getReadoutById(readoutId) {
+    return await VOGReadout.findById(readoutId).lean(); // Use .lean() to return plain objects
 }
 
-function getReadoutById(readoutId){
-    return vogReadouts.get(readoutId);
+// Function to get readouts by date range
+async function getReadoutsByDate(startDate, endDate) {
+    return await VOGReadout.find({
+        date: { $gte: startDate, $lte: endDate }
+    }).lean(); // Use .lean() to return plain objects
 }
 
+// Function to get readouts by time
+async function getReadoutsByTime(time) {
+    return await VOGReadout.find({ time }).lean(); // Use .lean() to return plain objects
+}
 
-function getReadoutsByDate(startDate, endDate) {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
+// Function to create a new readout
+async function newReadouts(readout) {
+    const currentDateTime = new Date();
+    const currentDate = currentDateTime.toLocaleDateString();
 
-    return Array.from(vogReadouts.values()).filter(readout => {
-        const readoutDate = new Date(readout.date);
-        return readoutDate >= start && readoutDate <= end;
+    const newReadout = new VOGReadout({
+        ...readout,
+        date: currentDate,
     });
+
+    await newReadout.save();
 }
 
 
-function getReadoutsByTime(time){
-    return Array.from(vogReadouts.values()).filter(readout => readout.time === time);
+// Function to delete a readout by ID
+async function deleteReadout(id) {
+    await VOGReadout.findByIdAndDelete(id);
 }
 
-function newReadouts(readout){
-    latestReadoutId++;
-
-    const newReadout = {
-        _id: latestReadoutId,
-        date: currentDateTime.toLocaleDateString(), // Format date
-        time: currentDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), // Format time to include only hour and minute
-        ...readout
-    };
-
-    vogReadouts.set(newReadout._id, newReadout);
-
-    console.log(vogReadouts);
-}
-
-function deleteReadout(id){
-    vogReadouts.delete(id);
-    console.log(vogReadouts);
-}
-
-function deleteAllReadouts(){
-    vogReadouts.clear();
-    console.log(vogReadouts);
+// Function to delete all readouts
+async function deleteAllReadouts() {
+    await VOGReadout.deleteMany({});
 }
 
 module.exports = {
@@ -81,4 +61,4 @@ module.exports = {
     newReadouts,
     deleteReadout,
     deleteAllReadouts
-}
+};
