@@ -1,0 +1,22 @@
+[{
+  "_id": {
+    "$oid": "6784c4354382206688514f3f"
+  },
+  "userName": "admin",
+  "password": "123",
+  "role": "Principal",
+  "firstName": "Nicanor",
+  "lastName": "Reyes II",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6784c4c64329d8404474b655"
+  },
+  "userName": "user",
+  "password": "123",
+  "role": "Vice",
+  "firstName": "Nicanor",
+  "lastName": "Reyes II",
+  "__v": 0
+}]
