@@ -167,7 +167,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    // For remarks and Index - set conditions in arduino\r\n    \"classroom\": \"401\",\r\n    \"time\": \"03:15 PM\",\r\n    \"temperature\": 46,\r\n    \"humidity\": 33,\r\n    \"heatIndex\": 90,\r\n    \"lighting\": 70,\r\n    \"voc\": 80,\r\n    \"IAQIndex\": 100,\r\n    \"indoorAir\": \"Good\",\r\n    \"temp\": \"Good\"\r\n}",
+							"raw": "{\r\n    // For remarks and Index - set conditions in arduino\r\n    \"classroom\": \"401\",\r\n    \"time\": \"03:15 PM\",\r\n    \"temperature\": 520,\r\n    \"humidity\": 80,\r\n    \"heatIndex\": 90,\r\n    \"lighting\": 70,\r\n    \"voc\": 80,\r\n    \"IAQIndex\": 100,\r\n    \"indoorAir\": \"Good\",\r\n    \"temp\": \"Good\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -222,6 +222,27 @@
 							"path": [
 								"sensors",
 								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /classroom sensors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/sensors/classroom/401",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"sensors",
+								"classroom",
+								"401"
 							]
 						}
 					},
@@ -613,7 +634,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"classroom\": \"2001\",\r\n    \"status\": \"inactive\"\r\n}",
+							"raw": "{\r\n    \"classroom\": \"403\",\r\n    \"status\": \"active\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
