@@ -38,14 +38,14 @@ const Records = () => {
     }, []);
 
     const columns = [
-        { field: "classroom", headerName: "Room", minWidth: 100, flex: 1 },
-        { field: "date", headerName: "Date", minWidth: 100, flex: 1 },
-        { field: "time", headerName: "Time", minWidth: 100, flex: 1 },
+        { field: "classroom", headerName: "Room", minWidth: 98, flex: 1 },
+        { field: "date", headerName: "Date", minWidth: 91, flex: 1 },
+        { field: "time", headerName: "Time", minWidth: 94, flex: 1 },
         { field: "temperature", headerName: "Temperature", minWidth: 100, flex: 1 },
         { field: "humidity", headerName: "Humidity", minWidth: 100, flex: 1 },
         { field: "heatIndex", headerName: "Heat Index", minWidth: 100, flex: 1 },
         { field: "lighting", headerName: "Lighting", minWidth: 100, flex: 1 },
-        { field: "voc", headerName: "VOC", minWidth: 100, flex: 1 },
+        { field: "voc", headerName: "VOC", minWidth: 91, flex: 1 },
         { field: "IAQIndex", headerName: "IAQ Index", minWidth: 100, flex: 1 },
         { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
         { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
@@ -71,8 +71,9 @@ const Records = () => {
               color: "white",
               fontSize: "14px",
               fontWeight: "bold",
-              padding: "10px 20px",
+              padding: "10px 32.5px",
               margin: "5px"
+              
 
             }}
           >
@@ -88,6 +89,7 @@ const Records = () => {
               fontSize: "14px",
               fontWeight: "bold",
               padding: "10px 20px",
+              margin: "5px"
             }}
           >
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />

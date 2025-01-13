@@ -32,7 +32,7 @@ const VOGRecords = () => {
     }, []); // Empty dependency array to run only once on mount
 
     const columns = [
-        { field: "id", headerName: "ID", minWidth: 100, flex: 1  },
+        { field: "id", headerName: "Room", minWidth: 100, flex: 1  },
         { field: "date", headerName: "Date", minWidth: 100, flex: 1 },
         { field: "time", headerName: "Time", minWidth: 100, flex: 1 },
         { field: "pm25", headerName: "PM 2.5", minWidth: 100, flex: 1 },
@@ -69,7 +69,7 @@ const VOGRecords = () => {
               color: "white",
               fontSize: "14px",
               fontWeight: "bold",
-              padding: "10px 20px",
+              padding: "10px 32.5px",
               margin: "5px"
             }}
           >
@@ -85,6 +85,7 @@ const VOGRecords = () => {
               fontSize: "14px",
               fontWeight: "bold",
               padding: "10px 20px",
+              margin: "5px"
             }}
           >
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
