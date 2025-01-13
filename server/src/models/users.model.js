@@ -1,110 +1,62 @@
-const users = new Map();
+// users.model.js
+const User = require('../schema/userSchema');
 
-let latestUserId = 1;
-
-const user = {
-    _id: 1,
-    userName: 'admin',
-    password: '123',
-    role: 'Principal',
-    firstName: 'Nicanor',
-    lastName: 'Reyes II'
+// Function to check if a username exists
+async function existsUserName(userName) {
+    const user = await User.findOne({ userName });
+    return user !== null;
 }
 
-const user2 = {
-    _id: 2,
-    userName: 'teach',
-    password: '123',
-    role: 'Teacher',
-    firstName: 'Nicanor',
-    lastName: 'Reyes II'
+// Function to get all users
+async function getAllUsers() {
+    const users = await User.find().lean(); // Use .lean() to return plain objects
+    return users.map(({ password, ...userWithoutPassword }) => userWithoutPassword);
 }
 
-users.set(user._id, user);
-users.set(user2._id, user2);
-
-function existsUserName(userName){
-    console.log(users);
-    for (const user of users.values()) {
-        if (user.userName === userName) {
-            return true;
-        }
-    }
-    return false;
-}
-
-function getAllUsers(){
-    // return Array.from(users.values());
-    console.log(users);
-    return Array.from(users.values()).map(({password, ...userWithoutPassword}) => userWithoutPassword);
-}
-
-function authenticateUser (userName, password) {
-    for (const user of users.values()) {
-        if (user.userName === userName && user.password === password) {
-            const { password, ...userWithoutPassword } = user; // Exclude password
-            return userWithoutPassword; // Return user data without password
-        }
+// Function to authenticate a user
+async function authenticateUser (userName, password) {
+    const user = await User.findOne({ userName, password }).lean(); // Use .lean() here as well
+    if (user) {
+        const { password, ...userWithoutPassword } = user; // Exclude password
+        return userWithoutPassword; // Return user data without password
     }
     return null;
 }
 
-function getUserByUserName(userName) {
-    // Find the user by userName
-    for (const user of users.values()) {
-        if (user.userName === userName) {
-            const { password, ...userWithoutPassword } = user; // Exclude password
-            return userWithoutPassword;
-        }
+// Function to get a user by username
+async function getUserByUserName(userName) {
+    const user = await User.findOne({ userName }).lean(); // Use .lean() here as well
+    if (user) {
+        const { password, ...userWithoutPassword } = user; // Exclude password
+        return userWithoutPassword;
     }
     return null; // User not found
 }
 
-function addNewUser(user) {
-    console.log(users);
-    latestUserId++;
-
-    // Create a new user object that includes the userId
-    const newUser = {
-        _id: latestUserId, // Add userId
-        ...user // Spread the properties from the user object
-    };
-
-    users.set(newUser._id, newUser); // Store the new user in the map
+// Function to add a new user
+async function addNewUser (user) {
+    const newUser  = new User(user);
+    await newUser .save();
 }
 
-function deleteUserByUserName(userName) {
-    console.log(users);
-
-    // Find the _id by userName and delete the user
-    for (const [id, user] of users.entries()) {
-        if (user.userName === userName) {
-            users.delete(id);
-            return `User ${userName} has been deleted.`;
-        }
-    }
-
-    return `User ${userName} not found.`;
+// Function to delete a user by username
+async function deleteUserByUserName(userName) {
+    const result = await User.deleteOne({ userName });
+    return result.deletedCount > 0 ? `User  ${userName} has been deleted.` : `User  ${userName} not found.`;
 }
 
-function updateUserByUserName(userName, updates) {
-    // Find the user by userName and update their details
-    for (const [id, user] of users.entries()) {
-        if (user.userName === userName) {
-            const updatedUser = { ...user, ...updates }; // Update the fields
-            users.set(id, updatedUser); // Save the updated user back to the Map
-            return `User ${userName} has been updated.`;
-        }
-    }
-    return `User ${userName} not found.`;
+// Function to update a user by username
+async function updateUserByUserName(userName, updates) {
+    const result = await User.updateOne({ userName }, { $set: updates });
+    return result.modifiedCount > 0 ? `User  ${userName} has been updated.` : `User  ${userName} not found.`;
 }
 
 module.exports = {
     existsUserName,
     getAllUsers,
-    authenticateUser,
+    authenticateUser ,
     getUserByUserName,
-    addNewUser,
+    addNewUser ,
     deleteUserByUserName,
     updateUserByUserName,
-}
+};
