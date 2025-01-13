@@ -5,7 +5,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 
 const VOGRecords = () => {
@@ -32,7 +32,7 @@ const VOGRecords = () => {
     }, []); // Empty dependency array to run only once on mount
 
     const columns = [
-        { field: "id", headerName: "ID", minWidth: 100, flex: 1  },
+        { field: "id", headerName: "Room", minWidth: 100, flex: 1  },
         { field: "date", headerName: "Date", minWidth: 100, flex: 1 },
         { field: "time", headerName: "Time", minWidth: 100, flex: 1 },
         { field: "pm25", headerName: "PM 2.5", minWidth: 100, flex: 1 },
@@ -61,7 +61,22 @@ const VOGRecords = () => {
       }}>
                   <Header title="VOG Records" subtitle="Managing the VOG Records" />
             
-        <Box>
+        <Box >
+          <Button
+            sx={{
+              backgroundColor: colors.redAccent[700],
+              // color: colors.grey[100],
+              color: "white",
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 32.5px",
+              margin: "5px"
+            }}
+          >
+            <DeleteOutlinedIcon sx={{ mr: "10px" }} />
+            Delete Reports
+          </Button>
+        
           <Button
             sx={{
               backgroundColor: colors.greenAccent[700],
@@ -70,6 +85,7 @@ const VOGRecords = () => {
               fontSize: "14px",
               fontWeight: "bold",
               padding: "10px 20px",
+              margin: "5px"
             }}
           >
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
@@ -86,14 +102,14 @@ const VOGRecords = () => {
                     <DataGrid
                         rows={rows}
                         columns={columns}
-                        // disableSelectionOnClick
+                        disableSelectionOnClick
 
                         components={{
                             Toolbar: GridToolbar,
                         }}
                         pageSize={10}
                         rowsPerPageOptions={[10, 25, 50]}
-                        // checkboxSelection
+                        checkboxSelection
                         sx={{
                             "& .MuiDataGrid-row:hover": {
                                 backgroundColor: colors.greenAccent[500],
@@ -101,7 +117,7 @@ const VOGRecords = () => {
                             
                             "& .MuiDataGrid-row": {
                                 // backgroundColor: colors.greenAccent[500],
-                                pointerEvents: "none",
+                                // pointerEvents: "none",
   
                             },
                             "& .MuiDataGrid-row.Mui-selected": {

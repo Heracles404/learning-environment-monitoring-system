@@ -56,6 +56,7 @@ const Dashboard = () => {
     ml="4px"
     rowSpacing={1}
     columnSpacing={{ xs: 1, sm: 3, md: 3 }}
+    
     // pr="50px"
     mb="30px">
       <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 2 }}>
@@ -70,7 +71,7 @@ const Dashboard = () => {
             height: '62px', 
             width: {
               xs: 136, // 0
-              sm: 110, // 600
+              sm: 130, // 600
               md: 136, // 900
               lg: 136, // 1200
               xl: 136, // 1536
@@ -78,7 +79,7 @@ const Dashboard = () => {
           }}
         >
           <StatBox
-            title="ACTIVE"
+            title="ONLINE"
             subtitle="Device 1"
             // progress="0.75"
             // increase="+14%"
@@ -107,7 +108,7 @@ const Dashboard = () => {
             height: '62px', 
             width: {
               xs: 136, // 0
-              sm: 110, // 600
+              sm: 130, // 600
               md: 136, // 900
               lg: 136, // 1200
               xl: 136, // 1536
@@ -116,7 +117,7 @@ const Dashboard = () => {
 
         >
           <StatBox
-            title="ALERT"
+            title="OFFLINE"
             subtitle="Device 2"
             // progress="0.50"
             // increase="+21%"
