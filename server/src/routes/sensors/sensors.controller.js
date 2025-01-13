@@ -1,32 +1,42 @@
-const { existsId, getAllReadouts, getReadoutsByClassroom,
-    getReadoutById, getReadoutsByDate, getReadoutsByTime,
-    newReadouts, deleteReadout,
-    deleteAllReadouts } = require('../../models/sensors.model');
+const {
+    existsId,
+    getAllReadouts,
+    getReadoutsByClassroom,
+    getReadoutById,
+    getReadoutsByDate,
+    getReadoutsByTime,
+    newReadouts,
+    deleteReadout,
+    deleteAllReadouts
+} = require('../../models/sensors.model');
 
 // Function to get all readouts
-function httpGetAllReadouts(req, res) {
-    return res.status(200).json(getAllReadouts());
+async function httpGetAllReadouts(req, res) {
+    const readouts = await getAllReadouts();
+    return res.status(200).json(readouts);
 }
 
 // Function to get a specific readout by ID
-function httpGetReadoutById(req, res) {
-    const readoutId = Number(req.params.id);
+async function httpGetReadoutById(req, res) {
+    const readoutId = req.params.id;
 
-    if (isNaN(readoutId)) {
+    if (!readoutId.match(/^[0-9a-fA-F]{24}$/)) { // Check if the ID is a valid ObjectId
         return res.status(400).json({ error: 'Invalid readout ID' });
     }
 
-    if (existsId(readoutId)) {
-        return res.status(200).json(getReadoutById(readoutId));
+    if (await existsId(readoutId)) {
+        const readout = await getReadoutById(readoutId);
+        return res.status(200).json(readout);
     } else {
         return res.status(404).json({ message: 'Readout not found' });
     }
 }
 
-function httpGetReadoutsByClassroom(req, res) {
-    const classroom = req.params.classroom; // Get classroom as a string
+// Function to get readouts by classroom
+async function httpGetReadoutsByClassroom(req, res) {
+    const classroom = req.params.classroom;
 
-    const readoutsInClassroom = getReadoutsByClassroom(classroom); // Get readouts by classroom
+    const readoutsInClassroom = await getReadoutsByClassroom(classroom);
 
     if (readoutsInClassroom.length > 0) {
         return res.status(200).json(readoutsInClassroom);
@@ -36,14 +46,14 @@ function httpGetReadoutsByClassroom(req, res) {
 }
 
 // Function to get readouts by date range
-function httpGetReadoutsByDate(req, res) {
+async function httpGetReadoutsByDate(req, res) {
     const { startDate, endDate } = req.query;
 
     if (!startDate || !endDate) {
         return res.status(400).json({ message: 'Both startDate and endDate are required.' });
     }
 
-    const readoutsInRange = getReadoutsByDate(startDate, endDate);
+    const readoutsInRange = await getReadoutsByDate(startDate, endDate);
 
     if (readoutsInRange.length > 0) {
         return res.status(200).json(readoutsInRange);
@@ -53,9 +63,9 @@ function httpGetReadoutsByDate(req, res) {
 }
 
 // Function to get readouts by time
-function httpGetReadoutsByTime(req, res) {
+async function httpGetReadoutsByTime(req, res) {
     const time = req.params.time;
-    const readoutsAtTime = getReadoutsByTime(time);
+    const readoutsAtTime = await getReadoutsByTime(time);
 
     if (readoutsAtTime.length > 0) {
         return res.status(200).json(readoutsAtTime);
@@ -65,7 +75,7 @@ function httpGetReadoutsByTime(req, res) {
 }
 
 // Function to create a new readout (called when posting data)
-function httpNewReadouts(req, res) {
+async function httpNewReadouts(req, res) {
     const sensors = [
         'time', 'temperature', 'humidity', 'heatIndex', 'lighting',
         'classroom', 'voc', 'IAQIndex', 'indoorAir', 'temp'
@@ -80,35 +90,25 @@ function httpNewReadouts(req, res) {
         return res.status(400).json({ error: 'Bad Sensor Parameters: ' + badSensorParameters.join(', ') });
     }
 
-    // Dynamically generate the date and time for each new readout
-    const currentDateTime = new Date();
-    const currentDate = currentDateTime.toLocaleDateString();  // Format date as "MM/DD/YYYY"
-
-    // Include the date and time dynamically into the readout
-    const readoutWithTimestamp = {
-        date: currentDate,
-        ...readout,
-    };
-
     // Call the model to insert the new readout, which now includes date and time dynamically
-    newReadouts(readoutWithTimestamp);
+    await newReadouts(readout);
 
     return res.status(201).json({
         message: 'New record inserted...',
-        readout: readoutWithTimestamp
+        readout: readout
     });
 }
 
 // Function to delete a specific readout by ID
-function httpDeleteReadout(req, res) {
-    const readoutId = Number(req.params.id);
+async function httpDeleteReadout(req, res) {
+    const readoutId = req.params.id;
 
-    if (isNaN(readoutId)) {
+    if (!readoutId.match(/^[0-9a-fA-F]{24}$/)) { // Check if the ID is a valid ObjectId
         return res.status(400).json({ error: 'Invalid readout ID' });
     }
 
-    if (existsId(readoutId)) {
-        deleteReadout(readoutId);
+    if (await existsId(readoutId)) {
+        await deleteReadout(readoutId);
         return res.status(201).json('Deleted');
     } else {
         return res.status(404).json({ message: 'Readout not found' });
@@ -116,9 +116,9 @@ function httpDeleteReadout(req, res) {
 }
 
 // Function to delete all readouts
-function httpDeleteAllReadouts(req, res) {
-    deleteAllReadouts();
-    return res.status(201).json('All records deleted');
+async function httpDeleteAllReadouts(req, res) {
+    await deleteAllReadouts();
+    return res.status(204).json({ message: 'All readouts deleted' });
 }
 
 module.exports = {

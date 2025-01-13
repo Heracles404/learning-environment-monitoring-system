@@ -1,0 +1,68 @@
+[{
+  "_id": {
+    "$oid": "6784c02e41b861f39f8ba3fd"
+  },
+  "classroom": "401",
+  "date": "1/13/2025",
+  "time": "03:15 PM",
+  "temperature": 5220,
+  "humidity": 80,
+  "heatIndex": 90,
+  "lighting": 70,
+  "voc": 80,
+  "IAQIndex": 50,
+  "indoorAir": "Good",
+  "temp": "Good",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6784c03741b861f39f8ba3ff"
+  },
+  "classroom": "402",
+  "date": "1/13/2025",
+  "time": "04:15 PM",
+  "temperature": 5220,
+  "humidity": 80,
+  "heatIndex": 90,
+  "lighting": 70,
+  "voc": 80,
+  "IAQIndex": 50,
+  "indoorAir": "Good",
+  "temp": "Good",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6784c04d41b861f39f8ba401"
+  },
+  "classroom": "402",
+  "date": "1/13/2025",
+  "time": "03:15 PM",
+  "temperature": 220,
+  "humidity": 890,
+  "heatIndex": 910,
+  "lighting": 702,
+  "voc": 830,
+  "IAQIndex": 59,
+  "indoorAir": "Good",
+  "temp": "Good",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6784c05d41b861f39f8ba403"
+  },
+  "classroom": "401",
+  "date": "1/13/2025",
+  "time": "04:15 PM",
+  "temperature": 220,
+  "humidity": 890,
+  "heatIndex": 910,
+  "lighting": 702,
+  "voc": 830,
+  "IAQIndex": 59,
+  "indoorAir": "Good",
+  "temp": "Good",
+  "__v": 0
+}]
