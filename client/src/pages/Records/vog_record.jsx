@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {httpGetAllReadouts} from "../../hooks/vog.requests";
-import { Box, Button, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination } from "@mui/material";
+import { httpGetAllReadouts } from "../../hooks/vog.requests";
+import { Box, Button, Typography, Paper } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
@@ -32,6 +32,7 @@ const VOGRecords = () => {
     }, []); // Empty dependency array to run only once on mount
 
     const columns = [
+        { field: "id", headerName: "ID", minWidth: 100, flex: 1 },
         { field: "id", headerName: "Room", minWidth: 100, flex: 1  },
         { field: "date", headerName: "Date", minWidth: 100, flex: 1 },
         { field: "time", headerName: "Time", minWidth: 100, flex: 1 },
@@ -39,61 +40,74 @@ const VOGRecords = () => {
         { field: "pm10", headerName: "PM 10.0", minWidth: 100, flex: 1 },
         { field: "OAQIndex", headerName: "OAQ Index", minWidth: 100, flex: 1 },
         { field: "level", headerName: "Concern Level", minWidth: 100, flex: 1 },
-
     ];
-    // const handleChangePage = (event, newPage) => {
-    //     setPage(newPage);
-    // };
 
-    // const handleChangeRowsPerPage = (event) => {
-    //     setRowsPerPage(+event.target.value);
-    //     setPage(0);
-    // };
+    const handleDownload = () => {
+        // Convert rows to CSV format
+        const csvHeaders = columns.map((col) => col.headerName).join(",");
+        const csvRows = rows.map((row) =>
+            columns.map((col) => row[col.field] || "").join(",")
+        );
+        const csvContent = [csvHeaders, ...csvRows].join("\n");
+
+        // Create a blob and trigger download
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "vog_records.csv";
+        link.style.display = "none";
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     return (
         <Box m="5px 25px">
             {/* HEADER */}
-      <Box 
-      display="flex" 
-      justifyContent="space-between"
-       alignItems="space-between"
-       sx={{
-        flexDirection: { xs: 'column', sm: 'row' }
-      }}>
-                  <Header title="VOG Records" subtitle="Managing the VOG Records" />
-            
-        <Box >
-          <Button
-            sx={{
-              backgroundColor: colors.redAccent[700],
-              // color: colors.grey[100],
-              color: "white",
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 32.5px",
-              margin: "5px"
-            }}
-          >
-            <DeleteOutlinedIcon sx={{ mr: "10px" }} />
-            Delete Reports
-          </Button>
-        
-          <Button
-            sx={{
-              backgroundColor: colors.greenAccent[700],
-              // color: colors.grey[100],
-              color: "white",
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-              margin: "5px"
-            }}
-          >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Download Reports
-          </Button>
-        </Box>
+            <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="space-between"
+                sx={{
+                    flexDirection: { xs: "column", sm: "row" },
+                }}
+            >
+                <Header title="VOG Records" subtitle="Managing the VOG Records" />
 
-       </Box>
+                <Box>
+                  <Button
+                      sx={{
+                        backgroundColor: colors.redAccent[700],
+                        // color: colors.grey[100],
+                        color: "white",
+                        fontSize: "14px",
+                        fontWeight: "bold",
+                        padding: "10px 32.5px",
+                        margin: "5px"
+                      }}
+                    >
+                      <DeleteOutlinedIcon sx={{ mr: "10px" }} />
+                      Delete Reports
+                    </Button>
+                    <Button
+                        onClick={handleDownload}
+                        sx={{
+                            backgroundColor: colors.greenAccent[700],
+                            color: "white",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                            padding: "10px 20px",
+                            margin: "5px"
+                        }}
+                    >
+                        <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+                        Download Reports
+                    </Button>
+                </Box>
+            </Box>
+
             <Box mt="1px">
                 <Paper sx={{ height: "70vh", width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
@@ -103,7 +117,6 @@ const VOGRecords = () => {
                         rows={rows}
                         columns={columns}
                         disableSelectionOnClick
-
                         components={{
                             Toolbar: GridToolbar,
                         }}
@@ -114,39 +127,30 @@ const VOGRecords = () => {
                             "& .MuiDataGrid-row:hover": {
                                 backgroundColor: colors.greenAccent[500],
                             },
-                            
                             "& .MuiDataGrid-row": {
+                                pointerEvents: "none",
                                 // backgroundColor: colors.greenAccent[500],
                                 // pointerEvents: "none",
   
                             },
                             "& .MuiDataGrid-row.Mui-selected": {
                                 backgroundColor: colors.greenAccent[500],
-
                             },
                             "& .MuiDataGrid-row.Mui-selected:hover": {
                                 backgroundColor: colors.greenAccent[500],
                             },
-                            
                             "& .MuiDataGrid-toolbarContainer": {
                                 backgroundColor: colors.greenAccent[500],
-                                // color: colors.grey[100],
                             },
                             "& .MuiDataGrid-root": {
-                            border: "none",
+                                border: "none",
                             },
                             "& .MuiDataGrid-cell": {
                                 borderBottom: "none",
                             },
-                            "& .name-column--cell": {
-                                color: colors.greenAccent[300],
-                            },
                             "& .MuiDataGrid-columnHeader": {
                                 backgroundColor: colors.greenAccent[700],
                                 borderBottom: "none",
-                            },
-                            "& .MuiDataGrid-virtualScroller": {
-                                // backgroundColor: colors.primary[400],
                             },
                             "& .MuiDataGrid-footerContainer": {
                                 borderTop: "none",
