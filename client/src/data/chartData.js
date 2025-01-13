@@ -168,28 +168,7 @@ export const CO2Data = [
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     png: UilUsdSquare,
-    series: [
-      {
-        name: "Room 1 CO2 Levels",
-        data: await fetchData("CO2"),
-        color: "#FF5733", // Red line color for Room 1
-      },
-      {
-        name: "Room 2 CO2 Levels",
-        data: await fetchData("CO2"), // Hardcoded sample data
-        color: "#33FF57", // Green line color for Room 2
-      },
-      // {
-      //   name: "Room 3 CO2 Levels",
-      //   data: [390, 400, 410, 420, 430, 440, 450], // Hardcoded sample data
-      //   color: "#3357FF", // Blue line color for Room 3
-      // },
-      // {
-      //   name: "Room 4 CO2 Levels",
-      //   data: [380, 390, 400, 410, 420, 430, 440], // Hardcoded sample data
-      //   color: "#FF33A1", // Pink line color for Room 4
-      // },
-    ],
+    series: airQualityData,
   },
 ];
 
@@ -202,28 +181,7 @@ export const HeatIndexData = [
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     png: UilUsdSquare,
-    series: [
-      {
-        name: "Room 1 Heat Index",
-        data: await fetchData("heatIndex"),
-        color: "#FF5733", // Red line color for Room 1
-      },
-      {
-        name: "Room 2 Heat Index",
-        data: [35, 36, 37, 38, 39, 40, 41], // Hardcoded sample data
-        color: "#33FF57", // Green line color for Room 2
-      },
-      // {
-      //   name: "Room 3 Heat Index",
-      //   data: [34, 35, 36, 37, 38, 39, 40], // Hardcoded sample data
-      //   color: "#3357FF", // Blue line color for Room 3
-      // },
-      // {
-      //   name: "Room 4 Heat Index",
-      //   data: [33, 34, 35, 36, 37, 38, 39], // Hardcoded sample data
-      //   color: "#FF33A1", // Pink line color for Room 4
-      // },
-    ],
+    series: TemperatureData
   },
 ];
 
@@ -236,28 +194,7 @@ export const LightingData = [
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     png: UilUsdSquare,
-    series: [
-      {
-        name: "Room 1 Lighting",
-        data: await fetchData("lighting"),
-        color: "#FF5733", // Red line color for Room 1
-      },
-      {
-        name: "Room 2 Lighting",
-        data: [60, 70, 75, 80, 90, 95, 100], // Hardcoded sample data
-        color: "#33FF57", // Green line color for Room 2
-      },
-      // {
-      //   name: "Room 3 Lighting",
-      //   data: [50, 60, 70, 80, 90, 100, 110], // Hardcoded sample data
-      //   color: "#3357FF", // Blue line color for Room 3
-      // },
-      // {
-      //   name: "Room 4 Lighting",
-      //   data: [40, 50, 60, 70, 80, 90, 100], // Hardcoded sample data
-      //   color: "#FF33A1", // Pink line color for Room 4
-      // },
-    ],
+    series: LightData
   },
 ];
 
