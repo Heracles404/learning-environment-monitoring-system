@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { httpGetAllReadouts } from "../../hooks/sensors.requests";
+import { httpGetAllReadouts, httpDeleteReadout, httpDeleteAllReadouts } from "../../hooks/sensors.requests";
 import { Box, Button, Paper, Typography, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
@@ -15,7 +15,8 @@ const Records = () => {
     const [rows, setRows] = useState([]);
     const [open, setOpen] = useState(false);
     const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
+    const [endDate, setEndDate] = useState([]);
+    const [selectedRows, setSelectedRows] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -55,7 +56,6 @@ const Records = () => {
     ];
 
     const handleDownload = () => {
-        // Filter rows based on date range
         const filteredRows = rows.filter((row) => {
             const rowDate = dayjs(row.date, "MM/DD/YYYY");
             const start = dayjs(startDate, "YYYY-MM-DD");
@@ -63,14 +63,12 @@ const Records = () => {
             return rowDate.isAfter(start.subtract(1, "day")) && rowDate.isBefore(end.add(1, "day"));
         });
 
-        // Convert filtered rows to CSV format
         const csvHeaders = columns.map((col) => col.headerName).join(",");
         const csvRows = filteredRows.map((row) =>
             columns.map((col) => row[col.field] || "").join(",")
         );
         const csvContent = [csvHeaders, ...csvRows].join("\n");
 
-        // Create a blob and trigger download
         const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
@@ -82,8 +80,33 @@ const Records = () => {
         link.click();
         document.body.removeChild(link);
 
-        // Close the dialog
         setOpen(false);
+    };
+
+    const handleDelete = async (id) => {
+        const result = await httpDeleteReadout(id);
+        if (result.ok) {
+            setRows(rows.filter(row => row.id !== id));
+        } else {
+            console.error("Error deleting record");
+        }
+    };
+
+    const handleDeleteSelected = async () => {
+        if (selectedRows.length > 0) {
+            for (const id of selectedRows) {
+                await handleDelete(id);
+            }
+        }
+    };
+
+    const handleDeleteAll = async () => {
+        const result = await httpDeleteAllReadouts();
+        if (result.ok) {
+            setRows([]);
+        } else {
+            console.error("Error deleting all records");
+        }
     };
 
     const handleOpenDialog = () => setOpen(true);
@@ -91,19 +114,12 @@ const Records = () => {
 
     return (
         <Box m="5px 25px">
-            {/* HEADER */}
-            <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="space-between"
-                sx={{
-                    flexDirection: { xs: "column", sm: "row" },
-                }}
-            >
+            <Box display="flex" justifyContent="space-between" alignItems="space-between" sx={{ flexDirection: { xs: "column", sm: "row" } }}>
                 <Header title="Records" subtitle="Managing the Records" />
 
                 <Box>
                     <Button
+                        onClick={handleDeleteAll}
                         sx={{
                             backgroundColor: colors.redAccent[700],
                             color: "white",
@@ -114,7 +130,7 @@ const Records = () => {
                         }}
                     >
                         <DeleteOutlinedIcon sx={{ mr: "10px" }} />
-                        Delete Reports
+                        Delete All Records
                     </Button>
                     <Button
                         onClick={handleOpenDialog}
@@ -148,6 +164,9 @@ const Records = () => {
                         pageSize={10}
                         rowsPerPageOptions={[10, 25, 50]}
                         checkboxSelection
+                        onSelectionModelChange={(newSelection) => {
+                            setSelectedRows(newSelection.selectionModel);
+                        }}
                         sx={{
                             "& .MuiDataGrid-row:hover": {
                                 backgroundColor: colors.greenAccent[500],
@@ -160,6 +179,9 @@ const Records = () => {
                             },
                         }}
                     />
+                    <Button onClick={handleDeleteSelected} sx={{ backgroundColor: colors.redAccent[700], color: "white", fontWeight: "bold", mt: 2 }}>
+                        Delete Selected
+                    </Button>
                 </Paper>
             </Box>
 
@@ -188,14 +210,7 @@ const Records = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseDialog}>Cancel</Button>
-                    <Button
-                        onClick={handleDownload}
-                        sx={{
-                            backgroundColor: colors.greenAccent[700],
-                            color: "white",
-                            fontWeight: "bold",
-                        }}
-                    >
+                    <Button onClick={handleDownload} sx={{ backgroundColor: colors.greenAccent[700], color: "white", fontWeight: "bold" }}>
                         Download
                     </Button>
                 </DialogActions>
