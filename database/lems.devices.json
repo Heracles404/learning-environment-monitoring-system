@@ -1,0 +1,32 @@
+[{
+  "_id": {
+    "$oid": "6784a2ae880acfb9947c054a"
+  },
+  "classroom": "402",
+  "status": "inactive",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6784a4e7f6e75be2398eefb7"
+  },
+  "classroom": "401",
+  "status": "active",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6784a5e6e8ef76da77152b17"
+  },
+  "classroom": "1401",
+  "status": "active",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6784a6e09b51e0ed9310eb01"
+  },
+  "classroom": "1401",
+  "status": "inactive",
+  "__v": 0
+}]
