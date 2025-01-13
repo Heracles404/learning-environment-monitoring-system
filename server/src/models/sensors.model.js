@@ -32,10 +32,13 @@ function existsId(readoutId){
     return readouts.has(readoutId);
 }
 
+function getReadoutsByClassroom(classroom) {
+    return Array.from(readouts.values()).filter(readout => readout.classroom === classroom);
+}
+
 function getReadoutById(readoutId){
     return readouts.get(readoutId);
 }
-
 
 function getReadoutsByDate(startDate, endDate) {
     const start = new Date(startDate);
@@ -79,6 +82,7 @@ function deleteAllReadouts(){
 module.exports = {
     existsId,
     getAllReadouts,
+    getReadoutsByClassroom,
     getReadoutById,
     getReadoutsByDate,
     getReadoutsByTime,

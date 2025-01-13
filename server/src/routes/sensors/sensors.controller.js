@@ -1,4 +1,7 @@
-const { existsId, getAllReadouts, getReadoutById, getReadoutsByDate, getReadoutsByTime, newReadouts, deleteReadout, deleteAllReadouts } = require('../../models/sensors.model');
+const { existsId, getAllReadouts, getReadoutsByClassroom,
+    getReadoutById, getReadoutsByDate, getReadoutsByTime,
+    newReadouts, deleteReadout,
+    deleteAllReadouts } = require('../../models/sensors.model');
 
 // Function to get all readouts
 function httpGetAllReadouts(req, res) {
@@ -17,6 +20,18 @@ function httpGetReadoutById(req, res) {
         return res.status(200).json(getReadoutById(readoutId));
     } else {
         return res.status(404).json({ message: 'Readout not found' });
+    }
+}
+
+function httpGetReadoutsByClassroom(req, res) {
+    const classroom = req.params.classroom; // Get classroom as a string
+
+    const readoutsInClassroom = getReadoutsByClassroom(classroom); // Get readouts by classroom
+
+    if (readoutsInClassroom.length > 0) {
+        return res.status(200).json(readoutsInClassroom);
+    } else {
+        return res.status(404).json({ message: 'Nothing found...' });
     }
 }
 
@@ -109,6 +124,7 @@ function httpDeleteAllReadouts(req, res) {
 module.exports = {
     httpGetAllReadouts,
     httpGetReadoutById,
+    httpGetReadoutsByClassroom,
     httpGetReadoutsByDate,
     httpGetReadoutsByTime,
     httpNewReadouts,
