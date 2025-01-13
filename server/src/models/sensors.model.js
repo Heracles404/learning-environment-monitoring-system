@@ -1,82 +1,59 @@
-const readouts = new Map();
+// sensors.model.js
+const Sensors = require('../schema/sensorsSchema');
 
-let latestReadoutId = 1;
-
-const currentDateTime = new Date();
-
-const readout  = {
-    _id: 1,
-    classroom: "401",
-    date: "10/16/2024",
-    time: "03:15 PM",
-    temperature: 36,
-    humidity: 33,
-    heatIndex: 37,
-
-    lighting: 160,
-    voc: 70,
-    IAQIndex: 72,
-
-    indoorAir: "Good",
-    temp: "Good",
+// Function to get all readouts
+async function getAllReadouts() {
+    return await Sensors.find();
 }
 
-readouts.set(readout._id, readout);
-
-function getAllReadouts(){
-    console.log(readouts);
-    return Array.from(readouts.values());
+// Function to check if a readout ID exists
+async function existsId(readoutId) {
+    return await Sensors.exists({ _id: readoutId });
 }
 
-function existsId(readoutId){
-    return readouts.has(readoutId);
+// Function to get readouts by classroom
+async function getReadoutsByClassroom(classroom) {
+    return await Sensors.find({ classroom });
 }
 
-function getReadoutsByClassroom(classroom) {
-    return Array.from(readouts.values()).filter(readout => readout.classroom === classroom);
+// Function to get a readout by ID
+async function getReadoutById(readoutId) {
+    return await Sensors.findById(readoutId);
 }
 
-function getReadoutById(readoutId){
-    return readouts.get(readoutId);
-}
-
-function getReadoutsByDate(startDate, endDate) {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-
-    return Array.from(readouts.values()).filter(readout => {
-        const readoutDate = new Date(readout.date);
-        return readoutDate >= start && readoutDate <= end;
+// Function to get readouts by date range
+async function getReadoutsByDate(startDate, endDate) {
+    return await Sensors.find({
+        date: { $gte: startDate, $lte: endDate }
     });
 }
 
-
-function getReadoutsByTime(time){
-    return Array.from(readouts.values()).filter(readout => readout.time === time);
+// Function to get readouts by time
+async function getReadoutsByTime(time) {
+    return await Sensors.find({ time });
 }
 
-function newReadouts(readout){
-    latestReadoutId++;
+// Function to create a new readout
+async function newReadouts(readout) {
+    const currentDateTime = new Date();
+    const currentDate = currentDateTime.toLocaleDateString();
 
-    const newReadout = {
-        _id: latestReadoutId,
-        date: currentDateTime.toLocaleDateString(), // Format date
-        ...readout
-    };
+    const newReadout = new Sensors({
+        ...readout,
+        date: currentDate,
+    });
 
-    readouts.set(newReadout._id, newReadout);
-
-    console.log(readouts);
+    await newReadout.save();
 }
 
-function deleteReadout(id){
-    readouts.delete(id);
-    console.log(readouts);
+// Function to delete a readout by ID
+async function deleteReadout(id) {
+    await Sensors.findByIdAndDelete(id);
 }
 
-function deleteAllReadouts(){
-    readouts.clear();
-    console.log(readouts);
+// Function to delete all readouts
+async function deleteAllReadouts() {
+    await Sensors.deleteMany({});
 }
 
 module.exports = {
@@ -89,4 +66,4 @@ module.exports = {
     newReadouts,
     deleteReadout,
     deleteAllReadouts
-}
+};

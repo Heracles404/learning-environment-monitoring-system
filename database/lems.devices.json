@@ -13,20 +13,4 @@
   "classroom": "401",
   "status": "active",
   "__v": 0
-},
-{
-  "_id": {
-    "$oid": "6784a5e6e8ef76da77152b17"
-  },
-  "classroom": "1401",
-  "status": "active",
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "6784a6e09b51e0ed9310eb01"
-  },
-  "classroom": "1401",
-  "status": "inactive",
-  "__v": 0
 }]
