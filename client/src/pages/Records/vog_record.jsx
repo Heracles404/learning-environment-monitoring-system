@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { httpGetAllReadouts } from "../../hooks/vog.requests";
-import { Box, Button, Typography, Paper } from "@mui/material";
+import { Box, Button, Typography, Paper, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
+import dayjs from "dayjs";
 
 const VOGRecords = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [rows, setRows] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -32,7 +36,7 @@ const VOGRecords = () => {
     }, []); // Empty dependency array to run only once on mount
 
     const columns = [
-        { field: "id", headerName: "Room", minWidth: 100, flex: 1  },
+        { field: "id", headerName: "Room", minWidth: 100, flex: 1 },
         { field: "date", headerName: "Date", minWidth: 100, flex: 1 },
         { field: "time", headerName: "Time", minWidth: 100, flex: 1 },
         { field: "pm25", headerName: "PM 2.5", minWidth: 100, flex: 1 },
@@ -42,9 +46,17 @@ const VOGRecords = () => {
     ];
 
     const handleDownload = () => {
-        // Convert rows to CSV format
+        // Filter rows based on date range
+        const filteredRows = rows.filter((row) => {
+            const rowDate = dayjs(row.date, "MM/DD/YYYY");
+            const start = dayjs(startDate, "YYYY-MM-DD");
+            const end = dayjs(endDate, "YYYY-MM-DD");
+            return rowDate.isAfter(start.subtract(1, "day")) && rowDate.isBefore(end.add(1, "day"));
+        });
+
+        // Convert filtered rows to CSV format
         const csvHeaders = columns.map((col) => col.headerName).join(",");
-        const csvRows = rows.map((row) =>
+        const csvRows = filteredRows.map((row) =>
             columns.map((col) => row[col.field] || "").join(",")
         );
         const csvContent = [csvHeaders, ...csvRows].join("\n");
@@ -54,13 +66,19 @@ const VOGRecords = () => {
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = "vog_records.csv";
+        link.download = "filtered_vog_records.csv";
         link.style.display = "none";
 
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+
+        // Close the dialog
+        setOpen(false);
     };
+
+    const handleOpenDialog = () => setOpen(true);
+    const handleCloseDialog = () => setOpen(false);
 
     return (
         <Box m="5px 25px">
@@ -76,29 +94,28 @@ const VOGRecords = () => {
                 <Header title="VOG Records" subtitle="Managing the VOG Records" />
 
                 <Box>
-                  <Button
-                      sx={{
-                        backgroundColor: colors.redAccent[700],
-                        // color: colors.grey[100],
-                        color: "white",
-                        fontSize: "14px",
-                        fontWeight: "bold",
-                        padding: "10px 32.5px",
-                        margin: "5px"
-                      }}
+                    <Button
+                        sx={{
+                            backgroundColor: colors.redAccent[700],
+                            color: "white",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                            padding: "10px 32.5px",
+                            margin: "5px",
+                        }}
                     >
-                      <DeleteOutlinedIcon sx={{ mr: "10px" }} />
-                      Delete Reports
+                        <DeleteOutlinedIcon sx={{ mr: "10px" }} />
+                        Delete Reports
                     </Button>
                     <Button
-                        onClick={handleDownload}
+                        onClick={handleOpenDialog}
                         sx={{
                             backgroundColor: colors.greenAccent[700],
                             color: "white",
                             fontSize: "14px",
                             fontWeight: "bold",
                             padding: "10px 20px",
-                            margin: "5px"
+                            margin: "5px",
                         }}
                     >
                         <DownloadOutlinedIcon sx={{ mr: "10px" }} />
@@ -126,41 +143,54 @@ const VOGRecords = () => {
                             "& .MuiDataGrid-row:hover": {
                                 backgroundColor: colors.greenAccent[500],
                             },
-                            "& .MuiDataGrid-row": {
-                                // backgroundColor: colors.greenAccent[500],
-                                // pointerEvents: "none",
-  
-                            },
-                            "& .MuiDataGrid-row.Mui-selected": {
-                                backgroundColor: colors.greenAccent[500],
-                            },
-                            "& .MuiDataGrid-row.Mui-selected:hover": {
-                                backgroundColor: colors.greenAccent[500],
-                            },
-                            "& .MuiDataGrid-toolbarContainer": {
-                                backgroundColor: colors.greenAccent[500],
-                            },
-                            "& .MuiDataGrid-root": {
-                                border: "none",
-                            },
-                            "& .MuiDataGrid-cell": {
-                                borderBottom: "none",
-                            },
                             "& .MuiDataGrid-columnHeader": {
                                 backgroundColor: colors.greenAccent[700],
-                                borderBottom: "none",
                             },
                             "& .MuiDataGrid-footerContainer": {
-                                borderTop: "none",
                                 backgroundColor: colors.greenAccent[700],
-                            },
-                            "& .MuiCheckbox-root": {
-                                color: `${colors.greenAccent[200]} !important`,
                             },
                         }}
                     />
                 </Paper>
             </Box>
+
+            {/* Date Range Dialog */}
+            <Dialog open={open} onClose={handleCloseDialog}>
+                <DialogTitle>Select Date Range</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        type="date"
+                        label="Start Date"
+                        fullWidth
+                        margin="dense"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        InputLabelProps={{ shrink: true }}
+                    />
+                    <TextField
+                        type="date"
+                        label="End Date"
+                        fullWidth
+                        margin="dense"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                        InputLabelProps={{ shrink: true }}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog}>Cancel</Button>
+                    <Button
+                        onClick={handleDownload}
+                        sx={{
+                            backgroundColor: colors.greenAccent[700],
+                            color: "white",
+                            fontWeight: "bold",
+                        }}
+                    >
+                        Download
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };
