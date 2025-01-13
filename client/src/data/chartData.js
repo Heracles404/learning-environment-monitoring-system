@@ -1,13 +1,6 @@
 // Sidebar imports
 import {
-  UilEstate,
-  UilClipboardAlt,
-  UilUsersAlt,
-  UilPackage,
-  UilChart,
-  UilSignOutAlt,
   UilUsdSquare,
-  UilMoneyWithdrawal,
 } from "@iconscout/react-unicons";
 
 import AirIcon from "@mui/icons-material/Air";
@@ -16,13 +9,19 @@ import WbIncandescentIcon from "@mui/icons-material/WbIncandescent";
 import VolcanoIcon from "@mui/icons-material/Volcano";
 
 import { httpGetAllReadouts } from "../hooks/sensors.requests.js";
+import { httpGetAllDevices } from "../hooks/devices.requests";
 
+const getRandomColor = () => {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
 
-
-// Function to fetch real-time data
 const fetchData = async (key) => {
   try {
-
     const response = await httpGetAllReadouts(); 
     console.log("check sensor response:", response)
     // Map data to the required key
@@ -35,16 +34,22 @@ const fetchData = async (key) => {
   }
 };
 
-// Sample data
-const classroomData = await fetchData("IAQIndex").classroom;
-console.log("ito", classroomData);
+// Function to fetch devices and construct air quality data
+const fetchAirQualityData = async () => {
+  const devices = await httpGetAllDevices(); // Fetch all devices
+  const activeDevices = devices.filter(device => device.status === "active"); // Filter for active devices
 
-// Append "Room" to each classroom name
-// const updatedClassroomData = classroomData.map(classroom => classroom + " Room");
+  const airQualitySeries = await Promise.all(activeDevices.map(async (device) => ({
+    name: `${device.classroom} Air Quality`, // Use the classroom name from the device
+    data: await fetchData("IAQIndex"), // Fetch air quality index data
+    color: getRandomColor(), // Random color for each classroom
+  })));
 
-// console.log(updatedClassroomData);
+  return airQualitySeries;
+};
 
-// Cards Data with line colors for each room
+const airQualityData = await fetchAirQualityData()
+
 export const CardsData = [
   {
     title: "Air Quality",
@@ -52,31 +57,10 @@ export const CardsData = [
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
-    barValue: 70,
-    value: "BAD",
+    barValue: 70, // You can adjust this based on your logic
+    value: "BAD", // You can adjust this based on your logic
     png: AirIcon,
-    series: [
-      {
-        name: "Room 1 Air Quality",
-        data: await fetchData("IAQIndex"),
-        color: "#FF5733", // Red line color for Room 1
-      },
-      {
-        name: "Room 2 Air Quality",
-        data: await fetchData("IAQIndex"), // Hardcoded sample data
-        color: "#33FF57", // Green line color for Room 2
-      },
-      // {
-      //   name: "Room 3 Air Quality",
-      //   data: [70, 75, 80, 85, 90, 95, 100], // Hardcoded sample data
-      //   color: "#3357FF", // Blue line color for Room 3
-      // },
-      // {
-      //   name: "Room 4 Air Quality",
-      //   data: [60, 65, 70, 75, 80, 85, 90], // Hardcoded sample data
-      //   color: "#FF33A1", // Pink line color for Room 4
-      // },
-    ],
+    series: airQualityData, // Use the dynamically fetched air quality data
   },
   {
     title: "Temperature",
@@ -92,22 +76,7 @@ export const CardsData = [
         name: "Room 1 Temperature",
         data: await fetchData("temperature"),
         color: "#FF5733", // Red line color for Room 1
-      },
-      {
-        name: "Room 2 Temperature",
-        data: await fetchData("temperature"), // Hardcoded sample data
-        color: "#33FF57", // Green line color for Room 2
-      },
-      // {
-      //   name: "Room 3 Temperature",
-      //   data: [28, 29, 30, 31, 32, 33, 34], // Hardcoded sample data
-      //   color: "#3357FF", // Blue line color for Room 3
-      // },
-      // {
-      //   name: "Room 4 Temperature",
-      //   data: [25, 26, 27, 28, 29, 30, 31], // Hardcoded sample data
-      //   color: "#FF33A1", // Pink line color for Room 4
-      // },
+      }
     ],
   },
   {
