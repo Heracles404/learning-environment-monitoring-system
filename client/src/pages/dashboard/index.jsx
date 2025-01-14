@@ -103,6 +103,7 @@ const Dashboard = () => {
           display="flex"
           alignItems="center"
           justifyContent="center"
+          mr="5px"
           sx={{
             borderRadius: '12px',
             height: '62px', 
