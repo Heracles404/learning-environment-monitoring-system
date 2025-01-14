@@ -64,7 +64,7 @@
     width: 60%;
     height: 60%;
     z-index: 9;
-    left: 13rem;
+    left: 21rem;
     border-radius: 1rem;
     display: flex;
     flex-direction: column;
@@ -91,7 +91,7 @@
     .DBExpandedCard {
       top: 2rem;
       height: 50%;
-      left: 6rem;
+      left: 20rem;
     }
   }
   
