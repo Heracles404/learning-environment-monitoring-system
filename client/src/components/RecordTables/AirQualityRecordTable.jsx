@@ -63,6 +63,14 @@ const AirQualityRecordTable = () => {
                         components={{
                             Toolbar: GridToolbar,
                         }}
+                        initialState={{
+                            pagination: {
+                              paginationModel: {
+                                pageSize: 3,
+                              },
+                            },
+                          }}
+                          pageSizeOptions={[3, 5, 10, 15]}
                         sx={{
                             "& .MuiDataGrid-row:hover": {
                                 backgroundColor: colors.greenAccent[500],

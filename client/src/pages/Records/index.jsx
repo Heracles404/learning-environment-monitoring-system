@@ -161,8 +161,14 @@ const Records = () => {
                         components={{
                             Toolbar: GridToolbar,
                         }}
-                        pageSize={10}
-                        rowsPerPageOptions={[10, 25, 50]}
+                        initialState={{
+                            pagination: {
+                              paginationModel: {
+                                pageSize: 3,
+                              },
+                            },
+                          }}
+                          pageSizeOptions={[3, 5, 10, 15]}
                         checkboxSelection
                         onSelectionModelChange={(newSelection) => {
                             setSelectedRows(newSelection.selectionModel);
