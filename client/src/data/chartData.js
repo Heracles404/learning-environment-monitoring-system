@@ -195,18 +195,7 @@ export const CO2Data = [
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     png: UilUsdSquare,
-    series: [
-      {
-        name: "Room 1 CO2 Levels",
-        data: await fetchData("CO2"),
-        color: "#FF5733", // Red line color for Room 1
-      },
-      {
-        name: "Room 2 CO2 Levels",
-        data: await fetchData("CO2"),
-        color: "#33FF57", // Green line color for Room 2
-      },
-    ],
+    series: airQualityData,
   },
 ];
 
@@ -219,18 +208,8 @@ export const HeatIndexData = [
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     png: UilUsdSquare,
-    series: [
-      {
-        name: "Room 1 Heat Index",
-        data: await fetchData("heatIndex"),
-        color: "#FF5733", // Red line color for Room 1
-      },
-      {
-        name: "Room 2 Heat Index",
-        data: [35, 36, 37, 38, 39, 40, 41], // Hardcoded sample data
-        color: "#33FF57", // Green line color for Room 2
-      },
-    ],
+    series: TemperatureData
+
   },
 ];
 
@@ -243,18 +222,8 @@ export const LightingData = [
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     png: UilUsdSquare,
-    series: [
-      {
-        name: "Room 1 Lighting",
-        data: await fetchData("lighting"),
-        color: "#FF5733", // Red line color for Room 1
-      },
-      {
-        name: "Room 2 Lighting",
-        data: [60, 70, 75, 80, 90, 95, 100], // Hardcoded sample data
-        color: "#33FF57", // Green line color for Room 2
-      },
-    ],
+    series: LightData
+
   },
 ];
 

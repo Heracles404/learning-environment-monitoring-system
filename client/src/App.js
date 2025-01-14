@@ -31,6 +31,7 @@ import NewAccountForm from "./pages/CreateNewAccount";
 import PreviewAccounts from "./pages/Accounts/PreviewAccount";
 import VOGRecords from "./pages/Records/vog_record";
 import CreateDevice from "./pages/Monitor/Devices/CreateDevice";
+import UpdateDevice from "./pages/Monitor/Devices/UpdateDevice";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -235,6 +236,14 @@ function App() {
                 </PrivateRoute>
               }
             />
+              <Route
+                  path="/UpdateDevice/:id"
+                  element={
+                      <PrivateRoute>
+                          <UpdateDevice />
+                      </PrivateRoute>
+                  }
+              />
             <Route
               path="/Device2"
               element={

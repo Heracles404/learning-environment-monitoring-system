@@ -3,33 +3,50 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../../components/Header";
-import { httpNewDevice } from "../../../hooks/devices.requests";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { httpGetDeviceById, httpUpdateDevice } from "../../../hooks/devices.requests"; // Import the update function
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 
-const CreateDevice = () => {
+const UpdateDevice = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const navigate = useNavigate(); // Hook for navigation
+  const { id } = useParams(); // Get the device ID from the URL
   const [errorMessage, setErrorMessage] = useState("");
+  const [initialValues, setInitialValues] = useState({ classroom: "", status: "" });
 
-  const handleCreate = async (values) => {
+  useEffect(() => {
+    const fetchDeviceData = async () => {
+      try {
+        const deviceData = await httpGetDeviceById(id); // Fetch device data by ID
+        setInitialValues({
+          classroom: deviceData.classroom,
+          status: deviceData.status,
+        });
+      } catch (error) {
+        console.error("Error fetching device data:", error);
+        setErrorMessage("Failed to fetch device data. Please try again.");
+      }
+    };
+
+    fetchDeviceData();
+  }, [id]);
+
+  const handleUpdate = async (values) => {
     const deviceData = {
       status: values.status,
       classroom: values.classroom
     };
 
     try {
-      const response = await httpNewDevice(deviceData);
+      const response = await httpUpdateDevice(id, deviceData); // Update the device
       if (response.ok) {
-        console.log("Device added successfully");
+        console.log("Device updated successfully");
         navigate("/Device1");
       } else {
-        // Handle error response
-        setErrorMessage("Failed to create device. Please try again.");
+        setErrorMessage("Failed to update device. Please try again.");
       }
     } catch (error) {
-      // Catch any unexpected errors
       setErrorMessage("An error occurred. Please try again.");
       console.error("Error:", error);
     }
@@ -37,12 +54,13 @@ const CreateDevice = () => {
 
   return (
       <Box m="20px">
-        <Header title="CREATE NEW DEVICE" subtitle="Create a New Device" />
+        <Header title="UPDATE DEVICE" subtitle="Update Device Information" />
 
         <Formik
-            onSubmit={handleCreate}
+            onSubmit={handleUpdate}
             initialValues={initialValues}
             validationSchema={checkoutSchema}
+            enableReinitialize // This allows the form to reinitialize when initialValues change
         >
           {({
               values,
@@ -64,14 +82,13 @@ const CreateDevice = () => {
                   <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2" }}>
                     <BadgeOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
                     <TextField
-                        fullWidth
-                        variant="outlined"
+                        fullWidth ="outlined"
                         type="text"
                         label="Classroom"
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        value={values.classroom} // Updated value
-                        name="classroom" // Updated name
+                        value={values.classroom}
+                        name="classroom"
                         error={!!touched.classroom && !!errors.classroom}
                         helperText={touched.classroom && errors.classroom}
                         sx={{ gridColumn: "span 2" }}
@@ -86,8 +103,8 @@ const CreateDevice = () => {
                         label="Status"
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        value={values.status} // Updated value
-                        name="status" // Updated name
+                        value={values.status}
+                        name="status"
                         error={!!touched.status && !!errors.status}
                         helperText={touched.status && errors.status}
                         sx={{ gridColumn: "span 2" }}
@@ -96,10 +113,10 @@ const CreateDevice = () => {
                 </Box>
                 <Box display="flex" justifyContent="end" mt="20px">
                   <Button type="submit" color="secondary" variant="contained">
-                    Create New Device
+                    Update Device
                   </Button>
                 </Box>
-                {errorMessage && <Box color="red">{errorMessage}</Box>} {/* Display error message */}
+                {errorMessage && <Box color="red">{errorMessage}</Box>}
               </form>
           )}
         </Formik>
@@ -112,9 +129,4 @@ const checkoutSchema = yup.object().shape({
   status: yup.string().required("Status is required"),
 });
 
-const initialValues = {
-  classroom : "",
-  status: "",
-};
-
-export default CreateDevice;
+export default UpdateDevice;
