@@ -43,7 +43,7 @@ const Dashboard = () => {
       justifyContent="space-between"
        alignItems="space-between"
        sx={{
-        flexDirection: { xs: 'column', sm: 'row' }
+        flexDirection: { xs: 'column', sm: 'row', md: "column", lg: "row" }
       }}>
         
         <Header title="DASHBOARD" subtitle="Welcome to Edilberto S. Legaspi Integrated High School Dashboard" />
