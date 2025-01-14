@@ -1,27 +1,26 @@
-const API_URL = 'http://192.168.0.100:8000';
+const API_URL = process.env.REACT_APP_API_URL;
 
-async function httpGetAllReadouts(){
+async function httpGetAllReadouts() {
     const response = await fetch(`${API_URL}/vog`);
     return await response.json();
 }
 
-async function httpGetReadoutById(_id){
+async function httpGetReadoutById(_id) {
     const response = await fetch(`${API_URL}/vog/${_id}`);
     return await response.json();
 }
 
-async function httpGetReadoutsByDate(startDate, endDate){
+async function httpGetReadoutsByDate(startDate, endDate) {
     const response = await fetch(`${API_URL}/vog/date/date?startDate=${startDate}&endDate=${endDate}`);
     return await response.json();
 }
 
-async function httpGetReadoutsByTime(time){
+async function httpGetReadoutsByTime(time) {
     const response = await fetch(`${API_URL}/vog/time/${time}`);
     return await response.json();
 }
 
-
-async function httpNewReadouts(readout){
+async function httpNewReadouts(readout) {
     try {
         return await fetch(`${API_URL}/vog`, {
             method: "POST",
@@ -37,8 +36,7 @@ async function httpNewReadouts(readout){
     }
 }
 
-
-async function httpDeleteReadout(_id){
+async function httpDeleteReadout(_id) {
     try {
         return await fetch(`${API_URL}/vog/${_id}`, {
             method: "DELETE",
@@ -51,7 +49,7 @@ async function httpDeleteReadout(_id){
     }
 }
 
-async function httpDeleteAllReadouts(){
+async function httpDeleteAllReadouts() {
     try {
         return await fetch(`${API_URL}/vog`, {
             method: "DELETE",
