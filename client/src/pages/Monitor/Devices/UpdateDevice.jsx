@@ -82,7 +82,8 @@ const UpdateDevice = () => {
                   <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2" }}>
                     <BadgeOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
                     <TextField
-                        fullWidth ="outlined"
+                        fullWidth
+                        variant="outlined"
                         type="text"
                         label="Classroom"
                         onBlur={handleBlur}

@@ -62,7 +62,7 @@
   .DBExpandedCard {
     position: fixed;
     width: 60%;
-    height: 60vh;
+    height: 60%;
     z-index: 9;
     left: 13rem;
     border-radius: 1rem;
@@ -90,7 +90,7 @@
   @media screen and (max-width: 1200px) {
     .DBExpandedCard {
       top: 2rem;
-      height: 50vh;
+      height: 50%;
       left: 6rem;
     }
   }
@@ -98,21 +98,21 @@
   @media screen and (max-width: 769px) {
     .DBExpandedCard {
       top: 8rem;
-      height: 30%;
+      height: 50%;
       left: 25px;
-      width: 80%;
+      width: 90%;
     }
     .DBchartContainer {
-      width: 60%;
+      width: 75%;
     }
   }
   
   @media screen and (max-width: 426px) {
     .DBExpandedCard {
       top: 8rem;
-      height: 30%;
+      height: 40%;
       left: 25px;
-      width: 80%;
+      width: 85%;
     }
     .DBchartContainer {
       width: 100%;
