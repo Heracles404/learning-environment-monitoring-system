@@ -1,4 +1,4 @@
-const API_URL = 'http://192.168.0.100:8000';
+const API_URL = process.env.REACT_APP_API_URL;
 
 async function httpGetUser(userName){
     try {
