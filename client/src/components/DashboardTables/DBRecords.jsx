@@ -63,8 +63,6 @@ const DBRecords = () => {
                         components={{
                             Toolbar: GridToolbar,
                         }}
-                        pageSize={10}
-                        rowsPerPageOptions={[10, 25, 50]}
                         sx={{
                             "& .MuiDataGrid-row:hover": {
                                 backgroundColor: colors.greenAccent[500],
