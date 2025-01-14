@@ -1,15 +1,11 @@
 const http = require('http');
+const app = require('./app');
 const PORT = process.env.PORT || 8000;
 
-const  app = require('./app');
-
+// Create the server using the 'http' module
 const server = http.createServer(app);
 
-function startServer(){
-    server.listen(PORT, () => {
-        console.log(`Listening to PORT ${PORT}...`);
-    })
-}
-
-
-startServer();
+// Start the server and listen on the specified port
+server.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server is running on http://0.0.0.0:${PORT}`);
+});
