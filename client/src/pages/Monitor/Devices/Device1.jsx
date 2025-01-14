@@ -53,7 +53,7 @@ const Device1 = () => {
                     renderCell: (row) => (
                         <button
                             style={{ background: "none", border: "none", cursor: "pointer" }}
-                            onClick={() => navigate(`../EditDevice/${row.id}`)} // Navigate to edit page with device ID
+                            onClick={() => navigate(`../UpdateDevice/${row.id}`)} // Navigate to UpdateDevice with device ID
                         >
                             <EditOutlinedIcon style={{ color: "orange", fontSize: "20px" }} />
                         </button>
