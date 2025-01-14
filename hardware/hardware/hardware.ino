@@ -50,13 +50,13 @@ int heatIndex;
 String indoorAir, temp, recordTime;
 const String classroom = "401";
 
-#define alertPin D3
+#define alertPin D8
 
 void setup() {
   Serial.begin(9600);  // Initialize serial communication
   Serial.println(F("Please Wait..."));
 
-  Wire.begin(sdaPin, sclPin);
+  // Wire.begin(sdaPin, sclPin);
 
   // Wifi Setup
   wifiInit();
@@ -67,8 +67,7 @@ void setup() {
   // BME Setup
   if (!bme.begin(0x77)) {  // Make sure the sensor initializes
     Serial.println(F("BME680 not found!"));
-    while (1)
-      ;
+    while (1);
   }
 
   // Set up oversampling and filter initialization
