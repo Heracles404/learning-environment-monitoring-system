@@ -6,6 +6,7 @@ import { tokens } from "../../../theme";
 import { httpGetAllUsers, httpDeleteUser  } from "../../../hooks/users.requests";
 import Header from "../../../components/Header";
 import { useNavigate } from "react-router-dom";
+import {httpGetAllDevices} from "../../../hooks/devices.requests";
 
 const Device1 = () => {
     const theme = useTheme();
@@ -19,19 +20,15 @@ const Device1 = () => {
         { id: "id", label: "ID", minWidth: 60 },
         { id: "classroom", label: "Classroom", minWidth: 150 },
         { id: "status", label: "Status", minWidth: 150 },
-        // { id: "userName", label: "Username", minWidth: 150 },
-        // { id: "role", label: "Role", minWidth: 120 },
     ]);
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await httpGetAllUsers(); // Fetch data from API
-            const formattedData = data.map(user => ({
-                id: user._id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                userName: user.userName,
-                role: user.role,
+            const data = await httpGetAllDevices(); // Fetch data from API
+            const formattedData = data.map(device => ({
+                id: device._id,
+                status: device.status,
+                classroom: device.classroom,
             }));
             setRows(formattedData);
         };
@@ -43,10 +40,8 @@ const Device1 = () => {
         const role = localStorage.getItem("role");
         const newColumns = [
             { id: "id", label: "ID", minWidth: 60 },
-            { id: "classroom", label: "Classroom", minWidth: 150 },
             { id: "status", label: "Status", minWidth: 150 },
-            // { id: "userName", label: "Username", minWidth: 150 },
-            // { id: "role", label: "Role", minWidth: 120 },
+            { id: "classroom", label: "Classroom", minWidth: 150 },
         ];
 
         if (role.toUpperCase() === "PRINCIPAL" || role.toUpperCase() === "ADMIN") {
