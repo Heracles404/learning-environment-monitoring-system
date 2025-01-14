@@ -21,13 +21,13 @@
 #include "time.h"
 
 // Time Components
-const char* ntpServer = "time.nist.gov"; // Reliable NTP server
-const long gmtOffset_sec = 8 * 3600;     // Adjust for your timezone (GMT+8)
-const int daylightOffset_sec = 0;        // No daylight saving time
+const char* ntpServer = "time.nist.gov";  // Reliable NTP server
+const long gmtOffset_sec = 8 * 3600;      // Adjust for your timezone (GMT+8)
+const int daylightOffset_sec = 0;         // No daylight saving time
 
 // ESP01 Components
-const int sclPin = D1;  
-const int sdaPin = D2;  
+const int sclPin = D1;
+const int sdaPin = D2;
 
 // BME Components
 Adafruit_BME680 bme;
@@ -36,11 +36,11 @@ Adafruit_BME680 bme;
 BH1750 lightMeter;
 
 // ESP01 Variables
-const char* ssid = "TP-Link_883A";
-const char* password = "95379951";
+const char* ssid = "IoT";
+const char* password = "AccessPoint.2024";
 
 // API Components
-const char* host = "http://192.168.0.100";
+const char* host = "http://192.168.105.196";
 const int port = 8000;
 const char* endpoint = "/sensors";
 
@@ -53,9 +53,9 @@ const String classroom = "401";
 #define alertPin D3
 
 void setup() {
-  Serial.begin(9600); // Initialize serial communication
+  Serial.begin(9600);  // Initialize serial communication
   Serial.println(F("Please Wait..."));
-  
+
   Wire.begin(sdaPin, sclPin);
 
   // Wifi Setup
@@ -67,14 +67,15 @@ void setup() {
   // BME Setup
   if (!bme.begin(0x77)) {  // Make sure the sensor initializes
     Serial.println(F("BME680 not found!"));
-    while (1);
+    while (1)
+      ;
   }
 
   // Set up oversampling and filter initialization
   bme.setTemperatureOversampling(BME680_OS_8X);
   bme.setHumidityOversampling(BME680_OS_2X);
   bme.setIIRFilterSize(BME680_FILTER_SIZE_3);
-  bme.setGasHeater(320, 150); // 320°C for 150 ms
+  bme.setGasHeater(320, 150);  // 320°C for 150 ms
 
   // BH1750 Set up
   lightMeter.begin();
@@ -85,7 +86,7 @@ void setup() {
 
 void loop() {
   Serial.println(F("--------------------------------"));
-  bme680Readings(); 
+  bme680Readings();
   luxFunc();
 
   // Get formatted time
@@ -94,39 +95,37 @@ void loop() {
   Serial.println(recordTime);
 
   Serial.println(F("--------------------------------"));
-  sendDataToServer(classroom, recordTime, temperature, humidity, voc, IAQIndex, lux, heatIndex, indoorAir, temp); 
+  sendDataToServer(classroom, recordTime, temperature, humidity, voc, IAQIndex, lux, heatIndex, indoorAir, temp);
 
   // Check and set alert signal
-  if (indoorAir == "UNHEALTHY" || indoorAir == "VERY UNHEALTHY" || 
-      indoorAir == "HAZARDOUS" || temp == "UNCOMFORTABLY HOT" || 
-      temp == "EXTREMELY HOT") {
-      digitalWrite(alertPin, LOW); // Send low signal
-      Serial.println(F("Alert: Low signal sent to pin D3."));
+  if (indoorAir == "UNHEALTHY" || indoorAir == "VERY UNHEALTHY" || indoorAir == "HAZARDOUS" || temp == "UNCOMFORTABLY HOT" || temp == "EXTREMELY HOT") {
+    digitalWrite(alertPin, LOW);  // Send low signal
+    Serial.println(F("Alert: Low signal sent to pin D3."));
   } else {
-      digitalWrite(alertPin, HIGH); // Default state
-      Serial.println(F("Alert: Conditions normal."));
+    digitalWrite(alertPin, HIGH);  // Default state
+    Serial.println(F("Alert: Conditions normal."));
   }
 
   delay(15000);
 }
 
 String getFormattedTime() {
-    struct tm timeInfo;
-    if (!getLocalTime(&timeInfo)) {
-        Serial.println("Failed to obtain time");
-        return "12:00 AM"; // Fallback value
-    }
-    char buffer[9];
-    strftime(buffer, sizeof(buffer), "%I:%M %p", &timeInfo); // Format: HH:MM AM/PM
-    return String(buffer);
+  struct tm timeInfo;
+  if (!getLocalTime(&timeInfo)) {
+    Serial.println("Failed to obtain time");
+    return "12:00 AM";  // Fallback value
+  }
+  char buffer[9];
+  strftime(buffer, sizeof(buffer), "%I:%M %p", &timeInfo);  // Format: HH:MM AM/PM
+  return String(buffer);
 }
 
-void wifiInit(){  
+void wifiInit() {
   Serial.println();
   Serial.print(F("Connecting to "));
   Serial.println(ssid);
 
-  WiFi.begin(ssid, password);  
+  WiFi.begin(ssid, password);
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
@@ -135,7 +134,7 @@ void wifiInit(){
   Serial.println(F(""));
   Serial.println(F("WiFi connected"));
   Serial.print(F("IP address: "));
-  Serial.println(WiFi.localIP());  
+  Serial.println(WiFi.localIP());
 }
 
 void bme680Readings() {
@@ -157,11 +156,11 @@ void bme680Readings() {
     Serial.println(F(" %"));
   }
 
-   // Heat Index Calculation
+  // Heat Index Calculation
   heatIndex = calculateHeatIndex(temperature, humidity);
   Serial.print(F("Heat Index: "));
   Serial.print(heatIndex);
-  Serial.println(F(" *C")); 
+  Serial.println(F(" *C"));
 
   Serial.print(F("Temperature Concern Level: "));
   if (heatIndex <= 27) {
@@ -174,7 +173,7 @@ void bme680Readings() {
     temp = "DANGER";
   } else if (heatIndex > 52) {
     temp = "EXTREME DANGER";
-  } 
+  }
   Serial.println(temp);
 
   voc = (bme.gas_resistance / 1000.0);
@@ -207,20 +206,19 @@ void bme680Readings() {
     indoorAir = "HAZARDOUS";
   }
   Serial.println(indoorAir);
-
 }
 
 float calculateIAQ(float GasResistance) {
   // Define your maximum and minimum gas resistance values (in kOhms)
-  const float R_max = 500.0;   // Maximum gas resistance (worst air quality)
-  const float R_min = 10.0;    // Minimum gas resistance (best air quality)
-  
+  const float R_max = 500.0;  // Maximum gas resistance (worst air quality)
+  const float R_min = 10.0;   // Minimum gas resistance (best air quality)
+
   // Define IAQ range
-  const int IAQ_max = 500;   // Maximum IAQ index (best air quality)
-  const int IAQ_min = 0;     // Minimum IAQ index (worst air quality)
+  const int IAQ_max = 500;  // Maximum IAQ index (best air quality)
+  const int IAQ_min = 0;    // Minimum IAQ index (worst air quality)
 
   // Logarithmic mapping of gas resistance to IAQ index
-  float logR = log(R_max / GasResistance);  // Logarithmic transformation
+  float logR = log(R_max / GasResistance);                        // Logarithmic transformation
   float IAQ = (logR * (IAQ_max - IAQ_min)) / log(R_max / R_min);  // Calculate IAQ index
 
   return IAQ;
@@ -262,13 +260,13 @@ void sendDataToServer(String classroom, String recordTime, float temperature, fl
   String jsonPayload;
 
   jsonDoc["classroom"] = classroom;
-  jsonDoc["recordTime"] = recordTime;
+  jsonDoc["time"] = recordTime;
   jsonDoc["temperature"] = temperature;
   jsonDoc["humidity"] = humidity;
-  jsonDoc["voc"] = voc;
-  jsonDoc["iaq"] = IAQIndex;
-  jsonDoc["lux"] = lux;
   jsonDoc["heatIndex"] = heatIndex;
+  jsonDoc["lighting"] = lux;
+  jsonDoc["voc"] = voc;
+  jsonDoc["IAQIndex"] = IAQIndex;
   jsonDoc["indoorAir"] = indoorAir;
   jsonDoc["temp"] = temp;
 
@@ -280,4 +278,3 @@ void sendDataToServer(String classroom, String recordTime, float temperature, fl
   Serial.println(responseCode);
   http.end();
 }
-
