@@ -3,10 +3,9 @@ import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, Tab
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { tokens } from "../../../theme";
-import { httpGetAllUsers, httpDeleteUser  } from "../../../hooks/users.requests";
+import { httpGetAllDevices, httpDeleteDevice } from "../../../hooks/devices.requests";
 import Header from "../../../components/Header";
 import { useNavigate } from "react-router-dom";
-import {httpGetAllDevices} from "../../../hooks/devices.requests";
 
 const Device1 = () => {
     const theme = useTheme();
@@ -54,7 +53,7 @@ const Device1 = () => {
                     renderCell: (row) => (
                         <button
                             style={{ background: "none", border: "none", cursor: "pointer" }}
-                            onClick={() => navigate(`../EditAccount/${row.userName}`)} // Navigate to edit page with user ID
+                            onClick={() => navigate(`../EditDevice/${row.id}`)} // Navigate to edit page with device ID
                         >
                             <EditOutlinedIcon style={{ color: "orange", fontSize: "20px" }} />
                         </button>
@@ -69,14 +68,14 @@ const Device1 = () => {
                         <button
                             style={{ background: "none", border: "none", cursor: "pointer" }}
                             onClick={async () => {
-                                const confirmed = window.confirm(`Are you sure you want to delete ${row.userName}?`);
+                                const confirmed = window.confirm(`Are you sure you want to delete the device with ID ${row.id}?`);
                                 if (confirmed) {
-                                    const response = await httpDeleteUser (row.userName);
+                                    const response = await httpDeleteDevice(row.id);
                                     if (response.ok) {
-                                        // Update the rows state to remove the deleted user
-                                        setRows((prevRows) => prevRows.filter((user) => user.userName !== row.userName));
+                                        // Update the rows state to remove the deleted device
+                                        setRows((prevRows) => prevRows.filter((device) => device.id !== row.id));
                                     } else {
-                                        alert("Failed to delete user. Please try again.");
+                                        alert("Failed to delete device. Please try again.");
                                     }
                                 }
                             }}
@@ -91,7 +90,7 @@ const Device1 = () => {
         setColumns(newColumns);
     }, []); // Run this effect only once when the component mounts
 
-    const handleChangePage = ( event, newPage) => {
+    const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
 
@@ -103,7 +102,7 @@ const Device1 = () => {
     return (
         <Box m="5px 25px">
             <Header title="DEVICES" subtitle="Managing the Device" />
-            <Box mt="1px">
+            <Box mt="1px"> {/* Corrected this line */}
                 <Paper sx={{ width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
                         Device Information
