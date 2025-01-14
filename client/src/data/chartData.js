@@ -9,9 +9,10 @@ import WbIncandescentIcon from "@mui/icons-material/WbIncandescent";
 import VolcanoIcon from "@mui/icons-material/Volcano";
 
 import { httpGetAllReadouts as getAllSensorReadouts } from "../hooks/sensors.requests.js";
-import { httpGetAllReadouts as getAllVogReadouts } from "../hooks/vog.requests.js";
 import { httpGetAllDevices } from "../hooks/devices.requests";
+import { httpGetAllReadouts } from "../hooks/vog.requests.js"; // Import the VOG requests
 
+// Get random color for chart series
 const getRandomColor = () => {
   const letters = '0123456789ABCDEF';
   let color = '#';
@@ -21,14 +22,16 @@ const getRandomColor = () => {
   return color;
 };
 
+// Function to fetch sensor data for specific classrooms
 const fetchData = async (key, deviceId) => {
   try {
     const response = await getAllSensorReadouts();
     console.log("check sensor response:", response);
-    // Filter data for the specific device
+
+    // Filter data for the specific classroom
     const data = response
-        .filter(item => item.classroom === deviceId) // Filter by classroom ID
-        .map(item => item[key]);
+      .filter(item => item.classroom === deviceId) // Filter by classroom ID
+      .map(item => item[key]);
     console.log("check sensor data:", data);
     return data;
   } catch (error) {
@@ -37,90 +40,103 @@ const fetchData = async (key, deviceId) => {
   }
 };
 
-// Function to fetch devices and construct air quality data
+// Fetch Air Quality Data
 const fetchAirQualityData = async () => {
-  const devices = await httpGetAllDevices(); // Fetch all devices
-  const activeDevices = devices.filter(device => device.status === "active"); // Filter for active devices
+  const devices = await httpGetAllDevices();
+  const activeDevices = devices.filter(device => device.status === "active");
 
-  const airQualitySeries = await Promise.all(activeDevices.map(async (device) => ({
-    name: `${device.classroom} Air Quality`, // Use the classroom name from the device
-    data: await fetchData("IAQIndex", device.classroom), // Pass classroom ID
-    color: getRandomColor(), // Random color for each classroom
-  })));
+  const airQualitySeries = await Promise.all(activeDevices.map(async (device) => {
+    const data = await fetchData("IAQIndex", device.classroom);
+    console.log(`Air Quality Data for ${device.classroom}:`, data); // Log the fetched data
+    return {
+      name: `${device.classroom} Air Quality`,
+      data: data.length > 0 ? data : [0], // Ensure there's data to display
+      color: getRandomColor(),
+    };
+  }));
 
   return airQualitySeries;
 };
 
-
+// Fetch Temperature Data
 const fetchTempData = async () => {
-  const devices = await httpGetAllDevices(); // Fetch all devices
-  const activeDevices = devices.filter(device => device.status === "active"); // Filter for active devices
+  const devices = await httpGetAllDevices();
+  const activeDevices = devices.filter(device => device.status === "active");
 
   const TemperatureSeries = await Promise.all(activeDevices.map(async (device) => ({
-    name: `${device.classroom} Temperature`, // Use the classroom name from the device
-    data: await fetchData("temperature", device.classroom), // Pass classroom ID
-    color: getRandomColor(), // Random color for each classroom
+    name: `${device.classroom} Temperature`,
+    data: await fetchData("temperature", device.classroom),
+    color: getRandomColor(),
   })));
 
   return TemperatureSeries;
 };
 
+// Fetch Lighting Data
 const fetchLightData = async () => {
-  const devices = await httpGetAllDevices(); // Fetch all devices
-  const activeDevices = devices.filter(device => device.status === "active"); // Filter for active devices
+  const devices = await httpGetAllDevices();
+  const activeDevices = devices.filter(device => device.status === "active");
 
   const LightSeries = await Promise.all(activeDevices.map(async (device) => ({
-    name: `${device.classroom} Light`, // Use the classroom name from the device
-    data: await fetchData("lighting", device.classroom), // Pass classroom ID
-    color: getRandomColor(), // Random color for each classroom
+    name: `${device.classroom} Light`,
+    data: await fetchData("lighting", device.classroom),
+    color: getRandomColor(),
   })));
 
   return LightSeries;
 };
 
-const LightData = await fetchLightData()
-const airQualityData = await fetchAirQualityData()
-const TemperatureData = await fetchTempData()
-
-const fetchVOGData = async () => {
+// Fetch PM10 Data
+const fetchPM10Data = async () => {
   try {
-    const response = await getAllVogReadouts(); // Fetch VOG data
-    console.log("check VOG response:", response);
+    const response = await httpGetAllReadouts();
+    console.log("check PM10 response:", response);
 
-    // Map the response to the required format
-    const VOGSeries = [
-      {
-        name: "PM2.5",
-        data: response.pm25 ? [response.pm25] : [], // Ensure data is an array
-        color: "#FF5733",
-      },
-      {
-        name: "PM10",
-        data: response.pm10 ? [response.pm10] : [], // Ensure data is an array
-        color: "#33FF57",
-      },
-    ];
-
-    return VOGSeries;
+    // Extract PM10 data
+    const pm10Data = response.map(item => item.pm10);
+    console.log("check PM10 data:", pm10Data);
+    return pm10Data;
   } catch (error) {
-    console.error("Error fetching VOG data:", error);
+    console.error("Error fetching PM10 data:", error);
     return []; // Return an empty array on error
   }
 };
 
-const VOGData = await fetchVOGData();
+// Fetch PM2.5 Data
+const fetchPM25Data = async () => {
+  try {
+    const response = await httpGetAllReadouts();
+    console.log("check PM2.5 response:", response);
 
+    // Extract PM2.5 data
+    const pm25Data = response.map(item => item.pm25);
+    console.log("check PM2.5 data:", pm25Data);
+    return pm25Data;
+  } catch (error) {
+    console.error("Error fetching PM2.5 data:", error);
+    return []; // Return an empty array on error
+  }
+};
+
+// Fetch all data
+const LightData = await fetchLightData();
+const airQualityData = await fetchAirQualityData();
+const TemperatureData = await fetchTempData();
+const PM10Data = await fetchPM10Data();
+const PM25Data = await fetchPM25Data();
+
+// Cards Data
 export const CardsData = [
   {
     title: "Air Quality",
     color: {
-      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)", // Fixed gradient
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
-    barValue: 70, // You can adjust this based on your logic
-    value: "BAD", // You can adjust this based on your logic
+    barValue: 70,
+    value: "BAD",
     png: AirIcon,
-    series: airQualityData, // Use the dynamically fetched air quality data
+    series: airQualityData, // Dynamically fetched air quality data
   },
 
   {
@@ -129,10 +145,10 @@ export const CardsData = [
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
-    barValue: 70, // You can adjust this based on your logic
-    value: "BAD", // You can adjust this based on your logic
+    barValue: 70,
+    value: "BAD",
     png: DeviceThermostatIcon,
-    series: TemperatureData, // Use the dynamically fetched air quality data
+    series: TemperatureData, // Dynamically fetched temperature data
   },
 
   {
@@ -141,21 +157,32 @@ export const CardsData = [
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
-    barValue: 70, // You can adjust this based on your logic
-    value: "BAD", // You can adjust this based on your logic
+    barValue: 70,
+    value: "BAD",
     png: WbIncandescentIcon,
-    series: LightData, // Use the dynamically fetched air quality data
+    series: LightData, // Dynamically fetched light data
   },
   {
-    title: "VOG",
+    title: "Volcanic Smog",
     color: {
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
-    barValue: 70, // You can adjust this based on your logic
-    value: "BAD", // You can adjust this based on your logic
+    barValue: 70,
+    value: "BAD",
     png: VolcanoIcon,
-    series: VOGData, // Use the dynamically fetched VOG data
+    series: [
+      {
+        name: "PM2.5",
+        data: PM25Data, // Fetch PM2.5 data
+        color: "#FF5733", // Red line color for PM2.5
+      },
+      {
+        name: "PM10",
+        data: PM10Data, // Fetch PM10 data
+        color: "#33FF57", // Green line color for PM10
+      },
+    ],
   },
 ];
 
@@ -182,6 +209,7 @@ export const HeatIndexData = [
     },
     png: UilUsdSquare,
     series: TemperatureData
+
   },
 ];
 
@@ -195,6 +223,7 @@ export const LightingData = [
     },
     png: UilUsdSquare,
     series: LightData
+
   },
 ];
 
@@ -218,7 +247,6 @@ export const VolcanicSmogData = [
         data: [50, 55, 60, 65, 70, 75, 80], // Hardcoded sample data
         color: "#33FF57", // Green line color for Room 2
       },
-
     ],
   },
 ];
