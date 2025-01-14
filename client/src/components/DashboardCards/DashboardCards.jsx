@@ -29,15 +29,15 @@ const DashboardCards = () => {
                 if (IAQIndex > 0 && IAQIndex <= 50) {
                   updatedValue = "GOOD";
                 } else if (IAQIndex > 50 && IAQIndex <= 100) {
-                  updatedValue = "MODERATE";
+                  updatedValue = "GOOD";
                 } else if (IAQIndex > 100 && IAQIndex <= 150) {
-                  updatedValue = "UNHEALTHY FOR SENSITIVE GROUPS";
+                  updatedValue = "GOOD";
                 } else if (IAQIndex > 150 && IAQIndex <= 200) {
-                  updatedValue = "UNHEALTHY";
+                  updatedValue = "GOOD";
                 } else if (IAQIndex > 200 && IAQIndex <= 300) {
-                  updatedValue = "VERY UNHEALTHY";
+                  updatedValue = "GOOD";
                 } else if (IAQIndex > 300 && IAQIndex <= 500) {
-                  updatedValue = "HAZARDOUS";
+                  updatedValue = "GOOD";
                 } else {
                   updatedValue = "OUT OF RANGE"; // Handle cases where IAQIndex is <= 0 or > 500
                 }
@@ -50,15 +50,15 @@ const DashboardCards = () => {
 
                 // Classify temperature based on heatIndex
                 if (heatIndex <= 27) {
-                  updatedValue = "NOT HAZARDOUS";
+                  updatedValue = "GOOD";
                 } else if (heatIndex >= 28 && heatIndex <= 32) {
-                  updatedValue = "CAUTION";
+                  updatedValue = "GOOD";
                 } else if (heatIndex >= 33 && heatIndex <= 41) {
-                  updatedValue = "EXTREME CAUTION";
+                  updatedValue = "GOOD";
                 } else if (heatIndex >= 42 && heatIndex <= 51) {
-                  updatedValue = "DANGER";
+                  updatedValue = "GOOD";
                 } else if (heatIndex > 51) {
-                  updatedValue = "EXTREME DANGER";
+                  updatedValue = "GOOD";
                 } else {
                   updatedValue = "OUT OF RANGE"; // Handle unexpected values
                 }
@@ -67,12 +67,12 @@ const DashboardCards = () => {
                 break;
 
               case 'Light':
-                updatedValue = latestData.lighting > 100 ? 'BRIGHT' : 'DIM';
+                updatedValue = (latestData.lighting > 300 && latestData.lighting < 500) ? 'GOOD' : 'BAD';
                 updatedBarValue = latestData.lighting;
                 break;
 
               case 'Volcanic Smog':
-                updatedValue = latestData.voc > 50 ? 'HIGH' : 'LOW';
+                updatedValue = latestData.voc > 50 ? 'GOOD' : 'BAD';
                 updatedBarValue = latestData.voc;
                 break;
 
@@ -105,7 +105,7 @@ const DashboardCards = () => {
   return (
     <div className="Cards">
       {cardData.map((card, id) => (
-        <div className="parent Container" key={id}>
+        <div className="parentContainer" key={id}>
           <DashboardCard
             title={card.title}
             color={card.color}
