@@ -41,6 +41,9 @@ const Device1 = () => {
             { id: "id", label: "ID", minWidth: 60 },
             { id: "status", label: "Status", minWidth: 150 },
             { id: "classroom", label: "Classroom", minWidth: 150 },
+            { id: "s", label: "BH1750", minWidth: 150 },
+            { id: "s", label: "BME680", minWidth: 150 },
+            { id: "s", label: "PMS5003", minWidth: 150 },
         ];
 
         if (role.toUpperCase() === "PRINCIPAL" || role.toUpperCase() === "ADMIN") {
