@@ -11,7 +11,7 @@ const DashboardCards = () => {
   useEffect(() => {
     const fetchCardData = async () => {
       try {
-         const response = await httpGetAllReadouts();
+        const response = await httpGetAllReadouts();
         // Get the latest data (assuming the last item in the array is the newest)
         const latestData = response[response.length - 1];
 
@@ -23,21 +23,59 @@ const DashboardCards = () => {
 
             switch (card.title) {
               case 'Air Quality':
-                updatedValue = latestData.IAQIndex > 50 ? 'GOOD' : 'BAD';
-                updatedBarValue = latestData.IAQIndex;
+                const IAQIndex = latestData.IAQIndex; // Assuming latestData has IAQIndex
+
+                // Classify air quality based on IAQIndex
+                if (IAQIndex > 0 && IAQIndex <= 50) {
+                  updatedValue = "GOOD";
+                } else if (IAQIndex > 50 && IAQIndex <= 100) {
+                  updatedValue = "MODERATE";
+                } else if (IAQIndex > 100 && IAQIndex <= 150) {
+                  updatedValue = "UNHEALTHY FOR SENSITIVE GROUPS";
+                } else if (IAQIndex > 150 && IAQIndex <= 200) {
+                  updatedValue = "UNHEALTHY";
+                } else if (IAQIndex > 200 && IAQIndex <= 300) {
+                  updatedValue = "VERY UNHEALTHY";
+                } else if (IAQIndex > 300 && IAQIndex <= 500) {
+                  updatedValue = "HAZARDOUS";
+                } else {
+                  updatedValue = "OUT OF RANGE"; // Handle cases where IAQIndex is <= 0 or > 500
+                }
+
+                updatedBarValue = IAQIndex; // Keep the bar value as the IAQIndex
                 break;
+
               case 'Temperature':
-                updatedValue = latestData.temperature > 30 ? 'HOT' : 'NORMAL';
-                updatedBarValue = latestData.temperature;
+                const heatIndex = latestData.temperature; // Assuming latestData has temperature
+
+                // Classify temperature based on heatIndex
+                if (heatIndex <= 27) {
+                  updatedValue = "NOT HAZARDOUS";
+                } else if (heatIndex >= 28 && heatIndex <= 32) {
+                  updatedValue = "CAUTION";
+                } else if (heatIndex >= 33 && heatIndex <= 41) {
+                  updatedValue = "EXTREME CAUTION";
+                } else if (heatIndex >= 42 && heatIndex <= 51) {
+                  updatedValue = "DANGER";
+                } else if (heatIndex > 51) {
+                  updatedValue = "EXTREME DANGER";
+                } else {
+                  updatedValue = "OUT OF RANGE"; // Handle unexpected values
+                }
+
+                updatedBarValue = heatIndex; // Keep the bar value as the heatIndex
                 break;
+
               case 'Light':
                 updatedValue = latestData.lighting > 100 ? 'BRIGHT' : 'DIM';
                 updatedBarValue = latestData.lighting;
                 break;
+
               case 'Volcanic Smog':
                 updatedValue = latestData.voc > 50 ? 'HIGH' : 'LOW';
                 updatedBarValue = latestData.voc;
                 break;
+
               default:
                 break;
             }
@@ -59,14 +97,15 @@ const DashboardCards = () => {
 
     // Fetch data initially and set an interval for periodic updates
     fetchCardData();
+    const intervalId = setInterval(fetchCardData, 60000); // Fetch data every minute
 
-
+    return () => clearInterval(intervalId); // Cleanup on unmount
   }, [lastUpdated]);
 
   return (
     <div className="Cards">
       {cardData.map((card, id) => (
-        <div className="parentContainer" key={id}>
+        <div className="parent Container" key={id}>
           <DashboardCard
             title={card.title}
             color={card.color}
