@@ -15,21 +15,34 @@ const DBRecords = () => {
         const fetchData = async () => {
             const data = await httpGetAllReadouts();
             console.log(data);
-            const formattedData = data.map((readout, index) => ({
-                id: readout._id || index, // Use `classroom` instead of `id`
-                classroom: readout.classroom,   // Add classroom to the row data
-                date: readout.date,
-                time: readout.time,
-                humidity: readout.humidity,
-                temperature: readout.temperature,
-                heatIndex: readout.heatIndex,
-                temp: readout.temp,
-                voc: readout.voc,
-                IAQIndex: readout.IAQIndex,
-                indoorAir: readout.indoorAir,
-                lighting: readout.lighting,
-                lightRemarks: readout.lightRemarks
+
+            // Step 1: Group by classroom
+            const classroomData = data.reduce((acc, readout) => {
+                const classroom = readout.classroom;
+                if (!acc[classroom]) {
+                    acc[classroom] = {
+                        classroom: classroom,
+                        heatIndex: [],
+                        IAQIndex: [],
+                        lighting: [],
+                    };
+                }
+                acc[classroom].heatIndex.push(readout.heatIndex);
+                acc[classroom].IAQIndex.push(readout.IAQIndex);
+                acc[classroom].lighting.push(readout.lighting);
+                return acc;
+            }, {});
+
+            // Step 2: Calculate averages
+            const formattedData = Object.values(classroomData).map((classroom) => ({
+                id: classroom.classroom, // Use classroom name as ID
+                classroom: classroom.classroom,
+                aveHeatIndex: (classroom.heatIndex.reduce((a, b) => a + b, 0) / classroom.heatIndex.length) || 0,
+                aveIAQIndex: (classroom.IAQIndex.reduce((a, b) => a + b, 0) / classroom.IAQIndex.length) || 0,
+                aveLighting: (classroom.lighting.reduce((a, b) => a + b, 0) / classroom.lighting.length) || 0,
             }));
+
+            // Step 3: Set the rows state
             setRows(formattedData);
         };
 
@@ -38,17 +51,13 @@ const DBRecords = () => {
 
     const columns = [
         { field: "classroom", headerName: "Classroom", minWidth: 100, flex: 1 },  // Updated header to Classroom
-        { field: "date", headerName: "Date", minWidth: 100, flex: 1 },
-        { field: "time", headerName: "Time", minWidth: 100, flex: 1 },
-        { field: "humidity", headerName: "Humidity", minWidth: 100, flex: 1 },
-        { field: "temperature", headerName: "Temperature", minWidth: 100, flex: 1 },
-        { field: "heatIndex", headerName: "Heat Index", minWidth: 100, flex: 1 },
-        { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
-        { field: "voc", headerName: "VOC", minWidth: 100, flex: 1 },
-        { field: "IAQIndex", headerName: "IAQ Index", minWidth: 100, flex: 1 },
-        { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
-        { field: "lighting", headerName: "Light Level", minWidth: 100, flex: 1 },
-        { field: "lightRemarks", headerName: "Light Stat", minWidth: 100, flex: 1 },
+        { field: "aveHeatIndex", headerName: "Average Heat Index", minWidth: 100, flex: 1 },
+        // { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
+        { field: "aveIAQIndex", headerName: "Average IAQ Index", minWidth: 100, flex: 1 },
+        // { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
+        { field: "aveLighting", headerName: "Average Light Level", minWidth: 100, flex: 1 },
+        // { field: "lightRemarks", headerName: "Light Stat", minWidth: 100, flex: 1 },
+        { field: "concernLevel", headerName: "Concern Level", minWidth: 100, flex: 1 },
     ];
 
     return (
