@@ -19,17 +19,29 @@ const Device1 = () => {
         { id: "id", label: "ID", minWidth: 60 },
         { id: "classroom", label: "Classroom", minWidth: 150 },
         { id: "status", label: "Status", minWidth: 150 },
+        { id: "bh1750", label: "BH1750", minWidth: 150 },
+        { id: "bme680", label: "BME680", minWidth: 150 },
+        { id: "pms680", label: "PMS5003", minWidth: 150 },
     ]);
 
     useEffect(() => {
         const fetchData = async () => {
             const data = await httpGetAllDevices(); // Fetch data from API
-            const formattedData = data.map(device => ({
-                id: device._id,
-                status: device.status,
-                classroom: device.classroom,
-            }));
-            setRows(formattedData);
+            console.log("API Response:", data); // Log the API response
+            if (data && data.length > 0) {
+                const formattedData = data.map(device => ({
+                    id: device._id,
+                    status: device.status,
+                    classroom: device.classroom,
+                    bh1750: device.bh1750,
+                    bme680: device.bme680,
+                    pms5003: device.pms5003,
+                }));
+                console.log("Formatted Data:", formattedData); // Log the formatted data
+                setRows(formattedData);
+            } else {
+                console.warn("No devices found in the API response.");
+            }
         };
 
         fetchData(); // Fetch data when component mounts
@@ -41,9 +53,9 @@ const Device1 = () => {
             { id: "id", label: "ID", minWidth: 60 },
             { id: "status", label: "Status", minWidth: 150 },
             { id: "classroom", label: "Classroom", minWidth: 150 },
-            { id: "s", label: "BH1750", minWidth: 150 },
-            { id: "s", label: "BME680", minWidth: 150 },
-            { id: "s", label: "PMS5003", minWidth: 150 },
+            { id: "bh1750", label: "BH1750", minWidth: 150 },
+            { id: "bme680", label: "BME680", minWidth: 150 },
+            { id: "pms5003", label: "PMS5003", minWidth: 150 },
         ];
 
         if (role.toUpperCase() === "PRINCIPAL" || role.toUpperCase() === "ADMIN") {
