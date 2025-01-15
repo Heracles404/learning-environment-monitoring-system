@@ -125,7 +125,16 @@ const TemperatureData = await fetchTempData();
 const PM10Data = await fetchPM10Data();
 const PM25Data = await fetchPM25Data();
 
-// Cards Data
+// Cards Data with deduplication
+const getUniqueSeries = (series) => {
+  const seen = new Set();
+  return series.filter(item => {
+    const isDuplicate = seen.has(item.name);
+    seen.add(item.name);
+    return !isDuplicate;
+  });
+};
+
 export const CardsData = [
   {
     title: "Air Quality",
@@ -136,7 +145,7 @@ export const CardsData = [
     barValue: 70,
     value: "BAD",
     png: AirIcon,
-    series: airQualityData, // Dynamically fetched air quality data
+    series: getUniqueSeries(airQualityData), // Deduplicate series
   },
 
   {
@@ -148,7 +157,7 @@ export const CardsData = [
     barValue: 70,
     value: "BAD",
     png: DeviceThermostatIcon,
-    series: TemperatureData, // Dynamically fetched temperature data
+    series: getUniqueSeries(TemperatureData), // Deduplicate series
   },
 
   {
@@ -160,7 +169,7 @@ export const CardsData = [
     barValue: 70,
     value: "BAD",
     png: WbIncandescentIcon,
-    series: LightData, // Dynamically fetched light data
+    series: getUniqueSeries(LightData), // Deduplicate series
   },
   {
     title: "Volcanic Smog",
@@ -171,22 +180,22 @@ export const CardsData = [
     barValue: 70,
     value: "BAD",
     png: VolcanoIcon,
-    series: [
+    series: getUniqueSeries([ // Deduplicate PM2.5 and PM10 data
       {
         name: "PM2.5",
-        data: PM25Data, // Fetch PM2.5 data
+        data: PM25Data,
         color: "#FF5733", // Red line color for PM2.5
       },
       {
         name: "PM10",
-        data: PM10Data, // Fetch PM10 data
+        data: PM10Data,
         color: "#33FF57", // Green line color for PM10
       },
-    ],
+    ]),
   },
 ];
 
-// CO2 Cards Data
+// Export other data with deduplication
 export const CO2Data = [
   {
     title: "CO2 Levels",
@@ -195,11 +204,10 @@ export const CO2Data = [
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     png: UilUsdSquare,
-    series: airQualityData,
+    series: getUniqueSeries(airQualityData),
   },
 ];
 
-// HeatIndex Cards Data
 export const HeatIndexData = [
   {
     title: "Heat Index",
@@ -208,12 +216,10 @@ export const HeatIndexData = [
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     png: UilUsdSquare,
-    series: TemperatureData
-
+    series: getUniqueSeries(TemperatureData),
   },
 ];
 
-// Lighting Cards Data
 export const LightingData = [
   {
     title: "Lighting",
@@ -222,12 +228,10 @@ export const LightingData = [
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     png: UilUsdSquare,
-    series: LightData
-
+    series: getUniqueSeries(LightData),
   },
 ];
 
-// Volcanic Smog Cards Data
 export const VolcanicSmogData = [
   {
     title: "Volcanic Smog",
@@ -236,7 +240,7 @@ export const VolcanicSmogData = [
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     png: UilUsdSquare,
-    series: [
+    series: getUniqueSeries([
       {
         name: "Room 1 Volcanic Smog",
         data: await fetchData("voc"),
@@ -247,6 +251,6 @@ export const VolcanicSmogData = [
         data: [50, 55, 60, 65, 70, 75, 80], // Hardcoded sample data
         color: "#33FF57", // Green line color for Room 2
       },
-    ],
+    ]),
   },
 ];

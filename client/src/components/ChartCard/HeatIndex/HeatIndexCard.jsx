@@ -20,7 +20,6 @@ function ExpandedCard({ param }) {
       try {
         const response = await httpGetAllReadouts();
 
-
         const values = response.map((item) => item.heatIndex);
         const timestamps = response.map((item) =>
           new Date(`${item.date} ${item.time}`).getTime()
@@ -36,13 +35,17 @@ function ExpandedCard({ param }) {
     };
 
     fetchHeatIndexData();
-
-
   }, []);
 
   if (heatIndexData.values.length === 0 || heatIndexData.timestamps.length === 0) {
     return <div>Loading...</div>;
   }
+
+  // Ensure the timestamps are unique and ordered
+  const sortedData = heatIndexData.timestamps.map((timestamp, index) => ({
+    timestamp: new Date(timestamp).toLocaleString(), // Use local string format to see readable timestamps
+    heatIndex: heatIndexData.values[index],
+  }));
 
   const data = {
     options: {
@@ -78,14 +81,14 @@ function ExpandedCard({ param }) {
         show: true,
       },
       xaxis: {
-        type: "datetime",
-        categories: heatIndexData.timestamps,
+        type: "category", // Use 'category' to handle custom formatted timestamps
+        categories: sortedData.map((entry) => entry.timestamp), // Map the timestamp into categories
       },
     },
     series: [
       {
         name: "Heat Index",
-        data: heatIndexData.values,
+        data: sortedData.map((entry) => entry.heatIndex),
       },
     ],
   };
@@ -100,7 +103,7 @@ function ExpandedCard({ param }) {
       layoutId={`expandableCard-${param.title}`}
     >
       <div style={{ alignSelf: "flex-end", cursor: "pointer", color: "white" }}>
-        {/* <UilTimes onClick={setExpanded} /> */}
+        {/* Optional close button */}
       </div>
       <span>{param.title}</span>
       <div className="chartContainer">

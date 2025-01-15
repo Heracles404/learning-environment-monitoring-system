@@ -42,6 +42,12 @@ function ExpandedCard({ param }) {
     return <div>Loading...</div>;
   }
 
+  // Ensure the timestamps are unique and ordered
+  const sortedData = vocData.timestamps.map((timestamp, index) => ({
+    timestamp: new Date(timestamp).toLocaleString(), // Format timestamp for readability
+    voc: vocData.vocValues[index],
+  }));
+
   const data = {
     options: {
       chart: {
@@ -76,14 +82,14 @@ function ExpandedCard({ param }) {
         show: true,
       },
       xaxis: {
-        type: "datetime",
-        categories: vocData.timestamps,
+        type: "category", // Use 'category' to handle custom formatted timestamps
+        categories: sortedData.map((entry) => entry.timestamp), // Map formatted timestamp into categories
       },
     },
     series: [
       {
         name: "VOC",
-        data: vocData.vocValues,
+        data: sortedData.map((entry) => entry.voc),
       },
     ],
   };
@@ -98,7 +104,7 @@ function ExpandedCard({ param }) {
       layoutId={`expandableCard-${param.title}`}
     >
       <div style={{ alignSelf: "flex-end", cursor: "pointer", color: "white" }}>
-        {/* <UilTimes onClick={setExpanded} /> */}
+        {/* Optional close button */}
       </div>
       <span>{param.title}</span>
       <div className="chartContainer">
