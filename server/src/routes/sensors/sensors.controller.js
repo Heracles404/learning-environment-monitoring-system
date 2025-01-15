@@ -78,7 +78,7 @@ async function httpGetReadoutsByTime(req, res) {
 async function httpNewReadouts(req, res) {
     const sensors = [
         'time', 'temperature', 'humidity', 'heatIndex', 'lighting',
-        'classroom', 'voc', 'IAQIndex', 'indoorAir', 'temp'
+        'classroom', 'voc', 'IAQIndex', 'indoorAir', 'temp', 'lightRemarks'
     ];
 
     const readout = req.body;

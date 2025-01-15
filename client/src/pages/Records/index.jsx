@@ -13,10 +13,10 @@ const Records = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [rows, setRows] = useState([]);
+    const [selectedRows, setSelectedRows] = useState([]); // Store selected rows
     const [open, setOpen] = useState(false);
     const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState([]);
-    const [selectedRows, setSelectedRows] = useState([]);
+    const [endDate, setEndDate] = useState("");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -55,6 +55,38 @@ const Records = () => {
         { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
     ];
 
+    const handleDeleteSelected = async () => {
+        console.log("Selected Rows for deletion:", selectedRows);
+
+        if (selectedRows.length === 0) {
+            console.log("No records selected for deletion");
+            return;
+        }
+
+        try {
+            for (const id of selectedRows) {
+                const result = await httpDeleteReadout(id);
+                if (result.ok) {
+                    setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+                } else {
+                    console.error(`Failed to delete record with id: ${id}`);
+                }
+            }
+            setSelectedRows([]); // Clear selection after deletion
+        } catch (error) {
+            console.error("Error during deletion:", error);
+        }
+    };
+
+    const handleDeleteAll = async () => {
+        const result = await httpDeleteAllReadouts();
+        if (result.ok) {
+            setRows([]);
+        } else {
+            console.error("Error deleting all records");
+        }
+    };
+
     const handleDownload = () => {
         const filteredRows = rows.filter((row) => {
             const rowDate = dayjs(row.date, "MM/DD/YYYY");
@@ -83,40 +115,32 @@ const Records = () => {
         setOpen(false);
     };
 
-    const handleDelete = async (id) => {
-        const result = await httpDeleteReadout(id);
-        if (result.ok) {
-            setRows(rows.filter(row => row.id !== id));
-        } else {
-            console.error("Error deleting record");
-        }
+    const handleDownloadAll = () => {
+        const csvHeaders = columns.map((col) => col.headerName).join(",");
+        const csvRows = rows.map((row) =>
+            columns.map((col) => row[col.field] || "").join(",")
+        );
+        const csvContent = [csvHeaders, ...csvRows].join("\n");
+
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "all_records_report.csv";
+        link.style.display = "none";
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 
-    const handleDeleteSelected = async () => {
-        if (selectedRows.length > 0) {
-            for (const id of selectedRows) {
-                await handleDelete(id);
-            }
-        }
-    };
 
-    const handleDeleteAll = async () => {
-        const result = await httpDeleteAllReadouts();
-        if (result.ok) {
-            setRows([]);
-        } else {
-            console.error("Error deleting all records");
-        }
-    };
-
-    const handleOpenDialog = () => setOpen(true);
     const handleCloseDialog = () => setOpen(false);
 
     return (
         <Box m="5px 25px">
             <Box display="flex" justifyContent="space-between" alignItems="space-between" sx={{ flexDirection: { xs: "column", sm: "row" } }}>
                 <Header title="Records" subtitle="Managing the Records" />
-
                 <Box>
                     <Button
                         onClick={handleDeleteAll}
@@ -133,7 +157,22 @@ const Records = () => {
                         Delete All Records
                     </Button>
                     <Button
-                        onClick={handleOpenDialog}
+                        onClick={handleDeleteSelected}
+                        sx={{
+                            backgroundColor: colors.redAccent[700],
+                            color: "white",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                            padding: "10px 20px",
+                            margin: "5px",
+                        }}
+                    >
+                        <DeleteOutlinedIcon sx={{ mr: "10px" }} />
+                        Delete Selected
+                    </Button>
+                    {/* Download All Records Button */}
+                    <Button
+                        onClick={handleDownloadAll}
                         sx={{
                             backgroundColor: colors.greenAccent[700],
                             color: "white",
@@ -144,7 +183,7 @@ const Records = () => {
                         }}
                     >
                         <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-                        Download Reports
+                        Download All Records
                     </Button>
                 </Box>
             </Box>
@@ -163,16 +202,14 @@ const Records = () => {
                         }}
                         initialState={{
                             pagination: {
-                              paginationModel: {
-                                pageSize: 3,
-                              },
+                                paginationModel: {
+                                    pageSize: 3,
+                                },
                             },
-                          }}
-                          pageSizeOptions={[3, 5, 10, 15]}
-                        checkboxSelection
-                        onSelectionModelChange={(newSelection) => {
-                            setSelectedRows(newSelection.selectionModel);
                         }}
+                        pageSizeOptions={[3, 5, 10, 15]}
+                        checkboxSelection
+                        onRowSelectionModelChange={(ids) => setSelectedRows(ids)} // Update selected rows
                         sx={{
                             "& .MuiDataGrid-row:hover": {
                                 backgroundColor: colors.greenAccent[500],
@@ -185,9 +222,6 @@ const Records = () => {
                             },
                         }}
                     />
-                    <Button onClick={handleDeleteSelected} sx={{ backgroundColor: colors.redAccent[700], color: "white", fontWeight: "bold", mt: 2 }}>
-                        Delete Selected
-                    </Button>
                 </Paper>
             </Box>
 
