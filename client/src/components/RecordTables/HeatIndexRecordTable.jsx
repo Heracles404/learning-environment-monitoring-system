@@ -70,7 +70,7 @@ const HeatIndexRecordTable = () => {
                               },
                             },
                           }}
-                          pageSizeOptions={[3, 5, 10, 15]}
+                        //   pageSizeOptions={[3, 5, 10, 15]}
                         sx={{
                             "& .MuiDataGrid-row:hover": {
                                 backgroundColor: colors.greenAccent[500],
