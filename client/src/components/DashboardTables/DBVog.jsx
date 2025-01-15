@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {httpGetAllReadouts} from "../../hooks/vog.requests";
-import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination } from "@mui/material";
+import { httpGetAllReadouts } from "../../hooks/vog.requests";
+import { Box, Typography, Paper } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 const DBVOGRecords = () => {
     const theme = useTheme();
@@ -15,39 +14,35 @@ const DBVOGRecords = () => {
     useEffect(() => {
         const fetchData = async () => {
             const data = await httpGetAllReadouts(); // Fetch data from API
-            const formattedData = data.map((readout, index) => ({
-                id: readout._id || index, // Ensure `id` is unique
-                date: readout.date,
-                time: readout.time,
-                pm25: readout.pm25,
-                pm10: readout.pm10,
-                OAQIndex: readout.OAQIndex,
-                level: readout.level,
-            }));
-            setRows(formattedData); // Set the formatted data to state
+
+            // Step 1: Calculate averages
+            const total = data.reduce((acc, readout) => {
+                acc.pm25 += readout.pm25 || 0;
+                acc.pm10 += readout.pm10 || 0;
+                acc.count += 1; // Count the number of records
+                return acc;
+            }, { pm25: 0, pm10: 0, count: 0 });
+
+            // Step 2: Create a single row with average values
+            const averageData = {
+                id: "average", // Unique ID for the average row
+                pm25: (total.pm25 / total.count) || 0,
+                pm10: (total.pm10 / total.count) || 0,
+            };
+
+            // Step 3: Set the rows state with the average data
+            setRows([averageData]); // Set the average data as the only row
         };
 
         fetchData(); // Call the fetch function
     }, []); // Empty dependency array to run only once on mount
 
     const columns = [
-        { field: "id", headerName: "ID", minWidth: 100, flex: 1  },
-        { field: "date", headerName: "Date", minWidth: 100, flex: 1 },
-        { field: "time", headerName: "Time", minWidth: 100, flex: 1 },
-        { field: "pm25", headerName: "PM 2.5", minWidth: 100, flex: 1 },
-        { field: "pm10", headerName: "PM 10.0", minWidth: 100, flex: 1 },
-        { field: "OAQIndex", headerName: "OAQ Index", minWidth: 100, flex: 1 },
-        { field: "level", headerName: "Concern Level", minWidth: 100, flex: 1 },
-
+        { field: "pm25", headerName: "Average PM 2.5", minWidth: 100, flex: 1 },
+        { field: "pm10", headerName: "Average PM 10.0", minWidth: 100, flex: 1 },
+        { field: "concernLevel", headerName: "Concern Level", minWidth: 100, flex: 1 },
     ];
-    // const handleChangePage = (event, newPage) => {
-    //     setPage(newPage);
-    // };
 
-    // const handleChangeRowsPerPage = (event) => {
-    //     setRowsPerPage(+event.target.value);
-    //     setPage(0);
-    // };
     return (
         <Box m="5px">
             <Header title="VOG Records" subtitle="Managing the VOG Records" />
@@ -59,44 +54,35 @@ const DBVOGRecords = () => {
                     <DataGrid
                         rows={rows}
                         columns={columns}
-                        // disableSelectionOnClick
-
                         components={{
                             Toolbar: GridToolbar,
                         }}
                         initialState={{
                             pagination: {
-                              paginationModel: {
-                                pageSize: 3,
-                              },
+                                paginationModel: {
+                                    pageSize: 3,
+                                },
                             },
-                          }}
-                          pageSizeOptions={[3, 5, 10, 15]}
-                        // checkboxSelection
+                        }}
+                        pageSizeOptions={[3, 5, 10, 15]}
                         sx={{
                             "& .MuiDataGrid-row:hover": {
                                 backgroundColor: colors.greenAccent[500],
                             },
-                            
                             "& .MuiDataGrid-row": {
-                                // backgroundColor: colors.greenAccent[500],
                                 pointerEvents: "none",
-  
                             },
                             "& .MuiDataGrid-row.Mui-selected": {
                                 backgroundColor: colors.greenAccent[500],
-
                             },
                             "& .MuiDataGrid-row.Mui-selected:hover": {
                                 backgroundColor: colors.greenAccent[500],
                             },
-                            
                             "& .MuiDataGrid-toolbarContainer": {
                                 backgroundColor: colors.greenAccent[500],
-                                // color: colors.grey[100],
                             },
                             "& .MuiDataGrid-root": {
-                            border: "none",
+                                border: "none",
                             },
                             "& .MuiDataGrid-cell": {
                                 borderBottom: "none",
@@ -107,9 +93,6 @@ const DBVOGRecords = () => {
                             "& .MuiDataGrid-columnHeader": {
                                 backgroundColor: colors.greenAccent[700],
                                 borderBottom: "none",
-                            },
-                            "& .MuiDataGrid-virtualScroller": {
-                                // backgroundColor: colors.primary[400],
                             },
                             "& .MuiDataGrid-footerContainer": {
                                 borderTop: "none",
