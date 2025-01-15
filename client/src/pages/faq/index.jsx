@@ -12,7 +12,7 @@ const FAQ = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
-    <Box m="20px">
+    <Box m="20px" height="100%" overflow="auto">
       <Header title="FAQ" subtitle="Frequently Asked Questions Page" />
 
       <Accordion defaultExpanded>
@@ -44,13 +44,36 @@ const FAQ = () => {
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-          What is Records?
+          What is the ideal range for -Parameters-?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            makikita ng user pag nag learn more sa text holder ng monitor -params- <br/>ilagay yung nasa RRL.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion defaultExpanded>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography color={colors.greenAccent[500]} variant="h5">
+          What is the ideal range for -Parameters-?
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            makikita ng user pag nag learn more sa text holder ng monitor -params- <br/>ilagay yung nasa RRL.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion defaultExpanded>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography color={colors.greenAccent[500]} variant="h5">
+          What is the ideal range for -Parameters-?
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            makikita ng user pag nag learn more sa text holder ng monitor -params- <br/>ilagay yung nasa RRL.
           </Typography>
         </AccordionDetails>
       </Accordion>

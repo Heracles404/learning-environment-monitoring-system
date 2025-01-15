@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Button, IconButton, Typography, useTheme, Card, CardContent, CardActions, CardMedia } from "@mui/material";
 import Header from "../../../components/Header";
 import CarbonDioxideChart from "../../../components/LineCharts/CarbonDioxide";
 import Grid from '@mui/material/Grid2';
@@ -30,7 +30,6 @@ const CarbonDioxideMonitor = () => {
       </Box>
       <Box>
         
-      
       <Box 
             display="flex" 
             // justifyContent="space-between"
@@ -40,18 +39,7 @@ const CarbonDioxideMonitor = () => {
             }}>
       {/* <DBRecords/> */}
       <AirQualityRecordTable/>
-        <Accordion defaultExpanded>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography color={colors.greenAccent[500]} variant="h5">
-              Ideal Range for IAQ
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              Lorem .
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
+
         </Box>
       <CO2Cards/>
       </Box>
