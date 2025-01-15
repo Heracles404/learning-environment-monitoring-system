@@ -42,10 +42,10 @@ const LightingRecordTable = () => {
         // { field: "temperature", headerName: "Temperature", minWidth: 100, flex: 1 },
         // { field: "humidity", headerName: "Humidity", minWidth: 100, flex: 1 },
         // { field: "heatIndex", headerName: "Heat Index", minWidth: 100, flex: 1 },
-        // { field: "lighting", headerName: "Lighting", minWidth: 100, flex: 1 },
+        { field: "lighting", headerName: "Lighting", minWidth: 100, flex: 1 },
         // { field: "voc", headerName: "VOC", minWidth: 100, flex: 1 },
-        { field: "IAQIndex", headerName: "IAQ Index", minWidth: 100, flex: 1 },
-        { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
+        // { field: "IAQIndex", headerName: "IAQ Index", minWidth: 100, flex: 1 },
+        // { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
         // { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
     ];
 
@@ -55,7 +55,7 @@ const LightingRecordTable = () => {
             <Box>
                 <Paper sx={{ maxHeight: "65vh", width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
-                        Records for Air Quality Parameters
+                        Records for Lighting Parameters
                     </Typography>
                     <DataGrid
                         rows={rows}
@@ -63,6 +63,14 @@ const LightingRecordTable = () => {
                         components={{
                             Toolbar: GridToolbar,
                         }}
+                        initialState={{
+                            pagination: {
+                              paginationModel: {
+                                pageSize: 3,
+                              },
+                            },
+                          }}
+                          pageSizeOptions={[3, 5, 10, 15]}
                         sx={{
                             "& .MuiDataGrid-row:hover": {
                                 backgroundColor: colors.greenAccent[500],
