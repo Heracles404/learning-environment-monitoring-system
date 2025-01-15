@@ -1,4 +1,5 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material';
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -7,11 +8,46 @@ import { httpNewDevice } from "../../../hooks/devices.requests";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import React from 'react';
 
 const CreateDevice = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const navigate = useNavigate(); // Hook for navigation
   const [errorMessage, setErrorMessage] = useState("");
+
+  // State for first checkbox logic
+  const [checked, setChecked] = React.useState([true, false]);
+
+  // State for second checkbox logic
+  const [checkedSecond, setCheckedSecond] = React.useState([false, false]);
+
+  // Handlers for first checkbox state updates
+  const handleChange1 = (event) => {
+    setChecked([event.target.checked, event.target.checked]);
+  };
+
+  const handleChange2 = (event) => {
+    setChecked([event.target.checked, checked[1]]);
+  };
+
+  const handleChange3 = (event) => {
+    setChecked([checked[0], event.target.checked]);
+  };
+
+  // Handlers for second checkbox state updates
+  const handleSecondChange1 = (event) => {
+    setCheckedSecond([event.target.checked, event.target.checked]);
+  };
+
+  const handleSecondChange2 = (event) => {
+    setCheckedSecond([event.target.checked, checkedSecond[1]]);
+  };
+
+  const handleSecondChange3 = (event) => {
+    setCheckedSecond([checkedSecond[0], event.target.checked]);
+  };
 
   const handleCreate = async (values) => {
     const deviceData = {
@@ -58,7 +94,7 @@ const CreateDevice = () => {
                     gap="30px"
                     gridTemplateColumns="repeat(4, minmax(0, 1fr))"
                     sx={{
-                      "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+                      "& > div": { gridColumn:  isNonMobile ? undefined : "span 4" },
                     }}
                 >
                   <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2" }}>
@@ -71,30 +107,67 @@ const CreateDevice = () => {
                         onBlur={handleBlur}
                         onChange={handleChange}
                         value={values.classroom} // Updated value
-                        name="classroom" // Updated name
+                        name="classroom" // Updated name  
                         error={!!touched.classroom && !!errors.classroom}
                         helperText={touched.classroom && errors.classroom}
-                        sx={{ gridColumn: "span 2" }}
+                        sx={{ gridColumn: "span 4" }}
                     />
                   </Box>
-                  <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2" }}>
-                    <BadgeOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
-                    <TextField
-                        fullWidth
-                        variant="outlined"
-                        type="text"
-                        label="Status"
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        value={values.status} // Updated value
-                        name="status" // Updated name
-                        error={!!touched.status && !!errors.status}
-                        helperText={touched.status && errors.status}
-                        sx={{ gridColumn: "span 2" }}
+                  
+
+                  {/* First Indeterminate Checkbox Component */}
+                  <Box sx={{ gridColumn: "span 1" }}>
+                  <Typography>
+                    Sensor
+                  </Typography>
+                    <FormControlLabel
+                      label="Indoor"
+                      control={
+                        <Checkbox
+                          checked={checked[0] && checked[1]}
+                          indeterminate={checked[0] !== checked[1]}
+                          onChange={handleChange1}
+                        />
+                      }
                     />
+                    <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
+                      <FormControlLabel
+                        label="BH1750"
+                        control={<Checkbox checked={checked[0]} onChange={handleChange2} />}
+                      />
+                      <FormControlLabel
+                        label="BME680"
+                        control={<Checkbox checked={checked[1]} onChange={handleChange3} />}
+                      />
+                    </Box>
+                  </Box>
+
+                  {/* Second Indeterminate Checkbox Component */}
+                  <Box sx={{ gridColumn: "span 1" }}>
+                  <Typography>
+                    Sensor
+                  </Typography>
+                    <FormControlLabel
+                      label="Outdoor"
+                      control={
+                        <Checkbox
+                          checked={checkedSecond[0] && checkedSecond[1]}
+                          indeterminate={checkedSecond[0] !== checkedSecond[1]}
+                          onChange={handleSecondChange1}
+                        />
+                      }
+                    />
+                    <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
+                      <FormControlLabel
+                        label="PMS5003"
+                        control={<Checkbox checked={checkedSecond[0]} onChange={handleSecondChange2} />}
+                      />
+                      
+                    </Box>
                   </Box>
                 </Box>
-                <Box display="flex" justifyContent="end" mt="20px">
+
+                <Box display="flex" justifyContent="center" mt="20px">
                   <Button type="submit" color="secondary" variant="contained">
                     Create New Device
                   </Button>
