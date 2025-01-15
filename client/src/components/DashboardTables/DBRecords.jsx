@@ -5,7 +5,6 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 const DBRecords = () => {
     const theme = useTheme();
@@ -15,19 +14,21 @@ const DBRecords = () => {
     useEffect(() => {
         const fetchData = async () => {
             const data = await httpGetAllReadouts();
+            console.log(data);
             const formattedData = data.map((readout, index) => ({
                 id: readout._id || index, // Use `classroom` instead of `id`
                 classroom: readout.classroom,   // Add classroom to the row data
                 date: readout.date,
                 time: readout.time,
-                temperature: readout.temperature,
                 humidity: readout.humidity,
+                temperature: readout.temperature,
                 heatIndex: readout.heatIndex,
-                lighting: readout.lighting,
+                temp: readout.temp,
                 voc: readout.voc,
                 IAQIndex: readout.IAQIndex,
                 indoorAir: readout.indoorAir,
-                temp: readout.temp,
+                lighting: readout.lighting,
+                lightRemarks: readout.lightRemarks
             }));
             setRows(formattedData);
         };
@@ -39,14 +40,15 @@ const DBRecords = () => {
         { field: "classroom", headerName: "Classroom", minWidth: 100, flex: 1 },  // Updated header to Classroom
         { field: "date", headerName: "Date", minWidth: 100, flex: 1 },
         { field: "time", headerName: "Time", minWidth: 100, flex: 1 },
-        { field: "temperature", headerName: "Temperature", minWidth: 100, flex: 1 },
         { field: "humidity", headerName: "Humidity", minWidth: 100, flex: 1 },
+        { field: "temperature", headerName: "Temperature", minWidth: 100, flex: 1 },
         { field: "heatIndex", headerName: "Heat Index", minWidth: 100, flex: 1 },
-        { field: "lighting", headerName: "Lighting", minWidth: 100, flex: 1 },
+        { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
         { field: "voc", headerName: "VOC", minWidth: 100, flex: 1 },
         { field: "IAQIndex", headerName: "IAQ Index", minWidth: 100, flex: 1 },
         { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
-        { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
+        { field: "lighting", headerName: "Light Level", minWidth: 100, flex: 1 },
+        { field: "lightRemarks", headerName: "Light Stat", minWidth: 100, flex: 1 },
     ];
 
     return (
