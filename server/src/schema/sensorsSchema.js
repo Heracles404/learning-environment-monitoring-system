@@ -13,6 +13,7 @@ const sensorsSchema = new mongoose.Schema({
     IAQIndex: { type: Number, required: true },
     indoorAir: { type: String, required: true },
     temp: { type: String, required: true },
+    lightRemarks: { type: String, required: true },
 });
 
 const Sensors = mongoose.model('sensors', sensorsSchema);
