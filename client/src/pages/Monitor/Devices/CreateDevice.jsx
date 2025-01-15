@@ -94,10 +94,10 @@ const CreateDevice = () => {
                     gap="30px"
                     gridTemplateColumns="repeat(4, minmax(0, 1fr))"
                     sx={{
-                      "& > div": { gridColumn:  isNonMobile ? undefined : "span 4" },
+                      "& > div": { gridColumn:  isNonMobile ? undefined : "span 3" },
                     }}
                 >
-                  <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2" }}>
+                  <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 4" }}>
                     <BadgeOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
                     <TextField
                         fullWidth
@@ -113,6 +113,7 @@ const CreateDevice = () => {
                         sx={{ gridColumn: "span 4" }}
                     />
                   </Box>
+                  
                   
 
                   {/* First Indeterminate Checkbox Component */}
@@ -143,7 +144,7 @@ const CreateDevice = () => {
                   </Box>
 
                   {/* Second Indeterminate Checkbox Component */}
-                  <Box sx={{ gridColumn: "span 1" }}>
+                  <Box sx={{ gridColumn: "span 2" }}>
                   <Typography>
                     Sensor
                   </Typography>
