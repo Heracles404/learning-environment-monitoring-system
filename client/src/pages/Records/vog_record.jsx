@@ -13,6 +13,7 @@ const VOGRecords = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [rows, setRows] = useState([]);
+    const [selectedRows, setSelectedRows] = useState([]); // Store selected rows
     const [open, setOpen] = useState(false);
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
@@ -87,6 +88,29 @@ const VOGRecords = () => {
         }
     };
 
+    const handleDeleteSelected = async () => {
+        console.log("Selected Rows for deletion:", selectedRows);
+
+        if (selectedRows.length === 0) {
+            console.log("No records selected for deletion");
+            return;
+        }
+
+        try {
+            for (const id of selectedRows) {
+                const result = await httpDeleteReadout(id);
+                if (result.ok) {
+                    setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+                } else {
+                    console.error(`Failed to delete record with id: ${id}`);
+                }
+            }
+            setSelectedRows([]); // Clear selection after deletion
+        } catch (error) {
+            console.error("Error during deletion:", error);
+        }
+    };
+
     const handleDeleteAll = async () => {
         const response = await httpDeleteAllReadouts();
         if (response.ok) {
@@ -123,6 +147,20 @@ const VOGRecords = () => {
                         Delete All Reports
                     </Button>
                     <Button
+                        onClick={handleDeleteSelected}
+                        sx={{
+                            backgroundColor: colors.redAccent[700],
+                            color: "white",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                            padding: "10px 20px",
+                            margin: "5px",
+                        }}
+                    >
+                        <DeleteOutlinedIcon sx={{ mr: "10px" }} />
+                        Delete Selected
+                    </Button>
+                    <Button
                         onClick={handleOpenDialog}
                         sx={{
                             backgroundColor: colors.greenAccent[700],
@@ -153,21 +191,14 @@ const VOGRecords = () => {
                         }}
                         initialState={{
                             pagination: {
-                              paginationModel: {
-                                pageSize: 3,
-                              },
+                                paginationModel: {
+                                    pageSize: 3,
+                                },
                             },
-                          }}
-                          pageSizeOptions={[3, 5, 10, 15]}
+                        }}
+                        pageSizeOptions={[3, 5, 10, 15]}
                         checkboxSelection
-                        renderCell={(params) => (
-                            <Button
-                                color="error"
-                                onClick={() => handleDelete(params.row.id)}
-                            >
-                                Delete
-                            </Button>
-                        )}
+                        onRowSelectionModelChange={(ids) => setSelectedRows(ids)} // Update selected rows
                         sx={{
                             "& .MuiDataGrid-row:hover": {
                                 backgroundColor: colors.greenAccent[500],
