@@ -53,6 +53,7 @@ const FAQ = () => {
           </Typography>
         </AccordionDetails>
       </Accordion>
+      
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
@@ -68,41 +69,16 @@ const FAQ = () => {
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-          What is the ideal range for -Parameters-?
+          Bakit ang pogi ni Sir Ian?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            makikita ng user pag nag learn more sa text holder ng monitor -params- <br/>ilagay yung nasa RRL.
+            Tinatanong paba yan hays.
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion defaultExpanded>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography color={colors.greenAccent[500]} variant="h5">
-          Bakit ang pogi ni Sir Ian at Sir Ilao?
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion defaultExpanded>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography color={colors.greenAccent[500]} variant="h5">
-            Bakit ang ganda ni Ma'am Belen at Ma'am Rhea?
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
+    
     </Box>
   );
 };
