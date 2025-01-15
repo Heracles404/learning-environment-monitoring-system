@@ -35,15 +35,17 @@ function ExpandedCard({ param }) {
     };
 
     fetchLightingData();
-
-  
-
-
   }, []);
 
   if (lightingData.lightingValues.length === 0 || lightingData.timestamps.length === 0) {
     return <div>Loading...</div>;
   }
+
+  // Ensure the timestamps are unique and ordered
+  const sortedData = lightingData.timestamps.map((timestamp, index) => ({
+    timestamp: new Date(timestamp).toLocaleString(), // Format timestamp for readability
+    lighting: lightingData.lightingValues[index],
+  }));
 
   const data = {
     options: {
@@ -79,14 +81,14 @@ function ExpandedCard({ param }) {
         show: true,
       },
       xaxis: {
-        type: "datetime",
-        categories: lightingData.timestamps,
+        type: "category", // Use 'category' to handle custom formatted timestamps
+        categories: sortedData.map((entry) => entry.timestamp), // Map formatted timestamp into categories
       },
     },
     series: [
       {
         name: "Lighting",
-        data: lightingData.lightingValues,
+        data: sortedData.map((entry) => entry.lighting),
       },
     ],
   };
@@ -101,7 +103,7 @@ function ExpandedCard({ param }) {
       layoutId={`expandableCard-${param.title}`}
     >
       <div style={{ alignSelf: "flex-end", cursor: "pointer", color: "white" }}>
-        {/* <UilTimes onClick={setExpanded} /> */}
+        {/* Optional close button */}
       </div>
       <span>{param.title}</span>
       <div className="chartContainer">

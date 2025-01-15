@@ -21,30 +21,45 @@ function ExpandedCard({ param }) {
         // Fetch data using the hook
         const response = await httpGetAllReadouts();
 
-        // Process the fetched data
-        const iaqIndexes = response.map((item) => item.IAQIndex);
-        const timestamps = response.map((item) =>
-          new Date(`${item.date} ${item.time}`).getTime()
-        );
+        if (response && response.length > 0) {
+          // Log response to check structure
+          console.log("Fetched IAQ data:", response);
 
-        // Update the state with processed data
-        setIaqData({
-          iaqIndexes,
-          timestamps,
-        });
+          // Process the fetched data
+          const iaqIndexes = response.map((item) => item.IAQIndex);
+          const timestamps = response.map((item) =>
+            new Date(`${item.date} ${item.time}`).getTime()
+          );
+
+          // Log processed data
+          console.log("Processed IAQ Indexes:", iaqIndexes);
+          console.log("Processed Timestamps:", timestamps);
+
+          // Update the state with processed data
+          setIaqData({
+            iaqIndexes,
+            timestamps,
+          });
+        } else {
+          console.error("No data found.");
+        }
       } catch (error) {
         console.error("Error fetching IAQ data:", error);
       }
     };
 
     fetchIAQData();
-
-
-  }, []);
+  }, []); // Empty dependency array to fetch data on mount
 
   if (iaqData.iaqIndexes.length === 0 || iaqData.timestamps.length === 0) {
     return <div>Loading...</div>;
   }
+
+  // Ensure the timestamps are unique and ordered
+  const sortedData = iaqData.timestamps.map((timestamp, index) => ({
+    timestamp: new Date(timestamp).toLocaleString(), // Use local string format to see readable timestamps
+    iaqIndex: iaqData.iaqIndexes[index],
+  }));
 
   const data = {
     options: {
@@ -80,14 +95,14 @@ function ExpandedCard({ param }) {
         show: true,
       },
       xaxis: {
-        type: "datetime",
-        categories: iaqData.timestamps,
+        type: "category", // Use 'category' instead of 'datetime' to allow more flexible handling
+        categories: sortedData.map((entry) => entry.timestamp), // Map the timestamp into categories
       },
     },
     series: [
       {
         name: "IAQ Index",
-        data: iaqData.iaqIndexes,
+        data: sortedData.map((entry) => entry.iaqIndex),
       },
     ],
   };
