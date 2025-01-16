@@ -158,7 +158,7 @@ const VOGRecords = () => {
                         }}
                     >
                         <DeleteOutlinedIcon sx={{ mr: "10px" }} />
-                        Delete Row Selected
+                        Delete Selected Rows
                     </Button>
                     <Button
                         onClick={handleOpenDialog}

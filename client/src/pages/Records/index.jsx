@@ -168,7 +168,7 @@ const Records = () => {
                         }}
                     >
                         <DeleteOutlinedIcon sx={{ mr: "10px" }} />
-                        Delete Row Selected
+                        Delete Selected Rows
                     </Button>
                     {/* Download All Records Button */}
                     <Button
