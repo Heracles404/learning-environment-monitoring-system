@@ -38,12 +38,12 @@ BH1750 lightMeter;
 
 // ---------------------------------------------------------------------------
 // Wi-Fi Credentials
-const char* ssid = "IoT";
-const char* password = "AccessPoint.2024";
+const char* ssid = "iPhone";
+const char* password = "angelian";
 
 // ---------------------------------------------------------------------------
 // Server API Info
-const char* host = "http://192.168.105.196";
+const char* host = "http://172.20.10.3";
 const int port = 8000;
 const char* endpoint = "/sensors";
 
