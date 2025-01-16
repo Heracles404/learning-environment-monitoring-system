@@ -111,7 +111,7 @@ const RegisterDevice = () => {
                         fullWidth
                         variant="outlined"
                         type="text"
-                        label="Classroom #"
+                        label="Classroom"
                         onBlur={handleBlur}
                         onChange={handleChange}
                         value={values.classroom}
