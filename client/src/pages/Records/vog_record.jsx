@@ -81,12 +81,6 @@ const VOGRecords = () => {
     const handleOpenDialog = () => setOpen(true);
     const handleCloseDialog = () => setOpen(false);
 
-    const handleDelete = async (id) => {
-        const response = await httpDeleteReadout(id);
-        if (response.ok) {
-            setRows((prevRows) => prevRows.filter((row) => row.id !== id));
-        }
-    };
 
     const handleDeleteSelected = async () => {
         console.log("Selected Rows for deletion:", selectedRows);
