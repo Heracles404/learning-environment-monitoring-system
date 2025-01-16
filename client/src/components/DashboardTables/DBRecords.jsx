@@ -37,9 +37,9 @@ const DBRecords = () => {
             const formattedData = Object.values(classroomData).map((classroom) => ({
                 id: classroom.classroom, // Use classroom name as ID
                 classroom: classroom.classroom,
-                aveHeatIndex: (classroom.heatIndex.reduce((a, b) => a + b, 0) / classroom.heatIndex.length) || 0,
-                aveIAQIndex: (classroom.IAQIndex.reduce((a, b) => a + b, 0) / classroom.IAQIndex.length) || 0,
-                aveLighting: (classroom.lighting.reduce((a, b) => a + b, 0) / classroom.lighting.length) || 0,
+                aveHeatIndex: (classroom.heatIndex.reduce((a, b) => a + b, 0) / classroom.heatIndex.length).toFixed(2) || 0,
+                aveIAQIndex: (classroom.IAQIndex.reduce((a, b) => a + b, 0) / classroom.IAQIndex.length).toFixed(2) || 0,
+                aveLighting: (classroom.lighting.reduce((a, b) => a + b, 0) / classroom.lighting.length).toFixed(2) || 0,
             }));
 
             // Step 3: Set the rows state

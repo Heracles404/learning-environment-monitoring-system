@@ -148,7 +148,7 @@ if ((currentHour == targetHour1 && currentMinute == targetMinute1 && lastPostMin
   }
 
   pms.sleep();
-  delay(2000); // Delay before the next loop cycle
+  delay(6000); // Delay before the next loop cycle
 }
 
 int concernLevel(int idx) {
