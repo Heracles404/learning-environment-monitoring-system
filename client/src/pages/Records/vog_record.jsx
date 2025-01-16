@@ -132,7 +132,7 @@ const VOGRecords = () => {
                 <Header title="VOG Records" subtitle="Managing the VOG Records" />
 
                 <Box>
-                    <Button
+                    {/* <Button
                         onClick={handleDeleteAll}
                         sx={{
                             backgroundColor: colors.redAccent[700],
@@ -145,11 +145,11 @@ const VOGRecords = () => {
                     >
                         <DeleteOutlinedIcon sx={{ mr: "10px" }} />
                         Delete All Reports
-                    </Button>
+                    </Button> */}
                     <Button
                         onClick={handleDeleteSelected}
                         sx={{
-                            backgroundColor: colors.redAccent[700],
+                            backgroundColor: colors.redAccent[500],
                             color: "white",
                             fontSize: "14px",
                             fontWeight: "bold",
@@ -158,12 +158,12 @@ const VOGRecords = () => {
                         }}
                     >
                         <DeleteOutlinedIcon sx={{ mr: "10px" }} />
-                        Delete Selected
+                        Delete Row Selected
                     </Button>
                     <Button
                         onClick={handleOpenDialog}
                         sx={{
-                            backgroundColor: colors.greenAccent[700],
+                            backgroundColor: colors.greenAccent[400],
                             color: "white",
                             fontSize: "14px",
                             fontWeight: "bold",

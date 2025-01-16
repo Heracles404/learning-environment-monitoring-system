@@ -142,7 +142,7 @@ const Records = () => {
             <Box display="flex" justifyContent="space-between" alignItems="space-between" sx={{ flexDirection: { xs: "column", sm: "row" } }}>
                 <Header title="Records" subtitle="Managing the Records" />
                 <Box>
-                    <Button
+                    {/* <Button
                         onClick={handleDeleteAll}
                         sx={{
                             backgroundColor: colors.redAccent[700],
@@ -155,11 +155,11 @@ const Records = () => {
                     >
                         <DeleteOutlinedIcon sx={{ mr: "10px" }} />
                         Delete All Records
-                    </Button>
+                    </Button> */}
                     <Button
                         onClick={handleDeleteSelected}
                         sx={{
-                            backgroundColor: colors.redAccent[700],
+                            backgroundColor: colors.redAccent[500],
                             color: "white",
                             fontSize: "14px",
                             fontWeight: "bold",
@@ -168,13 +168,13 @@ const Records = () => {
                         }}
                     >
                         <DeleteOutlinedIcon sx={{ mr: "10px" }} />
-                        Delete Selected
+                        Delete Row Selected
                     </Button>
                     {/* Download All Records Button */}
                     <Button
                         onClick={handleDownloadAll}
                         sx={{
-                            backgroundColor: colors.greenAccent[700],
+                            backgroundColor: colors.greenAccent[400],
                             color: "white",
                             fontSize: "14px",
                             fontWeight: "bold",

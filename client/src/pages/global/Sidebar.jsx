@@ -137,7 +137,9 @@ const Sidebar = () => {
                     width="100px"
                     height="100px"
                     src={`../../assets/ESLIHS_Logo.png`}
-                    style={{ cursor: "pointer", borderRadius: "50%" }}
+                    style={{ 
+                      // cursor: "pointer", 
+                      borderRadius: "50%" }}
                   />
                 </Box>
                 <Box textAlign="center">
@@ -255,7 +257,7 @@ const Sidebar = () => {
               />
                 {(role.toUpperCase() === "PRINCIPAL" || role.toUpperCase() === "ADMIN") && (
                     <Item
-                        title="Create Device"
+                        to="/CreateDevice"
                         to="/RegisterDevice"
                         icon={<DevicesOutlinedIcon />}
                         selected={selected}
@@ -323,13 +325,13 @@ const Sidebar = () => {
             >
               Other
             </Typography>
-            <Item
+            {/* <Item
               title="FAQ Page"
               to="/faq"
               icon={<HelpOutlineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            />            
+            />             */}
             <Item
               title="Sign Out"
               to="/"
