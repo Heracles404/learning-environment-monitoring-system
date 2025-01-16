@@ -9,7 +9,7 @@ async function httpGetAllDevices(req, res) {
 
 
 function httpNewDevice(req, res) {
-    const paramsCheck = ['classroom', 'status'];
+    const paramsCheck = ['classroom', 'status', 'bme680', 'bh1750'];
 
     const device = req.body;
 
