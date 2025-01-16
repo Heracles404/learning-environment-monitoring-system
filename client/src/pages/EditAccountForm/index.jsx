@@ -106,7 +106,7 @@ const Form = () => {
                     }}
                 >
                   <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 4"}}>
-                  <AccountCircleOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
+                  <AccountCircleOutlinedIcon sx={{ fontSize: 38, color: '#70d8bd', mr: 1 }} />
                   <TextField
                       fullWidth
                       variant="outlined"
@@ -125,7 +125,7 @@ const Form = () => {
                   />
                   </Box>
                   <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2"}}>
-                <BadgeOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
+                <BadgeOutlinedIcon sx={{ fontSize: 38, color: '#70d8bd', mr: 1 }} />
                   <TextField
                       fullWidth
                       variant="outlined"
@@ -141,7 +141,7 @@ const Form = () => {
                   />
                   </Box>
                   <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2"}}>
-                <BadgeOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
+                <BadgeOutlinedIcon sx={{ fontSize: 38, color: '#70d8bd', mr: 1 }} />
                   <TextField
                       fullWidth
                       variant="outlined"
@@ -157,7 +157,7 @@ const Form = () => {
                   />
                   </Box>
                   <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 4" }}>
-                  <AssignmentIndOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
+                  <AssignmentIndOutlinedIcon sx={{ fontSize: 38, color: '#70d8bd', mr: 1 }} />
                   <FormControl fullWidth variant="outlined" sx={{ gridColumn: "span 4" }}>
                     <InputLabel id="role-select-label">Role</InputLabel>
                     <Select
@@ -180,7 +180,7 @@ const Form = () => {
                 </Box>
 
                   <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2"}}>
-                <LockOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
+                <LockOutlinedIcon sx={{ fontSize: 38, color: '#70d8bd', mr: 1 }} />
                   <TextField
                       fullWidth
                       variant="outlined"
@@ -196,7 +196,7 @@ const Form = () => {
                   />
                   </Box>
                   <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2"}}>
-                <LockOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
+                <LockOutlinedIcon sx={{ fontSize: 38, color: '#70d8bd', mr: 1 }} />
                   <TextField
                       fullWidth
                       variant="outlined"
