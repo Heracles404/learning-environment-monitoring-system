@@ -10,7 +10,7 @@ import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import React from 'react';
-
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 const RegisterDevice = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const navigate = useNavigate(); // Hook for navigation
@@ -99,18 +99,19 @@ const RegisterDevice = () => {
                 <Box
                     display="grid"
                     gap="30px"
-                    gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+                    gridTemplateColumns="repeat(6, minmax(0, 1fr))"
                     sx={{
-                      "& > div": { gridColumn: isNonMobile ? undefined : "span 3" },
+                      "& > div": { gridColumn: isNonMobile ? undefined : "span 6" },
                     }}
                 >
-                  <Box mb={2} sx={{ display: "flex", alignItems: "center", gridColumn: "span 4" }}>
-                    <BadgeOutlinedIcon sx={{ fontSize: 38, color: "action.active", mr: 1 }} />
+                  <Box sx={{ gridColumn: "span 2" }}></Box>                  
+                  <Box mb={2} sx={{ display: "flex", alignItems: "center", gridColumn: "span 2" }}>
+                    <BadgeOutlinedIcon sx={{ fontSize: 38, color: "#70d8bd", mr: 1 }} />
                     <TextField
                         fullWidth
                         variant="outlined"
                         type="text"
-                        label="Classroom"
+                        label="Classroom #"
                         onBlur={handleBlur}
                         onChange={handleChange}
                         value={values.classroom}
@@ -120,10 +121,16 @@ const RegisterDevice = () => {
                         sx={{ gridColumn: "span 4" }}
                     />
                   </Box>
+                  <Box sx={{ gridColumn: "span 1" }}></Box>
+
 
                   {/* First Checkbox - Indoor */}
+                  <Box sx={{ gridColumn: "span 2" }}></Box>
                   <Box sx={{ gridColumn: "span 1" }}>
-                    <Typography>Sensor</Typography>
+                    <Box display="flex">
+                    <LocationOnOutlinedIcon sx={{ fontSize: 19, color: "red", mr: .4 }} />
+                    <Typography>Location</Typography>
+                    </Box>
                     <FormControlLabel
                         label="Indoor"
                         control={
@@ -162,8 +169,12 @@ const RegisterDevice = () => {
                   </Box>
 
                   {/* Second Checkbox - Outdoor */}
-                  <Box sx={{ gridColumn: "span 2" }}>
-                    <Typography>Sensor</Typography>
+                  <Box sx={{ gridColumn: "span 1" }}>
+                    
+                  <Box display="flex">
+                    <LocationOnOutlinedIcon sx={{ fontSize: 19, color: "red", mr: .4 }} />
+                    <Typography>Location</Typography>
+                    </Box>
                     <FormControlLabel
                         label="Outdoor"
                         control={
