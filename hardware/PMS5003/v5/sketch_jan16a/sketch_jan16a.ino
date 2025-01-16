@@ -20,8 +20,8 @@ const long gmtOffset_sec = 8 * 3600;     // Adjust for your timezone (GMT+8)
 const int daylightOffset_sec = 0;        // No daylight saving time
 
 // PMS Constants
-const int txNode = D3;  
-const int rxNode = D4;  
+const int rxNode = D3;  
+const int txNode = D4;  
 
 SoftwareSerial pmsSerial(rxNode, txNode); 
 PMS pms(pmsSerial);
