@@ -9,9 +9,9 @@
 // Time Components
 #include "time.h"
 
-const char* ssid = "ACM2";
-const char* password = "0495452821@2024";
-const char* host = "http://192.168.1.31";
+const char* ssid = "iPhone";
+const char* password = "angelian";
+const char* host = "http://172.20.10.3";
 const int port = 8000;
 const char* endpoint = "/vog";
 
@@ -148,7 +148,7 @@ if ((currentHour == targetHour1 && currentMinute == targetMinute1 && lastPostMin
   }
 
   pms.sleep();
-  delay(2000); // Delay before the next loop cycle
+  delay(6000); // Delay before the next loop cycle
 }
 
 int concernLevel(int idx) {

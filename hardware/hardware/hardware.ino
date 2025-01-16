@@ -21,7 +21,7 @@
 #include "time.h"
 
 // Time Components
-const char* ntpServer = "time.nist.gov";  // Reliable NTP server
+const char* ntpServer = "asia.pool.ntp.org";  // Asia regional pool
 const long gmtOffset_sec = 8 * 3600;      // Adjust for your timezone (GMT+8)
 const int daylightOffset_sec = 0;         // No daylight saving time
 
@@ -36,18 +36,18 @@ Adafruit_BME680 bme;
 BH1750 lightMeter;
 
 // ESP01 Variables
-const char* ssid = "IoT";
-const char* password = "AccessPoint.2024";
+const char* ssid = "12345";
+const char* password = "Gear.123";
 
 // API Components
-const char* host = "http://192.168.105.196";
+const char* host = "http://192.168.45.196";
 const int port = 8000;
 const char* endpoint = "/sensors";
 
 // Variables
 float temperature, humidity, voc, IAQIndex, lux;
 int heatIndex;
-String indoorAir, temp, recordTime;
+String indoorAir, temp, recordTime, lightRemarks;
 const String classroom = "401";
 
 #define alertPin D8
@@ -94,7 +94,7 @@ void loop() {
   Serial.println(recordTime);
 
   Serial.println(F("--------------------------------"));
-  sendDataToServer(classroom, recordTime, temperature, humidity, voc, IAQIndex, lux, heatIndex, indoorAir, temp);
+  sendDataToServer(classroom, recordTime, temperature, humidity, voc, IAQIndex, lux, heatIndex, indoorAir, temp, lightRemarks);
 
   // Check and set alert signal
   if (indoorAir == "UNHEALTHY" || indoorAir == "VERY UNHEALTHY" || indoorAir == "HAZARDOUS" || temp == "UNCOMFORTABLY HOT" || temp == "EXTREMELY HOT") {
@@ -225,10 +225,23 @@ float calculateIAQ(float GasResistance) {
 
 void luxFunc() {
   lux = lightMeter.readLightLevel();
+
+  if (lux < 50) {
+    lightRemarks = "Bad";
+  } else if (lux >= 50 && lux < 200) {
+    lightRemarks = "Moderate";
+  } else if (lux >= 200 && lux < 500) {
+    lightRemarks = "Good";
+  } else {
+    lightRemarks = "Very Good";
+  }
+
   Serial.print("Light: ");
   Serial.print(lux);
-  Serial.println(" lx");
+  Serial.print(" lx - Remarks: ");
+  Serial.println(lightRemarks);
 }
+
 
 int calculateHeatIndex(float T, float H) {
   // Heat Index calculation based on temperature (T) and humidity (H)
@@ -248,7 +261,7 @@ int calculateHeatIndex(float T, float H) {
   return round(HI);  // Return rounded value of heat index
 }
 
-void sendDataToServer(String classroom, String recordTime, float temperature, float humidity, float voc, float IAQIndex, float lux, int heatIndex, String indoorAir, String temp) {
+void sendDataToServer(String classroom, String recordTime, float temperature, float humidity, float voc, float IAQIndex, float lux, int heatIndex, String indoorAir, String temp, String lightRemarks) {
   HTTPClient http;
   WiFiClient client;  // Create a WiFiClient object
 
@@ -268,6 +281,7 @@ void sendDataToServer(String classroom, String recordTime, float temperature, fl
   jsonDoc["IAQIndex"] = IAQIndex;
   jsonDoc["indoorAir"] = indoorAir;
   jsonDoc["temp"] = temp;
+  jsonDoc["lightRemarks"] = lightRemarks;
 
   serializeJson(jsonDoc, jsonPayload);
   http.addHeader("Content-Type", "application/json");

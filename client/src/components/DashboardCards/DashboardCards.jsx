@@ -23,7 +23,7 @@ const DashboardCards = () => {
 
             switch (card.title) {
               case 'Air Quality':
-                const IAQIndex = latestData.IAQIndex; // Assuming latestData has IAQIndex
+                const IAQIndex = latestData.IAQIndex.toFixed(2); // Assuming latestData has IAQIndex
 
                 // Classify air quality based on IAQIndex
                 if (IAQIndex > 0 && IAQIndex <= 50) {
@@ -46,7 +46,7 @@ const DashboardCards = () => {
                 break;
 
               case 'Temperature':
-                const heatIndex = latestData.temperature; // Assuming latestData has temperature
+                const heatIndex = latestData.temperature.toFixed(2); // Assuming latestData has temperature
 
                 // Classify temperature based on heatIndex
                 if (heatIndex <= 27) {
@@ -59,8 +59,6 @@ const DashboardCards = () => {
                   updatedValue = "GOOD";
                 } else if (heatIndex > 51) {
                   updatedValue = "GOOD";
-                } else {
-                  updatedValue = "OUT OF RANGE"; // Handle unexpected values
                 }
 
                 updatedBarValue = heatIndex; // Keep the bar value as the heatIndex
@@ -68,12 +66,12 @@ const DashboardCards = () => {
 
               case 'Light':
                 updatedValue = (latestData.lighting > 300 && latestData.lighting < 500) ? 'GOOD' : 'BAD';
-                updatedBarValue = latestData.lighting;
+                updatedBarValue = latestData.lighting.toFixed(2);
                 break;
 
               case 'Volcanic Smog':
                 updatedValue = latestData.voc > 50 ? 'GOOD' : 'BAD';
-                updatedBarValue = latestData.voc;
+                updatedBarValue = latestData.voc.toFixed(2);
                 break;
 
               default:
