@@ -221,7 +221,7 @@ function App() {
               }
             />
             <Route
-              path="/Device1"
+              path="/DeviceStatus"
               element={
                 <PrivateRoute>
                   <Device1 />
