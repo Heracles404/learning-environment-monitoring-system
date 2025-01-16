@@ -1,4 +1,3 @@
-// sensorsSchema.js
 const mongoose = require('mongoose');
 
 const sensorsSchema = new mongoose.Schema({

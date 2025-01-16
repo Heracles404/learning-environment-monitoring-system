@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Typography, useTheme } from "@mui/material";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { tokens } from "../../../theme";
 import { httpGetAllDevices, httpDeleteDevice } from "../../../hooks/devices.requests";
@@ -60,20 +59,6 @@ const Device1 = () => {
 
         if (role.toUpperCase() === "PRINCIPAL" || role.toUpperCase() === "ADMIN") {
             newColumns.push(
-                {
-                    id: "edit",
-                    label: "Edit",
-                    minWidth: 80,
-                    align: "center",
-                    renderCell: (row) => (
-                        <button
-                            style={{ background: "none", border: "none", cursor: "pointer" }}
-                            onClick={() => navigate(`../UpdateDevice/${row.id}`)} // Navigate to UpdateDevice with device ID
-                        >
-                            <EditOutlinedIcon style={{ color: "orange", fontSize: "20px" }} />
-                        </button>
-                    ),
-                },
                 {
                     id: "delete",
                     label: "Delete",
