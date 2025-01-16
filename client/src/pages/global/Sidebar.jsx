@@ -256,7 +256,7 @@ const Sidebar = () => {
                 {(role.toUpperCase() === "PRINCIPAL" || role.toUpperCase() === "ADMIN") && (
                     <Item
                         title="Create Device"
-                        to="/CreateDevice"
+                        to="/RegisterDevice"
                         icon={<DevicesOutlinedIcon />}
                         selected={selected}
                         setSelected={setSelected}
