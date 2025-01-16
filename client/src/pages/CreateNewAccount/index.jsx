@@ -80,7 +80,7 @@ const NewAccountForm = () => {
               }}
             >
               <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2"}}>
-                <BadgeOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
+                <BadgeOutlinedIcon sx={{ fontSize: 38, color: '#70d8bd', mr: 1 }} />
               <TextField
                   fullWidth
                   variant="outlined"
@@ -97,7 +97,7 @@ const NewAccountForm = () => {
                 
               </Box>
               <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2"}}>
-                <BadgeOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
+                <BadgeOutlinedIcon sx={{ fontSize: 38, color: '#70d8bd', mr: 1 }} />
               <TextField
                   fullWidth
                   variant="outlined"
@@ -114,7 +114,7 @@ const NewAccountForm = () => {
 
               </Box>
               <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2"}}>
-                <AccountCircleOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
+                <AccountCircleOutlinedIcon sx={{ fontSize: 38, color: '#70d8bd', mr: 1 }} />
               <TextField
                   fullWidth
                   // variant="outlined"
@@ -131,7 +131,7 @@ const NewAccountForm = () => {
               />
               </Box>
               <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2" }}>
-              <AssignmentIndOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
+              <AssignmentIndOutlinedIcon sx={{ fontSize: 38, color: '#70d8bd', mr: 1 }} />
               <FormControl fullWidth variant="outlined" sx={{ gridColumn: "span 2" }}>
                 <InputLabel id="role-select-label">Role</InputLabel>
                 <Select
@@ -154,7 +154,7 @@ const NewAccountForm = () => {
             </Box>
               
               <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2"}}>
-                <LockOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
+                <LockOutlinedIcon sx={{ fontSize: 38, color: '#70d8bd', mr: 1 }} />
                 <TextField
                     fullWidth
                     variant="outlined"
@@ -170,7 +170,7 @@ const NewAccountForm = () => {
                 />
               </Box>
               <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2"}}>
-                <LockOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
+                <LockOutlinedIcon sx={{ fontSize: 38, color: '#70d8bd', mr: 1 }} />
                 <TextField
                     fullWidth
                     variant="outlined"

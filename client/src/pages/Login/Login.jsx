@@ -46,7 +46,7 @@ const LoginPage = () => {
             sx={{
                 height: '100vh',
                 width: '100vw',
-                backgroundImage: `linear-gradient(rgba(0, 135, 0, 0.2), rgba(0, 88, 0, 0.3)), url(${backgroundImage})`,
+                backgroundImage: `linear-gradient(rgba(153, 235, 222, 0.3), rgba(153, 235, 222, 0.2)), url(${backgroundImage})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 display: 'flex',
@@ -68,7 +68,7 @@ const LoginPage = () => {
                 <Grid item xs={12} sm={12} md={4} display="flex" justifyContent="center" alignItems="center">
                     <Box
                         sx={{
-                            backgroundImage: 'linear-gradient(to top, #b7ebde, #94e2cd, #4cceac, #2a9d8f, #1F705A)',
+                            backgroundImage: 'linear-gradient(to top, #b7ebde, #b7ebde, #94e2cd, #4cceac, #2FB1A2, #2FB1A2)',
                             color: 'white',
                             height: '100%',
                             padding: { xs: '30px', sm: '50px' },
@@ -94,7 +94,7 @@ const LoginPage = () => {
                 <Grid item xs={12} sm={12} md={4} display="flex" justifyContent="center" alignItems="center">
                     <Box
                         sx={{
-                            backgroundImage: 'linear-gradient(to top, #b7ebde, #94e2cd, #4cceac, #4cceac, #2a9d8f, #1F705A)',
+                            backgroundImage: 'linear-gradient(to top, #b7ebde, #b7ebde, #94e2cd, #4cceac, #2FB1A2, #2FB1A2)',
                             color: 'white',
                             height: '100%',
                             padding: '16px',
@@ -146,7 +146,7 @@ const LoginPage = () => {
                                 />
                             </Box>
                             <Button type="submit" variant="contained" fullWidth sx={{
-                                backgroundColor: '#36D4FC', 
+                                backgroundColor: '#0ECCFB', 
                                 height: '50px',  
                                 borderRadius: '25px', 
                                 fontWeight: 'bold',
@@ -162,7 +162,7 @@ const LoginPage = () => {
                 <Grid item xs={12} sm={12} md={4} display="flex" justifyContent="center" alignItems="center">
                     <Box
                         sx={{
-                            backgroundImage: 'linear-gradient(to top, #b7ebde, #94e2cd, #4cceac, #2a9d8f, #1F705A)',
+                            backgroundImage: 'linear-gradient(to top, #b7ebde, #7FDCC3, #4cceac, #4cceac, #33C1B1, #2FB1A2)',
                             color: 'white',
                             height: '100%',
                             padding: '16px',
@@ -187,7 +187,7 @@ const LoginPage = () => {
                             target="_blank"
                             rel="noopener"
                             fullWidth
-                            sx={{ backgroundColor: '#FF3333', borderRadius: '25px', mb: 2 }}
+                            sx={{ backgroundColor: '#0ECCFB', borderRadius: '25px', mb: 2 }}
                         >
                             ESLIHS Facebook PAGE
                         </Button>
@@ -197,9 +197,9 @@ const LoginPage = () => {
                             target="_blank"
                             rel="noopener"
                             fullWidth
-                            sx={{ backgroundColor: '#FF3333', borderRadius: '25px' }}
+                            sx={{ backgroundColor: '#22D0FC', borderRadius: '25px' }}
                         >
-                            Dep-ED PAGE
+                            DepED PAGE
                         </Button>
                     </Box>
                 </Grid>

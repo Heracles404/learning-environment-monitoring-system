@@ -81,13 +81,14 @@ const Records = () => {
     const handleDeleteAll = async () => {
         const result = await httpDeleteAllReadouts();
         if (result.ok) {
-            setRows([]);
+            setRows([]); // Clear all rows after deletion
         } else {
             console.error("Error deleting all records");
         }
     };
 
     const handleDownload = () => {
+        // Filter rows based on date range
         const filteredRows = rows.filter((row) => {
             const rowDate = dayjs(row.date, "MM/DD/YYYY");
             const start = dayjs(startDate, "YYYY-MM-DD");
@@ -95,12 +96,14 @@ const Records = () => {
             return rowDate.isAfter(start.subtract(1, "day")) && rowDate.isBefore(end.add(1, "day"));
         });
 
+        // Convert filtered rows to CSV format
         const csvHeaders = columns.map((col) => col.headerName).join(",");
         const csvRows = filteredRows.map((row) =>
             columns.map((col) => row[col.field] || "").join(",")
         );
         const csvContent = [csvHeaders, ...csvRows].join("\n");
 
+        // Create a blob and trigger download
         const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
@@ -112,6 +115,7 @@ const Records = () => {
         link.click();
         document.body.removeChild(link);
 
+        // Close the dialog after download
         setOpen(false);
     };
 
@@ -133,7 +137,6 @@ const Records = () => {
         link.click();
         document.body.removeChild(link);
     };
-
 
     const handleCloseDialog = () => setOpen(false);
 
@@ -170,9 +173,8 @@ const Records = () => {
                         <DeleteOutlinedIcon sx={{ mr: "10px" }} />
                         Delete Selected Rows
                     </Button>
-                    {/* Download All Records Button */}
                     <Button
-                        onClick={handleDownloadAll}
+                        onClick={() => setOpen(true)}
                         sx={{
                             backgroundColor: colors.greenAccent[400],
                             color: "white",
@@ -183,7 +185,7 @@ const Records = () => {
                         }}
                     >
                         <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-                        Download All Records
+                        Download Reports
                     </Button>
                 </Box>
             </Box>
@@ -197,16 +199,8 @@ const Records = () => {
                         rows={rows}
                         columns={columns}
                         disableSelectionOnClick
-                        components={{
-                            Toolbar: GridToolbar,
-                        }}
-                        initialState={{
-                            pagination: {
-                                paginationModel: {
-                                    pageSize: 10,
-                                },
-                            },
-                        }}
+                        components={{ Toolbar: GridToolbar }}
+                        initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
                         pageSizeOptions={[5, 10, 15]}
                         checkboxSelection
                         onRowSelectionModelChange={(ids) => setSelectedRows(ids)} // Update selected rows
@@ -236,7 +230,9 @@ const Records = () => {
                         margin="dense"
                         value={startDate}
                         onChange={(e) => setStartDate(e.target.value)}
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                     />
                     <TextField
                         type="date"
@@ -245,14 +241,14 @@ const Records = () => {
                         margin="dense"
                         value={endDate}
                         onChange={(e) => setEndDate(e.target.value)}
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDialog}>Cancel</Button>
-                    <Button onClick={handleDownload} sx={{ backgroundColor: colors.greenAccent[700], color: "white", fontWeight: "bold" }}>
-                        Download
-                    </Button>
+                    <Button onClick={handleCloseDialog} color="primary">Cancel</Button>
+                    <Button onClick={handleDownload} color="primary">Download</Button>
                 </DialogActions>
             </Dialog>
         </Box>

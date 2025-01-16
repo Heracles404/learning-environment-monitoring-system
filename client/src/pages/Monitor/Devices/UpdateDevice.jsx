@@ -106,12 +106,13 @@ const UpdateDevice = () => {
                 <Box
                     display="grid"
                     gap="30px"
-                    gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+                    gridTemplateColumns="repeat(6, minmax(0, 1fr))"
                     sx={{
-                      "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+                      "& > div": { gridColumn: isNonMobile ? undefined : "span 6" },
                     }}
                 >
-                  <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 4" }}>
+                  <Box sx={{ gridColumn: "span 2" }}></Box>                  
+                  <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2" }}>
                     <BadgeOutlinedIcon sx={{ fontSize: 38, color: 'action.active', mr: 1 }} />
                     <TextField
                         fullWidth
@@ -127,7 +128,10 @@ const UpdateDevice = () => {
                         sx={{ gridColumn: "span 4" }}
                     />
                   </Box>
+                  <Box sx={{ gridColumn: "span 1" }}></Box>
+
                   {/* First Indeterminate Checkbox Component */}
+                  <Box sx={{ gridColumn: "span 2" }}></Box>
                   <Box sx={{ gridColumn: "span 1" }}>
                   <Typography>
                     Sensor
@@ -155,7 +159,7 @@ const UpdateDevice = () => {
                   </Box>
 
                   {/* Second Indeterminate Checkbox Component */}
-                  <Box sx={{ gridColumn: "span 2" }}>
+                  <Box sx={{ gridColumn: "span 1" }}>
                   <Typography>
                     Sensor
                   </Typography>
