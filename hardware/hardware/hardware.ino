@@ -86,7 +86,7 @@ void loop() {
 
   // Wake up the sensor, get the readings, and send data
   pms.wakeUp();
-  delay(10000);  // Wait for sensor to stabilize
+  delay(35000);  // Wait for sensor to stabilize
 
   pms.requestRead();
   if (pms.readUntil(data)) {
@@ -107,7 +107,7 @@ void loop() {
   }
 
   pms.sleep();
-  delay(2000); // Delay before the next loop cycle
+  delay(35000); // Delay before the next loop cycle
 }
 
 int concernLevel(int idx) {
