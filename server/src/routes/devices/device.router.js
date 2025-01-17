@@ -1,6 +1,6 @@
 const express = require('express');
 const {httpNewDevice, httpGetAllDevices, httpGetDeviceById, httpGetActive, httpGetInactive, httpGetDeviceByClassroom,
-    httpDeleteDevice, httpUpdateDevice
+    httpDeleteDevice, httpUpdateDevice, httpUpdateDeviceByClassroom
 } = require('./device.controller');
 
 const  deviceRouter = express.Router();
@@ -13,6 +13,8 @@ deviceRouter.get('/classroom/:classroom', httpGetDeviceByClassroom);
 
 deviceRouter.delete('/:id', httpDeleteDevice);
 deviceRouter.patch('/:id', httpUpdateDevice);
+deviceRouter.patch('/classroom/:classroom', httpUpdateDeviceByClassroom);
+
 
 deviceRouter.post('/', httpNewDevice);
 
