@@ -169,11 +169,11 @@ const RegisterDevice = () => {
                   </Box>
 
                   {/* Second Checkbox - Outdoor */}
+                  {/* Second Checkbox - Outdoor */}
                   <Box sx={{ gridColumn: "span 1" }}>
-                    
-                  <Box display="flex">
-                    <LocationOnOutlinedIcon sx={{ fontSize: 19, color: "red", mr: .4 }} />
-                    <Typography>Location</Typography>
+                    <Box display="flex">
+                      <LocationOnOutlinedIcon sx={{ fontSize: 19, color: "red", mr: .4 }} />
+                      <Typography>Location</Typography>
                     </Box>
                     <FormControlLabel
                         label="Outdoor"
@@ -195,7 +195,7 @@ const RegisterDevice = () => {
                             <Checkbox
                                 checked={checkedSecond[0]}
                                 onChange={handleSecondChange2}
-                                disabled={checked[0]}
+                                disabled={checked[0] || checked[1]} // Disable if either BH1750 or BME680 is checked
                             />
                           }
                       />
