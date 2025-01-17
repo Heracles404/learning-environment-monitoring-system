@@ -14,6 +14,7 @@ const char* password = "Lems@2025";
 const char* host = "http://192.168.0.100";
 const int port = 8000;
 const char* endpoint = "/vog";
+const char* update_endpoint = "/devices";
 
 const char* ntpServer = "time.nist.gov"; // Reliable NTP server
 const long gmtOffset_sec = 8 * 3600;     // Adjust for your timezone (GMT+8)
@@ -93,6 +94,7 @@ void loop() {
 
   pms.requestRead();
   if (pms.readUntil(data)) {
+    updateSensorStatus("active");
     // Apply calibration
     pm25 = a_pm25 * data.PM_AE_UG_2_5 + b_pm25;
     pm10 = a_pm10 * data.PM_AE_UG_10_0 + b_pm10;
@@ -107,6 +109,7 @@ void loop() {
     sendDataToServer(recordTime, pm25, pm10, max(idx25, idx10), level);
   } else {
     Serial.println(F("No data."));
+    updateSensorStatus("inactive");
   }
 
   pms.sleep();
@@ -200,6 +203,45 @@ void sendDataToServer(String recordTime, float pm25, float pm10, int OAQIndex, i
     Serial.println(requestBody);
 
     int httpResponseCode = http.POST(requestBody);
+
+    if (httpResponseCode > 0) {
+      Serial.print(F("Response code: "));
+      Serial.println(httpResponseCode);
+      Serial.print(F("Response: "));
+      Serial.println(http.getString());
+    } else {
+      Serial.print(F("Error sending POST request. Code: "));
+      Serial.println(httpResponseCode);
+    }
+
+    http.end();
+  } else {
+    Serial.print(F("WiFi not connected"));
+  }
+}
+
+void updateSensorStatus(String pms5003) {
+  if (WiFi.status() == WL_CONNECTED) {
+    WiFiClient client;
+    HTTPClient http;
+    String url = String(host) + ":" + String(port) + update_endpoint + "/classroom/" + String(room);
+
+    http.begin(client, url); // Use WiFiClient object
+    http.addHeader("Content-Type", "application/json");
+
+    // Construct JSON payload
+    StaticJsonDocument<200> jsonDoc;
+    jsonDoc["pms5003"] = pms5003;
+
+    String requestBody;
+    serializeJson(jsonDoc, requestBody);
+
+    Serial.print(F("Sending PATCH request to: "));
+    Serial.println(url);
+    Serial.print(F("Payload: "));
+    Serial.println(requestBody);
+
+    int httpResponseCode = http.PATCH(requestBody);
 
     if (httpResponseCode > 0) {
       Serial.print(F("Response code: "));
