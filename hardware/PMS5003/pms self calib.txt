@@ -1,0 +1,84 @@
+#include <SoftwareSerial.h>
+#include "PMS.h"
+
+// PMS5003 wiring
+const int txNode = D3;  // TX to D4 on NodeMCU
+const int rxNode = D4;  // RX to D3 on NodeMCU
+
+SoftwareSerial pmsSerial(rxNode, txNode);  // Create SoftwareSerial for PMS5003
+PMS pms(pmsSerial);
+PMS::DATA data;
+
+float pm25, pm10;
+float pm25_sum = 0, pm10_sum = 0;
+int readings_count = 5;  // Number of readings to average
+
+// Updated Calibration Parameters (Fine-Tuned)
+float scaleFactor25 = 0.355;  // Scale factor for PM2.5
+float offset25 = 1.20;        // Offset for PM2.5
+
+float scaleFactor10 = 0.394;  // Scale factor for PM10
+float offset10 = 2.00;        // Offset for PM10
+
+void setup() {
+  Serial.begin(9600);
+  pmsSerial.begin(9600);
+
+  pms.passiveMode();  // Ensure sensor starts in passive mode
+  Serial.println(F("PMS5003 Sensor Initialized"));
+}
+
+void loop() {
+  Serial.println(F("Waking up, wait 10 seconds for stable readings..."));
+  pms.wakeUp();
+  delay(10000);  // Allow the sensor to stabilize
+
+  pm25_sum = 0;
+  pm10_sum = 0;
+
+  for (int i = 0; i < readings_count; i++) {
+    Serial.println(F("Sending read request..."));
+    pms.requestRead();
+
+    Serial.println(F("Waiting for sensor data..."));
+    if (pms.readUntil(data)) {
+      // Apply calibration to raw PM2.5 and PM10 values
+      pm25 = (data.PM_AE_UG_2_5 * scaleFactor25) + offset25;
+      pm10 = (data.PM_AE_UG_10_0 * scaleFactor10) + offset10;
+
+      // Accumulate values for averaging
+      pm25_sum += pm25;
+      pm10_sum += pm10;
+
+      // Debugging: Output raw values and adjusted values
+      Serial.print(F("Raw PM 2.5: "));
+      Serial.println(data.PM_AE_UG_2_5);
+
+      Serial.print(F("Raw PM 10.0: "));
+      Serial.println(data.PM_AE_UG_10_0);
+    } else {
+      Serial.println(F("No data received from sensor."));
+    }
+
+    delay(1000);  // Wait 1 second before next reading
+  }
+
+  // Calculate the average of the readings
+  pm25 = pm25_sum / readings_count;
+  pm10 = pm10_sum / readings_count;
+
+  // Output the averaged values
+  dataDisplay();
+
+  Serial.println(F("Going to sleep for 5 minutes."));
+  pms.sleep();
+  delay(300000);  // Sleep for 5 minutes (300,000 milliseconds) before the next reading
+}
+
+void dataDisplay() {
+  Serial.print(F("Adjusted PM 2.5 (ug/m3): "));
+  Serial.println((int)pm25);  // Convert to integer and print
+
+  Serial.print(F("Adjusted PM 10.0 (ug/m3): "));
+  Serial.println((int)pm10);  // Convert to integer and print
+}
