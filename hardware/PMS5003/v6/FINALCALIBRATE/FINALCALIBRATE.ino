@@ -9,15 +9,18 @@
 // Time Components
 #include "time.h"
 
-const char* ssid = "ACM2";
-const char* password = "0495452821@2024";
-const char* host = "http://192.168.1.31";
+const char* ssid = "lems";
+const char* password = "Lems@2025";
+const char* host = "http://192.168.0.100";
 const int port = 8000;
 const char* endpoint = "/vog";
 
 const char* ntpServer = "time.nist.gov"; // Reliable NTP server
 const long gmtOffset_sec = 8 * 3600;     // Adjust for your timezone (GMT+8)
 const int daylightOffset_sec = 0;        // No daylight saving time
+
+// Room # | Device Location
+const String room = "403";
 
 // PMS Constants
 const int txNode = D3;  

@@ -93,6 +93,28 @@ async function httpUpdateDevice(req, res) {
     }
 }
 
+async function httpUpdateDeviceByClassroom(req, res) {
+    const classroom = req.params.classroom;
+    const updatedData = req.body;
+
+    // Find devices in the specified classroom
+    const devicesToUpdate = await getDeviceByClassroom(classroom);
+
+    if (devicesToUpdate.length === 0) {
+        return res.status(404).json({ message: 'No devices found in classroom ' + classroom });
+    }
+
+    // Update each device in the classroom
+    const updatedDevices = await Promise.all(
+        devicesToUpdate.map(device => updateDevice(device._id, updatedData))
+    );
+
+    return res.status(200).json({
+        message: 'Devices updated successfully',
+        devices: updatedDevices
+    });
+}
+
 module.exports = {
     httpNewDevice,
     httpGetAllDevices,
@@ -101,5 +123,6 @@ module.exports = {
     httpGetActive,
     httpGetInactive,
     httpDeleteDevice,
-    httpUpdateDevice
+    httpUpdateDevice,
+    httpUpdateDeviceByClassroom
 };
