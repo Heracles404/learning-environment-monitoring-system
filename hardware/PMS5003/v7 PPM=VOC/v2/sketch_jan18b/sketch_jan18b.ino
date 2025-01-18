@@ -1,4 +1,4 @@
-// ---------------------------------------------------------------------------
+// OVERALL CODE FOR EVERYTHING
 // General Inclusion
 #include <Wire.h>
 
@@ -8,14 +8,14 @@
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
 
-// Inclusions for BME
+// BME680
 #include <Adafruit_Sensor.h>
 #include "Adafruit_BME680.h"
 
-// Inclusions for BH1750
+// BH1750
 #include <BH1750.h>
 
-// Inclusions for Time
+// Time
 #include "time.h"
 
 // ---------------------------------------------------------------------------
@@ -25,7 +25,7 @@ const long gmtOffset_sec = 8 * 3600;      // Adjust for your timezone (GMT+8)
 const int daylightOffset_sec = 0;         // No daylight saving time
 
 // ---------------------------------------------------------------------------
-// ESP8266 Pins for SCL/SDA (adjust as needed for your board/setup)
+// ESP8266 Pins for SCL/SDA
 const int sclPin = D1;
 const int sdaPin = D2;
 
@@ -50,30 +50,40 @@ const char* endpoint = "/sensors";
 // ---------------------------------------------------------------------------
 // Variables
 float temperature, humidity, voc, IAQIndex, lux;
+float ppm;
 int heatIndex;
 String indoorAir, tempLabel, recordTime;
 const String classroom = "401";
 
-// Pin for alert (e.g., LED or external device)
+// Pin for alert (LED or external device)
 #define alertPin D8
 
 // ---------------------------------------------------------------------------
-// Function Prototypes
+// Offsets (optional for Heat Index and IAQ)
+const float heatIndexOffsetC = 4.0;  // e.g. 2 °C
+const float IAQOffset        = 180.0; // e.g. 50 points
+
+// ---------------------------------------------------------------------------
+// Prototypes
 void wifiInit();
 void bme680Readings();
 String getFormattedTime();
 float calculateIAQ(float gasResistance);
+float calculatePPM(float gasResistance);
 int calculateHeatIndex(float tempC, float relHumidity);
 void luxFunc();
-void sendDataToServer(String classroom, String recordTime,
-                      float temperature, float humidity,
-                      float voc, float IAQIndex, float lux,
-                      int heatIndex, String indoorAir, String tempLabel);
+void sendDataToServer(
+  String classroom, String recordTime,
+  float temperature, float humidity, 
+  float voc, float IAQIndex, float lux, 
+  float ppm, int heatIndex, 
+  String indoorAir, String tempLabel
+);
 
 // ---------------------------------------------------------------------------
 // Setup
 void setup() {
-  Serial.begin(9600);  // Initialize serial communication
+  Serial.begin(9600);
   Serial.println(F("Please Wait..."));
 
   // Initialize Wi-Fi
@@ -85,9 +95,8 @@ void setup() {
   // Initialize BME680
   if (!bme.begin(0x77)) {
     Serial.println(F("BME680 not found!"));
-    while (1) { delay(1); } // Halt
+    while (1) { delay(1); }
   }
-  // Configure BME oversampling and filter
   bme.setTemperatureOversampling(BME680_OS_8X);
   bme.setHumidityOversampling(BME680_OS_2X);
   bme.setIIRFilterSize(BME680_FILTER_SIZE_3);
@@ -98,7 +107,7 @@ void setup() {
 
   // Setup alert pin
   pinMode(alertPin, OUTPUT);
-  digitalWrite(alertPin, HIGH); // Default state
+  digitalWrite(alertPin, HIGH);
 }
 
 // ---------------------------------------------------------------------------
@@ -119,8 +128,11 @@ void loop() {
 
   // Send data to server
   sendDataToServer(
-    classroom, recordTime, temperature, humidity,
-    voc, IAQIndex, lux, heatIndex, indoorAir, tempLabel
+    classroom, recordTime, 
+    temperature, humidity, 
+    voc, IAQIndex, lux, 
+    ppm, heatIndex, 
+    indoorAir, tempLabel
   );
 
   // Trigger alert if conditions are bad
@@ -137,7 +149,7 @@ void loop() {
   }
 
   // Delay before next reading
-  delay(15000);
+  delay(4000);
 }
 
 // ---------------------------------------------------------------------------
@@ -180,21 +192,20 @@ void bme680Readings() {
     Serial.println(F(" %"));
   }
 
-  // Calculate heat index (in °C)
+  // Heat Index in °C with offset
   heatIndex = calculateHeatIndex(temperature, humidity);
-  Serial.print(F("Heat Index: "));
+  Serial.print(F("Heat Index (adjusted): "));
   Serial.print(heatIndex);
   Serial.println(F(" *C"));
 
-  // Temperature Concern Level (based on standard Heat Index chart)
   Serial.print(F("Temperature Concern Level: "));
-  if (heatIndex < 27) {
+  if (heatIndex <= 27) {
     tempLabel = "Good";
-  } else if (heatIndex <= 32) {
+  } else if (heatIndex <= 37) {
     tempLabel = "Normal";
-  } else if (heatIndex <= 39) {
+  } else if (heatIndex <= 40) {
     tempLabel = "Caution";
-  } else if (heatIndex <= 51) {
+  } else if (heatIndex <= 45) {
     tempLabel = "DANGER";
   } else {
     tempLabel = "EXTREME DANGER";
@@ -213,7 +224,7 @@ void bme680Readings() {
 
   // IAQ Calculation & Category
   IAQIndex = calculateIAQ(voc);
-  Serial.print(F("IAQ Index: "));
+  Serial.print(F("IAQ Index (adjusted): "));
   Serial.println(IAQIndex);
 
   Serial.print(F("AQ Concern Level: "));
@@ -231,6 +242,11 @@ void bme680Readings() {
     indoorAir = "HAZARDOUS";
   }
   Serial.println(indoorAir);
+
+  // Calculate PPM
+  ppm = calculatePPM(voc);
+  Serial.print(F("PPM (approx): "));
+  Serial.println(ppm);
 }
 
 // ---------------------------------------------------------------------------
@@ -242,32 +258,30 @@ String getFormattedTime() {
     return "12:00 AM";
   }
   char buffer[9];
-  strftime(buffer, sizeof(buffer), "%I:%M %p", &timeInfo); // e.g. "07:32 PM"
+  strftime(buffer, sizeof(buffer), "%I:%M %p", &timeInfo); 
   return String(buffer);
 }
 
 // ---------------------------------------------------------------------------
-// Calculate IAQ using clamped, log-based scale (0–500)
+// Calculate IAQ using clamped, log-based scale (0–500) + offset
 float calculateIAQ(float gasResistance) {
-  // Choose realistic min/max based on your environment & sensor data
-  const float R_min   = 10.0;    // (kOhms) "Best" environment
-  const float R_max   = 200.0;   // (kOhms) "Worst" environment
+  const float R_min   = 10.0;    // kOhms
+  const float R_max   = 200.0;   // kOhms
   const float IAQ_min = 0.0;
-  const float IAQ_max = 200.0;
+  const float IAQ_max = 650.0;
 
-  // Avoid negative or zero
-  if (gasResistance < 1.0) gasResistance = 1.0;
-
-  // Clamp to range
+  if (gasResistance < 1.0)  gasResistance = 1.0;
   if (gasResistance < R_min) gasResistance = R_min;
   if (gasResistance > R_max) gasResistance = R_max;
 
-  // Logarithmic mapping
-  float logR      = log(R_max / gasResistance);
-  float logRange  = log(R_max / R_min);
-  float IAQ       = (logR * (IAQ_max - IAQ_min)) / logRange + IAQ_min;
+  float logR     = log(R_max / gasResistance);
+  float logRange = log(R_max / R_min);
+  float IAQ      = (logR * (IAQ_max - IAQ_min)) / logRange + IAQ_min;
 
-  // Final clamp 0–500
+  // Subtract offset
+  IAQ -= IAQOffset;
+
+  // Clamp 0–500
   if (IAQ < IAQ_min) IAQ = IAQ_min;
   if (IAQ > IAQ_max) IAQ = IAQ_max;
 
@@ -275,12 +289,29 @@ float calculateIAQ(float gasResistance) {
 }
 
 // ---------------------------------------------------------------------------
-// Calculate Heat Index (in °C) using NOAA formula
+// Calculate PPM using a basic approximation based on gas resistance
+float calculatePPM(float gasResistance) {
+  const float cleanAirResistance = 100.0; // Calibrate this value for clean air
+  const float scalingFactor = 100.0;     // Adjust this to scale the PPM range
+
+  if (gasResistance <= 0.0) {
+    return 0.0; // Avoid division by zero or nonsensical values
+  }
+
+  // Calculate PPM based on the adjusted formula
+  float ppmVal = scalingFactor * ((cleanAirResistance / gasResistance) - 1);
+
+  // Clamp values to avoid negative PPM readings
+  if (ppmVal < 0.0) ppmVal = 0.0;
+
+  return ppmVal;
+}
+
+// ---------------------------------------------------------------------------
+// Calculate Heat Index (in °C) using NOAA formula, then apply offset
 int calculateHeatIndex(float tempC, float relHumidity) {
-  // Convert °C -> °F
   float tempF = (tempC * 9.0 / 5.0) + 32.0;
 
-  // NOAA coefficients
   float c1 = -42.379;
   float c2 = 2.04901523;
   float c3 = 10.14333127;
@@ -291,7 +322,6 @@ int calculateHeatIndex(float tempC, float relHumidity) {
   float c8 = 0.00085282;
   float c9 = -0.00000199;
 
-  // Heat Index in °F
   float HI_F = c1 +
                (c2 * tempF) +
                (c3 * relHumidity) +
@@ -302,15 +332,18 @@ int calculateHeatIndex(float tempC, float relHumidity) {
                (c8 * tempF * relHumidity * relHumidity) +
                (c9 * tempF * tempF * relHumidity * relHumidity);
 
-  // Convert °F -> °C
   float HI_C = (HI_F - 32.0) * 5.0 / 9.0;
+
+  // subtract offset
+  HI_C -= heatIndexOffsetC;
+
   return round(HI_C);
 }
 
 // ---------------------------------------------------------------------------
 // Read lux from BH1750
 void luxFunc() {
-  lux = lightMeter.readLightLevel();
+  lux = lightMeter.readLightLevel() + 10;
   Serial.print(F("Light: "));
   Serial.print(lux);
   Serial.println(F(" lx"));
@@ -318,17 +351,20 @@ void luxFunc() {
 
 // ---------------------------------------------------------------------------
 // Send Data to the Server
-void sendDataToServer(String classroom, String recordTime,
-                      float temperature, float humidity,
-                      float voc, float IAQIndex, float lux,
-                      int heatIndex, String indoorAir, String tempLabel) {
+void sendDataToServer(
+  String classroom, String recordTime,
+  float temperature, float humidity, 
+  float voc, float IAQIndex, float lux, 
+  float ppm, int heatIndex, 
+  String indoorAir, String tempLabel
+) {
   HTTPClient http;
-  WiFiClient client;  // Create a WiFiClient object
+  WiFiClient client;
 
   String url = String(host) + ":" + String(port) + String(endpoint);
-  http.begin(client, url.c_str());  // Pass the WiFiClient object and the URL
+  http.begin(client, url.c_str());
 
-  StaticJsonDocument<200> jsonDoc;
+  StaticJsonDocument<256> jsonDoc;
   String jsonPayload;
 
   // Build JSON payload
@@ -342,6 +378,7 @@ void sendDataToServer(String classroom, String recordTime,
   jsonDoc["IAQIndex"]    = IAQIndex;
   jsonDoc["indoorAir"]   = indoorAir;
   jsonDoc["temp"]        = tempLabel;
+  jsonDoc["ppm"]         = ppm;  // <-- NEW PPM KEY
 
   // Serialize and send
   serializeJson(jsonDoc, jsonPayload);
@@ -350,5 +387,6 @@ void sendDataToServer(String classroom, String recordTime,
 
   Serial.print(F("Response Code: "));
   Serial.println(responseCode);
+
   http.end();
 }
