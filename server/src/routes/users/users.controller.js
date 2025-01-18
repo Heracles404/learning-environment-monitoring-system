@@ -18,7 +18,7 @@ async function httpGetUser (req, res) {
 
     if (!await existsUserName(userName)) {
         return res.status(404).json({
-            error: `User  ${userName} not found...`
+            error: `User   ${userName} not found...`
         });
     } else {
         const user = await getUserByUserName(userName);
@@ -91,12 +91,23 @@ async function httpUpdateUser (req, res) {
     const userName = req.params.userName;
     const updates = req.body;
 
-    const message = await updateUserByUserName(userName, updates);
-    if (message.includes('updated')) {
-        return res.status(200).json(message);
-    } else {
+    console.log(`Updating user: ${userName} with updates:`, updates); // Log the username and updates
+
+    if (!await existsUserName(userName)) {
         return res.status(404).json({
-            error: message
+            error: `User  ${userName} not found.`
+        });
+    }
+
+    const result = await updateUserByUserName(userName, updates);
+
+    if (result.modifiedCount > 0) {
+        return res.status(200).json({
+            message: `User  ${userName} has been updated.`
+        });
+    } else {
+        return res.status(200).json({
+            message: `No changes were made.`
         });
     }
 }

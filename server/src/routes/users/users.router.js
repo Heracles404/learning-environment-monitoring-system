@@ -14,6 +14,7 @@ usersRouter.get('/:userName', httpGetUser);
 usersRouter.post('/authenticate', httpAuthenticateUser);
 usersRouter.post('/', httpAddNewUser);
 usersRouter.delete('/:userName', httpDeleteUser);
-usersRouter.patch('/:userName', httpUpdateUser)
+
+usersRouter.patch('/:userName', httpUpdateUser );
 
 module.exports = usersRouter;
