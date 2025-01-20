@@ -7,10 +7,13 @@ const usersRouter = require('./routes/users/users.router');
 const sensorsRouter = require('./routes/sensors/sensors.router');
 const vogRouter = require('./routes/vog/vog.router');
 const devicesRouter = require('./routes/devices/device.router');
+const {startDeviceStatusScheduler} = require("./scheduler/scheduler");
 
 const app = express();
 
 connectDB();
+
+startDeviceStatusScheduler();
 
 app.use(cors({
     // origin: ["http://localhost:3000"],
