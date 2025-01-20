@@ -13,7 +13,7 @@ import VolcanicSmogRecordTable from "../../../components/RecordTables/VolcanicSm
 const VolSmogMonitor = () => {
 
   return (
-    <Box>
+    <Box height="100vh" overflow="auto">
       {/* HEADER */}
           <Box 
           display="flex" 
@@ -27,7 +27,7 @@ const VolSmogMonitor = () => {
         <Box sx={{ pl: 2 }}>
         <Grid container>
           <Grid item xs={12} >
-            <Box width="620px">
+            <Box width="620px" mt={{xs:'300px', md: '1px'}}>
             {/* <Box m="0 5px 0 5px" height="100vh" width="750px"
             // overflow="auto"
             > */}

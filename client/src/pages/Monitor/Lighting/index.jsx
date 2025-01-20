@@ -13,7 +13,7 @@ const LightingMonitor = () => {
   
 
   return (
-    <Box>
+    <Box height="100vh" overflow="auto">
       {/* HEADER */}
           <Box 
           display="flex" 
@@ -35,7 +35,7 @@ const LightingMonitor = () => {
             </Box> 
           </Grid>
         <Grid item xs={12} >
-          <Box width='500px' sx={{ pl: 2 }}>
+          <Box width='500px' sx={{ pl: 2 }} mt={{xs:'300px', md: '1px'}}>
               <LightingRecordTable/>
               <Card width="300px">
                 <CardMedia component='img' height='240vh'
