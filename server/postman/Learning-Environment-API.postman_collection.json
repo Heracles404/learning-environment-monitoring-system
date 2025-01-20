@@ -640,7 +640,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"classroom\": \"403\",\r\n    \"status\": \"active\",\r\n    \"bh1750\": \"-\",\r\n    \"bme680\": \"-\",\r\n    \"pms5003\": \"inactive\"\r\n}",
+							"raw": "{\r\n    \"classroom\": \"4013\",\r\n    \"status\": \"active\",\r\n    \"bh1750\": \"-\",\r\n    \"bme680\": \"-\",\r\n    \"pms5003\": \"inactive\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -716,7 +716,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/devices/678788f2e5e33b3db581852e",
+							"raw": "http://localhost:8000/devices/678a355d3b39d367143feb7b",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -724,7 +724,7 @@
 							"port": "8000",
 							"path": [
 								"devices",
-								"678788f2e5e33b3db581852e"
+								"678a355d3b39d367143feb7b"
 							]
 						}
 					},
@@ -748,7 +748,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/devices/67887327027c64c0f271ddc7",
+							"raw": "http://localhost:8000/devices/678a355d3b39d367143feb7b",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -756,7 +756,7 @@
 							"port": "8000",
 							"path": [
 								"devices",
-								"67887327027c64c0f271ddc7"
+								"678a355d3b39d367143feb7b"
 							]
 						}
 					},
@@ -772,7 +772,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"bme680\": \"active\"\r\n}",
+							"raw": "{\r\n    \"bme680\": \"activeity\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

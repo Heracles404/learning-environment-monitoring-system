@@ -6,6 +6,7 @@ const deviceSchema = new mongoose.Schema({
     bh1750: { type: String, required: true },
     bme680: { type: String, required: true },
     pms5003: { type: String, required: true },
+    lastUpdated: { type: String, required: true },
 });
 
 // Middleware to update the updatedAt field before saving
