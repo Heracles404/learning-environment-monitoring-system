@@ -23,14 +23,28 @@ const DBVOGRecords = () => {
                 return acc;
             }, { pm25: 0, pm10: 0, count: 0 });
 
-            // Step 2: Create a single row with average values
+            // Step 2: Calculate average values for PM 2.5 and PM 10.0
             const averageData = {
                 id: "average", // Unique ID for the average row
                 pm25: (total.pm25 / total.count) || 0,
                 pm10: (total.pm10 / total.count) || 0,
             };
 
-            // Step 3: Set the rows state with the average data
+            // Step 3: Determine the concern level based on the averages
+            // Formula for concern level:
+            // If either PM 2.5 or PM 10.0 exceeds threshold, it's 'Bad'
+            // Otherwise, it's 'Good'
+            const thresholdPM25 = 30; // Example threshold for PM 2.5 (adjustable)
+            const thresholdPM10 = 50; // Example threshold for PM 10.0 (adjustable)
+
+            const concernLevel = (averageData.pm25 > thresholdPM25 || averageData.pm10 > thresholdPM10) 
+                ? "Bad" 
+                : "Good";
+
+            // Add concern level to the average data
+            averageData.concernLevel = concernLevel;
+
+            // Step 4: Set the rows state with the average data
             setRows([averageData]); // Set the average data as the only row
         };
 

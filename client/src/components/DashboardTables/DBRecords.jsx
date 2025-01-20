@@ -34,15 +34,33 @@ const DBRecords = () => {
             }, {});
 
             // Step 2: Calculate averages
-            const formattedData = Object.values(classroomData).map((classroom) => ({
-                id: classroom.classroom, // Use classroom name as ID
-                classroom: classroom.classroom,
-                aveHeatIndex: (classroom.heatIndex.reduce((a, b) => a + b, 0) / classroom.heatIndex.length).toFixed(2) || 0,
-                aveIAQIndex: (classroom.IAQIndex.reduce((a, b) => a + b, 0) / classroom.IAQIndex.length).toFixed(2) || 0,
-                aveLighting: (classroom.lighting.reduce((a, b) => a + b, 0) / classroom.lighting.length).toFixed(2) || 0,
-            }));
+            const formattedData = Object.values(classroomData).map((classroom) => {
+                const aveHeatIndex = (classroom.heatIndex.reduce((a, b) => a + b, 0) / classroom.heatIndex.length).toFixed(2) || 0;
+                const aveIAQIndex = (classroom.IAQIndex.reduce((a, b) => a + b, 0) / classroom.IAQIndex.length).toFixed(2) || 0;
+                const aveLighting = (classroom.lighting.reduce((a, b) => a + b, 0) / classroom.lighting.length).toFixed(2) || 0;
 
-            // Step 3: Set the rows state
+                // Step 3: Determine the concern level based on averages
+                // Define threshold values for each parameter (adjustable)
+                const heatIndexThreshold = 29; // Example threshold for heat index
+                const IAQIndexThreshold = 60; // Example threshold for IAQ index
+                const lightingThreshold = 200; // Example threshold for lighting
+
+                // Logic to determine concern level
+                const concernLevel = (aveHeatIndex > heatIndexThreshold || aveIAQIndex > IAQIndexThreshold || aveLighting > lightingThreshold)
+                    ? "Bad"
+                    : "Good";
+
+                return {
+                    id: classroom.classroom, // Use classroom name as ID
+                    classroom: classroom.classroom,
+                    aveHeatIndex,
+                    aveIAQIndex,
+                    aveLighting,
+                    concernLevel,
+                };
+            });
+
+            // Step 4: Set the rows state with the formatted data
             setRows(formattedData);
         };
 
@@ -50,13 +68,10 @@ const DBRecords = () => {
     }, []);
 
     const columns = [
-        { field: "classroom", headerName: "Classroom", minWidth: 100, flex: 1 },  // Updated header to Classroom
+        { field: "classroom", headerName: "Classroom", minWidth: 100, flex: 1 },
         { field: "aveHeatIndex", headerName: "Average Heat Index", minWidth: 100, flex: 1 },
-        // { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
         { field: "aveIAQIndex", headerName: "Average IAQ Index", minWidth: 100, flex: 1 },
-        // { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
         { field: "aveLighting", headerName: "Average Light Level", minWidth: 100, flex: 1 },
-        // { field: "lightRemarks", headerName: "Light Stat", minWidth: 100, flex: 1 },
         { field: "concernLevel", headerName: "Concern Level", minWidth: 100, flex: 1 },
     ];
 
@@ -76,12 +91,12 @@ const DBRecords = () => {
                         }}
                         initialState={{
                             pagination: {
-                              paginationModel: {
-                                pageSize: 3,
-                              },
+                                paginationModel: {
+                                    pageSize: 3,
+                                },
                             },
-                          }}
-                          pageSizeOptions={[3, 5, 10, 15]}
+                        }}
+                        pageSizeOptions={[3, 5, 10, 15]}
                         sx={{
                             "& .MuiDataGrid-row:hover": {
                                 backgroundColor: colors.greenAccent[500],
