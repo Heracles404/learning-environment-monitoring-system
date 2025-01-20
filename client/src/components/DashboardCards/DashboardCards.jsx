@@ -76,8 +76,7 @@ const DashboardCards = () => {
                 // Use PM2.5 data from the vog API
                 updatedValue = latestVogData.pm10 > 50 ? 'GOOD' : 'BAD'; // Check the PM2.5 value
                 updatedBarValue = latestVogData.pm10.toFixed(2); // Use PM2.5 for the bar value
-                updatedValue = latestVogData.pm25 > 50 ? 'GOOD' : 'BAD'; // Check the PM2.5 value
-                updatedBarValue = latestVogData.pm25.toFixed(2); // Use PM2.5 for the bar value
+                
                 break;
               // case 'Volcanic Smog':
               //   // Use PM2.5 data from the vog API
