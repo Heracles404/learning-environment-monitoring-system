@@ -38,6 +38,9 @@ float b_pm25 = -2.000;
 float a_pm10 = 0.400;
 float b_pm10 = -2.040;
 
+// Pin definitions
+const int ledPin = D1;  // LED connected to D1
+
 void wifiConfig() {
   Serial.println();
   Serial.print(F("Connecting to "));
@@ -78,6 +81,10 @@ void setup() {
   setupTime();
 
   pms.passiveMode();
+
+  // Set up the LED pin as output
+  pinMode(ledPin, OUTPUT);
+  digitalWrite(ledPin, LOW); // Ensure LED is off initially
 }
 
 void loop() {
@@ -106,6 +113,13 @@ void loop() {
     recordTime = currentTime; // Use the updated time
     dataDisplay();
     sendDataToServer(recordTime, pm25, pm10, max(idx25, idx10), level);
+
+    // Control LED based on concern level
+    if (level == 5) {
+      digitalWrite(ledPin, HIGH); // Turn on LED
+    } else {
+      digitalWrite(ledPin, LOW);  // Turn off LED
+    }
   } else {
     Serial.println(F("No data."));
   }
