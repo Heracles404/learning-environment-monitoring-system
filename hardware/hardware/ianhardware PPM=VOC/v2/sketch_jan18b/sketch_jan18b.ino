@@ -38,21 +38,22 @@ BH1750 lightMeter;
 
 // ---------------------------------------------------------------------------
 // Wi-Fi Credentials
+
 const char* ssid = "AccessPoint";
 const char* password = "IoT@2025";
-
-// ---------------------------------------------------------------------------
 // Server API Info
-const char* host = "http://192.168.1.11";
+const char* host = "http://192.168.0.102";
+
 const int port = 8000;
 const char* endpoint = "/sensors";
+const char* update_endpoint = "/devices";
 
 // ---------------------------------------------------------------------------
 // Variables
 float temperature, humidity, voc, IAQIndex, lux;
 float ppm;
 int heatIndex;
-String indoorAir, tempLabel, recordTime;
+String indoorAir, tempLabel, recordTime, lightRemarks;
 const String classroom = "401";
 
 // Pin for alert (LED or external device)
@@ -92,19 +93,6 @@ void setup() {
   // Initialize time
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
 
-  // Initialize BME680
-  if (!bme.begin(0x77)) {
-    Serial.println(F("BME680 not found!"));
-    while (1) { delay(1); }
-  }
-  bme.setTemperatureOversampling(BME680_OS_8X);
-  bme.setHumidityOversampling(BME680_OS_2X);
-  bme.setIIRFilterSize(BME680_FILTER_SIZE_3);
-  bme.setGasHeater(320, 150);  // 320°C for 150 ms
-
-  // Initialize BH1750
-  lightMeter.begin();
-
   // Setup alert pin
   pinMode(alertPin, OUTPUT);
   digitalWrite(alertPin, HIGH);
@@ -113,6 +101,8 @@ void setup() {
 // ---------------------------------------------------------------------------
 // Main Loop
 void loop() {
+  sensorsInit();
+
   Serial.println(F("--------------------------------"));
   
   // Read sensor data
@@ -130,10 +120,9 @@ void loop() {
   sendDataToServer(
     classroom, recordTime, 
     temperature, humidity, 
-    voc, IAQIndex, lux, 
-    ppm, heatIndex, 
-    indoorAir, tempLabel
-  );
+    voc, IAQIndex, lux, heatIndex, 
+    indoorAir, tempLabel, lightRemarks
+    );
 
   // Trigger alert if conditions are bad
   if (indoorAir == "UNHEALTHY"       || 
@@ -150,6 +139,29 @@ void loop() {
 
   // Delay before next reading
   delay(4000);
+}
+
+void sensorsInit(){
+  // Initialize BME680
+  if (!bme.begin(0x77)) {
+    Serial.println(F("BME680 not found!"));
+    updateSensorStatus("bme680", "Inactive");
+  }else {
+    bme.setTemperatureOversampling(BME680_OS_8X);
+    bme.setHumidityOversampling(BME680_OS_2X);
+    bme.setIIRFilterSize(BME680_FILTER_SIZE_3);
+    bme.setGasHeater(320, 150);  // 320°C for 150 ms
+    updateSensorStatus("bme680", "Active");
+  }
+
+  // Initialize BH1750
+  if (lightMeter.begin()) {
+      Serial.println(F("BH1750 initialized successfully."));
+      updateSensorStatus("bh1750", "Active");
+  } else {
+      Serial.println(F("BH1750 not found!"));
+      updateSensorStatus("bh1750", "Inactive");
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -192,25 +204,29 @@ void bme680Readings() {
     Serial.println(F(" %"));
   }
 
-  // Heat Index in °C with offset
-  heatIndex = calculateHeatIndex(temperature, humidity);
-  Serial.print(F("Heat Index (adjusted): "));
-  Serial.print(heatIndex);
-  Serial.println(F(" *C"));
+  if((humidity < -1) && (temperature < -1)){
+    Serial.println(F("Failed to read Heat Index"));
+  }else{
+    // Heat Index in °C with offset
+    heatIndex = calculateHeatIndex(temperature, humidity);
+    Serial.print(F("Heat Index: "));
+    Serial.print(heatIndex);
+    Serial.println(F(" *C"));
 
-  Serial.print(F("Temperature Concern Level: "));
-  if (heatIndex <= 27) {
-    tempLabel = "Good";
-  } else if (heatIndex <= 37) {
-    tempLabel = "Normal";
-  } else if (heatIndex <= 40) {
-    tempLabel = "Caution";
-  } else if (heatIndex <= 45) {
-    tempLabel = "DANGER";
-  } else {
-    tempLabel = "EXTREME DANGER";
+    Serial.print(F("Temperature Concern Level: "));
+    if (heatIndex <= 27) {
+      tempLabel = "Good";
+    } else if (heatIndex <= 37) {
+      tempLabel = "Normal";
+    } else if (heatIndex <= 40) {
+      tempLabel = "Caution";
+    } else if (heatIndex <= 45) {
+      tempLabel = "DANGER";
+    } else {
+      tempLabel = "EXTREME DANGER";
+    }
+    Serial.println(tempLabel);
   }
-  Serial.println(tempLabel);
 
   // Gas Resistance (kOhms)
   voc = bme.gas_resistance / 1000.0;
@@ -347,6 +363,14 @@ void luxFunc() {
   Serial.print(F("Light: "));
   Serial.print(lux);
   Serial.println(F(" lx"));
+
+  Serial.print(F("Lux Concern Level: "));
+  if ((lux >= 300) && (lux <=500)) {
+    lightRemarks = "Good";
+  }else{
+    lightRemarks = "Bad";
+  }
+  Serial.println(lightRemarks);
 }
 
 // ---------------------------------------------------------------------------
@@ -354,9 +378,9 @@ void luxFunc() {
 void sendDataToServer(
   String classroom, String recordTime,
   float temperature, float humidity, 
-  float voc, float IAQIndex, float lux, 
+  float IAQIndex, float lux, 
   float ppm, int heatIndex, 
-  String indoorAir, String tempLabel
+  String indoorAir, String tempLabel, String lightRemarks
 ) {
   HTTPClient http;
   WiFiClient client;
@@ -374,19 +398,61 @@ void sendDataToServer(
   jsonDoc["humidity"]    = humidity;
   jsonDoc["heatIndex"]   = heatIndex;
   jsonDoc["lighting"]    = lux;
-  jsonDoc["voc"]         = voc;
+  jsonDoc["voc"]         = ppm;
   jsonDoc["IAQIndex"]    = IAQIndex;
   jsonDoc["indoorAir"]   = indoorAir;
   jsonDoc["temp"]        = tempLabel;
-  jsonDoc["ppm"]         = ppm;  // <-- NEW PPM KEY
+  jsonDoc["lightRemarks"] = lightRemarks;
 
   // Serialize and send
   serializeJson(jsonDoc, jsonPayload);
   http.addHeader("Content-Type", "application/json");
   int responseCode = http.POST(jsonPayload);
+  Serial.print(F("JSON Payload: "));
+  Serial.println(jsonPayload);
 
   Serial.print(F("Response Code: "));
   Serial.println(responseCode);
 
   http.end();
+}
+
+
+void updateSensorStatus(String sensor, String stat) {
+  if (WiFi.status() == WL_CONNECTED) {
+    WiFiClient client;
+    HTTPClient http;
+    String url = String(host) + ":" + String(port) + update_endpoint + "/classroom/" + String(classroom);
+
+    http.begin(client, url); // Use WiFiClient object
+    http.addHeader("Content-Type", "application/json");
+
+    // Construct JSON payload
+    StaticJsonDocument<200> jsonDoc;
+    jsonDoc[sensor] = stat;
+
+    String requestBody;
+    serializeJson(jsonDoc, requestBody);
+
+    Serial.print(F("Sending PATCH request to: "));
+    Serial.println(url);
+    Serial.print(F("Payload: "));
+    Serial.println(requestBody);
+
+    int httpResponseCode = http.PATCH(requestBody);
+
+    if (httpResponseCode > 0) {
+      Serial.print(F("Response code: "));
+      Serial.println(httpResponseCode);
+      Serial.print(F("Response: "));
+      Serial.println(http.getString());
+    } else {
+      Serial.print(F("Error sending POST request. Code: "));
+      Serial.println(httpResponseCode);
+    }
+
+    http.end();
+  } else {
+    Serial.print(F("WiFi not connected"));
+  }
 }
