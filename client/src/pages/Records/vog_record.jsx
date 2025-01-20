@@ -23,6 +23,7 @@ const VOGRecords = () => {
             const data = await httpGetAllReadouts(); // Fetch data from API
             const formattedData = data.map((readout, index) => ({
                 id: readout._id || index, // Ensure `id` is unique
+                classroom: readout.classroom,
                 date: readout.date,
                 time: readout.time,
                 pm25: readout.pm25,
@@ -37,7 +38,7 @@ const VOGRecords = () => {
     }, []); // Empty dependency array to run only once on mount
 
     const columns = [
-        { field: "id", headerName: "Room", minWidth: 100, flex: 1 },
+        { field: "classroom", headerName: "Room", minWidth: 100, flex: 1 },
         { field: "date", headerName: "Date", minWidth: 100, flex: 1 },
         { field: "time", headerName: "Time", minWidth: 100, flex: 1 },
         { field: "pm25", headerName: "PM 2.5", minWidth: 100, flex: 1 },
