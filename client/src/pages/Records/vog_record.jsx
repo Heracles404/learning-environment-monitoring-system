@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { httpGetAllReadouts, httpDeleteReadout, httpDeleteAllReadouts } from "../../hooks/vog.requests";
+import { httpGetAllReadouts, httpDeleteReadout } from "../../hooks/vog.requests";
 import { Box, Button, Typography, Paper, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
@@ -105,12 +105,7 @@ const VOGRecords = () => {
         }
     };
 
-    const handleDeleteAll = async () => {
-        const response = await httpDeleteAllReadouts();
-        if (response.ok) {
-            setRows([]);
-        }
-    };
+
 
     return (
         <Box m="5px 25px">
