@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userName\": \"admin\",\r\n    \"password\": \"123\",\r\n    \"role\": \"Principal\",\r\n    \"firstName\": \"Nicanor\",\r\n    \"lastName\": \"Reyes II\"\r\n}",
+							"raw": "{\r\n    \"userName\": \"user\",\r\n    \"password\": \"123\",\r\n    \"role\": \"user\",\r\n    \"firstName\": \"User\",\r\n    \"lastName\": \"Reyes II\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -107,7 +107,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"role\": \"Vice Principal\",\r\n    \"firstName\": \"Nicanorian\",\r\n    \"password\": \"NewPassword\"\r\n}\r\n",
+							"raw": "{\r\n    \"role\": \"Vice Principals\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -170,7 +170,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n        \"classroom\": \"401\",\r\n        \"date\": \"1/15/2025\",\r\n        \"time\": \"05:15 PM\",\r\n        \"temperature\": 120,\r\n        \"humidity\": 80,\r\n        \"heatIndex\": 10,\r\n        \"lighting\": 702,\r\n        \"voc\": 830,\r\n        \"IAQIndex\": 49,\r\n        \"indoorAir\": \"Good\",\r\n        \"temp\": \"Good\",\r\n        \"lightRemarks\": \"Average\",\r\n        \"__v\": 0\r\n    }\r\n    ",
+							"raw": "{\r\n        \"classroom\": \"402\",\r\n        \"time\": \"06:15 PM\",\r\n        \"temperature\": 10,\r\n        \"humidity\": 50,\r\n        \"heatIndex\": 40,\r\n        \"lighting\": 702,\r\n        \"voc\": 830,\r\n        \"IAQIndex\": 49,\r\n        \"indoorAir\": \"Good\",\r\n        \"temp\": \"Good\",\r\n        \"lightRemarks\": \"Good\"\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -373,15 +373,12 @@
 			"item": [
 				{
 					"name": "POST /vog",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"time\": \"04:15 PM\",\r\n    \"pm25\": 5,\r\n    \"pm10\": 20,\r\n    \"OAQIndex\": 40,\r\n    \"level\": 1\r\n}",
+							"raw": "{\r\n    \"time\": \"05:15 PM\",\r\n    \"classroom\": \"401\",\r\n    \"pm25\": 25,\r\n    \"pm10\": 10,\r\n    \"OAQIndex\": 40,\r\n    \"level\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -570,7 +567,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://0.0.0.0:8000/devices/6784a2ae880acfb9947c054a",
+							"raw": "http://0.0.0.0:8000/devices/67887327027c64c0f271ddc7",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -581,7 +578,7 @@
 							"port": "8000",
 							"path": [
 								"devices",
-								"6784a2ae880acfb9947c054a"
+								"67887327027c64c0f271ddc7"
 							]
 						}
 					},
@@ -643,7 +640,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"classroom\": \"404\",\r\n    \"status\": \"inactive\",\r\n    \"bh1750\": \"inactive\",\r\n    \"bme680\": \"inactive\",\r\n    \"pms5003\": \"active\"\r\n}",
+							"raw": "{\r\n    \"classroom\": \"403\",\r\n    \"status\": \"active\",\r\n    \"bh1750\": \"-\",\r\n    \"bme680\": \"-\",\r\n    \"pms5003\": \"inactive\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -719,18 +716,15 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://147.93.52.170:8000/devices/6786c04c7e7e366661f9a3ed",
+							"raw": "http://localhost:8000/devices/678788f2e5e33b3db581852e",
 							"protocol": "http",
 							"host": [
-								"147",
-								"93",
-								"52",
-								"170"
+								"localhost"
 							],
 							"port": "8000",
 							"path": [
 								"devices",
-								"6786c04c7e7e366661f9a3ed"
+								"678788f2e5e33b3db581852e"
 							]
 						}
 					},
@@ -746,7 +740,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"classroom\": \"402\",\r\n    \"status\": \"inactive\"\r\n}",
+							"raw": "{\r\n    \"classroom\": \"402\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -754,7 +748,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/devices/6784a2ae880acfb9947c054a",
+							"raw": "http://localhost:8000/devices/67887327027c64c0f271ddc7",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -762,7 +756,40 @@
 							"port": "8000",
 							"path": [
 								"devices",
-								"6784a2ae880acfb9947c054a"
+								"67887327027c64c0f271ddc7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH /updateDeviceByClassroom",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bme680\": \"active\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/devices/classroom/402",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"devices",
+								"classroom",
+								"402"
 							]
 						}
 					},
