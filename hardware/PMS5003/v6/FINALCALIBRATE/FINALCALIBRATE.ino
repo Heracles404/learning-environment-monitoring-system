@@ -11,7 +11,7 @@
 
 const char* ssid = "lems";
 const char* password = "Lems@2025";
-const char* host = "http://192.168.0.100";
+const char* host = "http://192.168.0.102";
 const int port = 8000;
 const char* endpoint = "/vog";
 const char* update_endpoint = "/devices";
