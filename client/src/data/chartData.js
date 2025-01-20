@@ -171,12 +171,14 @@ export const CardsData = [
     png: WbIncandescentIcon,
     series: getUniqueSeries(LightData), // Deduplicate series
   },
+  
   {
     title: "Volcanic Smog",
     color: {
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
+    
     barValue: 70,
     value: "BAD",
     png: VolcanoIcon,
@@ -191,6 +193,8 @@ export const CardsData = [
         data: PM10Data,
         color: "#33FF57", // Green line color for PM10
       },
+
+  
     ]),
   },
 ];
