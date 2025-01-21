@@ -6,7 +6,7 @@ import { motion, LayoutGroup } from "framer-motion";
 import { UilTimes } from "@iconscout/react-unicons";
 import Chart from "react-apexcharts";
 import { httpGetAllReadouts } from "../../hooks/sensors.requests";
-
+import TemperaturePieChart from "../DashboardPieChart/TemperaturePieChart";
 // parent Card
 
 const DashboardCard = (props) => {
@@ -36,7 +36,7 @@ function DBCompactCard({ param, setExpanded }) {
           onClick={setExpanded}
       >
         <div className="radialBar">
-          <CircularProgressbar
+          <TemperaturePieChart
               value={param.barValue}
               // text={`${param.barValue}%`}
               text={`${param.barValue}`}

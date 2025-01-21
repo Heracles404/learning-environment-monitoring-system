@@ -14,7 +14,7 @@ import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import DBVog from "../../components/DashboardTables/DBVog";
 import { httpGetActive, httpGetAllDevices } from "../../hooks/devices.requests";  
 import React, { useState, useEffect } from "react"; 
-
+import TemperaturePieChart from "../../components/DashboardPieChart/TemperaturePieChart";
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -75,19 +75,20 @@ const Dashboard = () => {
           justifyContent="center"
           sx={{
             borderRadius: '12px',
-            height: '62px', 
+            height: '82px', 
             width: {
               xs: '140%', // 0
-              sm: 130, // 600
-              md: 136, // 900
-              lg: 136, // 1200
-              xl: 136, // 1536
+              sm: 150, // 600
+              md: 156, // 900
+              lg: 156, // 1200
+              xl: 156, // 1536
           },
           }}
         >
           <StatBox
-            title="ONLINE"
-            subtitle={`Devices: ${activeDevices}`}
+            title="INDOOR"
+            subtitle={`Active: ${activeDevices}`}
+            subtitle2={`Inactive: ${activeDevices}`}
             icon2={
               <RssFeedOutlinedIcon 
                 sx={{ color: "#00cc00 " , fontSize: "46px" }}
@@ -105,20 +106,21 @@ const Dashboard = () => {
           mr="5px"
           sx={{
             borderRadius: '12px',
-            height: '62px', 
+            height: '82px', 
             width: {
               xs: '140%', // 0
-              sm: 130, // 600
-              md: 136, // 900
-              lg: 136, // 1200
-              xl: 136, // 1536
-          },
+              sm: 150, // 600
+              md: 156, // 900
+              lg: 156, // 1200
+              xl: 156, // 1536
+          },  
           }}
 
         >
           <StatBox
-            title="OFFLINE"
-            subtitle={`Devices: ${totalDevices - activeDevices}`}
+            title="OUTDOOR"
+            subtitle={`Active: ${totalDevices - activeDevices}`}
+            subtitle2={`Inactive: ${totalDevices - activeDevices}`}
             icon2={
               <WarningAmberOutlinedIcon
                 sx={{ color: colors.redAccent[600], fontSize: "46px" }}
@@ -131,8 +133,9 @@ const Dashboard = () => {
       </Box>
       
         <DashboardCards/>
-        <DBRecords />
-        <DBVog/>    
+        {/* <DBRecords />
+        <DBVog/>     */}
+        {/* <TemperaturePieChart/> */}
     </Box>
   );
 };
