@@ -26,9 +26,10 @@ const DBVOGRecords = () => {
             // Step 2: Calculate average values for PM 2.5 and PM 10.0
             const averageData = {
                 id: "average", // Unique ID for the average row
-                pm25: (total.pm25 / total.count) || 0,
-                pm10: (total.pm10 / total.count) || 0,
+                pm25: ((total.pm25 / total.count) || 0).toFixed(2), // Limit to two decimal places
+                pm10: ((total.pm10 / total.count) || 0).toFixed(2), // Limit to two decimal places
             };
+            
 
             // Step 3: Determine the concern level based on the averages
             // Formula for concern level:
