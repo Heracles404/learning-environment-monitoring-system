@@ -65,7 +65,9 @@ function useDateTime() {
             const date = readout.date; // Assuming 'date' is in a valid format
             const time = readout.time; // Assuming 'time' is in a valid format
             const dateTimeString = `${date} ${time}`;
-            return new Date(dateTimeString).toISOString();
+            const dateObj = new Date(dateTimeString);
+            const formattedDateTime = `${dateObj.getFullYear()}-${(dateObj.getMonth() + 1).toString().padStart(2, '0')}-${dateObj.getDate().toString().padStart(2, '0')} ${dateObj.getHours().toString().padStart(2, '0')}:${dateObj.getMinutes().toString().padStart(2, '0')}:${dateObj.getSeconds().toString().padStart(2, '0')}`;
+            return formattedDateTime;
           });
 
           setDateTimeAxis(newDateTimeAxis);
@@ -82,6 +84,7 @@ function useDateTime() {
 
   return dateTimeAxis;
 }
+
 
 // Expanded Card
 function DBExpandedCard({ param, setExpanded }) {
