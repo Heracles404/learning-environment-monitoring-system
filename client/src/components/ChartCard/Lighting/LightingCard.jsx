@@ -3,6 +3,7 @@ import "./LightingCard.css";
 import { motion, LayoutGroup } from "framer-motion";
 import Chart from "react-apexcharts";
 import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
+import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material"; // Material UI components for date selection
 
 const LightingCard = (props) => {
   return (
@@ -14,6 +15,11 @@ const LightingCard = (props) => {
 
 function ExpandedCard({ param }) {
   const [lightingData, setLightingData] = useState({ lightingValues: [], timestamps: [] });
+  const [startDate, setStartDate] = useState(""); // Start date for filtering
+  const [endDate, setEndDate] = useState(""); // End date for filtering
+  const [filteredData, setFilteredData] = useState({ lightingValues: [], timestamps: [] });
+  const [noDataFound, setNoDataFound] = useState(false); // State for no data found prompt
+  const [openDialog, setOpenDialog] = useState(false); // State for controlling the dialog visibility
 
   useEffect(() => {
     const fetchLightingData = async () => {
@@ -35,17 +41,50 @@ function ExpandedCard({ param }) {
     };
 
     fetchLightingData();
-  }, []);
+  }, []); // Empty dependency array to fetch data on mount
 
-  if (lightingData.lightingValues.length === 0 || lightingData.timestamps.length === 0) {
-    return <div>Loading...</div>;
-  }
+  // Filter data based on the selected date range
+  const filterData = () => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // Normalize the start and end date to the beginning and end of the day
+    start.setHours(0, 0, 0, 0); // Set to 00:00:00 for the start date
+    end.setHours(23, 59, 59, 999); // Set to 23:59:59 for the end date
+
+    const filtered = lightingData.timestamps
+      .map((timestamp, index) => {
+        const currentTimestamp = new Date(timestamp);
+        // Check if the timestamp is within the range (start and end inclusive)
+        if (currentTimestamp >= start && currentTimestamp <= end) {
+          return { timestamp, lighting: lightingData.lightingValues[index] };
+        }
+        return null;
+      })
+      .filter(item => item !== null);
+
+    // Check if there is no data found and show prompt
+    if (filtered.length === 0) {
+      setNoDataFound(true);
+      setOpenDialog(true); // Open the modal dialog when no data is found
+    } else {
+      setNoDataFound(false);
+    }
+
+    // Update filtered data
+    const filteredTimestamps = filtered.map(item => item.timestamp);
+    const filteredLightingValues = filtered.map(item => item.lighting);
+
+    setFilteredData({ lightingValues: filteredLightingValues, timestamps: filteredTimestamps });
+  };
+
+  // Handle closing the dialog
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
 
   // Ensure the timestamps are unique and ordered
-  const sortedData = lightingData.timestamps.map((timestamp, index) => ({
-    timestamp: new Date(timestamp).toLocaleString(), // Format timestamp for readability
-    lighting: lightingData.lightingValues[index],
-  }));
+  const sortedData = filteredData.lightingValues.length > 0 ? filteredData : lightingData;
 
   const data = {
     options: {
@@ -82,13 +121,13 @@ function ExpandedCard({ param }) {
       },
       xaxis: {
         type: "category", // Use 'category' to handle custom formatted timestamps
-        categories: sortedData.map((entry) => entry.timestamp), // Map formatted timestamp into categories
+        categories: sortedData.timestamps.map((entry) => new Date(entry).toLocaleString()), // Map formatted timestamp into categories
       },
     },
     series: [
       {
         name: "Lighting",
-        data: sortedData.map((entry) => entry.lighting),
+        data: sortedData.timestamps.map((entry, index) => sortedData.lightingValues[index]),
       },
     ],
   };
@@ -102,14 +141,57 @@ function ExpandedCard({ param }) {
       }}
       layoutId={`expandableCard-${param.title}`}
     >
-      <div style={{ alignSelf: "flex-end", cursor: "pointer", color: "white" }}>
-        {/* Optional close button */}
-      </div>
+      <div style={{ alignSelf: "flex-end", cursor: "pointer", color: "white" }}></div>
       <span>{param.title}</span>
+
+      {/* Date filter inputs */}
+      <div className="date-filter">
+        <TextField
+          type="date"
+          label="Start Date"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <TextField
+          type="date"
+          label="End Date"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          // Disable dates before the selected start date
+          inputProps={{
+            min: startDate, // Ensure end date is greater than or equal to start date
+          }}
+        />
+        <Button onClick={filterData} variant="contained" color="primary">
+          Filter
+        </Button>
+      </div>
+
+      {/* Chart */}
       <div className="chartContainer">
         <Chart options={data.options} series={data.series} type="line" />
       </div>
+
       <span>Last 24 hours</span>
+
+      {/* Dialog for no data found */}
+      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
+        <DialogTitle sx={{ fontSize: '1.5rem', fontWeight: 'bold' }}>No Data Found</DialogTitle>
+        <DialogContent>
+          <p style={{ fontSize: '1.2rem' }}>No data detected for the selected date range.</p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary" style={{ fontSize: '1.1rem' }}>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </motion.div>
   );
 }

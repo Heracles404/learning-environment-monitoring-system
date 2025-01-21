@@ -201,3 +201,5 @@ function ExpandedCard({ param }) {
 }
 
 export default CO2Card;
+
+
