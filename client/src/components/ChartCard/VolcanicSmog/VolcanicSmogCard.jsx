@@ -5,6 +5,16 @@ import Chart from "react-apexcharts";
 import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
 import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material"; // Material UI components for date selection
 
+// Function to generate a random color
+const getRandomColor = () => {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
 const VolcanicSmogCard = (props) => {
   return (
     <LayoutGroup>
@@ -105,7 +115,7 @@ function ExpandedCard({ param }) {
         opacity: 0.35,
       },
       fill: {
-        colors: ["#800020"],
+        colors: [getRandomColor()], // Use the getRandomColor function to generate a random color for the fill
         type: "gradient",
       },
       dataLabels: {
@@ -113,7 +123,7 @@ function ExpandedCard({ param }) {
       },
       stroke: {
         curve: "smooth",
-        colors: ["#ff4500"],
+        colors: [getRandomColor()], // Use the getRandomColor function to generate a random color for the stroke
       },
       tooltip: {
         x: {
@@ -125,7 +135,13 @@ function ExpandedCard({ param }) {
       },
       xaxis: {
         type: "category", // Use 'category' instead of 'datetime' to allow more flexible handling
-        categories: sortedData.timestamps.map((timestamp) => new Date(timestamp).toLocaleString()), // Map the timestamp into categories
+        categories: sortedData.timestamps.map((timestamp) => new Date(timestamp).toLocaleString([], {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          // hour: "2-digit",
+          // minute: "2-digit",
+        })), // Map the timestamp into categories
       },
     },
     series: [
