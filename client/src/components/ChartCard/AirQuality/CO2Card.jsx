@@ -49,18 +49,8 @@ function ExpandedCard({ param }) {
 
   // Filter data based on the selected date range
   const filterData = () => {
-    if (!startDate || !endDate) {
-      return; // Avoid filtering if either start or end date is empty
-    }
-
     const start = new Date(startDate);
     const end = new Date(endDate);
-
-    // Check if the start date is greater than the end date, and swap them if necessary
-    if (start > end) {
-      alert("Start date cannot be later than end date");
-      return;
-    }
 
     // Normalize the start and end date to the beginning and end of the day
     start.setHours(0, 0, 0, 0); // Set to 00:00:00 for the start date
@@ -100,12 +90,6 @@ function ExpandedCard({ param }) {
   // Ensure the timestamps are unique and ordered
   const sortedData = filteredData.iaqIndexes.length > 0 ? filteredData : iaqData;
 
-  // Format the timestamps to display only the date
-  const formattedTimestamps = sortedData.timestamps.map((timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleDateString(); // Format as MM/DD/YYYY
-  });
-
   const data = {
     options: {
       chart: {
@@ -133,7 +117,7 @@ function ExpandedCard({ param }) {
       },
       tooltip: {
         x: {
-          format: "dd/MM/yy", // Show date only in the tooltip
+          format: "dd/MM/yy HH:mm",
         },
       },
       grid: {
@@ -141,13 +125,13 @@ function ExpandedCard({ param }) {
       },
       xaxis: {
         type: "category", // Use 'category' instead of 'datetime' to allow more flexible handling
-        categories: formattedTimestamps, // Display the formatted date only
+        categories: sortedData.timestamps.map((timestamp) => new Date(timestamp).toLocaleString()), // Map the timestamp into categories
       },
     },
     series: [
       {
         name: "IAQ Index",
-        data: sortedData.iaqIndexes, // Ensure the IAQ data is correctly matched with timestamps
+        data: sortedData.timestamps.map((timestamp, index) => sortedData.iaqIndexes[index]),
       },
     ],
   };
@@ -217,3 +201,5 @@ function ExpandedCard({ param }) {
 }
 
 export default CO2Card;
+
+
