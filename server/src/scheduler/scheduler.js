@@ -38,7 +38,7 @@ const startDeviceStatusScheduler = () => {
     setInterval(() => {
         console.log('Running device status check...');
         checkAndUpdateDeviceStatus();
-    }, 3600000); // 1 hour
+    }, 20000); // 1 hour
 };
 
 // Export the function to start the scheduler
