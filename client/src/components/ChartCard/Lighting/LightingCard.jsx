@@ -13,6 +13,16 @@ const LightingCard = (props) => {
   );
 };
 
+// Utility function to generate random colors
+const getRandomColor = () => {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
 function ExpandedCard({ param }) {
   const [lightingData, setLightingData] = useState({ lightingValues: [], timestamps: [] });
   const [startDate, setStartDate] = useState(""); // Start date for filtering
@@ -86,6 +96,9 @@ function ExpandedCard({ param }) {
   // Ensure the timestamps are unique and ordered
   const sortedData = filteredData.lightingValues.length > 0 ? filteredData : lightingData;
 
+  // Generate random color for the chart
+  const chartColor = getRandomColor();
+
   const data = {
     options: {
       chart: {
@@ -101,7 +114,7 @@ function ExpandedCard({ param }) {
         opacity: 0.35,
       },
       fill: {
-        colors: ["#ffcc00"],
+        colors: [chartColor],
         type: "gradient",
       },
       dataLabels: {
@@ -109,7 +122,7 @@ function ExpandedCard({ param }) {
       },
       stroke: {
         curve: "smooth",
-        colors: ["#ffaa00"],
+        colors: [chartColor],
       },
       tooltip: {
         x: {
@@ -121,7 +134,13 @@ function ExpandedCard({ param }) {
       },
       xaxis: {
         type: "category", // Use 'category' to handle custom formatted timestamps
-        categories: sortedData.timestamps.map((entry) => new Date(entry).toLocaleString()), // Map formatted timestamp into categories
+        categories: sortedData.timestamps.map((entry) => new Date(entry).toLocaleString([], {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+        })), // Map formatted timestamp into categories
       },
     },
     series: [

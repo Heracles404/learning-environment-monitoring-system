@@ -13,6 +13,16 @@ const HeatIndexCard = (props) => {
   );
 };
 
+// Utility function to generate random colors
+const getRandomColor = () => {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
 function ExpandedCard({ param }) {
   const [heatIndexData, setHeatIndexData] = useState({ values: [], timestamps: [] });
   const [startDate, setStartDate] = useState(""); // Start date for filtering
@@ -80,6 +90,9 @@ function ExpandedCard({ param }) {
 
   const sortedData = filteredData.values.length > 0 ? filteredData : heatIndexData;
 
+  // Generate random color for the chart
+  const chartColor = getRandomColor();
+
   const data = {
     options: {
       chart: {
@@ -95,7 +108,7 @@ function ExpandedCard({ param }) {
         opacity: 0.35,
       },
       fill: {
-        colors: ["#ff4500"],
+        colors: [chartColor],
         type: "gradient",
       },
       dataLabels: {
@@ -103,7 +116,7 @@ function ExpandedCard({ param }) {
       },
       stroke: {
         curve: "smooth",
-        colors: ["#ff6347"],
+        colors: [chartColor],
       },
       tooltip: {
         x: {
@@ -116,7 +129,13 @@ function ExpandedCard({ param }) {
       xaxis: {
         type: "category",
         categories: sortedData.timestamps.map((timestamp) =>
-          new Date(timestamp).toLocaleString()
+          new Date(timestamp).toLocaleString([], {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          })
         ),
       },
     },
