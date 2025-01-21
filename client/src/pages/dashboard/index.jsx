@@ -14,7 +14,7 @@ import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import DBVog from "../../components/DashboardTables/DBVog";
 import { httpGetActive, httpGetAllDevices } from "../../hooks/devices.requests";  
 import React, { useState, useEffect } from "react"; 
-
+import TemperaturePieChart from "../../components/DashboardPieChart/TemperaturePieChart";
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -131,8 +131,9 @@ const Dashboard = () => {
       </Box>
       
         <DashboardCards/>
-        <DBRecords />
-        <DBVog/>    
+        {/* <DBRecords />
+        <DBVog/>     */}
+        {/* <TemperaturePieChart/> */}
     </Box>
   );
 };
