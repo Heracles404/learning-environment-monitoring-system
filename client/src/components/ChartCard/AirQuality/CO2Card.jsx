@@ -115,7 +115,7 @@ function ExpandedCard({ param }) {
       },
       tooltip: {
         x: {
-          format: "dd/MM/yy HH:mm",
+          format: "dd/MM/yy",
         },
       },
       grid: {
@@ -128,8 +128,8 @@ function ExpandedCard({ param }) {
             year: "numeric",
             month: "2-digit",
             day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
+            // hour: "2-digit",
+            // minute: "2-digit",
           })
         ),
       },
