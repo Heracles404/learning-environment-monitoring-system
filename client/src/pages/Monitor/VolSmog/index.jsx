@@ -13,7 +13,7 @@ import VolcanicSmogRecordTable from "../../../components/RecordTables/VolcanicSm
 const VolSmogMonitor = () => {
 
   return (
-    <Box height="100vh" overflow="auto">
+    <Box height="95vh" overflow="auto">
       {/* HEADER */}
           <Box 
           display="flex" 

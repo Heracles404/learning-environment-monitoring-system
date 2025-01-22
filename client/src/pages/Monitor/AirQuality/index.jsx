@@ -18,7 +18,7 @@ const CarbonDioxideMonitor = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
-    <Box height="100vh" overflow="auto">
+    <Box height="95vh" overflow="auto">
       {/* HEADER */}
           <Box 
           display="flex" 

@@ -11,7 +11,7 @@ import HeatIndexRecordTable from "../../../components/RecordTables/HeatIndexReco
 const HeatIndexMonitor = () => {
   
 return (
-  <Box height="100vh" overflow="auto">
+  <Box height="95vh" overflow="auto">
   {/* HEADER */}
       <Box 
       display="flex" 
