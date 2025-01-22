@@ -36,7 +36,7 @@ function DBCompactCard({ param, setExpanded }) {
           onClick={setExpanded}
       >
         <div className="radialBar">
-          <TemperaturePieChart
+          <CircularProgressbar
               value={param.barValue}
               // text={`${param.barValue}%`}
               text={`${param.barValue}`}
