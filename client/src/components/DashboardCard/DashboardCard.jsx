@@ -66,7 +66,9 @@ function useDateTime() {
             const time = readout.time; // Assuming 'time' is in a valid format
             const dateTimeString = `${date} ${time}`;
             const dateObj = new Date(dateTimeString);
-            const formattedDateTime = `${dateObj.getFullYear()}-${(dateObj.getMonth() + 1).toString().padStart(2, '0')}-${dateObj.getDate().toString().padStart(2, '0')} ${dateObj.getHours().toString().padStart(2, '0')}:${dateObj.getMinutes().toString().padStart(2, '0')}:${dateObj.getSeconds().toString().padStart(2, '0')}`;
+            const formattedDateTime = `${dateObj.getFullYear()}-${(dateObj.getMonth() + 1).toString().padStart(2, '0')}-${dateObj.getDate().toString().padStart(2, '0')}`;
+
+
             return formattedDateTime;
           });
 
