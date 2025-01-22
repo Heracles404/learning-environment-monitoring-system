@@ -14,13 +14,17 @@ import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import DBVog from "../../components/DashboardTables/DBVog";
 import { httpGetActive, httpGetAllDevices } from "../../hooks/devices.requests";  
 import React, { useState, useEffect } from "react"; 
-import TemperaturePieChart from "../../components/DashboardPieChart/TemperaturePieChart";
 
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
+
+import TemperaturePieChart from "../../components/DashboardPieChart/TemperaturePieChart";
+import AirQualityPieChart from "../../components/DashboardPieChart/AirQualityPieChart";
+import VOGPieChart from "../../components/DashboardPieChart/VOGPieChart";
+import LightingPieChart from "../../components/DashboardPieChart/LightingPieChart";
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -171,7 +175,7 @@ const Dashboard = () => {
           {/* <Box height={{ xs: "300px", sm: "300px", md:"300px"}}> */}
           {/* // width={{xs:"110%", sm:"120%", md:"150%"}}> */}
             {/* <GeographyChart isDashboard={true} /> */}
-            <TemperaturePieChart/>
+            <AirQualityPieChart/>
           </Box>
         </Box>
         <Box
@@ -192,7 +196,7 @@ const Dashboard = () => {
           </Typography>
           <Box height="300px">
             {/* <GeographyChart isDashboard={true} /> */}
-            <TemperaturePieChart/>
+            <LightingPieChart/>
           </Box>
         </Box>
 
@@ -237,7 +241,7 @@ const Dashboard = () => {
           </Typography>
           <Box height="300px">
             {/* <GeographyChart isDashboard={true} /> */}
-            <TemperaturePieChart/>
+            <VOGPieChart/>
           </Box>
         </Box>
 
