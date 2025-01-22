@@ -1,4 +1,4 @@
-import { Box, useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 
 import { tokens } from "../../theme";
@@ -15,6 +15,12 @@ import DBVog from "../../components/DashboardTables/DBVog";
 import { httpGetActive, httpGetAllDevices } from "../../hooks/devices.requests";  
 import React, { useState, useEffect } from "react"; 
 import TemperaturePieChart from "../../components/DashboardPieChart/TemperaturePieChart";
+
+import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
+import EmailIcon from "@mui/icons-material/Email";
+import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import TrafficIcon from "@mui/icons-material/Traffic";
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -46,7 +52,7 @@ const Dashboard = () => {
     return <Box>Loading...</Box>;
   }
   return (
-    <Box m="0 5px 0 25px" height="100vh" overflow="auto">
+    <Box m="0 3px 0 15px" height="100vh" overflow="auto">
       {/* HEADER */}
       <Box 
       display="flex" 
@@ -131,11 +137,111 @@ const Dashboard = () => {
         </Grid>
       </Grid>
       </Box>
-      
+      <Box>
         <DashboardCards/>
-        {/* <DBRecords />
-        <DBVog/>     */}
-        {/* <TemperaturePieChart/> */}
+      </Box>
+        
+{/* GRID & CHARTS */}
+<Box
+        display="grid"
+        gridTemplateColumns="repeat(12, 1fr)"
+        gridAutoRows={{ xs: "10.5%", sm: "22%", md:"22%", lg: "21%" }}
+        gap="15px"
+        mt="20px"
+      >
+        {/* ROW 1 */}
+        <Box
+          gridColumn={{ xs: "span 12", sm: "span 6" }}
+          gridRow="span 2"
+          backgroundColor={colors.greenAccent[700]}
+          padding="5px"
+        > 
+          <Typography
+            variant="h5"
+            fontWeight="600"
+            display="flex"
+            justifyContent="center"
+            color="white"
+            // sx={{ marginBottom: "5px" }}
+            // color={colors.greenAccent[300]}
+          >
+            INDOOR AIR QUALITY
+          </Typography>
+          <Box height="300px">
+          {/* <Box height={{ xs: "300px", sm: "300px", md:"300px"}}> */}
+          {/* // width={{xs:"110%", sm:"120%", md:"150%"}}> */}
+            {/* <GeographyChart isDashboard={true} /> */}
+            <TemperaturePieChart/>
+          </Box>
+        </Box>
+        <Box
+          gridColumn={{ xs: "span 12", sm: "span 6" }}
+          gridRow="span 2"
+          backgroundColor={colors.greenAccent[700]}
+          padding="5px"
+        >
+          <Typography
+            variant="h5"
+            fontWeight="600"
+            sx={{ marginBottom: "5px" }}
+            display="flex"
+            justifyContent="center"
+            color="white"
+          >
+            LIGHT
+          </Typography>
+          <Box height="300px">
+            {/* <GeographyChart isDashboard={true} /> */}
+            <TemperaturePieChart/>
+          </Box>
+        </Box>
+
+        
+        {/* ROW 3 */}
+        <Box
+          gridColumn={{ xs: "span 12", sm: "span 6" }}
+          gridRow="span 2"
+          backgroundColor={colors.greenAccent[700]}
+          padding="5px"
+        >
+          <Typography
+            variant="h5"
+            fontWeight="600"
+            sx={{ marginBottom: "5px" }}
+            display="flex"
+            justifyContent="center"
+            color="white"
+          >
+            TEMPERATURE
+          </Typography>
+          <Box height="300px">
+            {/* <GeographyChart isDashboard={true} /> */}
+            <TemperaturePieChart/>
+          </Box>
+        </Box>
+        <Box
+          gridColumn={{ xs: "span 12", sm: "span 6" }}
+          gridRow="span 2"
+          backgroundColor={colors.greenAccent[700]}
+          padding="5px"
+        >
+          <Typography
+            variant="h5"
+            fontWeight="600"
+            sx={{ marginBottom: "15px" }}
+            display="flex"
+            justifyContent="center"
+            color="white"
+          >
+            VOG
+          </Typography>
+          <Box height="300px">
+            {/* <GeographyChart isDashboard={true} /> */}
+            <TemperaturePieChart/>
+          </Box>
+        </Box>
+
+      </Box>
     </Box>
   );
 };
