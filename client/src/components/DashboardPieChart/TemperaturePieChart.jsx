@@ -13,12 +13,12 @@ const TemperaturePieChart = () => {
         axis: {
           domain: {
             line: {
-              stroke: colors.grey[100],
+              stroke: colors.grey[500],
             },
           },
           legend: {
             text: {
-              fill: colors.grey[100],
+              fill: colors.greenAccent[100],
             },
           },
           ticks: {
@@ -47,8 +47,11 @@ const TemperaturePieChart = () => {
         modifiers: [["darker", 0.2]],
       }}
       arcLinkLabelsSkipAngle={10}
-      arcLinkLabelsTextColor={colors.grey[100]}
+      // arcLinkLabelsTextColor={colors.greenAccent[400]}
+      arcLinkLabelsTextColor="white"
       arcLinkLabelsThickness={2}
+      arcLinkLabelsDiagonalLength={5}
+      arcLinkLabelsStraightLength={14}
       arcLinkLabelsColor={{ from: "color" }}
       enableArcLabels={false}
       arcLabelsRadiusOffset={0.4}
@@ -79,18 +82,18 @@ const TemperaturePieChart = () => {
       ]}
       legends={[
         {
-          anchor: "bottom",
-          direction: "row",
+          anchor: "bottom-left",
+          direction: "column",
           justify: false,
           translateX: 0,
-          translateY: 56,
+          translateY: 40,
           itemsSpacing: 0,
           itemWidth: 100,
           itemHeight: 18,
-          itemTextColor: "#999",
+          itemTextColor: "white",
           itemDirection: "left-to-right",
           itemOpacity: 1,
-          symbolSize: 18,
+          symbolSize: 14,
           symbolShape: "circle",
           effects: [
             {
