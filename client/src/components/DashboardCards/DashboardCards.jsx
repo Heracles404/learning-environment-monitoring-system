@@ -9,6 +9,14 @@ const DashboardCards = () => {
   const [cardData, setCardData] = useState([]);
   const [lastUpdated, setLastUpdated] = useState(null); // Track the latest data's timestamp or unique ID
 
+  // Function to classify remarks as 'Good' or 'Bad' based on majority
+  const classifyRemarks = (remarksArray) => {
+    const goodCount = remarksArray.filter(remark => remark === 'Good').length;
+    const badCount = remarksArray.filter(remark => remark === 'Bad').length;
+
+    return goodCount >= badCount ? 'Good' : 'Bad';
+  };
+
   useEffect(() => {
     const fetchCardData = async () => {
       try {
@@ -26,64 +34,35 @@ const DashboardCards = () => {
 
             switch (card.title) {
               case 'Air Quality':
-                const IAQIndex = latestData.IAQIndex.toFixed(2); // Assuming latestData has IAQIndex
+                // Fetch all remarks for Air Quality and classify as Good/Bad
+                const airQualityRemarks = response.map(item => item.indoorAir);  // Fetch indoor air quality remarks
 
-                // Classify air quality based on IAQIndex
-                if (IAQIndex > 0 && IAQIndex <= 50) {
-                  updatedValue = "CLEAN";
-                } else if (IAQIndex > 50 && IAQIndex <= 100) {
-                  updatedValue = "NORMAL";
-                } else if (IAQIndex > 100 && IAQIndex <= 150) {
-                  updatedValue = "CAUTION";
-                } else if (IAQIndex > 150 && IAQIndex <= 200) {
-                  updatedValue = "DANGER";
-                } else if (IAQIndex > 200 && IAQIndex <= 300) {
-                  updatedValue = "EXTREME";
-                } else if (IAQIndex > 300 && IAQIndex <= 500) {
-                  updatedValue = "HAZARDOUS";
-                } else {
-                  updatedValue = "OUT OF RANGE"; // Handle cases where IAQIndex is <= 0 or > 500
-                }
-
-                updatedBarValue = IAQIndex; // Keep the bar value as the IAQIndex
+                updatedValue = classifyRemarks(airQualityRemarks);
+                updatedBarValue = (latestData.IAQIndex).toFixed(2); // Keep the bar value as IAQIndex and limit to 2 decimals
                 break;
 
               case 'Temperature':
-                const heatIndex = latestData.temperature.toFixed(2); // Assuming latestData has temperature
+                // Fetch all remarks for Temperature and classify as Good/Bad
+                const tempRemarks = response.map(item => item.temp);  // Fetch temperature remarks
 
-                // Classify temperature based on heatIndex
-                if (heatIndex <= 27) {
-                  updatedValue = "NORMAL";
-                } else if (heatIndex >= 28 && heatIndex <= 35) {
-                  updatedValue = "GOOD";
-                } else if (heatIndex >= 36 && heatIndex <= 41) {
-                  updatedValue = "CAUTION";
-                } else if (heatIndex >= 42 && heatIndex <= 51) {
-                  updatedValue = "DANGER";
-                } else if (heatIndex > 51) {
-                  updatedValue = "CATASTROPHE";
-                }
-
-                updatedBarValue = heatIndex; // Keep the bar value as the heatIndex
+                updatedValue = classifyRemarks(tempRemarks);
+                updatedBarValue = (latestData.temperature).toFixed(2); // Bar value remains as Temperature and limit to 2 decimals
                 break;
 
               case 'Light':
-                updatedValue = (latestData.lighting > 300 && latestData.lighting < 500) ? 'GOOD' : 'BAD';
-                updatedBarValue = latestData.lighting.toFixed(2);
+                // Fetch all remarks for Light and classify as Good/Bad
+                const lightRemarks = response.map(item => item.remarks);  // Fetch lighting remarks
+
+                updatedValue = classifyRemarks(lightRemarks);
+                updatedBarValue = (latestData.lighting).toFixed(2); // Bar value remains as Lighting and limit to 2 decimals
                 break;
 
               case 'Volcanic Smog':
-                // Use PM2.5 data from the vog API
-                updatedValue = latestVogData.pm10 > 50 ? 'GOOD' : 'BAD'; // Check the PM2.5 value
-                updatedBarValue = latestVogData.pm10.toFixed(2); // Use PM2.5 for the bar value
-                
+                // Use PM2.5 data from the vog API and classify as Good/Bad
+                const vogRemark = latestVogData.pm10 <= 50 ? "Good" : "Bad";
+                updatedValue = vogRemark;
+                updatedBarValue = (latestVogData.pm10).toFixed(2); // Bar value remains as PM2.5 data and limit to 2 decimals
                 break;
-              // case 'Volcanic Smog':
-              //   // Use PM2.5 data from the vog API
-              //   updatedValue = latestVogData.pm10 > 50 ? 'GOOD' : 'BAD'; // Check the PM2.5 value
-              //   updatedBarValue = latestVogData.pm10.toFixed(2); // Use PM2.5 for the bar value
-              //   break;
-                
 
               default:
                 break;
