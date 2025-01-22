@@ -171,12 +171,17 @@ const Dashboard = () => {
           >
             INDOOR AIR QUALITY
           </Typography>
+          <Typography>
+            Inactive: 
+          </Typography>
           <Box height="300px">
           {/* <Box height={{ xs: "300px", sm: "300px", md:"300px"}}> */}
           {/* // width={{xs:"110%", sm:"120%", md:"150%"}}> */}
             {/* <GeographyChart isDashboard={true} /> */}
             <AirQualityPieChart/>
+            
           </Box>
+          
         </Box>
         <Box
           gridColumn={{ xs: "span 12", sm: "span 6" }}
@@ -193,6 +198,9 @@ const Dashboard = () => {
             color="white"
           >
             LIGHT
+          </Typography>
+          <Typography>
+            Inactive
           </Typography>
           <Box height="300px">
             {/* <GeographyChart isDashboard={true} /> */}
@@ -218,6 +226,9 @@ const Dashboard = () => {
           >
             TEMPERATURE
           </Typography>
+          <Typography>
+            Inactive
+          </Typography>
           <Box height="300px">
             {/* <GeographyChart isDashboard={true} /> */}
             <TemperaturePieChart/>
@@ -238,6 +249,9 @@ const Dashboard = () => {
             color="white"
           >
             VOG
+          </Typography>
+          <Typography>
+            Inactive
           </Typography>
           <Box height="300px">
             {/* <GeographyChart isDashboard={true} /> */}
