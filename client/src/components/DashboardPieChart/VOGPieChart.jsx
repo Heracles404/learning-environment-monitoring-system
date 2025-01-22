@@ -1,7 +1,7 @@
 import { ResponsivePie } from "@nivo/pie";
 import { tokens } from "../../theme";
 import { useTheme } from "@mui/material";
-import { indoorAirPieData as data } from "../../data/pieData";
+import { vogPieData as data } from "../../data/pieData";
 
 const VOGPieChart = () => {
   const theme = useTheme();

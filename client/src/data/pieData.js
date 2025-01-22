@@ -5,6 +5,7 @@ import { httpGetAllReadouts } from "../hooks/sensors.requests"; // Adjust path t
 export let indoorAirPieData = []; 
 export let temperaturePieData = []; 
 export let lightingPieData = []; 
+export let vogPieData = [];
 
 // Function to fetch and categorize pie data for indoorAir, temp, and lighting
 export const fetchPieData = async () => {
@@ -94,6 +95,39 @@ export const fetchPieData = async () => {
         color: "hsl(0, 70%, 50%)", // Red for "Bad"
       },
     ];
+
+
+    vogPieData = [
+      {
+        id: "Level 1",
+        label: "Level 1",
+        value: [1], 
+        color: "hsl(120, 70%, 50%)", 
+      },
+      {
+        id: "Level 2",
+        label: "Level 2",
+        value: [1], 
+        color: "hsl(0, 70%, 50%)", 
+      },
+      {
+        id: "Level 3",
+        label: "Level 3",
+        value: [1], 
+        color: "hsl(0, 100.00%, 50.00%)", 
+      },
+      {
+        id: "Level 4",
+        label: "Level 4",
+        value: [1], 
+        color: "hsl(0, 70%, 50%)", 
+      },
+    ];
+
+
+
+
+    
 
     console.log("Indoor Air Pie Data:", indoorAirPieData);
     console.log("Temperature Pie Data:", temperaturePieData);
