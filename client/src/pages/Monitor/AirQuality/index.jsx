@@ -18,7 +18,7 @@ const CarbonDioxideMonitor = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
-    <Box height="100vh" overflow="auto">
+    <Box height="95vh" overflow="auto">
       {/* HEADER */}
           <Box 
           display="flex" 
@@ -27,7 +27,7 @@ const CarbonDioxideMonitor = () => {
           textAlign="center"
           overflow="auto"
           >
-            <Header title="Heat Index" subtitle="Monitoring the Heat Index" />
+            <Header title="Air Quality" subtitle="Monitoring the Air Quality" />
           </Box>
         <Box sx={{ pl: 2 }}>
         <Grid container>

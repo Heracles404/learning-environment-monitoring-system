@@ -46,7 +46,7 @@ function DBCompactCard({ param, setExpanded }) {
         <div className="detail">
           <Png style={{ width: '50px', height: '50px' }}/>
           <span>{param.value}</span>
-          <span>Last 24 hours</span>
+          <span>Current Status</span>
         </div>
       </motion.div>
   );

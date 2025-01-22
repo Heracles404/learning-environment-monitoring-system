@@ -185,7 +185,7 @@ function ExpandedCard({ param }) {
         <Chart options={data.options} series={data.series} type="line" />
       </div>
 
-      <span>Last 24 hours</span>
+      {/* <span>Last 24 hours</span> */}
 
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
         <DialogTitle sx={{ fontSize: "1.5rem", fontWeight: "bold" }}>No Data Found</DialogTitle>
