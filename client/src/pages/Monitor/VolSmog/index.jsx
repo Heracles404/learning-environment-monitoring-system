@@ -22,12 +22,12 @@ const VolSmogMonitor = () => {
           textAlign="center"
           overflow="auto"
           >
-            <Header title="Heat Index" subtitle="Monitoring the Heat Index" />
+            <Header title="Volcanic Smog" subtitle="Monitoring the Volcanic Smog" />
           </Box>
         <Box sx={{ pl: 2 }}>
         <Grid container>
           <Grid item xs={12} >
-            <Box width="620px" mt={{xs:'300px', md: '1px'}}>
+            <Box width="620px" >
             {/* <Box m="0 5px 0 5px" height="100vh" width="750px"
             // overflow="auto"
             > */}
@@ -35,7 +35,7 @@ const VolSmogMonitor = () => {
             </Box> 
           </Grid>
         <Grid item xs={12} >
-          <Box width='500px' sx={{ pl: 2 }}>
+          <Box width='500px' sx={{ pl: 2 }} mt={{xs:'300px', md: '1px'}}>
               <VolcanicSmogRecordTable/>
               <Card width="300px">
                 <CardMedia component='img' height='240vh'

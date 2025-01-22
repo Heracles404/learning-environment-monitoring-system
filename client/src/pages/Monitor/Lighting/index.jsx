@@ -22,7 +22,7 @@ const LightingMonitor = () => {
           textAlign="center"
           overflow="auto"
           >
-            <Header title="Heat Index" subtitle="Monitoring the Heat Index" />
+            <Header title="Lighting" subtitle="Monitoring the Lighting" />
           </Box>
         <Box sx={{ pl: 2 }}>
         <Grid container>

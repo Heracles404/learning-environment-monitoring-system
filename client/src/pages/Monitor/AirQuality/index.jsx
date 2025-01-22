@@ -27,7 +27,7 @@ const CarbonDioxideMonitor = () => {
           textAlign="center"
           overflow="auto"
           >
-            <Header title="Heat Index" subtitle="Monitoring the Heat Index" />
+            <Header title="Air Quality" subtitle="Monitoring the Air Quality" />
           </Box>
         <Box sx={{ pl: 2 }}>
         <Grid container>
