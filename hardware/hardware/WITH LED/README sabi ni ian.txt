@@ -1,2 +1,0 @@
-D0 IAQINDEX LED
-D5 Light LED

@@ -38,22 +38,21 @@ BH1750 lightMeter;
 
 // ---------------------------------------------------------------------------
 // Wi-Fi Credentials
+const char* ssid = "ACM2";
+const char* password = "0495452821@2024";
 
-const char* ssid = "AccessPoint";
-const char* password = "IoT@2025";
+// ---------------------------------------------------------------------------
 // Server API Info
-const char* host = "http://192.168.0.102";
-
+const char* host = "http://192.168.1.31";
 const int port = 8000;
 const char* endpoint = "/sensors";
-const char* update_endpoint = "/devices";
 
 // ---------------------------------------------------------------------------
 // Variables
 float temperature, humidity, voc, IAQIndex, lux;
 float ppm;
 int heatIndex;
-String indoorAir, tempLabel, recordTime, lightRemarks;
+String indoorAir, tempLabel, recordTime;
 const String classroom = "401";
 
 // Pin for alert (LED or external device)
@@ -62,7 +61,7 @@ const String classroom = "401";
 // ---------------------------------------------------------------------------
 // Offsets (optional for Heat Index and IAQ)
 const float heatIndexOffsetC = 4.0;  // e.g. 2 °C
-const float IAQOffset        = 180.0; // e.g. 50 points
+const float IAQOffset        = 200.0; // e.g. 50 points
 
 // ---------------------------------------------------------------------------
 // Prototypes
@@ -93,7 +92,6 @@ void setup() {
   // Initialize time
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
 
-<<<<<<< HEAD:hardware/hardware/WITH LED/WITH LED/sketch_jan20e/sketch_jan20f/sketch_jan20f.ino
   // Initialize BME680
   if (!bme.begin(0x77)) {
     Serial.println(F("BME680 not found!"));
@@ -108,9 +106,6 @@ void setup() {
   lightMeter.begin();
 
   // Setup pins
-=======
-  // Setup alert pin
->>>>>>> 20e684c26ad93b7ad185b93f73dcba3d4c741d79:hardware/hardware/ianhardware PPM=VOC/v2/sketch_jan18b/sketch_jan18b.ino
   pinMode(alertPin, OUTPUT);
   digitalWrite(alertPin, HIGH);
 
@@ -122,8 +117,6 @@ void setup() {
 // ---------------------------------------------------------------------------
 // Main Loop
 void loop() {
-  sensorsInit();
-
   Serial.println(F("--------------------------------"));
   
   // Read sensor data
@@ -141,9 +134,10 @@ void loop() {
   sendDataToServer(
     classroom, recordTime, 
     temperature, humidity, 
-    voc, IAQIndex, lux, heatIndex, 
-    indoorAir, tempLabel, lightRemarks
-    );
+    voc, IAQIndex, lux, 
+    ppm, heatIndex, 
+    indoorAir, tempLabel
+  );
 
   // IAQIndex >= 200: Set D0 HIGH
   if (IAQIndex >= 200) {
@@ -155,7 +149,7 @@ void loop() {
   }
 
   // LUX between 500 and 100: Set D5 HIGH
-  if (lux < 100 || lux > 500) {
+  if (lux < 50 || lux > 500) {
     digitalWrite(D5, HIGH);
     Serial.println(F("D5: HIGH - LUX in range (100–500)"));
   } else {
@@ -180,31 +174,6 @@ void loop() {
   delay(4000);
 }
 
-<<<<<<< HEAD:hardware/hardware/WITH LED/WITH LED/sketch_jan20e/sketch_jan20f/sketch_jan20f.ino
-=======
-void sensorsInit(){
-  // Initialize BME680
-  if (!bme.begin(0x77)) {
-    Serial.println(F("BME680 not found!"));
-    updateSensorStatus("bme680", "Inactive");
-  }else {
-    bme.setTemperatureOversampling(BME680_OS_8X);
-    bme.setHumidityOversampling(BME680_OS_2X);
-    bme.setIIRFilterSize(BME680_FILTER_SIZE_3);
-    bme.setGasHeater(320, 150);  // 320°C for 150 ms
-    updateSensorStatus("bme680", "Active");
-  }
-
-  // Initialize BH1750
-  if (lightMeter.begin()) {
-      Serial.println(F("BH1750 initialized successfully."));
-      updateSensorStatus("bh1750", "Active");
-  } else {
-      Serial.println(F("BH1750 not found!"));
-      updateSensorStatus("bh1750", "Inactive");
-  }
-}
->>>>>>> 20e684c26ad93b7ad185b93f73dcba3d4c741d79:hardware/hardware/ianhardware PPM=VOC/v2/sketch_jan18b/sketch_jan18b.ino
 
 // ---------------------------------------------------------------------------
 // Wi-Fi Initialization
@@ -227,50 +196,51 @@ void wifiInit() {
 
 // ---------------------------------------------------------------------------
 // Read from BME680
+// ---------------------------------------------------------------------------
+// Read from BME680 with Offsets
 void bme680Readings() {
-  temperature = bme.readTemperature();
+  // Read temperature and apply offset
+  temperature = bme.readTemperature() - 2.0; // Offset: -1°C
   if (isnan(temperature)) {
     Serial.println(F("Failed to read temperature"));
   } else {
-    Serial.print(F("Temperature: "));
+    Serial.print(F("Temperature (adjusted): "));
     Serial.print(temperature);
     Serial.println(F(" *C"));
   }
 
-  humidity = bme.readHumidity();
+  // Read humidity and apply offset
+  humidity = bme.readHumidity() + 3.0; // Offset: +3%
   if (isnan(humidity)) {
     Serial.println(F("Failed to read humidity"));
   } else {
-    Serial.print(F("Humidity: "));
+    Serial.print(F("Humidity (adjusted): "));
     Serial.print(humidity);
     Serial.println(F(" %"));
   }
 
-  if((humidity < -1) && (temperature < -1)){
-    Serial.println(F("Failed to read Heat Index"));
-  }else{
-    // Heat Index in °C with offset
-    heatIndex = calculateHeatIndex(temperature, humidity);
-    Serial.print(F("Heat Index: "));
-    Serial.print(heatIndex);
-    Serial.println(F(" *C"));
+  // Heat Index in °C with offset already applied
+  heatIndex = calculateHeatIndex(temperature, humidity);
+  Serial.print(F("Heat Index (adjusted): "));
+  Serial.print(heatIndex);
+  Serial.println(F(" *C"));
 
-    Serial.print(F("Temperature Concern Level: "));
-    if (heatIndex <= 27) {
-      tempLabel = "Good";
-    } else if (heatIndex <= 37) {
-      tempLabel = "Normal";
-    } else if (heatIndex <= 40) {
-      tempLabel = "Caution";
-    } else if (heatIndex <= 45) {
-      tempLabel = "DANGER";
-    } else {
-      tempLabel = "EXTREME DANGER";
-    }
-    Serial.println(tempLabel);
+  // Determine temperature concern level
+  Serial.print(F("Temperature Concern Level: "));
+  if (heatIndex <= 27) {
+    tempLabel = "Good";
+  } else if (heatIndex <= 37) {
+    tempLabel = "Normal";
+  } else if (heatIndex <= 40) {
+    tempLabel = "Caution";
+  } else if (heatIndex <= 45) {
+    tempLabel = "DANGER";
+  } else {
+    tempLabel = "EXTREME DANGER";
   }
+  Serial.println(tempLabel);
 
-  // Gas Resistance (kOhms)
+  // Read gas resistance
   voc = bme.gas_resistance / 1000.0;
   if (isnan(voc)) {
     Serial.println(F("Failed to read gas resistance"));
@@ -280,11 +250,12 @@ void bme680Readings() {
     Serial.println(F(" kOhms"));
   }
 
-  // IAQ Calculation & Category
+  // Calculate IAQ Index
   IAQIndex = calculateIAQ(voc);
   Serial.print(F("IAQ Index (adjusted): "));
   Serial.println(IAQIndex);
 
+  // IAQ Concern Level
   Serial.print(F("AQ Concern Level: "));
   if (IAQIndex <= 50) {
     indoorAir = "GOOD";
@@ -306,6 +277,7 @@ void bme680Readings() {
   Serial.print(F("PPM (approx): "));
   Serial.println(ppm);
 }
+
 
 // ---------------------------------------------------------------------------
 // Get Formatted Time (HH:MM AM/PM)
@@ -405,14 +377,6 @@ void luxFunc() {
   Serial.print(F("Light: "));
   Serial.print(lux);
   Serial.println(F(" lx"));
-
-  Serial.print(F("Lux Concern Level: "));
-  if ((lux >= 300) && (lux <=500)) {
-    lightRemarks = "Good";
-  }else{
-    lightRemarks = "Bad";
-  }
-  Serial.println(lightRemarks);
 }
 
 // ---------------------------------------------------------------------------
@@ -420,9 +384,9 @@ void luxFunc() {
 void sendDataToServer(
   String classroom, String recordTime,
   float temperature, float humidity, 
-  float IAQIndex, float lux, 
+  float voc, float IAQIndex, float lux, 
   float ppm, int heatIndex, 
-  String indoorAir, String tempLabel, String lightRemarks
+  String indoorAir, String tempLabel
 ) {
   HTTPClient http;
   WiFiClient client;
@@ -440,64 +404,19 @@ void sendDataToServer(
   jsonDoc["humidity"]    = humidity;
   jsonDoc["heatIndex"]   = heatIndex;
   jsonDoc["lighting"]    = lux;
-  jsonDoc["voc"]         = ppm;
+  jsonDoc["voc"]         = voc;
   jsonDoc["IAQIndex"]    = IAQIndex;
   jsonDoc["indoorAir"]   = indoorAir;
   jsonDoc["temp"]        = tempLabel;
-  jsonDoc["lightRemarks"] = lightRemarks;
+  jsonDoc["ppm"]         = ppm;  // <-- NEW PPM KEY
 
   // Serialize and send
   serializeJson(jsonDoc, jsonPayload);
   http.addHeader("Content-Type", "application/json");
   int responseCode = http.POST(jsonPayload);
-  Serial.print(F("JSON Payload: "));
-  Serial.println(jsonPayload);
 
   Serial.print(F("Response Code: "));
   Serial.println(responseCode);
 
   http.end();
-<<<<<<< HEAD:hardware/hardware/WITH LED/WITH LED/sketch_jan20e/sketch_jan20f/sketch_jan20f.ino
-=======
-}
-
-
-void updateSensorStatus(String sensor, String stat) {
-  if (WiFi.status() == WL_CONNECTED) {
-    WiFiClient client;
-    HTTPClient http;
-    String url = String(host) + ":" + String(port) + update_endpoint + "/classroom/" + String(classroom);
-
-    http.begin(client, url); // Use WiFiClient object
-    http.addHeader("Content-Type", "application/json");
-
-    // Construct JSON payload
-    StaticJsonDocument<200> jsonDoc;
-    jsonDoc[sensor] = stat;
-
-    String requestBody;
-    serializeJson(jsonDoc, requestBody);
-
-    Serial.print(F("Sending PATCH request to: "));
-    Serial.println(url);
-    Serial.print(F("Payload: "));
-    Serial.println(requestBody);
-
-    int httpResponseCode = http.PATCH(requestBody);
-
-    if (httpResponseCode > 0) {
-      Serial.print(F("Response code: "));
-      Serial.println(httpResponseCode);
-      Serial.print(F("Response: "));
-      Serial.println(http.getString());
-    } else {
-      Serial.print(F("Error sending POST request. Code: "));
-      Serial.println(httpResponseCode);
-    }
-
-    http.end();
-  } else {
-    Serial.print(F("WiFi not connected"));
-  }
->>>>>>> 20e684c26ad93b7ad185b93f73dcba3d4c741d79:hardware/hardware/ianhardware PPM=VOC/v2/sketch_jan18b/sketch_jan18b.ino
 }
