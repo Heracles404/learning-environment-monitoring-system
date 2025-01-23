@@ -11,36 +11,58 @@ import ExpandedCard from "../../../components/ChartCards/AirQuality/CO2Cards";
 import LightingRecordTable from "../../../components/RecordTables/LightingRecordTable";
 const LightingMonitor = () => {
   
-
   return (
-    <Box height="95vh" overflow="auto">
+    <Box m="0 3px 0 15px" height="100vh" overflow="auto">
       {/* HEADER */}
-          <Box 
-          display="flex" 
-          justifyContent="center"
-          alignItems="center"
-          textAlign="center"
-          overflow="auto"
+      <Box 
+      display="flex" 
+      justifyContent="center"
+      //  alignItems="center"
+       textAlign="center  "
+       sx={{
+        flexDirection: { xs: 'column', sm: 'row', md: "column", lg: "row" }
+      }}>   
+        <Header title="Lighting" subtitle="Monitoring the Lighting" />
+      </Box>   
+    {/* GRID & CHARTS */}
+    <Box
+        display="grid"
+        gridTemplateColumns="repeat(12, 1fr)"
+        gridAutoRows={{ xs: "30.5%", lg: "50%" }}
+        gap="15px"
+        mt="5px"
+      >
+        {/* ROW 1 */}
+        <Box
+          gridColumn={{ xs: "span 12", sm: "span 6" }}
+          gridRow="span 2"
+          // backgroundColor={colors.greenAccent[900]}
+          padding="5px"
+        > 
+          <LightingCards/>
+        </Box>
+        <Box
+          gridColumn={{ xs: "span 12", sm: "span 6" }}
+          gridRow="span 2"
+          // backgroundColor={colors.greenAccent[900]}
+          padding="5px"
+        >
+          <Typography
+            variant="h5"
+            fontWeight="600"
+            sx={{ marginBottom: "5px" }}
+            display="flex"
+            justifyContent="center"
+            color="white"
           >
-            <Header title="Lighting" subtitle="Monitoring the Lighting" />
-          </Box>
-        <Box sx={{ pl: 2 }}>
-        <Grid container>
-          <Grid item xs={12} >
-            <Box width="620px">
-            {/* <Box m="0 5px 0 5px" height="100vh" width="750px"
-            // overflow="auto"
-            > */}
-              <LightingCards/>  
-            </Box> 
-          </Grid>
-        <Grid item xs={12} >
-          <Box width='500px' sx={{ pl: 2 }} mt={{xs:'300px', md: '1px'}}>
-              <LightingRecordTable/>
-              <Card width="300px">
+            Heat Index
+          </Typography>
+          <Box >
+            <LightingRecordTable/>
+            <Card width="300px">
                 <CardMedia component='img' height='240vh'
-                image="../../../assets/iaq.png" alt='img'/>
-                
+                // image="../../../assets/iaq.png"
+                alt='img'/>   
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
                     Ideal IAQ
@@ -56,12 +78,10 @@ const LightingMonitor = () => {
                   <Button size='small'>Learn more</Button>
                 </CardActions>
               </Card>
-            </Box>
-          </Grid>
-        </Grid>
+          </Box>
         </Box>
+      </Box>
     </Box>
-      )
-    }
-
+  );
+};
 export default LightingMonitor;
