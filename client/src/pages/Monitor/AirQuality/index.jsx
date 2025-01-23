@@ -1,52 +1,63 @@
 import { Box, Button, IconButton, Typography, useTheme, Card, CardContent, CardActions, CardMedia } from "@mui/material";
 import Header from "../../../components/Header";
-import CarbonDioxideChart from "../../../components/LineCharts/CarbonDioxide";
-import Grid from '@mui/material/Grid2';
 import { tokens } from "../../../theme";
-import StatBox from "../../../components/StatBox";
-import Co2Icon from '@mui/icons-material/Co2';
-
 import CO2Cards from "../../../components/ChartCards/AirQuality/CO2Cards";
-import ExpandedCard from "../../../components/ChartCards/AirQuality/CO2Cards";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import DBRecords from "../../../components/DashboardTables/DBRecords";
 import AirQualityRecordTable from "../../../components/RecordTables/AirQualityRecordTable";
 const CarbonDioxideMonitor = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
-    <Box height="95vh" overflow="auto">
+    <Box m="0 3px 0 15px" height="100vh" overflow="auto">
       {/* HEADER */}
-          <Box 
-          display="flex" 
-          justifyContent="center"
-          alignItems="center"
-          textAlign="center"
-          overflow="auto"
+      <Box 
+      display="flex" 
+      justifyContent="center"
+      //  alignItems="center"
+       textAlign="center  "
+       sx={{
+        flexDirection: { xs: 'column', sm: 'row', md: "column", lg: "row" }
+      }}>   
+        <Header title="Indoor Air Quality" subtitle="Monitoring the IAQ" />
+      </Box>   
+    {/* GRID & CHARTS */}
+    <Box
+        display="grid"
+        gridTemplateColumns="repeat(12, 1fr)"
+        gridAutoRows={{ xs: "30.5%", lg: "50%" }}
+        gap="15px"
+        mt="5px"
+      >
+        {/* ROW 1 */}
+        <Box
+          gridColumn={{ xs: "span 12", sm: "span 6" }}
+          gridRow="span 2"
+          // backgroundColor={colors.greenAccent[900]}
+          padding="5px"
+        > 
+          <CO2Cards/>
+        </Box>
+        <Box
+          gridColumn={{ xs: "span 12", sm: "span 6" }}
+          gridRow="span 2"
+          // backgroundColor={colors.greenAccent[900]}
+          padding="5px"
+        >
+          <Typography
+            variant="h5"
+            fontWeight="600"
+            sx={{ marginBottom: "5px" }}
+            display="flex"
+            justifyContent="center"
+            color="white"
           >
-            <Header title="Air Quality" subtitle="Monitoring the Air Quality" />
-          </Box>
-        <Box sx={{ pl: 2 }}>
-        <Grid container>
-          <Grid item xs={12} >
-            <Box width="620px">
-            {/* <Box m="0 5px 0 5px" height="100vh" width="750px"
-            // overflow="auto"
-            > */}
-              <CO2Cards/>  
-            </Box> 
-          </Grid>
-        <Grid item xs={12} >
-          <Box width='500px' sx={{ pl: 2 }} mt={{xs:'300px', md: '1px'}}>
-              <AirQualityRecordTable/>
-              <Card width="300px">
+            INDOOR AIR QUALITY
+          </Typography>
+          <Box >
+            <AirQualityRecordTable/>
+            <Card width="300px">
                 <CardMedia component='img' height='240vh'
                 // image="../../../assets/iaq.png"
-                alt='img'/>
-                
+                alt='img'/>   
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
                     Ideal IAQ
@@ -62,12 +73,10 @@ const CarbonDioxideMonitor = () => {
                   <Button size='small'>Learn more</Button>
                 </CardActions>
               </Card>
-            </Box>
-          </Grid>
-        </Grid>
+          </Box>
         </Box>
+      </Box>
     </Box>
-      )
-    }
-
+  );
+};
 export default CarbonDioxideMonitor;
