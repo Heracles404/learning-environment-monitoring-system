@@ -60,8 +60,8 @@ const String classroom = "401";
 
 // ---------------------------------------------------------------------------
 // Offsets (optional for Heat Index and IAQ)
-const float heatIndexOffsetC = 4.0;  // e.g. 2 °C
-const float IAQOffset        = 200.0; // e.g. 50 points
+const float heatIndexOffsetC = 0.0;  // e.g. 2 °C
+const float IAQOffset        = 165.0; // e.g. 50 points
 
 // ---------------------------------------------------------------------------
 // Prototypes
@@ -274,7 +274,7 @@ void bme680Readings() {
 
   // Calculate PPM
   ppm = calculatePPM(voc);
-  Serial.print(F("PPM (approx): "));
+  Serial.print(F("VOC (approx): "));
   Serial.println(ppm);
 }
 
