@@ -91,16 +91,64 @@
 @media screen and (max-width: 1200px) {
   .ExpandedCard {
     top: 2rem;
-    height: 50vh;
+    height: 100vh;
     left: 6rem;
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1024px) {
   .ExpandedCard {
     top: 8rem;
-    height: 50vh;
+    height: 75vh;
     left: 25px;
-    width: 80%;
+    width: 140%;
+  }
+  .chartContainer {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 769px) {
+  .ExpandedCard {
+    top: 8rem;
+    height: 80vh;
+    left: 25px;
+    width: 105%;
+  }
+  .chartContainer {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .ExpandedCard {
+    top: 8rem;
+    height: 60vh;
+    left: 15px;
+    width: 103%;
+  }
+  .chartContainer {
+    width: 105%;
+  }
+}
+@media screen and (max-width: 376px) {
+  .ExpandedCard {
+    top: 8rem;
+    height: 60vh;
+    left: 15px;
+    width: 106%;
+  }
+  .chartContainer {
+    width: 113%;
+  }
+}
+@media screen and (max-width: 320px) {
+  .ExpandedCard {
+    top: 8rem;
+    height: 60vh;
+    left: 15px;
+    width: 106%;
+  }
+  .chartContainer {
+    width: 116%;
   }
 }
