@@ -69,6 +69,7 @@ const fetchTempData = async () => {
     color: getRandomColor(),
   })));
 
+
   return TemperatureSeries;
 };
 
@@ -83,47 +84,33 @@ const fetchLightData = async () => {
     color: getRandomColor(),
   })));
 
+
   return LightSeries;
 };
 
-// Fetch PM10 Data
-const fetchPM10Data = async () => {
-  try {
-    const response = await httpGetAllReadouts();
-    console.log("check PM10 response:", response);
+// Fetch Volcanic Smog Data (VOC)
+const fetchVolcanicSmogData = async () => {
+  const devices = await httpGetAllDevices();
+  const activeDevices = devices.filter(device => device.status === "active");
 
-    // Extract PM10 data
-    const pm10Data = response.map(item => item.pm10);
-    console.log("check PM10 data:", pm10Data);
-    return pm10Data;
-  } catch (error) {
-    console.error("Error fetching PM10 data:", error);
-    return []; // Return an empty array on error
-  }
-};
+  const volcanicSmogSeries = await Promise.all(activeDevices.map(async (device) => {
+    const data = await fetchData("voc", device.classroom);
+    console.log(`Volcanic Smog Data for ${device.classroom}:`, data); // Log the fetched data
+    return {
+      name: `${device.classroom} Volcanic Smog`,
+      data: data.length > 0 ? data : [0], // Ensure there's data to display
+      color: getRandomColor(),
+    };
+  }));
 
-// Fetch PM2.5 Data
-const fetchPM25Data = async () => {
-  try {
-    const response = await httpGetAllReadouts();
-    console.log("check PM2.5 response:", response);
-
-    // Extract PM2.5 data
-    const pm25Data = response.map(item => item.pm25);
-    console.log("check PM2.5 data:", pm25Data);
-    return pm25Data;
-  } catch (error) {
-    console.error("Error fetching PM2.5 data:", error);
-    return []; // Return an empty array on error
-  }
+  return volcanicSmogSeries;
 };
 
 // Fetch all data
 const LightData = await fetchLightData();
 const airQualityData = await fetchAirQualityData();
 const TemperatureData = await fetchTempData();
-const PM10Data = await fetchPM10Data();
-const PM25Data = await fetchPM25Data();
+const volcanicSmogData = await fetchVolcanicSmogData();
 
 // Cards Data with deduplication
 const getUniqueSeries = (series) => {
@@ -178,24 +165,10 @@ export const CardsData = [
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
-    
     barValue: 70,
     value: "BAD",
     png: VolcanoIcon,
-    series: getUniqueSeries([ // Deduplicate PM2.5 and PM10 data
-      {
-        name: "PM2.5",
-        data: PM25Data,
-        color: "#FF5733", // Red line color for PM2.5
-      },
-      {
-        name: "PM10",
-        data: PM10Data,
-        color: "#33FF57", // Green line color for PM10
-      },
-
-  
-    ]),
+    series: getUniqueSeries(volcanicSmogData), // Deduplicate volcanic smog data
   },
 ];
 
@@ -244,17 +217,6 @@ export const VolcanicSmogData = [
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     png: UilUsdSquare,
-    series: getUniqueSeries([
-      {
-        name: "Room 1 Volcanic Smog",
-        data: await fetchData("voc"),
-        color: "#FF5733", // Red line color for Room 1
-      },
-      {
-        name: "Room 2 Volcanic Smog",
-        data: [50, 55, 60, 65, 70, 75, 80], // Hardcoded sample data
-        color: "#33FF57", // Green line color for Room 2
-      },
-    ]),
+    series: getUniqueSeries(volcanicSmogData),
   },
 ];
