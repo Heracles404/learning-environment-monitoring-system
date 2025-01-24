@@ -56,6 +56,75 @@ export const cardsData = [
     ],
   },
 ];
+// Export other data with deduplication
+export const IAQData = [
+  {
+    title: "Indoor Air Quality",
+    color: {
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
+      boxShadow: "0px 10px 20px 0px #e0c6f5",
+    },
+    png: WbIncandescentIcon,
+    series: [
+      {
+        // name: "Indoor Air Quality",
+        data: [], // Placeholder until data is fetched
+      },
+    ],
+  },
+];
+
+export const HeatIndexData = [
+  {
+    title: "Heat Index",
+    color: {
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
+      boxShadow: "0px 10px 20px 0px #e0c6f5",
+    },
+    png: WbIncandescentIcon,
+    series: [
+      {
+        // name: "Heat Index",
+        data: [], // Placeholder until data is fetched
+      },
+    ],
+  },
+];
+
+export const LightingData = [
+  {
+    title: "Lighting",
+    color: {
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
+      boxShadow: "0px 10px 20px 0px #e0c6f5",
+    },
+    png: WbIncandescentIcon,
+    series: [
+      {
+        // name: "Lighting",
+        data: [], // Placeholder until data is fetched
+      },
+    ],
+  },
+];
+
+export const VolcanicSmogData = [
+  {
+    title: "Volcanic Smog",
+    color: {
+      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
+      boxShadow: "0px 10px 20px 0px #e0c6f5",
+    },
+    png: WbIncandescentIcon,
+    series: [
+      {
+        // name: "Volcanic Smog",
+        data: [], // Placeholder until data is fetched
+      },
+    ],
+  },
+];
+
 
 export const fetchCardData = async (setCardData) => {
   try {
