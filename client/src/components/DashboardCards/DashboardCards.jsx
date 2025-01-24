@@ -15,9 +15,11 @@ const DashboardCards = () => {
     if (type === "IAQ Index") {
       return value <= 50 ? "Good" : "Bad"; // Example: IAQ Index <= 50 is "Good"
     } else if (type === "Temperature") {
-      return value <= 25 ? "Good" : "Bad"; // Example: Temperature <= 25Â°C is "Good"
+      return value <= 25 ? "Good" : "Bad"; // Example: Temperature <= 25°C is "Good"
     } else if (type === "Lighting") {
       return value >= 300 ? "Good" : "Bad"; // Example: Lighting >= 300 lux is "Good"
+    } else if (type === "Volcanic Smog") {
+      return value <= 100 ? "Good" : "Bad"; // Temporary: Change the values later on uan
     }
     return "Unknown"; // Default case
   };
