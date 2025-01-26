@@ -1,24 +1,31 @@
-import React, {useEffect, useState} from "react";
+import React, { useState, useEffect } from "react";
 import "./DashboardCard.css";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { motion, LayoutGroup } from "framer-motion";
 import { UilTimes } from "@iconscout/react-unicons";
 import Chart from "react-apexcharts";
-import { httpGetAllReadouts } from "../../hooks/sensors.requests";
-import TemperaturePieChart from "../DashboardPieChart/TemperaturePieChart";
-// parent Card
+import { fetchCardData } from "../../data/mockChartData"; // Import the fetchCardData function
 
+// parent Card
 const DashboardCard = (props) => {
   const [expanded, setExpanded] = useState(false);
+  const [cardData, setCardData] = useState(props.cardData || []); // Use cardData passed as prop or empty array
+
+  useEffect(() => {
+    if (props.cardData.length === 0) {
+      fetchCardData(setCardData); // Fetch data if not provided via props
+    }
+  }, [props.cardData]);
+
   return (
-      <LayoutGroup>
-        {expanded ? (
-            <DBExpandedCard param={props} setExpanded={() => setExpanded(false)} />
-        ) : (
-            <DBCompactCard param={props} setExpanded={() => setExpanded(true)} />
-        )}
-      </LayoutGroup>
+    <LayoutGroup>
+      {expanded ? (
+        <DBExpandedCard param={props} setExpanded={() => setExpanded(false)} />
+      ) : (
+        <DBCompactCard param={props} setExpanded={() => setExpanded(true)} />
+      )}
+    </LayoutGroup>
   );
 };
 
@@ -26,73 +33,33 @@ const DashboardCard = (props) => {
 function DBCompactCard({ param, setExpanded }) {
   const Png = param.png;
   return (
-      <motion.div
-          className="DBCompactCard"
-          style={{
-            background: param.color.backGround,
-            boxShadow: param.color.boxShadow,
-          }}
-          layoutId={`expandableCard-${param.title}`}
-          onClick={setExpanded}
-      >
-        <div className="radialBar">
-          <CircularProgressbar
-              value={param.barValue}
-              // text={`${param.barValue}%`}
-              text={`${param.barValue}`}
-          />
-          <span>{param.title}</span>
-        </div>
-        <div className="detail">
-          <Png style={{ width: '50px', height: '50px' }}/>
-          <span>{param.value}</span>
-          <span>Current Status</span>
-        </div>
-      </motion.div>
+    <motion.div
+      className="DBCompactCard"
+      style={{
+        background: param.color.backGround,
+        boxShadow: param.color.boxShadow,
+      }}
+      layoutId={`expandableCard-${param.title}`}
+      onClick={setExpanded}
+    >
+      <div className="radialBar">
+        <CircularProgressbar
+          value={param.barValue}
+          text={`${param.barValue}%`}
+        />
+        <span>{param.title}</span>
+      </div>
+      <div className="detail">
+      <Png style={{ width: '50px', height: '50px' }}/>
+        <span>{param.value}</span>
+        <span>Current Status</span>
+      </div>
+    </motion.div>
   );
 }
 
-function useDateTime() {
-  const [dateTimeAxis, setDateTimeAxis] = useState([]);
-
-  useEffect(() => {
-    const fetchReadouts = async () => {
-      try {
-        const data = await httpGetAllReadouts();
-
-        if (Array.isArray(data)) {
-          const newDateTimeAxis = data.map((readout) => {
-            const date = readout.date; // Assuming 'date' is in a valid format
-            const time = readout.time; // Assuming 'time' is in a valid format
-            const dateTimeString = `${date} ${time}`;
-            const dateObj = new Date(dateTimeString);
-            const formattedDateTime = `${dateObj.getFullYear()}-${(dateObj.getMonth() + 1).toString().padStart(2, '0')}-${dateObj.getDate().toString().padStart(2, '0')}`;
-
-
-            return formattedDateTime;
-          });
-
-          setDateTimeAxis(newDateTimeAxis);
-        } else {
-          console.error("Expected an array but received:", data);
-        }
-      } catch (error) {
-        console.error("Error fetching readouts:", error);
-      }
-    };
-
-    fetchReadouts();
-  }, []);
-
-  return dateTimeAxis;
-}
-
-
 // Expanded Card
 function DBExpandedCard({ param, setExpanded }) {
-  const dateTimeAxis = useDateTime();
-  console.log(dateTimeAxis);
-
   const data = {
     options: {
       chart: {
@@ -128,8 +95,11 @@ function DBExpandedCard({ param, setExpanded }) {
         show: true,
       },
       xaxis: {
-        type: "string",
-        categories: dateTimeAxis,
+        type: "datetime",
+        categories: param.series[0].data.map((_, index) => {
+          // Using the timestamp or index to create datetime categories
+          return new Date(Date.now() - (param.series[0].data.length - index) * 1000 * 60 * 60).toISOString();
+        }),
       },
     },
   };
@@ -148,11 +118,16 @@ function DBExpandedCard({ param, setExpanded }) {
       </div>
       <span>{param.title}</span>
       <div className="DBchartContainer">
-        <Chart options={data.options} series={param.series} type="area" />
+        <Chart
+          options={data.options}
+          series={param.series} // Series now contains data for each room
+          type="area"
+        />
       </div>
       {/* <span>Last 24 hours</span> */}
     </motion.div>
   );
 }
+
 
 export default DashboardCard;

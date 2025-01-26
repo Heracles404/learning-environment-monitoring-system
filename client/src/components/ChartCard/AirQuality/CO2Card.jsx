@@ -6,14 +6,6 @@ import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
 import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 
 const CO2Card = (props) => {
-  return (
-    <LayoutGroup>
-      <ExpandedCard param={props} />
-    </LayoutGroup>
-  );
-};
-
-function ExpandedCard({ param }) {
   const [iaqData, setIaqData] = useState({ iaqIndexes: [], timestamps: [] });
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -21,19 +13,13 @@ function ExpandedCard({ param }) {
   const [noDataFound, setNoDataFound] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
 
-  const getRandomColor = () => {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
-
   useEffect(() => {
+    // Fetch data similar to the DashboardCard fetching method
     const fetchIAQData = async () => {
       try {
         const response = await httpGetAllReadouts();
+
+        console.log("Fetched Data:", response);
 
         if (response && response.length > 0) {
           const iaqIndexes = response.map((item) => item.IAQIndex);
@@ -56,6 +42,7 @@ function ExpandedCard({ param }) {
     const start = new Date(startDate);
     const end = new Date(endDate);
 
+    // Normalize time to handle full day range
     start.setHours(0, 0, 0, 0);
     end.setHours(23, 59, 59, 999);
 
@@ -88,6 +75,8 @@ function ExpandedCard({ param }) {
 
   const sortedData = filteredData.iaqIndexes.length > 0 ? filteredData : iaqData;
 
+  console.log("Sorted Data for Chart:", sortedData);
+
   const data = {
     options: {
       chart: {
@@ -111,22 +100,22 @@ function ExpandedCard({ param }) {
       },
       stroke: {
         curve: "smooth",
-        colors: [getRandomColor()],
+        colors: ["#ff9800"],
       },
       tooltip: {
         x: {
-          format: "dd/MM/yy",
+          format: "dd/MM/yy HH:mm",
         },
       },
       grid: {
         show: true,
       },
       xaxis: {
-        type: "category",
+        type: "category", // Ensure this is 'category' to prevent limiting data points
         categories: sortedData.timestamps.map((timestamp) =>
           new Date(timestamp).toLocaleString([], {
-            year: "numeric",
-            month: "2-digit",
+            // year: "numeric",
+            month: "long",
             day: "2-digit",
             // hour: "2-digit",
             // minute: "2-digit",
@@ -138,21 +127,27 @@ function ExpandedCard({ param }) {
       {
         name: "IAQ Index",
         data: sortedData.iaqIndexes,
+        markers: {
+          size: 6, // Icon size, adjust as needed
+          colors: ["#ff9800"], // Icon color
+          strokeColor: "#ffffff", // Icon stroke color (if needed)
+          strokeWidth: 2, // Stroke width (if needed)
+        },
       },
     ],
   };
+  console.log("Chart Data Passed:", data);
 
   return (
     <motion.div
       className="ExpandedCard"
       style={{
-        background: param.color.backGround,
-        boxShadow: param.color.boxShadow,
+        background: props.color.backGround,
+        boxShadow: props.color.boxShadow,
       }}
-      layoutId={`expandableCard-${param.title}`}
+      layoutId={`expandableCard-${props.title}`}
     >
-      <div style={{ alignSelf: "flex-end", cursor: "pointer", color: "white" }}></div>
-      <span>{param.title}</span>
+      <span>{props.title}</span>
 
       <div className="date-filter">
         <TextField
@@ -184,8 +179,6 @@ function ExpandedCard({ param }) {
       <div className="chartContainer">
         <Chart options={data.options} series={data.series} type="line" />
       </div>
-
-      {/* <span>Last 24 hours</span> */}
 
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
         <DialogTitle sx={{ fontSize: "1.5rem", fontWeight: "bold" }}>No Data Found</DialogTitle>

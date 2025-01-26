@@ -101,25 +101,25 @@ export const fetchPieData = async () => {
       {
         id: "Level 0",
         label: "Level 0",
-        value: [0], 
+        value: [1], 
         color: "hsl(120, 70%, 50%)", 
       },
       {
         id: "Level 1",
         label: "Level 1",
-        value: [0], 
+        value: [1], 
         color: "hsl(120, 70%, 50%)", 
       },
       {
         id: "Level 2",
         label: "Level 2",
-        value: [0], 
+        value: [1], 
         color: "hsl(0, 70%, 50%)", 
       },
       {
         id: "Level 3",
         label: "Level 3",
-        value: [0], 
+        value: [1], 
         color: "hsl(0, 100.00%, 50.00%)", 
       },
       {

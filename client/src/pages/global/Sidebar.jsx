@@ -83,7 +83,7 @@ const Sidebar = () => {
           height: "100%",
           display: { xs: isSidebarVisible ? "block" : "none", md: "block" }, // Hide sidebar on small screens unless toggled
           "& .pro-sidebar-inner": {
-            background: `${colors.greenAccent[800]} !important`,
+            background: `${colors.greenAccent[700]} !important`,
           },
           "& .pro-icon-wrapper": {
             backgroundColor: "transparent !important",
@@ -101,7 +101,7 @@ const Sidebar = () => {
             color: `${colors.grey[100]} `,
           },
           "& .pro-icon": {
-            color: `${colors.grey[100]} `,
+            color: `${colors.greenAccent[400]} `,
           },
         }}
       >
@@ -134,8 +134,8 @@ const Sidebar = () => {
                 <Box display="flex" justifyContent="center" alignItems="center">
                   <img
                     alt="profile-user"
-                    width="100px"
-                    height="100px"
+                    width="140px"
+                    height="140px"
                     src={`../../assets/ESLIHS_Logo.png`}
                     style={{ 
                       // cursor: "pointer", 
@@ -144,14 +144,14 @@ const Sidebar = () => {
                 </Box>
                 <Box textAlign="center">
                   <Typography
-                    variant="h2"
+                    variant="h1"
                     color={colors.greenAccent[100]}
                     fontWeight="bold"
                     sx={{ m: "10px 0 0 0" }}
                   >
                       {`${name}`}
                   </Typography>
-                  <Typography variant="h5" color={colors.greenAccent[500]}>
+                  <Typography variant="h4" color={colors.greenAccent[500]}>
                       {`${role}`}
                   </Typography>
                 </Box>

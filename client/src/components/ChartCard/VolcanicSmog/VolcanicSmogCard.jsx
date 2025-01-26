@@ -3,17 +3,7 @@ import "./VolcanicSmogCard.css";
 import { motion, LayoutGroup } from "framer-motion";
 import Chart from "react-apexcharts";
 import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
-import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material"; // Material UI components for date selection
-
-// Function to generate a random color
-const getRandomColor = () => {
-  const letters = '0123456789ABCDEF';
-  let color = '#';
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-};
+import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 
 const VolcanicSmogCard = (props) => {
   return (
@@ -24,28 +14,33 @@ const VolcanicSmogCard = (props) => {
 };
 
 function ExpandedCard({ param }) {
-  const [vocData, setVocData] = useState({ vocValues: [], timestamps: [] });
-  const [startDate, setStartDate] = useState(""); // Start date for filtering
-  const [endDate, setEndDate] = useState(""); // End date for filtering
-  const [filteredData, setFilteredData] = useState({ vocValues: [], timestamps: [] });
-  const [noDataFound, setNoDataFound] = useState(false); // State for no data found prompt
-  const [openDialog, setOpenDialog] = useState(false); // State for controlling the dialog visibility
+  const [vocData, setVocData] = useState({ vocLevels: [], timestamps: [] });
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [filteredData, setFilteredData] = useState({ vocLevels: [], timestamps: [] });
+  const [noDataFound, setNoDataFound] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const getRandomColor = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
 
   useEffect(() => {
     const fetchVOCData = async () => {
       try {
-        // Fetch data using the hook
         const response = await httpGetAllReadouts();
 
         if (response && response.length > 0) {
-          // Process the fetched data
-          const vocValues = response.map((item) => item.voc);
+          const vocLevels = response.map((item) => item.voc);
           const timestamps = response.map((item) =>
             new Date(`${item.date} ${item.time}`).getTime()
           );
-
-          // Update the state with fetched data
-          setVocData({ vocValues, timestamps });
+          setVocData({ vocLevels, timestamps });
         } else {
           console.error("No data found.");
         }
@@ -55,50 +50,44 @@ function ExpandedCard({ param }) {
     };
 
     fetchVOCData();
-  }, []); // Empty dependency array to fetch data on mount
+  }, []);
 
-  // Filter data based on the selected date range
   const filterData = () => {
     const start = new Date(startDate);
     const end = new Date(endDate);
 
-    // Normalize the start and end date to the beginning and end of the day
-    start.setHours(0, 0, 0, 0); // Set to 00:00:00 for the start date
-    end.setHours(23, 59, 59, 999); // Set to 23:59:59 for the end date
+    // Normalize time to handle full day range
+    start.setHours(0, 0, 0, 0);
+    end.setHours(23, 59, 59, 999);
 
     const filtered = vocData.timestamps
       .map((timestamp, index) => {
         const currentTimestamp = new Date(timestamp);
-        // Check if the timestamp is within the range (start and end inclusive)
         if (currentTimestamp >= start && currentTimestamp <= end) {
-          return { timestamp, voc: vocData.vocValues[index] };
+          return { timestamp, vocLevel: vocData.vocLevels[index] };
         }
         return null;
       })
-      .filter(item => item !== null);
+      .filter((item) => item !== null);
 
-    // Check if there is no data found and show prompt
     if (filtered.length === 0) {
       setNoDataFound(true);
-      setOpenDialog(true); // Open the modal dialog when no data is found
+      setOpenDialog(true);
     } else {
       setNoDataFound(false);
     }
 
-    // Update filtered data
-    const filteredTimestamps = filtered.map(item => item.timestamp);
-    const filteredVocValues = filtered.map(item => item.voc);
+    const filteredTimestamps = filtered.map((item) => item.timestamp);
+    const filteredVocLevels = filtered.map((item) => item.vocLevel);
 
-    setFilteredData({ vocValues: filteredVocValues, timestamps: filteredTimestamps });
+    setFilteredData({ vocLevels: filteredVocLevels, timestamps: filteredTimestamps });
   };
 
-  // Handle closing the dialog
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
 
-  // Ensure the timestamps are unique and ordered
-  const sortedData = filteredData.vocValues.length > 0 ? filteredData : vocData;
+  const sortedData = filteredData.vocLevels.length > 0 ? filteredData : vocData;
 
   const data = {
     options: {
@@ -115,7 +104,7 @@ function ExpandedCard({ param }) {
         opacity: 0.35,
       },
       fill: {
-        colors: [getRandomColor()], // Use the getRandomColor function to generate a random color for the fill
+        colors: ["#1e5245"],
         type: "gradient",
       },
       dataLabels: {
@@ -123,7 +112,7 @@ function ExpandedCard({ param }) {
       },
       stroke: {
         curve: "smooth",
-        colors: [getRandomColor()], // Use the getRandomColor function to generate a random color for the stroke
+        colors: [getRandomColor()],
       },
       tooltip: {
         x: {
@@ -134,20 +123,22 @@ function ExpandedCard({ param }) {
         show: true,
       },
       xaxis: {
-        type: "category", // Use 'category' instead of 'datetime' to allow more flexible handling
-        categories: sortedData.timestamps.map((timestamp) => new Date(timestamp).toLocaleString([], {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          // hour: "2-digit",
-          // minute: "2-digit",
-        })), // Map the timestamp into categories
+        type: "category",
+        categories: sortedData.timestamps.map((timestamp) =>
+          new Date(timestamp).toLocaleString([], {
+            // year: "numeric",
+            month: "long",
+            day: "2-digit",
+            // hour: "2-digit",
+            // minute: "2-digit",
+          })
+        ),
       },
     },
     series: [
       {
-        name: "VOC",
-        data: sortedData.timestamps.map((timestamp, index) => sortedData.vocValues[index]),
+        name: "VOC Level",
+        data: sortedData.vocLevels,
       },
     ],
   };
@@ -164,7 +155,6 @@ function ExpandedCard({ param }) {
       <div style={{ alignSelf: "flex-end", cursor: "pointer", color: "white" }}></div>
       <span>{param.title}</span>
 
-      {/* Date filter inputs */}
       <div className="date-filter">
         <TextField
           type="date"
@@ -183,9 +173,8 @@ function ExpandedCard({ param }) {
           InputLabelProps={{
             shrink: true,
           }}
-          // Disable dates before the selected start date
           inputProps={{
-            min: startDate, // Ensure end date is greater than or equal to start date
+            min: startDate,
           }}
         />
         <Button onClick={filterData} variant="contained" color="primary">
@@ -193,21 +182,17 @@ function ExpandedCard({ param }) {
         </Button>
       </div>
 
-      {/* Chart */}
       <div className="chartContainer">
         <Chart options={data.options} series={data.series} type="line" />
       </div>
 
-      {/* <span>Last 24 hours</span> */}
-
-      {/* Dialog for no data found */}
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
-        <DialogTitle sx={{ fontSize: '1.5rem', fontWeight: 'bold' }}>No Data Found</DialogTitle>
+        <DialogTitle sx={{ fontSize: "1.5rem", fontWeight: "bold" }}>No Data Found</DialogTitle>
         <DialogContent>
-          <p style={{ fontSize: '1.2rem' }}>No data detected for the selected date range.</p>
+          <p style={{ fontSize: "1.2rem" }}>No data detected for the selected date range.</p>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary" style={{ fontSize: '1.1rem' }}>
+          <Button onClick={handleCloseDialog} color="primary" style={{ fontSize: "1.1rem" }}>
             Close
           </Button>
         </DialogActions>

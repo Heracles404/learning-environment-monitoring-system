@@ -10,6 +10,7 @@ import DBRecords from "../../components/DashboardTables/DBRecords";
 
 import RssFeedOutlinedIcon from '@mui/icons-material/RssFeedOutlined';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
+import SensorsIcon from '@mui/icons-material/Sensors';
 
 import DBVog from "../../components/DashboardTables/DBVog";
 import { httpGetActive, httpGetAllDevices } from "../../hooks/devices.requests";  
@@ -25,10 +26,12 @@ import TemperaturePieChart from "../../components/DashboardPieChart/TemperatureP
 import AirQualityPieChart from "../../components/DashboardPieChart/AirQualityPieChart";
 import VOGPieChart from "../../components/DashboardPieChart/VOGPieChart";
 import LightingPieChart from "../../components/DashboardPieChart/LightingPieChart";
+
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [activeDevices, setActiveDevices] = useState(null);
+  const [inactiveDevices, setInactiveDevices] = useState({ bh1750: 0, bme680: 0, pms5003: 0 });
   const [totalDevices, setTotalDevices] = useState(null);
 
   useEffect(() => {
@@ -44,6 +47,16 @@ const Dashboard = () => {
         // Assuming 'active' is an object with 'count' indicating the number of active devices
         setActiveDevices(active.count || 0);
         setTotalDevices(allDevices.length || 0);
+
+        // Calculate inactive devices for each sensor type
+        let inactive = { bh1750: 0, bme680: 0, pms5003: 0 };
+        allDevices.forEach(device => {
+          if (device.bh1750 === "inactive") inactive.bh1750 += 1;
+          if (device.bme680 === "inactive") inactive.bme680 += 1;
+          if (device.pms5003 === "inactive") inactive.pms5003 += 1;
+        });
+
+        setInactiveDevices(inactive);
       } catch (error) {
         console.error("Error fetching devices:", error);
       }
@@ -55,6 +68,7 @@ const Dashboard = () => {
   if (activeDevices === null || totalDevices === null) {
     return <Box>Loading...</Box>;
   }
+
   return (
     <Box m="0 3px 0 15px" height="100vh" overflow="auto">
       {/* HEADER */}
@@ -98,16 +112,12 @@ const Dashboard = () => {
           <StatBox
             title="INDOOR"
             subtitle={`Active: ${activeDevices}`}
-            subtitle2={`Inactive: ${activeDevices}`}
-            icon2={
-              <RssFeedOutlinedIcon 
-                sx={{ color: "#00cc00 " , fontSize: "46px" }}
-              />
-            }
+            subtitle2={`Inactive: ${inactiveDevices.bme680}`}
+            icon2={<SensorsIcon sx={{ color: "#0AFFBE", fontSize: "46px" }} />}
           />
         </Box>
-        </Grid>
-        <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 2 }} >
+      </Grid>
+      <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 2 }} >
         <Box
           backgroundColor={colors.greenAccent[600]}
           display="flex"
@@ -123,144 +133,70 @@ const Dashboard = () => {
               md: 156, // 900
               lg: 156, // 1200
               xl: 156, // 1536
-          },  
+          },
           }}
-
         >
           <StatBox
             title="OUTDOOR"
             subtitle={`Active: ${totalDevices - activeDevices}`}
-            subtitle2={`Inactive: ${totalDevices - activeDevices}`}
-            icon2={
-              <WarningAmberOutlinedIcon
-                sx={{ color: colors.redAccent[600], fontSize: "46px" }}
-              />
-            }
+            subtitle2={`Inactive: ${inactiveDevices.pms5003}`}
+            // icon2={<WarningAmberOutlinedIcon sx={{ color: "#FF1F1F", fontSize: "46px" }} />}
+            icon2={<SensorsIcon sx={{ color: "#0AFFBE", fontSize: "46px" }} />}
           />
         </Box>
-        </Grid>
       </Grid>
-      </Box>
-      <Box>
-        <DashboardCards/>
-      </Box>
+    </Grid>
+    </Box>
+
+    <Box>
+      <DashboardCards />
+    </Box>
         
-{/* GRID & CHARTS */}
-<Box
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows={{ xs: "10.5%", sm: "22%", md:"22%", lg: "21%" }}
-        gap="15px"
-        mt="20px"
-      >
+    {/* GRID & CHARTS */}
+    <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gridAutoRows={{ xs: "10.5%", sm: "22%", md:"22%", lg: "21%" }} gap="15px" mt="20px">
         {/* ROW 1 */}
-        <Box
-          gridColumn={{ xs: "span 12", sm: "span 6" }}
-          gridRow="span 2"
-          backgroundColor={colors.greenAccent[700]}
-          padding="5px"
-        > 
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            display="flex"
-            justifyContent="center"
-            color="white"
-            // sx={{ marginBottom: "5px" }}
-            // color={colors.greenAccent[300]}
-          >
+        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[600]} padding="5px">
+          <Typography variant="h5" fontWeight="600" display="flex" justifyContent="center" color="white">
             INDOOR AIR QUALITY
           </Typography>
-          <Typography>
-            Inactive: 
-          </Typography>
+          <Typography>Inactive: {inactiveDevices.bme680}</Typography>
           <Box height="300px">
-          {/* <Box height={{ xs: "300px", sm: "300px", md:"300px"}}> */}
-          {/* // width={{xs:"110%", sm:"120%", md:"150%"}}> */}
-            {/* <GeographyChart isDashboard={true} /> */}
-            <AirQualityPieChart/>
-            
+            <AirQualityPieChart />
           </Box>
-          
         </Box>
-        <Box
-          gridColumn={{ xs: "span 12", sm: "span 6" }}
-          gridRow="span 2"
-          backgroundColor={colors.greenAccent[700]}
-          padding="5px"
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ marginBottom: "5px" }}
-            display="flex"
-            justifyContent="center"
-            color="white"
-          >
+
+        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[600]} padding="5px">
+          <Typography variant="h5" fontWeight="600" display="flex" justifyContent="center" color="white">
             LIGHT
           </Typography>
-          <Typography>
-            Inactive
-          </Typography>
+          <Typography>Inactive: {inactiveDevices.bh1750}</Typography>
           <Box height="300px">
-            {/* <GeographyChart isDashboard={true} /> */}
-            <LightingPieChart/>
+            <LightingPieChart />
           </Box>
         </Box>
 
-        
         {/* ROW 3 */}
-        <Box
-          gridColumn={{ xs: "span 12", sm: "span 6" }}
-          gridRow="span 2"
-          backgroundColor={colors.greenAccent[700]}
-          padding="5px"
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ marginBottom: "5px" }}
-            display="flex"
-            justifyContent="center"
-            color="white"
-          >
+        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[600]} padding="5px">
+          <Typography variant="h5" fontWeight="600" display="flex" justifyContent="center" color="white">
             TEMPERATURE
           </Typography>
-          <Typography>
-            Inactive
-          </Typography>
+          <Typography>Inactive: {inactiveDevices.bme680}</Typography>
           <Box height="300px">
-            {/* <GeographyChart isDashboard={true} /> */}
-            <TemperaturePieChart/>
-          </Box>
-        </Box>
-        <Box
-          gridColumn={{ xs: "span 12", sm: "span 6" }}
-          gridRow="span 2"
-          backgroundColor={colors.greenAccent[700]}
-          padding="5px"
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ marginBottom: "15px" }}
-            display="flex"
-            justifyContent="center"
-            color="white"
-          >
-            VOG
-          </Typography>
-          <Typography>
-            Inactive
-          </Typography>
-          <Box height="300px">
-            {/* <GeographyChart isDashboard={true} /> */}
-            <VOGPieChart/>
+            <TemperaturePieChart />
           </Box>
         </Box>
 
-      </Box>
+        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[600]} padding="5px">
+          <Typography variant="h5" fontWeight="600" display="flex" justifyContent="center" color="white">
+            VOG
+          </Typography>
+          <Typography>Inactive: {inactiveDevices.pms5003}</Typography>
+          <Box height="300px">
+            <VOGPieChart />
+          </Box>
+        </Box>
     </Box>
+  </Box>
   );
 };
 

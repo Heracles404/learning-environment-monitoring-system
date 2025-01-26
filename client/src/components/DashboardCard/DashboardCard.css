@@ -110,11 +110,11 @@
   @media screen and (max-width: 426px) {
     .DBExpandedCard {
       top: 8rem;
-      height: 40%;
-      left: 25px;
-      width: 85%;
+      height: 42%;
+      left: 8px;
+      width: 92%;
     }
     .DBchartContainer {
-      width: 100%;
+      width: 113%;
     }
   }

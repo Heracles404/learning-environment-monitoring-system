@@ -7,7 +7,7 @@ const CarbonDioxideMonitor = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
-    <Box m="0 3px 0 15px" height="100vh" overflow="auto">
+    <Box m="0 1px 0 1px" height="100vh" overflow="auto">
       {/* HEADER */}
       <Box 
       display="flex" 
@@ -24,7 +24,7 @@ const CarbonDioxideMonitor = () => {
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
         gridAutoRows={{ xs: "30.5%", lg: "50%" }}
-        gap="15px"
+        gap="3px"
         mt="5px"
       >
         {/* ROW 1 */}

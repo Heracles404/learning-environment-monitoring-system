@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./HeatIndexCard.css";
 import { motion, LayoutGroup } from "framer-motion";
 import Chart from "react-apexcharts";
+import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
-import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material"; // Material UI components for date selection
 
 const HeatIndexCard = (props) => {
   return (
@@ -13,23 +13,22 @@ const HeatIndexCard = (props) => {
   );
 };
 
-// Utility function to generate random colors
-const getRandomColor = () => {
-  const letters = "0123456789ABCDEF";
-  let color = "#";
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-};
-
 function ExpandedCard({ param }) {
-  const [heatIndexData, setHeatIndexData] = useState({ values: [], timestamps: [] });
-  const [startDate, setStartDate] = useState(""); // Start date for filtering
-  const [endDate, setEndDate] = useState(""); // End date for filtering
-  const [filteredData, setFilteredData] = useState({ values: [], timestamps: [] });
-  const [noDataFound, setNoDataFound] = useState(false); // State for no data found prompt
-  const [openDialog, setOpenDialog] = useState(false); // State for controlling the dialog visibility
+  const [heatIndexData, setHeatIndexData] = useState({ heatIndexes: [], timestamps: [] });
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [filteredData, setFilteredData] = useState({ heatIndexes: [], timestamps: [] });
+  const [noDataFound, setNoDataFound] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const getRandomColor = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
 
   useEffect(() => {
     const fetchHeatIndexData = async () => {
@@ -37,12 +36,11 @@ function ExpandedCard({ param }) {
         const response = await httpGetAllReadouts();
 
         if (response && response.length > 0) {
-          const values = response.map((item) => item.heatIndex);
+          const heatIndexes = response.map((item) => item.heatIndex);
           const timestamps = response.map((item) =>
             new Date(`${item.date} ${item.time}`).getTime()
           );
-
-          setHeatIndexData({ values, timestamps });
+          setHeatIndexData({ heatIndexes, timestamps });
         } else {
           console.error("No data found.");
         }
@@ -58,6 +56,7 @@ function ExpandedCard({ param }) {
     const start = new Date(startDate);
     const end = new Date(endDate);
 
+    // Normalize time to handle full day range
     start.setHours(0, 0, 0, 0);
     end.setHours(23, 59, 59, 999);
 
@@ -65,7 +64,7 @@ function ExpandedCard({ param }) {
       .map((timestamp, index) => {
         const currentTimestamp = new Date(timestamp);
         if (currentTimestamp >= start && currentTimestamp <= end) {
-          return { timestamp, value: heatIndexData.values[index] };
+          return { timestamp, heatIndex: heatIndexData.heatIndexes[index] };
         }
         return null;
       })
@@ -79,19 +78,16 @@ function ExpandedCard({ param }) {
     }
 
     const filteredTimestamps = filtered.map((item) => item.timestamp);
-    const filteredValues = filtered.map((item) => item.value);
+    const filteredHeatIndexes = filtered.map((item) => item.heatIndex);
 
-    setFilteredData({ values: filteredValues, timestamps: filteredTimestamps });
+    setFilteredData({ heatIndexes: filteredHeatIndexes, timestamps: filteredTimestamps });
   };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
 
-  const sortedData = filteredData.values.length > 0 ? filteredData : heatIndexData;
-
-  // Generate random color for the chart
-  const chartColor = getRandomColor();
+  const sortedData = filteredData.heatIndexes.length > 0 ? filteredData : heatIndexData;
 
   const data = {
     options: {
@@ -108,7 +104,7 @@ function ExpandedCard({ param }) {
         opacity: 0.35,
       },
       fill: {
-        colors: [chartColor],
+        colors: ["#FF4500"],
         type: "gradient",
       },
       dataLabels: {
@@ -116,7 +112,7 @@ function ExpandedCard({ param }) {
       },
       stroke: {
         curve: "smooth",
-        colors: [chartColor],
+        colors: [getRandomColor()],
       },
       tooltip: {
         x: {
@@ -130,8 +126,8 @@ function ExpandedCard({ param }) {
         type: "category",
         categories: sortedData.timestamps.map((timestamp) =>
           new Date(timestamp).toLocaleString([], {
-            year: "numeric",
-            month: "2-digit",
+            // year: "numeric",
+            month: "short",
             day: "2-digit",
             // hour: "2-digit",
             // minute: "2-digit",
@@ -142,7 +138,7 @@ function ExpandedCard({ param }) {
     series: [
       {
         name: "Heat Index",
-        data: sortedData.timestamps.map((timestamp, index) => sortedData.values[index]),
+        data: sortedData.heatIndexes,
       },
     ],
   };
@@ -159,7 +155,6 @@ function ExpandedCard({ param }) {
       <div style={{ alignSelf: "flex-end", cursor: "pointer", color: "white" }}></div>
       <span>{param.title}</span>
 
-      {/* Date filter inputs */}
       <div className="date-filter">
         <TextField
           type="date"
@@ -187,14 +182,10 @@ function ExpandedCard({ param }) {
         </Button>
       </div>
 
-      {/* Chart */}
       <div className="chartContainer">
         <Chart options={data.options} series={data.series} type="line" />
       </div>
 
-      {/* <span>Last 24 hours</span> */}
-
-      {/* Dialog for no data found */}
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
         <DialogTitle sx={{ fontSize: "1.5rem", fontWeight: "bold" }}>No Data Found</DialogTitle>
         <DialogContent>
