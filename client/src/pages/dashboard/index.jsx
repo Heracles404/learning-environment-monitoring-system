@@ -10,6 +10,7 @@ import DBRecords from "../../components/DashboardTables/DBRecords";
 
 import RssFeedOutlinedIcon from '@mui/icons-material/RssFeedOutlined';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
+import SensorsIcon from '@mui/icons-material/Sensors';
 
 import DBVog from "../../components/DashboardTables/DBVog";
 import { httpGetActive, httpGetAllDevices } from "../../hooks/devices.requests";  
@@ -112,7 +113,7 @@ const Dashboard = () => {
             title="INDOOR"
             subtitle={`Active: ${activeDevices}`}
             subtitle2={`Inactive: ${inactiveDevices.bme680}`}
-            icon2={<RssFeedOutlinedIcon sx={{ color: "#00cc00", fontSize: "46px" }} />}
+            icon2={<SensorsIcon sx={{ color: "#0AFFBE", fontSize: "46px" }} />}
           />
         </Box>
       </Grid>
@@ -139,7 +140,8 @@ const Dashboard = () => {
             title="OUTDOOR"
             subtitle={`Active: ${totalDevices - activeDevices}`}
             subtitle2={`Inactive: ${inactiveDevices.pms5003}`}
-            icon2={<WarningAmberOutlinedIcon sx={{ color: colors.redAccent[600], fontSize: "46px" }} />}
+            // icon2={<WarningAmberOutlinedIcon sx={{ color: "#FF1F1F", fontSize: "46px" }} />}
+            icon2={<SensorsIcon sx={{ color: "#0AFFBE", fontSize: "46px" }} />}
           />
         </Box>
       </Grid>
