@@ -6,6 +6,7 @@ import { lightingPieData as data } from "../../data/pieData";
 const LightingPieChart = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const customColors = ["#33FFC9", "#FFC2C2"];
   return (
     <ResponsivePie
       data={data}
@@ -47,6 +48,7 @@ const LightingPieChart = () => {
         modifiers: [["darker", 0.2]],
       }}
       arcLinkLabelsSkipAngle={10}
+      colors={customColors}
       // arcLinkLabelsTextColor={colors.greenAccent[400]}
       arcLinkLabelsTextColor="white"
       arcLinkLabelsThickness={2}

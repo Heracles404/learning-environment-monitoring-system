@@ -6,6 +6,8 @@ import { vogPieData as data } from "../../data/pieData";
 const VOGPieChart = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const customColors = ["#33FFC9", "#00F5B4", "#00A378", "#00664B", "#00291E"];
+
   return (
     <ResponsivePie
       data={data}
@@ -47,6 +49,8 @@ const VOGPieChart = () => {
         modifiers: [["darker", 0.2]],
       }}
       arcLinkLabelsSkipAngle={10}
+      colors={customColors}
+      // colors={{ scheme: 'greens' }}
       // arcLinkLabelsTextColor={colors.greenAccent[400]}
       arcLinkLabelsTextColor="white"
       arcLinkLabelsThickness={2}
