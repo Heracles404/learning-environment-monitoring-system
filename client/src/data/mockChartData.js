@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AirIcon from "@mui/icons-material/Air";
 import DeviceThermostatIcon from "@mui/icons-material/DeviceThermostat";
 import WbIncandescentIcon from "@mui/icons-material/WbIncandescent";
+import VolcanoIcon from "@mui/icons-material/Volcano";
 
 // Import hooks
 import { httpGetAllReadouts } from "../hooks/sensors.requests"; // Adjust the path to your hooks
@@ -65,7 +66,7 @@ export const cardsData = [
     },
     barValue: 0, // Placeholder until data is fetched
     value: 0, // Placeholder until data is fetched
-    png: AirIcon, // You can change the icon to something fitting for VOG
+    png: VolcanoIcon, // You can change the icon to something fitting for VOG
     series: [
       {
         name: "PMS2.5",
