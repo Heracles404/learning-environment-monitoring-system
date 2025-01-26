@@ -1,5 +1,4 @@
 // OVERALL CODE FOR EVERYTHING
-// General Inclusion
 #include <Wire.h>
 
 // Internet Components
@@ -52,16 +51,18 @@ const char* endpoint = "/sensors";
 float temperature, humidity, voc, IAQIndex, lux;
 float ppm;
 int heatIndex;
-String indoorAir, tempLabel, recordTime;
+String indoorAir, tempLabel, lightLabel, recordTime;
 const String classroom = "401";
 
 // Pin for alert (LED or external device)
 #define alertPin D8
+#define TempPin D0
+#define LightingPin D5
 
 // ---------------------------------------------------------------------------
 // Offsets (optional for Heat Index and IAQ)
-const float heatIndexOffsetC = 4.0;  // e.g. 2 °C
-const float IAQOffset        = 200.0; // e.g. 50 points
+const float heatIndexOffsetC = 0.0;  // e.g. 2 °C
+const float IAQOffset        = 165.0; // e.g. 50 points
 
 // ---------------------------------------------------------------------------
 // Prototypes
@@ -107,18 +108,18 @@ void setup() {
 
   // Setup pins
   pinMode(alertPin, OUTPUT);
+  pinMode(TempPin, OUTPUT);
+  pinMode(LightingPin, OUTPUT);
   digitalWrite(alertPin, HIGH);
-
-  pinMode(D0, OUTPUT);  // Setup D0
-  pinMode(D5, OUTPUT);  // Setup D5
+  digitalWrite(TempPin, LOW);
+  digitalWrite(LightingPin, LOW);
 }
-
 
 // ---------------------------------------------------------------------------
 // Main Loop
 void loop() {
   Serial.println(F("--------------------------------"));
-  
+
   // Read sensor data
   bme680Readings();
   luxFunc();
@@ -139,39 +140,27 @@ void loop() {
     indoorAir, tempLabel
   );
 
-  // IAQIndex >= 200: Set D0 HIGH
-  if (IAQIndex >= 200) {
-    digitalWrite(D0, HIGH);
-    Serial.println(F("D0: HIGH - IAQIndex >= 200"));
-  } else {
-    digitalWrite(D0, LOW);
-    Serial.println(F("D0: LOW - IAQIndex < 200"));
-  }
-
-  // LUX between 500 and 100: Set D5 HIGH
-  if (lux < 50 || lux > 500) {
-    digitalWrite(D5, HIGH);
-    Serial.println(F("D5: HIGH - LUX in range (100–500)"));
-  } else {
-    digitalWrite(D5, LOW);
-    Serial.println(F("D5: LOW - LUX outside range (100–500)"));
-  }
-
-  // Trigger alert if conditions are bad
-  if (indoorAir == "UNHEALTHY"       || 
-      indoorAir == "VERY UNHEALTHY"  || 
-      indoorAir == "HAZARDOUS"       ||
-      tempLabel == "DANGER"          ||
-      tempLabel == "EXTREME DANGER") {
-    digitalWrite(alertPin, LOW);
-    Serial.println(F("Alert: Low signal sent to pin D8."));
-  } else {
-    digitalWrite(alertPin, HIGH);
-    Serial.println(F("Alert: Conditions normal."));
-  }
-
   // Delay before next reading
   delay(4000);
+}
+
+// ---------------------------------------------------------------------------
+// Calculate PPM using a basic approximation based on gas resistance
+float calculatePPM(float gasResistance) {
+  const float cleanAirResistance = 100.0; // Calibrate this value for clean air
+  const float scalingFactor = 100.0;     // Adjust this to scale the PPM range
+
+  if (gasResistance <= 0.0) {
+    return 0.0; // Avoid division by zero or nonsensical values
+  }
+
+  // Calculate PPM based on the adjusted formula
+  float ppmVal = scalingFactor * ((cleanAirResistance / gasResistance) - 1);
+
+  // Clamp values to avoid negative PPM readings
+  if (ppmVal < 0.0) ppmVal = 0.0;
+
+  return ppmVal;
 }
 
 
@@ -207,6 +196,16 @@ void bme680Readings() {
     Serial.print(F("Temperature (adjusted): "));
     Serial.print(temperature);
     Serial.println(F(" *C"));
+
+    // Temperature Logic for D0
+    if (temperature >= 27 && temperature <= 32) {
+      tempLabel = "Good";
+      digitalWrite(TempPin, LOW); // Turn OFF LED
+    } else {
+      tempLabel = "Bad";
+      digitalWrite(TempPin, HIGH); // Turn ON LED
+    }
+    Serial.println("Temperature Condition: " + tempLabel);
   }
 
   // Read humidity and apply offset
@@ -250,6 +249,8 @@ void bme680Readings() {
     Serial.println(F(" kOhms"));
   }
 
+  
+
   // Calculate IAQ Index
   IAQIndex = calculateIAQ(voc);
   Serial.print(F("IAQ Index (adjusted): "));
@@ -274,10 +275,27 @@ void bme680Readings() {
 
   // Calculate PPM
   ppm = calculatePPM(voc);
-  Serial.print(F("PPM (approx): "));
+  Serial.print(F("VOC (approx): "));
   Serial.println(ppm);
 }
 
+// ---------------------------------------------------------------------------
+// Read lux from BH1750
+void luxFunc() {
+  lux = lightMeter.readLightLevel();
+  if (lux >= 300 && lux <= 500) {
+    lightLabel = "Good";
+    digitalWrite(LightingPin, LOW); // Turn OFF LED
+    Serial.println(F("Lighting Condition: Good"));
+  } else {
+    lightLabel = "Bad";
+    digitalWrite(LightingPin, HIGH); // Turn ON LED
+    Serial.println(F("Lighting Condition: Bad"));
+  }
+  Serial.print(F("Light: "));
+  Serial.print(lux);
+  Serial.println(F(" lx"));
+}
 
 // ---------------------------------------------------------------------------
 // Get Formatted Time (HH:MM AM/PM)
@@ -285,10 +303,10 @@ String getFormattedTime() {
   struct tm timeInfo;
   if (!getLocalTime(&timeInfo)) {
     Serial.println(F("Failed to obtain time"));
-    return "12:00 AM";
+    return "00:00 AM";
   }
   char buffer[9];
-  strftime(buffer, sizeof(buffer), "%I:%M %p", &timeInfo); 
+  strftime(buffer, sizeof(buffer), "%I:%M %p", &timeInfo);
   return String(buffer);
 }
 
@@ -316,25 +334,6 @@ float calculateIAQ(float gasResistance) {
   if (IAQ > IAQ_max) IAQ = IAQ_max;
 
   return IAQ;
-}
-
-// ---------------------------------------------------------------------------
-// Calculate PPM using a basic approximation based on gas resistance
-float calculatePPM(float gasResistance) {
-  const float cleanAirResistance = 100.0; // Calibrate this value for clean air
-  const float scalingFactor = 100.0;     // Adjust this to scale the PPM range
-
-  if (gasResistance <= 0.0) {
-    return 0.0; // Avoid division by zero or nonsensical values
-  }
-
-  // Calculate PPM based on the adjusted formula
-  float ppmVal = scalingFactor * ((cleanAirResistance / gasResistance) - 1);
-
-  // Clamp values to avoid negative PPM readings
-  if (ppmVal < 0.0) ppmVal = 0.0;
-
-  return ppmVal;
 }
 
 // ---------------------------------------------------------------------------
@@ -371,15 +370,6 @@ int calculateHeatIndex(float tempC, float relHumidity) {
 }
 
 // ---------------------------------------------------------------------------
-// Read lux from BH1750
-void luxFunc() {
-  lux = lightMeter.readLightLevel() + 10;
-  Serial.print(F("Light: "));
-  Serial.print(lux);
-  Serial.println(F(" lx"));
-}
-
-// ---------------------------------------------------------------------------
 // Send Data to the Server
 void sendDataToServer(
   String classroom, String recordTime,
@@ -408,7 +398,7 @@ void sendDataToServer(
   jsonDoc["IAQIndex"]    = IAQIndex;
   jsonDoc["indoorAir"]   = indoorAir;
   jsonDoc["temp"]        = tempLabel;
-  jsonDoc["ppm"]         = ppm;  // <-- NEW PPM KEY
+  jsonDoc["ppm"]         = ppm;
 
   // Serialize and send
   serializeJson(jsonDoc, jsonPayload);
