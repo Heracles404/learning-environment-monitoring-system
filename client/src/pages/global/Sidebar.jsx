@@ -83,7 +83,7 @@ const Sidebar = () => {
           height: "100%",
           display: { xs: isSidebarVisible ? "block" : "none", md: "block" }, // Hide sidebar on small screens unless toggled
           "& .pro-sidebar-inner": {
-            background: `${colors.greenAccent[800]} !important`,
+            background: `${colors.greenAccent[700]} !important`,
           },
           "& .pro-icon-wrapper": {
             backgroundColor: "transparent !important",
