@@ -17,6 +17,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./pages/calendar/calendar";
 import LoginPage from "./pages/Login/Login";
+import FAQ from "./pages/faq";
 
 import Accounts from "./pages/Accounts";
 import Records from "./pages/Records";
@@ -148,7 +149,7 @@ function App() {
                 </PrivateRoute>
               }
             />
-            {/* <Route
+            <Route
               path="/faq"
               element={
                 <PrivateRoute>
@@ -156,7 +157,7 @@ function App() {
                 </PrivateRoute>
               }
             />
-             */}
+            
             
             <Route
               path="/VOG_records"

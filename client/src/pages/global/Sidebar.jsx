@@ -326,13 +326,13 @@ const Sidebar = () => {
             >
               Other
             </Typography>
-            {/* <Item
+            <Item
               title="FAQ Page"
               to="/faq"
               icon={<HelpOutlineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            />             */}
+            />            
             <Item
               title="Sign Out"
               to="/"

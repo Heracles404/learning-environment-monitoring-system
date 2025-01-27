@@ -14,7 +14,8 @@ const FAQ = () => {
   return (
     <Box m="20px" height="100%" overflow="auto">
       <Header title="FAQ" subtitle="Frequently Asked Questions Page" />
-
+      <Box sx={{ height: {xs:"130%", md:"100%"}
+    }} >
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
@@ -44,12 +45,13 @@ const FAQ = () => {
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-          What is the ideal range for -Parameters-?
+          Placeholer
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            makikita ng user pag nag learn more sa text holder ng monitor -params- <br/>ilagay yung nasa RRL.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+          malesuada lacus ex, sit amet blandit leo lobortis eget.
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -57,28 +59,34 @@ const FAQ = () => {
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-          What is the ideal range for -Parameters-?
+          Placeholer
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            makikita ng user pag nag learn more sa text holder ng monitor -params- <br/>ilagay yung nasa RRL.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+          malesuada lacus ex, sit amet blandit leo lobortis eget.
+            {/* makikita ng user pag nag learn more sa text holder ng monitor -params- <br/>ilagay yung nasa RRL. */}
           </Typography>
         </AccordionDetails>
       </Accordion>
+      
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-          Bakit ang pogi ni Sir Ian?
+          Placeholer
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Tinatanong paba yan hays.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+          malesuada lacus ex, sit amet blandit leo lobortis eget.
+            {/* makikita ng user pag nag learn more sa text holder ng monitor -params- <br/>ilagay yung nasa RRL. */}
           </Typography>
         </AccordionDetails>
       </Accordion>
-    
+      
+      </Box>
     </Box>
   );
 };
