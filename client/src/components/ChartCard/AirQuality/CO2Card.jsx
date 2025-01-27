@@ -5,6 +5,16 @@ import Chart from "react-apexcharts";
 import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
 import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 
+// Utility function to generate a random color
+const getRandomColor = () => {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
 const CO2Card = (props) => {
   const [iaqData, setIaqData] = useState({ iaqIndexes: [], timestamps: [] });
   const [startDate, setStartDate] = useState("");
@@ -93,7 +103,7 @@ const CO2Card = (props) => {
         opacity: 0.35,
       },
       fill: {
-        colors: ["#1e5245"],
+        colors: [getRandomColor()], // Apply random color for gradient
         type: "gradient",
       },
       dataLabels: {
@@ -101,7 +111,7 @@ const CO2Card = (props) => {
       },
       stroke: {
         curve: "smooth",
-        colors: ["#ff9800"],
+        colors: [getRandomColor()], // Apply random color to the line
       },
       tooltip: {
         x: {
@@ -114,7 +124,7 @@ const CO2Card = (props) => {
       xaxis: {
         type: "datetime", // Set type to 'datetime'
         categories: sortedData.timestamps.map((timestamp, index) => {
-          return new Date(Date.now() - (sortedData.iaqIndexes.length - index) * 1000 * 60 * 60).toISOString(); 
+          return new Date(Date.now() - (sortedData.iaqIndexes.length - index) * 1000 * 60 * 60).toISOString();
         }),
       },
     },
@@ -124,14 +134,13 @@ const CO2Card = (props) => {
         data: sortedData.iaqIndexes,
         markers: {
           size: 6,
-          colors: ["#ff9800"],
+          colors: [getRandomColor()],
           strokeColor: "#ffffff",
           strokeWidth: 2,
         },
       },
     ],
   };
-  
 
   console.log("Chart Data Passed:", data);
 

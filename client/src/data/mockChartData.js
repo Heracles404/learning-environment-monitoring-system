@@ -149,6 +149,17 @@ export const VolcanicSmogData = [
   },
 ];
 
+// Function to generate a random color
+const getRandomColor = () => {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
+// Fetch data and update the cards
 export const fetchCardData = async (setCardData) => {
   try {
     const readouts = await httpGetAllReadouts(); // Fetch data for IAQ, Temperature, and Lighting
@@ -207,11 +218,12 @@ export const fetchCardData = async (setCardData) => {
     const updatedCardsData = [
       {
         ...cardsData[0],
-        barValue: readouts.length > 0 ? readouts[readouts.length - 1].IAQIndex : 0, // Latest IAQ Index value for barValue
-        value: readouts.length > 0 ? readouts[readouts.length - 1].IAQIndex : 0, // Latest IAQ Index value for value
+        barValue: readouts.length > 0 ? readouts[readouts.length - 1].IAQIndex : 0,
+        value: readouts.length > 0 ? readouts[readouts.length - 1].IAQIndex : 0,
         series: Object.keys(roomData).map((room) => ({
           name: `Room ${room}`,
-          data: roomData[room].iaqIndex, // Use IAQ Index data for each room
+          data: roomData[room].iaqIndex,
+          color: getRandomColor(), // Apply random color to the line
         })),
         remark: determineGoodBad(
           Object.values(roomData).map((room) => room.indoorAirRemarks).flat()
@@ -219,11 +231,12 @@ export const fetchCardData = async (setCardData) => {
       },
       {
         ...cardsData[1],
-        barValue: readouts.length > 0 ? readouts[readouts.length - 1].temperature : 0, // Latest temperature value for barValue
-        value: readouts.length > 0 ? readouts[readouts.length - 1].temperature : 0, // Latest temperature value for value
+        barValue: readouts.length > 0 ? readouts[readouts.length - 1].temperature : 0,
+        value: readouts.length > 0 ? readouts[readouts.length - 1].temperature : 0,
         series: Object.keys(roomData).map((room) => ({
           name: `Room ${room}`,
-          data: roomData[room].temperature, // Use temperature data for each room
+          data: roomData[room].temperature,
+          color: getRandomColor(), // Apply random color to the line
         })),
         remark: determineGoodBad(
           Object.values(roomData).map((room) => room.tempRemarks).flat()
@@ -231,37 +244,38 @@ export const fetchCardData = async (setCardData) => {
       },
       {
         ...cardsData[2],
-        barValue: readouts.length > 0 ? readouts[readouts.length - 1].lighting : 0, // Latest lighting value for barValue
-        value: readouts.length > 0 ? readouts[readouts.length - 1].lighting : 0, // Latest lighting value for value
+        barValue: readouts.length > 0 ? readouts[readouts.length - 1].lighting : 0,
+        value: readouts.length > 0 ? readouts[readouts.length - 1].lighting : 0,
         series: Object.keys(roomData).map((room) => ({
           name: `Room ${room}`,
-          data: roomData[room].lighting, // Use lighting data for each room
+          data: roomData[room].lighting,
+          color: getRandomColor(), // Apply random color to the line
         })),
         remark: determineGoodBad(
           Object.values(roomData).map((room) => room.lightRemarks).flat()
         ),
       },
       {
-        ...cardsData[3], // VOG Card for PMS2.5 and PMS10
-        barValue: vogReadouts.length > 0 ? vogReadouts[vogReadouts.length - 1].pm25 : 0, // Latest PMS2.5 value for barValue
-        value: vogReadouts.length > 0 ? vogReadouts[vogReadouts.length - 1].pm10 : 0, // Latest PMS10 value for value
+        ...cardsData[3],
+        barValue: vogReadouts.length > 0 ? vogReadouts[vogReadouts.length - 1].pm25 : 0,
+        value: vogReadouts.length > 0 ? vogReadouts[vogReadouts.length - 1].pm10 : 0,
         series: [
           {
             name: "PMS2.5",
-            data: vogReadouts.map((readout) => readout.pm25), // Use PMS2.5 data
+            data: vogReadouts.map((readout) => readout.pm25),
+            color: getRandomColor(), // Apply random color to the line
           },
           {
             name: "PMS10",
-            data: vogReadouts.map((readout) => readout.pm10), // Use PMS10 data
+            data: vogReadouts.map((readout) => readout.pm10),
+            color: getRandomColor(), // Apply random color to the line
           },
         ],
       },
     ];
 
-    setCardData(updatedCardsData); // Update the state with new data
+    setCardData(updatedCardsData);
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("Error fetching data", error);
   }
 };
-
-

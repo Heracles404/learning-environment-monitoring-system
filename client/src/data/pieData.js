@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
-import { httpGetAllReadouts } from "../hooks/sensors.requests"; // Adjust path to your hook
+import { httpGetAllReadouts } from "../hooks/vog.requests"; // Importing the correct hook for VOG
+import { httpGetAllReadouts as httpGetSensorData } from "../hooks/sensors.requests"; // Adjust this import based on your sensor hook location
 
-// Declare the data array
-export let indoorAirPieData = []; 
-export let temperaturePieData = []; 
-export let lightingPieData = []; 
+// Declare the data arrays for each pie chart
+export let indoorAirPieData = [];
+export let temperaturePieData = [];
+export let lightingPieData = [];
 export let vogPieData = [];
 
-// Function to fetch and categorize pie data for indoorAir, temp, and lighting
+// Function to fetch and categorize pie data for indoorAir, temp, lighting, and VOG levels
 export const fetchPieData = async () => {
   try {
-    const readouts = await httpGetAllReadouts(); // Fetch sensor data
+    const readouts = await httpGetSensorData(); // Fetch sensor data for indoor air, temperature, and lighting
 
     // Categorize indoorAir data
     const indoorAirGoodRooms = new Set();
@@ -29,13 +30,13 @@ export const fetchPieData = async () => {
       {
         id: "Good",
         label: "Good",
-        value: indoorAirGoodRooms.size, // Total number of rooms with "Good" remark
+        value: indoorAirGoodRooms.size,
         color: "hsl(120, 70%, 50%)", // Green for "Good"
       },
       {
         id: "Bad",
         label: "Bad",
-        value: indoorAirBadRooms.size, // Total number of rooms with "Bad" remark
+        value: indoorAirBadRooms.size,
         color: "hsl(0, 70%, 50%)", // Red for "Bad"
       },
     ];
@@ -57,13 +58,13 @@ export const fetchPieData = async () => {
       {
         id: "Good",
         label: "Good",
-        value: tempGoodRooms.size, // Total number of rooms with "Good" remark
+        value: tempGoodRooms.size,
         color: "hsl(120, 70%, 50%)", // Green for "Good"
       },
       {
         id: "Bad",
         label: "Bad",
-        value: tempBadRooms.size, // Total number of rooms with "Bad" remark
+        value: tempBadRooms.size,
         color: "hsl(0, 70%, 50%)", // Red for "Bad"
       },
     ];
@@ -85,61 +86,83 @@ export const fetchPieData = async () => {
       {
         id: "Good",
         label: "Good",
-        value: lightingGoodRooms.size, // Total number of rooms with "Good" remark
+        value: lightingGoodRooms.size,
         color: "hsl(120, 70%, 50%)", // Green for "Good"
       },
       {
         id: "Bad",
         label: "Bad",
-        value: lightingBadRooms.size, // Total number of rooms with "Bad" remark
+        value: lightingBadRooms.size,
         color: "hsl(0, 70%, 50%)", // Red for "Bad"
       },
     ];
 
+    console.log("Indoor Air Pie Data:", indoorAirPieData);
+    console.log("Temperature Pie Data:", temperaturePieData);
+    console.log("Lighting Pie Data:", lightingPieData);
+    
+    // Fetch VOG data
+    fetchVogPieData();
 
+  } catch (error) {
+    console.error("Error fetching or processing data:", error);
+  }
+};
+
+// Function to fetch and categorize VOG pie data
+const fetchVogPieData = async () => {
+  try {
+    const readouts = await httpGetAllReadouts(); // Fetch VOG sensor data
+
+    // Fetch VOG levels dynamically from the data
+    const levelCounts = [0, 0, 0, 0, 0]; // Array to hold counts for each level (Level 0, Level 1, Level 2, Level 3, Level 4)
+
+    // Count the rooms for each level
+    readouts.forEach((item) => {
+      const { level } = item; // Get the level from the item
+      if (level >= 0 && level <= 4) {
+        levelCounts[level] += 1;
+      }
+    });
+
+    // Generate VOG pie data dynamically based on the counts
     vogPieData = [
       {
         id: "Level 0",
         label: "Level 0",
-        value: [1], 
-        color: "hsl(120, 70%, 50%)", 
+        value: levelCounts[0], 
+        color: "hsl(120, 70%, 50%)", // Green
       },
       {
         id: "Level 1",
         label: "Level 1",
-        value: [1], 
-        color: "hsl(120, 70%, 50%)", 
+        value: levelCounts[1], 
+        color: "hsl(120, 70%, 50%)", // Green
       },
       {
         id: "Level 2",
         label: "Level 2",
-        value: [1], 
-        color: "hsl(0, 70%, 50%)", 
+        value: levelCounts[2], 
+        color: "hsl(0, 70%, 50%)", // Red
       },
       {
         id: "Level 3",
         label: "Level 3",
-        value: [1], 
-        color: "hsl(0, 100.00%, 50.00%)", 
+        value: levelCounts[3], 
+        color: "hsl(0, 100%, 50%)", // Dark Red
       },
       {
         id: "Level 4",
         label: "Level 4",
-        value: [1], 
-        color: "hsl(0, 70%, 50%)", 
+        value: levelCounts[4], 
+        color: "hsl(0, 70%, 50%)", // Red
       },
     ];
 
+    console.log("VOG Pie Data:", vogPieData); // Display the dynamic VOG levels
 
-
-
-    
-
-    console.log("Indoor Air Pie Data:", indoorAirPieData);
-    console.log("Temperature Pie Data:", temperaturePieData);
-    console.log("Lighting Pie Data:", lightingPieData);
   } catch (error) {
-    console.error("Error fetching or processing data:", error);
+    console.error("Error fetching or processing VOG data:", error);
   }
 };
 
