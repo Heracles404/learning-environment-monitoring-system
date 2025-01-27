@@ -88,13 +88,13 @@
   width: 100%;
 }
 
-@media screen and (max-width: 1200px) {
+/* @media screen and (max-width: 1200px) {
   .ExpandedCard {
     top: 2rem;
-    height: 100vh;
+    height: 80vh;
     left: 6rem;
   }
-}
+} */
 
 @media screen and (max-width: 1024px) {
   .ExpandedCard {
