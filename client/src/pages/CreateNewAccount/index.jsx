@@ -13,10 +13,12 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+
+import BasicAlerts from "../global/BasicAlerts";
 const NewAccountForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const navigate = useNavigate(); // Hook for navigation
-  const [errorMessage, setErrorMessage] = useState("");
+  const [alertMessage, setAlertMessage] = useState(null);
 
   const handleCreate = async (values) => {
 
@@ -30,25 +32,27 @@ const NewAccountForm = () => {
     };
 
     if (userData.password !== userData.confirmPassword){
-      alert('Passwords do not match')
+      setAlertMessage({ severity: 'error', message: 'Passwords do not match' });
     }
     else  {
       try {
         const response = await httpAddNewUser(userData);
         if(response.status === 400){
-          alert ('Username already exists.')
+          setAlertMessage({ severity: 'warning', message: 'Username already exists.' });
         }else if(response.ok) {
           // Optionally, you can handle the success response here
-          console.log("User  created successfully");
+          setAlertMessage({ severity: 'warning', message: 'Username already exists.' });
           navigate("/accounts");
         } else {
           // Handle error response
-          setErrorMessage("Failed to create user. Please try again.");
+          setAlertMessage({ severity: 'error', message: 'Failed to create user. Please try again.' });
         }
       } catch (error) {
         // Catch any unexpected errors
-        setErrorMessage("An error occurred. Please try again.");
-        console.error("Error creating user:", error);
+        setAlertMessage({ severity: 'error', message: 'An error occurred. Please try again.' });
+
+        setAlertMessage({ severity: 'error', message: 'Error creating user.' });
+
       }
     }
   };
@@ -191,9 +195,12 @@ const NewAccountForm = () => {
                 Create New User
               </Button>
             </Box>
+
           </form>
         )}
       </Formik>
+      <BasicAlerts sx={{mt:"50px"}}alertMessage={alertMessage} /> {/* Pass the alertMessage state */}
+
     </Box>
   );
 };
