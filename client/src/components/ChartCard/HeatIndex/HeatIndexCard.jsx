@@ -123,16 +123,11 @@ function ExpandedCard({ param }) {
         show: true,
       },
       xaxis: {
-        type: "category",
-        categories: sortedData.timestamps.map((timestamp) =>
-          new Date(timestamp).toLocaleString([], {
-            // year: "numeric",
-            month: "short",
-            day: "2-digit",
-            // hour: "2-digit",
-            // minute: "2-digit",
-          })
-        ),
+        type: "datetime", // Set type to 'datetime'
+        categories: sortedData.timestamps.map((timestamp, index) => {
+          // Adjust the timestamp based on dynamic calculation
+          return new Date(Date.now() - (sortedData.heatIndexes.length - index) * 1000 * 60 * 60).toISOString();
+        }),
       },
     },
     series: [

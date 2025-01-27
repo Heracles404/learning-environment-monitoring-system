@@ -123,25 +123,20 @@ function ExpandedCard({ param }) {
         show: true,
       },
       xaxis: {
-        type: "category",
-        categories: sortedData.timestamps.map((timestamp) =>
-          new Date(timestamp).toLocaleString([], {
-            // year: "numeric",
-            month: "long",
-            day: "2-digit",
-            // hour: "2-digit",
-            // minute: "2-digit",
-          })
-        ),
+        type: "datetime", // Set type to datetime to plot actual timestamps
+        categories: vocData.timestamps.map((timestamp, index) => {
+          return new Date(Date.now() - (vocData.vocLevels.length - index) * 1000 * 60 * 60).toISOString();
+        }),
       },
     },
     series: [
       {
         name: "VOC Level",
-        data: sortedData.vocLevels,
+        data: vocData.vocLevels,
       },
     ],
   };
+  
 
   return (
     <motion.div
@@ -152,7 +147,6 @@ function ExpandedCard({ param }) {
       }}
       layoutId={`expandableCard-${param.title}`}
     >
-      <div style={{ alignSelf: "flex-end", cursor: "pointer", color: "white" }}></div>
       <span>{param.title}</span>
 
       <div className="date-filter">
