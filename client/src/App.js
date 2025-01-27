@@ -25,7 +25,6 @@ import PreviewAccounts from "./pages/Accounts/PreviewAccount";
 import VOGRecords from "./pages/Records/vog_record";
 import RegisterDevice from "./pages/Monitor/Devices/RegisterDevice";
 import UpdateDevice from "./pages/Monitor/Devices/UpdateDevice";
-import PieChart from "./pages/pie/temperaturepie";
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
@@ -73,14 +72,7 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route
-              path="/pie"
-              element={
-                <PrivateRoute>
-                  <PieChart />
-                </PrivateRoute>
-              }
-            />
+            
             <Route
               path="/Members"
               element={
