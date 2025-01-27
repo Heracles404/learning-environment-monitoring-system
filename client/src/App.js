@@ -17,6 +17,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./pages/calendar/calendar";
 import LoginPage from "./pages/Login/Login";
+import FAQ from "./pages/faq";
 
 import Accounts from "./pages/Accounts";
 import Records from "./pages/Records";
@@ -25,7 +26,6 @@ import PreviewAccounts from "./pages/Accounts/PreviewAccount";
 import VOGRecords from "./pages/Records/vog_record";
 import RegisterDevice from "./pages/Monitor/Devices/RegisterDevice";
 import UpdateDevice from "./pages/Monitor/Devices/UpdateDevice";
-import PieChart from "./pages/pie/temperaturepie";
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
@@ -73,14 +73,7 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route
-              path="/pie"
-              element={
-                <PrivateRoute>
-                  <PieChart />
-                </PrivateRoute>
-              }
-            />
+            
             <Route
               path="/Members"
               element={
@@ -156,7 +149,7 @@ function App() {
                 </PrivateRoute>
               }
             />
-            {/* <Route
+            <Route
               path="/faq"
               element={
                 <PrivateRoute>
@@ -164,7 +157,7 @@ function App() {
                 </PrivateRoute>
               }
             />
-             */}
+            
             
             <Route
               path="/VOG_records"

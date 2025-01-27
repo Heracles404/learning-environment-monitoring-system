@@ -80,7 +80,7 @@ const CO2Card = (props) => {
   const data = {
     options: {
       chart: {
-        type: "line",
+        type: "area",
         height: "auto",
       },
       dropShadow: {
@@ -177,7 +177,7 @@ const CO2Card = (props) => {
       </div>
 
       <div className="chartContainer">
-        <Chart options={data.options} series={data.series} type="line" />
+        <Chart options={data.options} series={data.series} type="area" />
       </div>
 
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
