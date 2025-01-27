@@ -35,8 +35,8 @@ Adafruit_BME680 bme;
 BH1750 lightMeter;
 
 // ESP01 Variables
-const char* ssid = "12345";
-const char* password = "Gear.123";
+const char* ssid = "ACM2";
+const char* password = "0495452821@2024";
 
 
 const char* host = "http://192.168.45.196";
