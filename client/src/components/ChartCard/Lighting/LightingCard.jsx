@@ -92,7 +92,7 @@ function ExpandedCard({ param }) {
   const data = {
     options: {
       chart: {
-        type: "line",
+        type: "area",
         height: "auto",
       },
       dropShadow: {
@@ -183,7 +183,7 @@ function ExpandedCard({ param }) {
       </div>
 
       <div className="chartContainer">
-        <Chart options={data.options} series={data.series} type="line" />
+        <Chart options={data.options} series={data.series} type="area" />
       </div>
 
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
