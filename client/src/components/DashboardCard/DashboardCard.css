@@ -94,16 +94,40 @@
       left: 20rem;
     }
   }
-  
-  @media screen and (max-width: 769px) {
+  @media screen and (max-width: 1024px) and (min-width: 769px) {
+    .DBCompactCard {
+      width: 134%;
+    }
+    .DBExpandedCard {
+      /* top: 8rem; */
+      height: 60%;
+      /* left: 25px; */
+      /* width: 90%; */
+    }
+    .DBchartContainer {
+      width: 93%;
+    }
+  }
+  @media screen and (max-width: 900px) {
     .DBExpandedCard {
       top: 8rem;
-      height: 50%;
+      height: 70%;
       left: 25px;
       width: 90%;
     }
     .DBchartContainer {
-      width: 75%;
+      width: 90%;
+    }
+  }
+  @media screen and (max-width: 769px) {
+    .DBExpandedCard {
+      top: 8rem;
+      height: 60%;
+      left: 25px;
+      width: 90%;
+    }
+    .DBchartContainer {
+      width: 90%;
     }
   }
   
@@ -115,6 +139,30 @@
       width: 92%;
     }
     .DBchartContainer {
-      width: 113%;
+      width: 110%;
     }
   }
+
+  @media screen and (max-width: 376px) {
+    .DBExpandedCard {
+      top: 8rem;
+      height: 48%;
+      left: 8px;
+      width: 92%;
+    }
+    .DBchartContainer {
+      width: 110%;
+    }
+  }
+  @media screen and (max-width: 320px) {
+    .DBExpandedCard {
+      top: 8rem;
+      height: 42%;
+      left: 8px;
+      width: 92%;
+    }
+    .DBchartContainer {
+      width: 112%;
+    }
+  }
+  
