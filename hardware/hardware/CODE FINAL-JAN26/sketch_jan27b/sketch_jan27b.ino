@@ -42,9 +42,10 @@ const char* password = "0495452821@2024";
 
 // ---------------------------------------------------------------------------
 // Server API Info
-const char* host = "http://192.168.1.31";
-const int port = 8000;
+const char* host = "api.lems.systems";
+const int port = 443; // Use 80 for HTTP or 443 for HTTPS if your website uses SSL/TLS
 const char* endpoint = "/sensors";
+
 
 // ---------------------------------------------------------------------------
 // Variables
@@ -62,7 +63,7 @@ const String classroom = "401";
 // ---------------------------------------------------------------------------
 // Offsets (optional for Heat Index and IAQ)
 const float heatIndexOffsetC = 0.0;  // e.g. 2 °C
-const float IAQOffset        = 165.0; // e.g. 50 points
+const float IAQOffset        = 140.0; // e.g. 50 points
 
 // ---------------------------------------------------------------------------
 // Prototypes
@@ -75,10 +76,10 @@ int calculateHeatIndex(float tempC, float relHumidity);
 void luxFunc();
 void sendDataToServer(
   String classroom, String recordTime,
-  float temperature, float humidity, 
-  float voc, float IAQIndex, float lux, 
-  float ppm, int heatIndex, 
-  String indoorAir, String tempLabel
+  float temperature, float humidity,
+  float voc, float IAQIndex, float lux,
+  float ppm, int heatIndex,
+  String indoorAir, String tempLabel, String lightLabel
 );
 
 // ---------------------------------------------------------------------------
@@ -147,7 +148,7 @@ void loop() {
 // ---------------------------------------------------------------------------
 // Calculate PPM using a basic approximation based on gas resistance
 float calculatePPM(float gasResistance) {
-  const float cleanAirResistance = 100.0; // Calibrate this value for clean air
+  const float cleanAirResistance = 110.0; // Calibrate this value for clean air
   const float scalingFactor = 100.0;     // Adjust this to scale the PPM range
 
   if (gasResistance <= 0.0) {
@@ -282,7 +283,7 @@ void bme680Readings() {
 // ---------------------------------------------------------------------------
 // Read lux from BH1750
 void luxFunc() {
-  lux = lightMeter.readLightLevel();
+  lux = lightMeter.readLightLevel() + 200; // added light value
   if (lux >= 300 && lux <= 500) {
     lightLabel = "Good";
     digitalWrite(LightingPin, LOW); // Turn OFF LED
@@ -379,26 +380,31 @@ void sendDataToServer(
   String indoorAir, String tempLabel
 ) {
   HTTPClient http;
-  WiFiClient client;
+  WiFiClientSecure client;
+  client.setInsecure(); // Skip SSL certificate validation (for testing only)
 
-  String url = String(host) + ":" + String(port) + String(endpoint);
-  http.begin(client, url.c_str());
 
-  StaticJsonDocument<256> jsonDoc;
+  String url = "https://api.lems.systems/sensors";
+  http.begin(client, url); // HTTPS request
+
+  StaticJsonDocument<512> jsonDoc;
   String jsonPayload;
 
   // Build JSON payload
-  jsonDoc["classroom"]   = classroom;
-  jsonDoc["time"]        = recordTime;
-  jsonDoc["temperature"] = temperature;
-  jsonDoc["humidity"]    = humidity;
-  jsonDoc["heatIndex"]   = heatIndex;
-  jsonDoc["lighting"]    = lux;
-  jsonDoc["voc"]         = voc;
-  jsonDoc["IAQIndex"]    = IAQIndex;
-  jsonDoc["indoorAir"]   = indoorAir;
-  jsonDoc["temp"]        = tempLabel;
-  jsonDoc["ppm"]         = ppm;
+  // Build JSON payload
+jsonDoc["classroom"]         = classroom;
+jsonDoc["time"]              = recordTime;
+jsonDoc["temperature"]       = temperature;
+jsonDoc["humidity"]          = humidity;
+jsonDoc["heatIndex"]         = heatIndex;
+jsonDoc["lighting"]          = lux;
+jsonDoc["voc"]               = voc;
+jsonDoc["IAQIndex"]          = IAQIndex;
+jsonDoc["indoorAir"]         = indoorAir;
+jsonDoc["temp"]              = tempLabel;  // Temperature condition: Good/Bad
+jsonDoc["lightRemarks"]      = lightLabel; // Lighting condition: Good/Bad
+jsonDoc["ppm"]               = ppm;
+
 
   // Serialize and send
   serializeJson(jsonDoc, jsonPayload);
