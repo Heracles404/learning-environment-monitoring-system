@@ -207,14 +207,8 @@ export const fetchCardData = async (setCardData) => {
     const updatedCardsData = [
       {
         ...cardsData[0],
-        barValue: Object.values(roomData)
-          .map((room) => room.iaqIndex)
-          .flat()
-          .pop() || 0, // Directly use the latest IAQ Index value for barValue
-        value: Object.values(roomData)
-          .map((room) => room.iaqIndex)
-          .flat()
-          .pop() || 0, // Directly use the latest IAQ Index value for value
+        barValue: readouts.length > 0 ? readouts[readouts.length - 1].IAQIndex : 0, // Latest IAQ Index value for barValue
+        value: readouts.length > 0 ? readouts[readouts.length - 1].IAQIndex : 0, // Latest IAQ Index value for value
         series: Object.keys(roomData).map((room) => ({
           name: `Room ${room}`,
           data: roomData[room].iaqIndex, // Use IAQ Index data for each room
@@ -225,14 +219,8 @@ export const fetchCardData = async (setCardData) => {
       },
       {
         ...cardsData[1],
-        barValue: Object.values(roomData)
-          .map((room) => room.temperature)
-          .flat()
-          .pop() || 0, // Directly use the latest temperature value for barValue
-        value: Object.values(roomData)
-          .map((room) => room.temperature)
-          .flat()
-          .pop() || 0, // Directly use the latest temperature value for value
+        barValue: readouts.length > 0 ? readouts[readouts.length - 1].temperature : 0, // Latest temperature value for barValue
+        value: readouts.length > 0 ? readouts[readouts.length - 1].temperature : 0, // Latest temperature value for value
         series: Object.keys(roomData).map((room) => ({
           name: `Room ${room}`,
           data: roomData[room].temperature, // Use temperature data for each room
@@ -243,14 +231,8 @@ export const fetchCardData = async (setCardData) => {
       },
       {
         ...cardsData[2],
-        barValue: Object.values(roomData)
-          .map((room) => room.lighting)
-          .flat()
-          .pop() || 0, // Directly use the latest lighting value for barValue
-        value: Object.values(roomData)
-          .map((room) => room.lighting)
-          .flat()
-          .pop() || 0, // Directly use the latest lighting value for value
+        barValue: readouts.length > 0 ? readouts[readouts.length - 1].lighting : 0, // Latest lighting value for barValue
+        value: readouts.length > 0 ? readouts[readouts.length - 1].lighting : 0, // Latest lighting value for value
         series: Object.keys(roomData).map((room) => ({
           name: `Room ${room}`,
           data: roomData[room].lighting, // Use lighting data for each room
@@ -281,4 +263,5 @@ export const fetchCardData = async (setCardData) => {
     console.error("Error fetching data:", error);
   }
 };
+
 

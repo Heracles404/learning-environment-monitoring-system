@@ -116,23 +116,18 @@ function ExpandedCard({ param }) {
       },
       tooltip: {
         x: {
-          format: "dd/MM/yy HH:mm",
+          format: "dd/MM/yy HH:mm", // Modify this as needed
         },
       },
       grid: {
         show: true,
       },
       xaxis: {
-        type: "category",
-        categories: sortedData.timestamps.map((timestamp) =>
-          new Date(timestamp).toLocaleString([], {
-            // year: "numeric",
-            month: "long",
-            day: "2-digit",
-            // hour: "2-digit",
-            // minute: "2-digit",
-          })
-        ),
+        type: "datetime", // Set type to 'datetime'
+        categories: sortedData.timestamps.map((timestamp, index) => {
+          // Use dynamic calculation for the x-axis timestamps (adjust as needed)
+          return new Date(Date.now() - (sortedData.lightingLevels.length - index) * 1000 * 60 * 60).toISOString();
+        }),
       },
     },
     series: [
@@ -142,6 +137,7 @@ function ExpandedCard({ param }) {
       },
     ],
   };
+  
 
   return (
     <motion.div

@@ -73,6 +73,7 @@ const CO2Card = (props) => {
     setOpenDialog(false);
   };
 
+  // Use filtered data if available, else use the original IAQ data
   const sortedData = filteredData.iaqIndexes.length > 0 ? filteredData : iaqData;
 
   console.log("Sorted Data for Chart:", sortedData);
@@ -111,16 +112,10 @@ const CO2Card = (props) => {
         show: true,
       },
       xaxis: {
-        type: "category", // Ensure this is 'category' to prevent limiting data points
-        categories: sortedData.timestamps.map((timestamp) =>
-          new Date(timestamp).toLocaleString([], {
-            // year: "numeric",
-            month: "long",
-            day: "2-digit",
-            // hour: "2-digit",
-            // minute: "2-digit",
-          })
-        ),
+        type: "datetime", // Set type to 'datetime'
+        categories: sortedData.timestamps.map((timestamp, index) => {
+          return new Date(Date.now() - (sortedData.iaqIndexes.length - index) * 1000 * 60 * 60).toISOString(); 
+        }),
       },
     },
     series: [
@@ -128,14 +123,16 @@ const CO2Card = (props) => {
         name: "IAQ Index",
         data: sortedData.iaqIndexes,
         markers: {
-          size: 6, // Icon size, adjust as needed
-          colors: ["#ff9800"], // Icon color
-          strokeColor: "#ffffff", // Icon stroke color (if needed)
-          strokeWidth: 2, // Stroke width (if needed)
+          size: 6,
+          colors: ["#ff9800"],
+          strokeColor: "#ffffff",
+          strokeWidth: 2,
         },
       },
     ],
   };
+  
+
   console.log("Chart Data Passed:", data);
 
   return (
@@ -193,6 +190,6 @@ const CO2Card = (props) => {
       </Dialog>
     </motion.div>
   );
-}
+};
 
 export default CO2Card;
