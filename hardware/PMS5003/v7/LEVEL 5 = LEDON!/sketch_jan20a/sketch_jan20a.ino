@@ -9,10 +9,10 @@
 // Time Components
 #include "time.h"
 
-const char* ssid = "lems";
-const char* password = "Lems@2025";
-const char* host = "http://192.168.0.102";
-const int port = 8000;
+const char* ssid = "ACM2";
+const char* password = "0495452821@2024";
+const char* host = "api.lems.systems";
+const int port = 443;
 const char* endpoint = "/vog";
 const char* update_endpoint = "/devices";
 
@@ -33,6 +33,7 @@ PMS::DATA data;
 String recordTime;
 float pm25, pm10;
 int idx25, idx10, level;
+const String classroom = "401";
 
 // Calibration coefficients
 float a_pm25 = 0.400;
@@ -116,7 +117,7 @@ void loop() {
 
     recordTime = currentTime; // Use the updated time
     dataDisplay();
-    sendDataToServer(recordTime, pm25, pm10, max(idx25, idx10), level);
+    sendDataToServer(classroom, recordTime, pm25, pm10, max(idx25, idx10), level);
 
     // Control LED based on concern level
     if (level == 5) {
@@ -194,17 +195,20 @@ int calculateAQI(float concentration, String pollutant) {
   return 501; // Out of range
 }
 
-void sendDataToServer(String recordTime, float pm25, float pm10, int OAQIndex, int level) {
+void sendDataToServer(String classroom, String recordTime, float pm25, float pm10, int OAQIndex, int level) {
   if (WiFi.status() == WL_CONNECTED) {
-    WiFiClient client;
+    WiFiClientSecure client;
+    client.setInsecure(); // Skip SSL certificate validation (for testing only)
     HTTPClient http;
-    String url = String(host) + ":" + String(port) + endpoint;
+    
+    String url = "https://api.lems.systems/vog";
 
     http.begin(client, url); // Use WiFiClient object
     http.addHeader("Content-Type", "application/json");
 
     // Construct JSON payload
-    StaticJsonDocument<200> jsonDoc;
+    StaticJsonDocument<512> jsonDoc;
+    //jsonDoc["classroom"] = classroom;
     jsonDoc["time"] = recordTime;
     jsonDoc["pm25"] = pm25;
     jsonDoc["pm10"] = pm10;
