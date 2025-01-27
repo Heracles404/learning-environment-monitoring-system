@@ -15,12 +15,15 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+
+import BasicAlerts from "../global/BasicAlerts";
+
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const navigate = useNavigate();
   const { userName } = useParams(); // Extract the username from the URL
   const [initialValues, setInitialValues] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [alertMessage, setAlertMessage] = useState(null);
 
   console.log("Username from URL:", userName);
 
@@ -39,7 +42,8 @@ const Form = () => {
         });
       } catch (error) {
         console.error("Error fetching user data:", error);
-        setErrorMessage("Failed to load user data.");
+        setAlertMessage({ severity: 'warning', message: 'Failed to load user data.' });
+
       }
     };
 
@@ -53,11 +57,13 @@ const Form = () => {
       if (!values.newPassword) {
         const { firstName, lastName, role, userName } = values;
         await httpUpdateUser (userName, { firstName, lastName, role });
-        alert("User  details updated successfully.");
+        setAlertMessage({ severity: 'success', message: 'User details updated successfully.' });
+
         navigate(`/Accounts`);
       } else {
         if (values.newPassword !== values.confirmPassword) {
-          alert("Passwords do not match.");
+          setAlertMessage({ severity: 'error', message: 'Passwords do not match.' });
+
         } else {
           const { firstName, lastName, role, userName, newPassword } = values;
           await httpUpdateUser (userName, { firstName, lastName, role, password: newPassword });
@@ -66,7 +72,8 @@ const Form = () => {
       }
     } catch (error) {
       console.error("Error updating user data:", error);
-      setErrorMessage("Failed to update user data.");
+      setAlertMessage({ severity: 'error', message: 'Failed to update user data.' });
+
     }
   };
 
@@ -220,7 +227,9 @@ const Form = () => {
               </form>
           )}
         </Formik>
-        {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
+        <BasicAlerts sx={{mt:"50px"}}alertMessage={alertMessage} /> {/* Pass the alertMessage state */}
+
+        {/* {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>} */}
       </Box>
   );
 };
