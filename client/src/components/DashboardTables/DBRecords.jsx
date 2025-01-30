@@ -16,62 +16,31 @@ const DBRecords = () => {
             const data = await httpGetAllReadouts();
             console.log(data);
 
-            // Step 1: Group by classroom
-            const classroomData = data.reduce((acc, readout) => {
-                const classroom = readout.classroom;
-                if (!acc[classroom]) {
-                    acc[classroom] = {
-                        classroom: classroom,
-                        heatIndex: [],
-                        IAQIndex: [],
-                        lighting: [],
-                    };
-                }
-                acc[classroom].heatIndex.push(readout.heatIndex);
-                acc[classroom].IAQIndex.push(readout.IAQIndex);
-                acc[classroom].lighting.push(readout.lighting);
-                return acc;
-            }, {});
-
-            // Step 2: Calculate averages
-            const formattedData = Object.values(classroomData).map((classroom) => {
-                const aveHeatIndex = (classroom.heatIndex.reduce((a, b) => a + b, 0) / classroom.heatIndex.length).toFixed(2) || 0;
-                const aveIAQIndex = (classroom.IAQIndex.reduce((a, b) => a + b, 0) / classroom.IAQIndex.length).toFixed(2) || 0;
-                const aveLighting = (classroom.lighting.reduce((a, b) => a + b, 0) / classroom.lighting.length).toFixed(2) || 0;
-
-                // Step 3: Determine the concern level based on averages
-                // Define threshold values for each parameter (adjustable)
-                const heatIndexThreshold = 29; // Example threshold for heat index
-                const IAQIndexThreshold = 60; // Example threshold for IAQ index
-                const lightingThreshold = 200; // Example threshold for lighting
-
-                // Logic to determine concern level
-                const concernLevel = (aveHeatIndex > heatIndexThreshold || aveIAQIndex > IAQIndexThreshold || aveLighting > lightingThreshold)
-                    ? "Bad"
-                    : "Good";
-
-                return {
-                    id: classroom.classroom, // Use classroom name as ID
-                    classroom: classroom.classroom,
-                    aveHeatIndex,
-                    aveIAQIndex,
-                    aveLighting,
-                    concernLevel,
+            const updatedData = {};
+            data.forEach((readout) => {
+                updatedData[readout.classroom] = {
+                    id: readout.classroom,
+                    classroom: readout.classroom,
+                    currentHeatIndex: readout.heatIndex,
+                    currentIAQIndex: readout.IAQIndex,
+                    currentLighting: readout.lighting,
+                    concernLevel: (readout.heatIndex > 29 || readout.IAQIndex > 60 || readout.lighting > 200) ? "Bad" : "Good",
                 };
             });
 
-            // Step 4: Set the rows state with the formatted data
-            setRows(formattedData);
+            setRows(Object.values(updatedData));
         };
 
         fetchData();
+        const interval = setInterval(fetchData, 5000); // Update every 5 seconds
+        return () => clearInterval(interval);
     }, []);
 
     const columns = [
         { field: "classroom", headerName: "Classroom", minWidth: 100, flex: 1 },
-        { field: "aveHeatIndex", headerName: "Current Heat Index", minWidth: 100, flex: 1 },
-        { field: "aveIAQIndex", headerName: "Current IAQ Index", minWidth: 100, flex: 1 },
-        { field: "aveLighting", headerName: "Current Light Level", minWidth: 100, flex: 1 },
+        { field: "currentHeatIndex", headerName: "Current Heat Index", minWidth: 100, flex: 1 },
+        { field: "currentIAQIndex", headerName: "Current IAQ Index", minWidth: 100, flex: 1 },
+        { field: "currentLighting", headerName: "Current Light Level", minWidth: 100, flex: 1 },
         { field: "concernLevel", headerName: "Current Status", minWidth: 100, flex: 1 },
     ];
 
@@ -125,9 +94,6 @@ const DBRecords = () => {
                             "& .MuiDataGrid-columnHeader": {
                                 backgroundColor: colors.greenAccent[700],
                                 borderBottom: "none",
-                            },
-                            "& .MuiDataGrid-virtualScroller": {
-                                // backgroundColor: colors.primary[400],
                             },
                             "& .MuiDataGrid-footerContainer": {
                                 borderTop: "none",
