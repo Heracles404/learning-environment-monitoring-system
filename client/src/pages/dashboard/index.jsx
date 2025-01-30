@@ -146,16 +146,19 @@ const Dashboard = () => {
         </Box>
       </Grid>
     </Grid>
+    
     </Box>
 
     <Box>
       <DashboardCards />
-      <DBRecords/>
-      <DBVog/>
+      {/* <DBRecords/> */}
+      {/* <DBVog/> */}
     </Box>
+    
         
     {/* GRID & CHARTS */}
     <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gridAutoRows={{ xs: "10.5%", sm: "22%", md:"22%", lg: "21%" }} gap="15px" mt="20px">
+        
         {/* ROW 1 */}
         <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[600]} padding="5px">
           <Typography variant="h5" fontWeight="600" display="flex" justifyContent="center" color="white">
@@ -195,6 +198,17 @@ const Dashboard = () => {
           <Typography>Inactive: {inactiveDevices.pms5003}</Typography>
           <Box height="300px">
             <VOGPieChart />
+          </Box>
+        </Box>
+        {/* TABLE ROW  */}
+      <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" padding="5px">
+          <Box height="30px">
+            <DBRecords/>
+          </Box>
+        </Box>
+        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" padding="5px">
+          <Box height="30px">
+            <DBVog/>
           </Box>
         </Box>
     </Box>
