@@ -53,14 +53,16 @@ const DBVOGRecords = () => {
     }, []); // Empty dependency array to run only once on mount
 
     const columns = [
-        { field: "pm25", headerName: "Average PM 2.5", minWidth: 100, flex: 1 },
-        { field: "pm10", headerName: "Average PM 10.0", minWidth: 100, flex: 1 },
-        { field: "concernLevel", headerName: "Concern Level", minWidth: 100, flex: 1 },
+        { field: "classroom", headerName: "Outdoor", minWidth: 100, flex: 1 },
+        { field: "pm25", headerName: "Current PM 2.5", minWidth: 100, flex: 1 },
+        { field: "pm10", headerName: "Current PM 10.0", minWidth: 100, flex: 1 },
+        { field: "", headerName: "Concern Level", minWidth: 100, flex: 1 },
+        { field: "concernLevel", headerName: "Current Status", minWidth: 100, flex: 1 },
     ];
 
     return (
         <Box m="5px">
-            <Header title="VOG Records" subtitle="Managing the VOG Records" />
+            <Header title="VOG Records" subtitle="Monitoring the Current VOG Records" />
             <Box>
                 <Paper sx={{ maxHeight: "65vh", width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>

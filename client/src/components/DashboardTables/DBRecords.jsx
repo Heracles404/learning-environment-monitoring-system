@@ -69,15 +69,15 @@ const DBRecords = () => {
 
     const columns = [
         { field: "classroom", headerName: "Classroom", minWidth: 100, flex: 1 },
-        { field: "aveHeatIndex", headerName: "Average Heat Index", minWidth: 100, flex: 1 },
-        { field: "aveIAQIndex", headerName: "Average IAQ Index", minWidth: 100, flex: 1 },
-        { field: "aveLighting", headerName: "Average Light Level", minWidth: 100, flex: 1 },
-        { field: "concernLevel", headerName: "Concern Level", minWidth: 100, flex: 1 },
+        { field: "aveHeatIndex", headerName: "Current Heat Index", minWidth: 100, flex: 1 },
+        { field: "aveIAQIndex", headerName: "Current IAQ Index", minWidth: 100, flex: 1 },
+        { field: "aveLighting", headerName: "Current Light Level", minWidth: 100, flex: 1 },
+        { field: "concernLevel", headerName: "Current Status", minWidth: 100, flex: 1 },
     ];
 
     return (
         <Box m="5px">
-            <Header title="Records" subtitle="Managing the Records" />
+            <Header title="Records" subtitle="Monitoring the Current Records" />
             <Box>
                 <Paper sx={{ maxHeight: "65vh", width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
