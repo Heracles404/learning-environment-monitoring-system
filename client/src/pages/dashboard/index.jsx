@@ -150,6 +150,8 @@ const Dashboard = () => {
 
     <Box>
       <DashboardCards />
+      <DBRecords/>
+      <DBVog/>
     </Box>
         
     {/* GRID & CHARTS */}
