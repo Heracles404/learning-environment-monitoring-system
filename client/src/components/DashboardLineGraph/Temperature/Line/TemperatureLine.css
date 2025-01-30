@@ -1,0 +1,167 @@
+.CompactCard {
+  display: flex;
+  flex: 1;
+  height: 8rem !important;
+  border-radius: 0.7rem;
+  color: white;
+  padding: 1rem;
+  position: relative;
+  cursor: pointer;
+}
+.CompactCard:hover {
+  box-shadow: none !important;
+}
+
+/* radial bar */
+.radialBar {
+  flex: 1 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+.CircularProgressbar {
+  width: 4rem !important;
+  overflow: visible;
+}
+.CircularProgressbar-path {
+  stroke: white !important;
+  stroke-width: 12px !important;
+  filter: drop-shadow(2px 4px 6px white);
+}
+.CircularProgressbar-trail {
+  display: none;
+}
+.CircularProgressbar-text {
+  fill: white !important;
+}
+
+.radialBar > span {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+/* sideDetail*/
+.detail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.detail > span:nth-child(2) {
+  font-size: 22px;
+  font-weight: bold;
+}
+.detail > span:nth-child(3) {
+  font-size: 12px;
+}
+
+/* ExpandedCard */
+.ExpandedCard {
+  position: fixed;
+  width: 60%;
+  height: 60%;
+  z-index: 9;
+  left: 21rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 1rem;
+}
+.ExpandedCard > span:nth-of-type(1) {
+  color: white;
+  font-size: 26px;
+  font-weight: bold;
+  text-shadow: 0px 0px 15px white;
+}
+.ExpandedCard > span:nth-of-type(2) {
+  color: rgb(236, 236, 236);
+  font-size: 15px;
+}
+
+.chartContainer {
+  width: 80%;
+}
+
+@media screen and (max-width: 1200px) {
+  .ExpandedCard {
+    top: 2rem;
+    height: 50%;
+    left: 20rem;
+  }
+}
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+  .CompactCard {
+    width: 134%;
+  }
+  .ExpandedCard {
+    /* top: 8rem; */
+    height: 60%;
+    /* left: 25px; */
+    /* width: 90%; */
+  }
+  .chartContainer {
+    width: 93%;
+  }
+}
+@media screen and (max-width: 900px) {
+  .ExpandedCard {
+    top: 8rem;
+    height: 70%;
+    left: 25px;
+    width: 90%;
+  }
+  .chartContainer {
+    width: 90%;
+  }
+}
+@media screen and (max-width: 769px) {
+  .ExpandedCard {
+    top: 8rem;
+    height: 60%;
+    left: 25px;
+    width: 90%;
+  }
+  .chartContainer {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .ExpandedCard {
+    top: 8rem;
+    height: 42%;
+    left: 8px;
+    width: 92%;
+  }
+  .chartContainer {
+    width: 110%;
+  }
+}
+
+@media screen and (max-width: 376px) {
+  .ExpandedCard {
+    top: 8rem;
+    height: 48%;
+    left: 8px;
+    width: 92%;
+  }
+  .chartContainer {
+    width: 110%;
+  }
+}
+@media screen and (max-width: 320px) {
+  .ExpandedCard {
+    top: 8rem;
+    height: 42%;
+    left: 8px;
+    width: 92%;
+  }
+  .chartContainer {
+    width: 112%;
+  }
+}
