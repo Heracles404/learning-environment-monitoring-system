@@ -42,12 +42,15 @@ function DBCompactCard({ param, setExpanded }) {
       layoutId={`expandableCard-${param.title}`}
       onClick={setExpanded}
     >
-      <div className="radialBar">
-        <CircularProgressbar
+      <div className="DBradialBar">
+        <span>{param.title}</span>
+        {/* <CircularProgressbar
           value={param.barValue}
           text={`${param.barValue}`}
-        />
-        <span>{param.title}</span>
+        /> */}
+        {/* Good: 2<br/>
+        Bad: 1 */}
+        
       </div>
       <div className="detail">
       <Png style={{ width: '50px', height: '50px' }}/>
