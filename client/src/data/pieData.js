@@ -114,57 +114,36 @@ const fetchVogPieData = async () => {
   try {
     const readouts = await httpGetAllReadouts(); // Fetch VOG sensor data
 
-    // Fetch VOG levels dynamically from the data
-    const levelCounts = [0, 0, 0, 0, 0]; // Array to hold counts for each level (Level 0, Level 1, Level 2, Level 3, Level 4)
+    // Count occurrences of each level
+    const levelCounts = [0, 0, 0, 0, 0];
 
-    // Count the rooms for each level
     readouts.forEach((item) => {
-      const { level } = item; // Get the level from the item
+      const { level } = item;
       if (level >= 0 && level <= 4) {
         levelCounts[level] += 1;
       }
     });
 
-    // Generate VOG pie data dynamically based on the counts
-    vogPieData = [
-      {
-        id: "Level 0",
-        label: "Level 0",
-        value: levelCounts[0], 
-        color: "hsl(120, 70%, 50%)", // Green
-      },
-      {
-        id: "Level 1",
-        label: "Level 1",
-        value: levelCounts[1], 
-        color: "hsl(120, 70%, 50%)", // Green
-      },
-      {
-        id: "Level 2",
-        label: "Level 2",
-        value: levelCounts[2], 
-        color: "hsl(0, 70%, 50%)", // Red
-      },
-      {
-        id: "Level 3",
-        label: "Level 3",
-        value: levelCounts[3], 
-        color: "hsl(0, 100%, 50%)", // Dark Red
-      },
-      {
-        id: "Level 4",
-        label: "Level 4",
-        value: levelCounts[4], 
-        color: "hsl(0, 70%, 50%)", // Red
-      },
-    ];
+    // Determine the most frequent VOG level
+    const maxLevel = levelCounts.indexOf(Math.max(...levelCounts));
 
-    console.log("VOG Pie Data:", vogPieData); // Display the dynamic VOG levels
+    // Generate VOG pie data: retain all levels but display 1 only for the majority level
+    vogPieData = Array.from({ length: 5 }, (_, i) => ({
+      id: `Level ${i}`,
+      label: `Level ${i}`,
+      value: i === maxLevel ? 1 : 0, // Show 1 only for the most frequent level, 0 for others
+      color: i === 0 ? "hsl(120, 70%, 50%)" : "hsl(0, 70%, 50%)", // Green for Level 0, Red for others
+      tooltip: `Level ${i}: ${levelCounts[i]} readings`, // Tooltip on hover
+    }));
+
+    console.log("VOG Pie Data (Legends Retained, Fixed Display):", vogPieData);
 
   } catch (error) {
     console.error("Error fetching or processing VOG data:", error);
   }
 };
+
+
 
 // Call the fetch function on module load
 fetchPieData();
