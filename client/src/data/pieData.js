@@ -13,85 +13,97 @@ export const fetchPieData = async () => {
   try {
     const readouts = await httpGetSensorData(); // Fetch sensor data for indoor air, temperature, and lighting
 
-    // Categorize indoorAir data
+    // Initialize data for Good and Bad classifications
     const indoorAirGoodRooms = new Set();
     const indoorAirBadRooms = new Set();
+    const indoorAirGoodData = [];
+    const indoorAirBadData = [];
+
+    const tempGoodRooms = new Set();
+    const tempBadRooms = new Set();
+    const tempGoodData = [];
+    const tempBadData = [];
+
+    const lightingGoodRooms = new Set();
+    const lightingBadRooms = new Set();
+    const lightingGoodData = [];
+    const lightingBadData = [];
+
+    // Categorize rooms based on Good/Bad status and store only the most recent data
     readouts.forEach((item) => {
-      const { classroom, indoorAir } = item;
-      if (indoorAir === "Good") {
+      const { classroom, indoorAir, temp, lightRemarks, IAQIndex, temperature, lighting } = item;
+
+      // Indoor Air categorization
+      if (indoorAir === "Good" && !indoorAirGoodRooms.has(classroom)) {
         indoorAirGoodRooms.add(classroom);
-      } else if (indoorAir === "Bad") {
+        indoorAirGoodData.push({ classroom, data: IAQIndex }); // Store latest IAQIndex for "Good"
+      } else if (indoorAir === "Bad" && !indoorAirBadRooms.has(classroom)) {
         indoorAirBadRooms.add(classroom);
+        indoorAirBadData.push({ classroom, data: IAQIndex }); // Store latest IAQIndex for "Bad"
+      }
+
+      // Temperature categorization
+      if (temp === "Good" && !tempGoodRooms.has(classroom)) {
+        tempGoodRooms.add(classroom);
+        tempGoodData.push({ classroom, data: temperature }); // Store latest temperature for "Good"
+      } else if (temp === "Bad" && !tempBadRooms.has(classroom)) {
+        tempBadRooms.add(classroom);
+        tempBadData.push({ classroom, data: temperature }); // Store latest temperature for "Bad"
+      }
+
+      // Lighting categorization
+      if (lightRemarks === "Good" && !lightingGoodRooms.has(classroom)) {
+        lightingGoodRooms.add(classroom);
+        lightingGoodData.push({ classroom, data: lighting }); // Store latest lighting value for "Good"
+      } else if (lightRemarks === "Bad" && !lightingBadRooms.has(classroom)) {
+        lightingBadRooms.add(classroom);
+        lightingBadData.push({ classroom, data: lighting }); // Store latest lighting value for "Bad"
       }
     });
 
-    // Generate indoorAir pie data
+    // Generate indoorAir pie data with only the most recent IAQ value in the id field for each room
     indoorAirPieData = [
       {
-        id: "Good",
-        label: "Good",
+        id: indoorAirGoodData.map(room => `${room.classroom}: ${room.data}`).join("\n"), // Using newline for separation
+        label: `Good: ${indoorAirGoodRooms.size}`,
         value: indoorAirGoodRooms.size,
         color: "hsl(120, 70%, 50%)", // Green for "Good"
       },
       {
-        id: "Bad",
-        label: "Bad",
+        id: indoorAirBadData.map(room => `${room.classroom}: ${room.data}`).join("\n"), // Using newline for separation
+        label: `Bad: ${indoorAirBadRooms.size}`,
         value: indoorAirBadRooms.size,
         color: "hsl(0, 70%, 50%)", // Red for "Bad"
       },
     ];
 
-    // Categorize temperature data
-    const tempGoodRooms = new Set();
-    const tempBadRooms = new Set();
-    readouts.forEach((item) => {
-      const { classroom, temp } = item;
-      if (temp === "Good") {
-        tempGoodRooms.add(classroom);
-      } else if (temp === "Bad") {
-        tempBadRooms.add(classroom);
-      }
-    });
-
-    // Generate temperature pie data
+    // Generate temperature pie data with only the most recent temperature value in the id field for each room
     temperaturePieData = [
       {
-        id: "Good",
-        label: "Good",
+        id: tempGoodData.map(room => `${room.classroom}: ${room.data}`).join("\n"), // Using newline for separation
+        label: `Good: ${tempGoodRooms.size}`,
         value: tempGoodRooms.size,
         color: "hsl(120, 70%, 50%)", // Green for "Good"
       },
       {
-        id: "Bad",
-        label: "Bad",
+        id: tempBadData.map(room => `${room.classroom}: ${room.data}`).join("\n"), // Using newline for separation
+        label: `Bad: ${tempBadRooms.size}`,
         value: tempBadRooms.size,
         color: "hsl(0, 70%, 50%)", // Red for "Bad"
       },
     ];
 
-    // Categorize lighting data
-    const lightingGoodRooms = new Set();
-    const lightingBadRooms = new Set();
-    readouts.forEach((item) => {
-      const { classroom, lightRemarks } = item;
-      if (lightRemarks === "Good") {
-        lightingGoodRooms.add(classroom);
-      } else if (lightRemarks === "Bad") {
-        lightingBadRooms.add(classroom);
-      }
-    });
-
-    // Generate lighting pie data
+    // Generate lighting pie data with only the most recent lighting value in the id field for each room
     lightingPieData = [
       {
-        id: "Good",
-        label: "Good",
+        id: lightingGoodData.map(room => `${room.classroom}: ${room.data}`).join("\n"), // Using newline for separation
+        label: `Good: ${lightingGoodRooms.size}`,
         value: lightingGoodRooms.size,
         color: "hsl(120, 70%, 50%)", // Green for "Good"
       },
       {
-        id: "Bad",
-        label: "Bad",
+        id: lightingBadData.map(room => `${room.classroom}: ${room.data}`).join("\n"), // Using newline for separation
+        label: `Bad: ${lightingBadRooms.size}`,
         value: lightingBadRooms.size,
         color: "hsl(0, 70%, 50%)", // Red for "Bad"
       },
@@ -100,7 +112,7 @@ export const fetchPieData = async () => {
     console.log("Indoor Air Pie Data:", indoorAirPieData);
     console.log("Temperature Pie Data:", temperaturePieData);
     console.log("Lighting Pie Data:", lightingPieData);
-    
+
     // Fetch VOG data
     fetchVogPieData();
 
@@ -109,7 +121,7 @@ export const fetchPieData = async () => {
   }
 };
 
-// Function to fetch and categorize VOG pie data
+// Function to fetch and categorize VOG pie data (keeping this as you requested)
 const fetchVogPieData = async () => {
   try {
     const readouts = await httpGetAllReadouts(); // Fetch VOG sensor data
@@ -142,8 +154,6 @@ const fetchVogPieData = async () => {
     console.error("Error fetching or processing VOG data:", error);
   }
 };
-
-
 
 // Call the fetch function on module load
 fetchPieData();
