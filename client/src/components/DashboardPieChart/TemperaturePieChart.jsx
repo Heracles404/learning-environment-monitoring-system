@@ -1,13 +1,27 @@
 import { ResponsivePie } from "@nivo/pie";
 import { tokens } from "../../theme";
 import { useTheme } from "@mui/material";
-import { temperaturePieData as data } from "../../data/pieData";
+import { temperaturePieData as data, temperaturePieDataWithData } from "../../data/pieData";
 
 const TemperaturePieChart = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const customColors = ["#33FFC9", "#FFC2C2"];
-  
+
+  const handleClick = (e) => {
+    // Find the matching entry from temperaturePieDataWithData
+    const clickedCategory = e.id; // This will be "Good" or "Bad"
+    const matchedData = temperaturePieDataWithData.find((item) =>
+      item.label.includes(clickedCategory)
+    );
+
+    if (matchedData) {
+      alert(`${matchedData.id}`); // Show detailed room data
+    } else {
+      alert("No data found.");
+    }
+  };
+
   return (
     <ResponsivePie
       data={data}
@@ -50,7 +64,6 @@ const TemperaturePieChart = () => {
       }}
       arcLinkLabelsSkipAngle={10}
       colors={customColors}
-      // arcLinkLabelsTextColor={colors.greenAccent[400]}
       arcLinkLabelsTextColor="white"
       arcLinkLabelsThickness={2}
       arcLinkLabelsDiagonalLength={5}
@@ -108,6 +121,7 @@ const TemperaturePieChart = () => {
           ],
         },
       ]}
+      onClick={handleClick} // Added onClick event to show room details
     />
   );
 };

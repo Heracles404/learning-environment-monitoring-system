@@ -1,12 +1,27 @@
 import { ResponsivePie } from "@nivo/pie";
 import { tokens } from "../../theme";
 import { useTheme } from "@mui/material";
-import { lightingPieData as data } from "../../data/pieData";
+import { lightingPieData as data, lightingPieDataWithData } from "../../data/pieData";
 
 const LightingPieChart = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const customColors = ["#33FFC9", "#FFC2C2"];
+
+  const handleClick = (e) => {
+    // Find the matching entry from lightingPieDataWithData
+    const clickedCategory = e.id; // This will be "Good" or "Bad"
+    const matchedData = lightingPieDataWithData.find((item) =>
+      item.label.includes(clickedCategory)
+    );
+
+    if (matchedData) {
+      alert(`${matchedData.id}`); // Show detailed room data
+    } else {
+      alert("No data found.");
+    }
+  };
+
   return (
     <ResponsivePie
       data={data}
@@ -49,7 +64,6 @@ const LightingPieChart = () => {
       }}
       arcLinkLabelsSkipAngle={10}
       colors={customColors}
-      // arcLinkLabelsTextColor={colors.greenAccent[400]}
       arcLinkLabelsTextColor="white"
       arcLinkLabelsThickness={2}
       arcLinkLabelsDiagonalLength={5}
@@ -107,6 +121,7 @@ const LightingPieChart = () => {
           ],
         },
       ]}
+      onClick={handleClick} // Added onClick event to show room details
     />
   );
 };
