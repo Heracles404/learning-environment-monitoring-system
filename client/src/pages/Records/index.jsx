@@ -145,20 +145,6 @@ const Records = () => {
             <Box display="flex" justifyContent="space-between" alignItems="space-between" sx={{ flexDirection: { xs: "column", sm: "row" } }}>
                 <Header title="Records" subtitle="Managing the Records" />
                 <Box>
-                    {/* <Button
-                        onClick={handleDeleteAll}
-                        sx={{
-                            backgroundColor: colors.redAccent[700],
-                            color: "white",
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                            padding: "10px 32.5px",
-                            margin: "5px",
-                        }}
-                    >
-                        <DeleteOutlinedIcon sx={{ mr: "10px" }} />
-                        Delete All Records
-                    </Button> */}
                     <Button
                         onClick={handleDeleteSelected}
                         sx={{
@@ -243,6 +229,9 @@ const Records = () => {
                         onChange={(e) => setEndDate(e.target.value)}
                         InputLabelProps={{
                             shrink: true,
+                        }}
+                        inputProps={{
+                            min: startDate,
                         }}
                     />
                 </DialogContent>

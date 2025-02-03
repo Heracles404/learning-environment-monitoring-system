@@ -82,7 +82,6 @@ const VOGRecords = () => {
     const handleOpenDialog = () => setOpen(true);
     const handleCloseDialog = () => setOpen(false);
 
-
     const handleDeleteSelected = async () => {
         console.log("Selected Rows for deletion:", selectedRows);
 
@@ -106,8 +105,6 @@ const VOGRecords = () => {
         }
     };
 
-
-
     return (
         <Box m="5px 25px">
             {/* HEADER */}
@@ -122,20 +119,6 @@ const VOGRecords = () => {
                 <Header title="VOG Records" subtitle="Managing the VOG Records" />
 
                 <Box>
-                    {/* <Button
-                        onClick={handleDeleteAll}
-                        sx={{
-                            backgroundColor: colors.redAccent[700],
-                            color: "white",
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                            padding: "10px 32.5px",
-                            margin: "5px",
-                        }}
-                    >
-                        <DeleteOutlinedIcon sx={{ mr: "10px" }} />
-                        Delete All Reports
-                    </Button> */}
                     <Button
                         onClick={handleDeleteSelected}
                         sx={{
@@ -225,6 +208,9 @@ const VOGRecords = () => {
                         value={endDate}
                         onChange={(e) => setEndDate(e.target.value)}
                         InputLabelProps={{ shrink: true }}
+                        inputProps={{
+                            min: startDate, // Prevent selecting a date before the start date
+                        }}
                     />
                 </DialogContent>
                 <DialogActions>
