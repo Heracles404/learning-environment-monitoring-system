@@ -86,7 +86,7 @@ const Dashboard = () => {
   }
 
   return (
-    <Box m="0 3px 0 15px" height="100vh" overflow="auto">
+    <Box m="0 3px 0 15px" height="96vh" overflow="auto">
       {/* HEADER */}
       <Box 
         display="flex" 
@@ -97,9 +97,7 @@ const Dashboard = () => {
         }}
       >
         <Header title="DASHBOARD" subtitle="Welcome to Edilberto S. Legaspi Integrated High School Dashboard" />
-      </Box>
-
-      <Grid container
+        <Grid container
         display='flex'
         justifyContent="space-between"
         alignContent="space-between"
@@ -163,7 +161,7 @@ const Dashboard = () => {
           </Box>
         </Grid>
       </Grid>
-
+      </Box>
       <Box>
         <DashboardCards />
         {/* <DBRecords/> */}
@@ -174,7 +172,7 @@ const Dashboard = () => {
       <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gridAutoRows={{ xs: "10.5%", sm: "22%", md:"22%", lg: "21%" }} gap="15px" mt="20px">
         
         {/* ROW 1 */}
-        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[600]} padding="5px">
+        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[500]} padding="5px">
           <Typography variant="h5" fontWeight="600" display="flex" justifyContent="center" color="white">
             INDOOR AIR QUALITY
           </Typography>
@@ -186,7 +184,7 @@ const Dashboard = () => {
           </Box>
         </Box>
 
-        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[600]} padding="5px">
+        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[500]} padding="5px">
           <Typography variant="h5" fontWeight="600" display="flex" justifyContent="center" color="white">
             LIGHT
           </Typography>
@@ -199,7 +197,7 @@ const Dashboard = () => {
         </Box>
 
         {/* ROW 3 */}
-        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[600]} padding="5px">
+        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[500]} padding="5px">
           <Typography variant="h5" fontWeight="600" display="flex" justifyContent="center" color="white">
             TEMPERATURE
           </Typography>
@@ -211,7 +209,7 @@ const Dashboard = () => {
           </Box>
         </Box>
 
-        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[600]} padding="5px">
+        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[500]} padding="5px">
           <Typography variant="h5" fontWeight="600" display="flex" justifyContent="center" color="white">
             VOG
           </Typography>
