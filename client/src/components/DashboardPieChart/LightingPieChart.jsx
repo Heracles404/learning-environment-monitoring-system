@@ -7,7 +7,7 @@ import { lightingPieData as data, lightingPieDataWithData } from "../../data/pie
 const LightingPieChart = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const customColors = ["#33FFC9", "#FFC2C2"];
+  const customColors = ["#47FFCE", "#FFC2C2"];
   const [selectedData, setSelectedData] = useState(null);
 
   const handleClick = (e) => {

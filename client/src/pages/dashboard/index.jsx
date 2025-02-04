@@ -174,7 +174,7 @@ const Dashboard = () => {
       <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gridAutoRows={{ xs: "10.5%", sm: "22%", md:"22%", lg: "21%" }} gap="15px" mt="20px">
         
         {/* ROW 1 */}
-        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[600]} padding="5px">
+        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[500]} padding="5px">
           <Typography variant="h5" fontWeight="600" display="flex" justifyContent="center" color="white">
             INDOOR AIR QUALITY
           </Typography>
@@ -186,7 +186,7 @@ const Dashboard = () => {
           </Box>
         </Box>
 
-        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[600]} padding="5px">
+        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[500]} padding="5px">
           <Typography variant="h5" fontWeight="600" display="flex" justifyContent="center" color="white">
             LIGHT
           </Typography>
@@ -199,7 +199,7 @@ const Dashboard = () => {
         </Box>
 
         {/* ROW 3 */}
-        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[600]} padding="5px">
+        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[500]} padding="5px">
           <Typography variant="h5" fontWeight="600" display="flex" justifyContent="center" color="white">
             TEMPERATURE
           </Typography>
@@ -211,7 +211,7 @@ const Dashboard = () => {
           </Box>
         </Box>
 
-        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[600]} padding="5px">
+        <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[500]} padding="5px">
           <Typography variant="h5" fontWeight="600" display="flex" justifyContent="center" color="white">
             VOG
           </Typography>
