@@ -86,7 +86,7 @@ const Dashboard = () => {
   }
 
   return (
-    <Box m="0 3px 0 15px" height="100vh" overflow="auto">
+    <Box m="0 3px 0 15px" height="96vh" overflow="auto">
       {/* HEADER */}
       <Box 
         display="flex" 
@@ -97,9 +97,7 @@ const Dashboard = () => {
         }}
       >
         <Header title="DASHBOARD" subtitle="Welcome to Edilberto S. Legaspi Integrated High School Dashboard" />
-      </Box>
-
-      <Grid container
+        <Grid container
         display='flex'
         justifyContent="space-between"
         alignContent="space-between"
@@ -163,7 +161,7 @@ const Dashboard = () => {
           </Box>
         </Grid>
       </Grid>
-
+      </Box>
       <Box>
         <DashboardCards />
         {/* <DBRecords/> */}
