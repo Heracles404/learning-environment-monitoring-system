@@ -173,7 +173,7 @@ const Dashboard = () => {
         
         {/* ROW 1 */}
         <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[500]} padding="5px">
-          <Typography variant="h5" fontWeight="600" display="flex" justifyContent="center" color="white">
+          <Typography variant="h4" fontWeight="700" display="flex" justifyContent="center" color="white">
             INDOOR AIR QUALITY
           </Typography>
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
@@ -185,7 +185,7 @@ const Dashboard = () => {
         </Box>
 
         <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[500]} padding="5px">
-          <Typography variant="h5" fontWeight="600" display="flex" justifyContent="center" color="white">
+          <Typography variant="h4" fontWeight="700" display="flex" justifyContent="center" color="white">
             LIGHT
           </Typography>
           {Object.entries(inactiveDevices.bh1750Rooms).map(([room, count]) => (
@@ -198,7 +198,7 @@ const Dashboard = () => {
 
         {/* ROW 3 */}
         <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[500]} padding="5px">
-          <Typography variant="h5" fontWeight="600" display="flex" justifyContent="center" color="white">
+          <Typography variant="h4" fontWeight="700" display="flex" justifyContent="center" color="white">
             TEMPERATURE
           </Typography>
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
@@ -210,7 +210,7 @@ const Dashboard = () => {
         </Box>
 
         <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[500]} padding="5px">
-          <Typography variant="h5" fontWeight="600" display="flex" justifyContent="center" color="white">
+          <Typography variant="h4" fontWeight="700" display="flex" justifyContent="center" color="white">
             VOG
           </Typography>
           {Object.entries(inactiveDevices.pms5003Rooms).map(([room, count]) => (

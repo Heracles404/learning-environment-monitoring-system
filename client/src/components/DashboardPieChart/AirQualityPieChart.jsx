@@ -7,7 +7,7 @@ import { indoorAirPieData as data, indoorAirPieWithData } from "../../data/pieDa
 const AirQualityPieChart = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const customColors = ["#5CFFD3", "#FFC2C2"];
+  const customColors = ["#70FFA2", "#FFC2C2"];
   const [selectedData, setSelectedData] = useState(null);
 
   const handleClick = (e) => {
@@ -58,7 +58,7 @@ const AirQualityPieChart = () => {
             anchor: "bottom-left",
             direction: "column",
             justify: false,
-            translateX: 0,
+            translateX: -50,
             translateY: 40,
             itemsSpacing: 0,
             itemWidth: 100,

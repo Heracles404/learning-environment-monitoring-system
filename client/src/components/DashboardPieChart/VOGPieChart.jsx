@@ -89,7 +89,7 @@ const VOGPieChart = () => {
           anchor: "bottom-left",
           direction: "column",
           justify: false,
-          translateX: 0,
+          translateX: -50,
           translateY: 40,
           itemsSpacing: 0,
           itemWidth: 100,
