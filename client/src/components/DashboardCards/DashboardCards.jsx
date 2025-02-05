@@ -34,10 +34,12 @@ const DashboardCards = () => {
             <DashboardCard
               cardData={cardData} // Pass data as prop to each card
               title={card.title}
+              titleColor={card.titleColor} // 🟢 Pass title color
               color={card.color}
               barValue={card.barValue}
               value={category} // Display "Good" or "Bad" instead of the value
               png={card.png}
+              iconColor={card.iconColor} // 🔥 Pass icon color
               series={card.series}
             />
           </div>
