@@ -70,8 +70,8 @@ export const cardsData = [
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
-    iconColor: "#E4DBC9", // 🔥 Icon color
-    titleColor: "#E4DBC9", // 🟢 Title color
+    iconColor: "#DA7356", // 🔥 Icon color
+    titleColor: "#DA7356", // 🟢 Title color
     barValue: 0, // Placeholder until data is fetched
     value: 0, // Placeholder until data is fetched
     png: VolcanoIcon, // You can change the icon to something fitting for VOG

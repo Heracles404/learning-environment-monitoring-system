@@ -13,33 +13,34 @@ const DashboardCards = () => {
   // Function to categorize the values as "Good" or "Bad"
   const getCategory = (value, type) => {
     if (type === "IAQ Index") {
-      return value <= 50 ? "Good" : "Bad"; // Example: IAQ Index <= 50 is "Good"
+      return value <= 50 ? "Good" : "Bad";
     } else if (type === "Temperature") {
-      return value <= 25 ? "Good" : "Bad"; // Example: Temperature <= 25°C is "Good"
+      return value <= 25 ? "Good" : "Bad";
     } else if (type === "Lighting") {
-      return value >= 300 ? "Good" : "Bad"; // Example: Lighting >= 300 lux is "Good"
+      return value >= 300 ? "Good" : "Bad";
     } else if (type === "Volcanic Smog") {
-      return value <= 100 ? "Good" : "Bad"; // Temporary: Change the values later on uan
+      return value <= 100 ? "Good" : "Bad";
     }
-    return "Unknown"; // Default case
+    return "Unknown";
   };
 
   return (
     <div className="Cards">
       {cardData.map((card, index) => {
-        const category = getCategory(card.value, card.title); // Get category (Good/Bad)
+        const category = getCategory(card.value, card.title);
+        const textColor = category === "Good" ? "#4CAF50" : "#FF6F61"; // Set text color
 
         return (
           <div className="parentContainer" key={index}>
             <DashboardCard
-              cardData={cardData} // Pass data as prop to each card
+              cardData={cardData}
               title={card.title}
-              titleColor={card.titleColor} // 🟢 Pass title color
+              titleColor={card.titleColor}
               color={card.color}
               barValue={card.barValue}
-              value={category} // Display "Good" or "Bad" instead of the value
+              value={<span style={{ color: textColor }}>{category}</span>} // Apply color
               png={card.png}
-              iconColor={card.iconColor} // 🔥 Pass icon color
+              iconColor={card.iconColor}
               series={card.series}
             />
           </div>
