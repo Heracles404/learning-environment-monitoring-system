@@ -43,17 +43,12 @@ function DBCompactCard({ param, setExpanded }) {
       onClick={setExpanded}
     >
       <div className="DBradialBar">
-        <span>{param.title}</span>
-        {/* <CircularProgressbar
-          value={param.barValue}
-          text={`${param.barValue}`}
-        /> */}
-        {/* Good: 2<br/>
-        Bad: 1 */}
-        
+        {/* 🟢 Apply titleColor dynamically */}
+        <span style={{ color: param.titleColor }}>{param.title}</span>
       </div>
       <div className="detail">
-      <Png style={{ width: '50px', height: '50px' }}/>
+        {/* 🔥 Apply iconColor dynamically */}
+        <Png style={{ width: "50px", height: "50px", color: param.iconColor }} />
         <span>{param.value}</span>
         <span>Current Status</span>
       </div>
@@ -119,15 +114,24 @@ function DBExpandedCard({ param, setExpanded }) {
       <div style={{ alignSelf: "flex-end", cursor: "pointer", color: "white" }}>
         <UilTimes onClick={setExpanded} />
       </div>
-      <span>{param.title}</span>
+      {/* 🟢 Apply titleColor dynamically */}
+      <span style={{ color: param.titleColor }}>{param.title}</span>
       <div className="DBchartContainer">
         <Chart
-          options={data.options}
-          series={param.series} // Series now contains data for each room
+          options={{
+            chart: { type: "area", height: "auto" },
+            stroke: { curve: "smooth", colors: ["white"] },
+            xaxis: {
+              type: "datetime",
+              categories: param.series[0].data.map((_, index) =>
+                new Date(Date.now() - (param.series[0].data.length - index) * 1000 * 60 * 60).toISOString()
+              ),
+            },
+          }}
+          series={param.series}
           type="area"
         />
       </div>
-      {/* <span>Last 24 hours</span> */}
     </motion.div>
   );
 }
