@@ -14,7 +14,7 @@ const DashboardCards = () => {
   const getCategory = (value, type) => {
     if (type === "IAQ Index") {
       return value <= 50 ? "GOOD" : "BAD";
-    } else if (type === "Temperature") {
+    } else if (type === "Heat Index") {
       return value <= 25 ? "GOOD" : "BAD";
     } else if (type === "Lighting") {
       return value >= 300 ? "GOOD" : "BAD";
