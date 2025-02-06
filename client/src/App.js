@@ -8,7 +8,6 @@ import Form from "./pages/EditAccountForm";
 import CarbonDioxide from "./pages/Monitor/AirQuality";
 import HeatIndex from "./pages/Monitor/HeatIndex";
 import Lighting from "./pages/Monitor/Lighting";
-import Oxygen from "./pages/Monitor/Oxygen";
 import VolSmog from "./pages/Monitor/VolSmog";
 
 import Device1 from "./pages/Monitor/Devices/Device1";
@@ -22,7 +21,6 @@ import FAQ from "./pages/faq";
 import Accounts from "./pages/Accounts";
 import Records from "./pages/Records";
 import NewAccountForm from "./pages/CreateNewAccount";
-import PreviewAccounts from "./pages/Accounts/PreviewAccount";
 import VOGRecords from "./pages/Records/vog_record";
 import RegisterDevice from "./pages/Monitor/Devices/RegisterDevice";
 import UpdateDevice from "./pages/Monitor/Devices/UpdateDevice";
@@ -43,7 +41,6 @@ function App() {
       <Navigate to="/" />
     );
   };
-
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
@@ -54,7 +51,6 @@ function App() {
               path="/" 
               element={<LoginPage />} 
             />
-            
             <Route
               path="/dashboard"
               element={
@@ -63,8 +59,6 @@ function App() {
                 </PrivateRoute>
               }
             />
-           {/* one line: element={<PrivateRoute><Dashboard/></PrivateRoute>}/> */}
-                               
             <Route
               path="/Accounts"
               element={
@@ -72,17 +66,7 @@ function App() {
                   <Accounts />
                 </PrivateRoute>
               }
-            />
-            
-            <Route
-              path="/Members"
-              element={
-                <PrivateRoute>
-                  <PreviewAccounts />
-                </PrivateRoute>
-              }
-            />
-            
+            />         
             <Route
               path="/records"
               element={
@@ -91,7 +75,6 @@ function App() {
                 </PrivateRoute>
               }
             />
-            
             <Route
               path="/EditAccount/:userName"
               element={
@@ -108,7 +91,6 @@ function App() {
                 </PrivateRoute>
               }
             />
-            
             <Route
               path="/AirQuality"
               element={
@@ -134,14 +116,6 @@ function App() {
               }
             />
             <Route
-              path="/Oxygen"
-              element={
-                <PrivateRoute>
-                  <Oxygen />
-                </PrivateRoute>
-              }
-            />
-            <Route
               path="/VolSmog"
               element={
                 <PrivateRoute>
@@ -157,8 +131,6 @@ function App() {
                 </PrivateRoute>
               }
             />
-            
-            
             <Route
               path="/VOG_records"
               element={
