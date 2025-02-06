@@ -13,7 +13,7 @@ export const cardsData = [
     title: "IAQ Index",
     color: {
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
-      boxShadow: "0px 10px 20px 0px #e0c6f5",
+      boxShadow: "0px 10px 20px 0px #70FFDB",
     },
     barValue: 0, // Placeholder until data is fetched
     value: 0, // Placeholder until data is fetched
@@ -31,7 +31,7 @@ export const cardsData = [
     title: "Heat Index",
     color: {
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
-      boxShadow: "0px 10px 20px 0px #e0c6f5",
+      boxShadow: "0px 10px 20px 0px #FFD6D6",
     },
     barValue: 0, // Placeholder until data is fetched
     value: 0, // Placeholder until data is fetched
@@ -49,7 +49,7 @@ export const cardsData = [
     title: "Lighting",
     color: {
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
-      boxShadow: "0px 10px 20px 0px #e0c6f5",
+      boxShadow: "0px 10px 20px 0px #FFF0C2",
     },
     barValue: 0, // Placeholder until data is fetched
     value: 0, // Placeholder until data is fetched
@@ -68,7 +68,7 @@ export const cardsData = [
     title: "Volcanic Smog",
     color: {
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
-      boxShadow: "0px 10px 20px 0px #e0c6f5",
+      boxShadow: "0px 10px 20px 0px #FFDCAD",
     },
     iconColor: "#FFD399 ", // 🔥 Icon color
     titleColor: "#FFD399 ", // 🟢 Title color
