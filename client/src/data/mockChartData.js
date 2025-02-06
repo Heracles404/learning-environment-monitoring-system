@@ -15,17 +15,12 @@ export const cardsData = [
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #70FFDB",
     },
-    barValue: 0, // Placeholder until data is fetched
-    value: 0, // Placeholder until data is fetched
-    iconColor: "#85FFE0", // 🔥 Icon color
-    titleColor: "#85FFE0", // 🟢 Title color
+    barValue: 0,
+    value: 0,
+    iconColor: "#85FFE0",
+    titleColor: "#85FFE0",
     png: AirIcon,
-    series: [
-      {
-        name: "IAQ Index",
-        data: [], // Placeholder until data is fetched
-      },
-    ],
+    series: [{ name: "IAQ Index", data: [] }],
   },
   {
     title: "Heat Index",
@@ -33,17 +28,12 @@ export const cardsData = [
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #FFD6D6",
     },
-    barValue: 0, // Placeholder until data is fetched
-    value: 0, // Placeholder until data is fetched
-    iconColor: "#FFD8D6 ", // 🔥 Icon color
-    titleColor: "#FFD8D6 ", // 🟢 Title color
+    barValue: 0,
+    value: 0,
+    iconColor: "#FFD8D6 ",
+    titleColor: "#FFD8D6 ",
     png: DeviceThermostatIcon,
-    series: [
-      {
-        name: "Temperature",
-        data: [], // Placeholder until data is fetched
-      },
-    ],
+    series: [{ name: "Heat Index", data: [] }],
   },
   {
     title: "Lighting",
@@ -51,108 +41,27 @@ export const cardsData = [
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #FFF0C2",
     },
-    barValue: 0, // Placeholder until data is fetched
-    value: 0, // Placeholder until data is fetched
-    iconColor: "#FFE699 ", // 🔥 Icon color
-    titleColor: "#FFE699 ", // 🟢 Title color
+    barValue: 0,
+    value: 0,
+    iconColor: "#FFE699 ",
+    titleColor: "#FFE699 ",
     png: WbIncandescentIcon,
-    series: [
-      {
-        name: "Lighting",
-        data: [], // Placeholder until data is fetched
-      },
-    ],
+    series: [{ name: "Lighting", data: [] }],
   },
-  // New VOG card added for PMS2.5 and PMS10
   {
     title: "Volcanic Smog",
     color: {
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #FFDCAD",
     },
-    iconColor: "#FFD399 ", // 🔥 Icon color
-    titleColor: "#FFD399 ", // 🟢 Title color
-    barValue: 0, // Placeholder until data is fetched
-    value: 0, // Placeholder until data is fetched
-    png: VolcanoIcon, // You can change the icon to something fitting for VOG
+    iconColor: "#FFD399 ",
+    titleColor: "#FFD399 ",
+    barValue: 0,
+    value: 0,
+    png: VolcanoIcon,
     series: [
-      {
-        name: "PMS2.5",
-        data: [], // Placeholder for PMS2.5 data
-      },
-      {
-        name: "PMS10",
-        data: [], // Placeholder for PMS10 data
-      },
-    ],
-  },
-];
-
-// Export other data with deduplication
-export const IAQData = [
-  {
-    title: "Indoor Air Quality",
-    color: {
-      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
-      boxShadow: "0px 10px 20px 0px #e0c6f5",
-    },
-    png: WbIncandescentIcon,
-    series: [
-      {
-        // name: "Indoor Air Quality",
-        data: [], // Placeholder until data is fetched
-      },
-    ],
-  },
-];
-
-export const HeatIndexData = [
-  {
-    title: "Heat Index",
-    color: {
-      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
-      boxShadow: "0px 10px 20px 0px #e0c6f5",
-    },
-    png: WbIncandescentIcon,
-    series: [
-      {
-        // name: "Heat Index",
-        data: [], // Placeholder until data is fetched
-      },
-    ],
-  },
-];
-
-export const LightingData = [
-  {
-    title: "Lighting",
-    color: {
-      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
-      boxShadow: "0px 10px 20px 0px #e0c6f5",
-    },
-    png: WbIncandescentIcon,
-    series: [
-      {
-        // name: "Lighting",
-        data: [], // Placeholder until data is fetched
-      },
-    ],
-  },
-];
-
-export const VolcanicSmogData = [
-  {
-    title: "Volcanic Smog",
-    color: {
-      backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
-      boxShadow: "0px 10px 20px 0px #e0c6f5",
-    },
-    png: WbIncandescentIcon,
-    series: [
-      {
-        // name: "Volcanic Smog",
-        data: [], // Placeholder until data is fetched
-      },
+      { name: "PMS2.5", data: [] },
+      { name: "PMS10", data: [] },
     ],
   },
 ];
@@ -167,62 +76,47 @@ const getRandomColor = () => {
   return color;
 };
 
-// Fetch data and update the cards
 export const fetchCardData = async (setCardData) => {
   try {
-    const readouts = await httpGetAllReadouts(); // Fetch data for IAQ, Temperature, and Lighting
-    const vogReadouts = await httpGetVogReadouts(); // Fetch data for Volcanic Smog (PMS2.5 and PMS10)
+    const readouts = await httpGetAllReadouts();
+    const vogReadouts = await httpGetVogReadouts();
 
     const roomData = {};
-
-    // Group IAQ, Temperature, Lighting data by room
     readouts.forEach((readout) => {
       const room = readout.classroom;
-
-      // Initialize arrays for each room if not already present
       if (!roomData[room]) {
         roomData[room] = {
           iaqIndex: [],
-          temperature: [],
+          heatIndex: [],
           lighting: [],
           indoorAirRemarks: [],
           tempRemarks: [],
           lightRemarks: [],
         };
       }
-
-      // Add data to corresponding room
       roomData[room].iaqIndex.push(readout.IAQIndex);
-      roomData[room].temperature.push(readout.temperature);
+      roomData[room].heatIndex.push(readout.heatIndex);
       roomData[room].lighting.push(readout.lighting);
       roomData[room].indoorAirRemarks.push(readout.indoorAir);
       roomData[room].tempRemarks.push(readout.temp);
       roomData[room].lightRemarks.push(readout.lightRemarks);
     });
 
-    // Group VOG data by room for PMS2.5 and PMS10
     const vogRoomData = {};
     vogReadouts.forEach((readout) => {
       const room = readout.classroom;
-
       if (!vogRoomData[room]) {
-        vogRoomData[room] = {
-          pm25: [],
-          pm10: [],
-        };
+        vogRoomData[room] = { pm25: [], pm10: [] };
       }
-
       vogRoomData[room].pm25.push(readout.pm25);
       vogRoomData[room].pm10.push(readout.pm10);
     });
 
-    // Function to determine if most remarks are "Good"
     const determineGoodBad = (remarks) => {
       const goodCount = remarks.filter((remark) => remark === "Good").length;
       return goodCount > remarks.length / 2 ? "Good" : "Bad";
     };
 
-    // Prepare the updated data for cards
     const updatedCardsData = [
       {
         ...cardsData[0],
@@ -231,7 +125,7 @@ export const fetchCardData = async (setCardData) => {
         series: Object.keys(roomData).map((room) => ({
           name: `Room ${room}`,
           data: roomData[room].iaqIndex,
-          color: getRandomColor(), // Apply random color to the line
+          color: getRandomColor(),
         })),
         remark: determineGoodBad(
           Object.values(roomData).map((room) => room.indoorAirRemarks).flat()
@@ -239,12 +133,12 @@ export const fetchCardData = async (setCardData) => {
       },
       {
         ...cardsData[1],
-        barValue: readouts.length > 0 ? readouts[readouts.length - 1].temperature : 0,
-        value: readouts.length > 0 ? readouts[readouts.length - 1].temperature : 0,
+        barValue: readouts.length > 0 ? readouts[readouts.length - 1].heatIndex : 0,
+        value: readouts.length > 0 ? readouts[readouts.length - 1].heatIndex : 0,
         series: Object.keys(roomData).map((room) => ({
           name: `Room ${room}`,
-          data: roomData[room].temperature,
-          color: getRandomColor(), // Apply random color to the line
+          data: roomData[room].heatIndex,
+          color: getRandomColor(),
         })),
         remark: determineGoodBad(
           Object.values(roomData).map((room) => room.tempRemarks).flat()
@@ -257,7 +151,7 @@ export const fetchCardData = async (setCardData) => {
         series: Object.keys(roomData).map((room) => ({
           name: `Room ${room}`,
           data: roomData[room].lighting,
-          color: getRandomColor(), // Apply random color to the line
+          color: getRandomColor(),
         })),
         remark: determineGoodBad(
           Object.values(roomData).map((room) => room.lightRemarks).flat()
@@ -271,12 +165,12 @@ export const fetchCardData = async (setCardData) => {
           {
             name: "PMS2.5",
             data: vogReadouts.map((readout) => readout.pm25),
-            color: getRandomColor(), // Apply random color to the line
+            color: getRandomColor(),
           },
           {
             name: "PMS10",
             data: vogReadouts.map((readout) => readout.pm10),
-            color: getRandomColor(), // Apply random color to the line
+            color: getRandomColor(),
           },
         ],
       },
