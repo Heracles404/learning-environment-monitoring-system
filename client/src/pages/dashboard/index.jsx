@@ -199,7 +199,7 @@ const Dashboard = () => {
         {/* ROW 3 */}
         <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[500]} padding="5px">
           <Typography variant="h4" fontWeight="700" display="flex" justifyContent="center" color="white">
-            TEMPERATURE
+            HEAT INDEX
           </Typography>
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
             <Typography key={room}>Room {room}: {count} inactive sensor(s)</Typography>
