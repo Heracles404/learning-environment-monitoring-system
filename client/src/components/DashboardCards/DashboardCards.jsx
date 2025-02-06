@@ -13,13 +13,13 @@ const DashboardCards = () => {
   // Function to categorize the values as "Good" or "Bad"
   const getCategory = (value, type) => {
     if (type === "IAQ Index") {
-      return value <= 50 ? "Good" : "Bad";
+      return value <= 50 ? "GOOD" : "BAD";
     } else if (type === "Temperature") {
-      return value <= 25 ? "Good" : "Bad";
+      return value <= 25 ? "GOOD" : "BAD";
     } else if (type === "Lighting") {
-      return value >= 300 ? "Good" : "Bad";
+      return value >= 300 ? "GOOD" : "BAD";
     } else if (type === "Volcanic Smog") {
-      return value <= 100 ? "Good" : "Bad";
+      return value <= 100 ? "GOOD" : "BAD";
     }
     return "Unknown";
   };
@@ -28,19 +28,19 @@ const DashboardCards = () => {
     <div className="Cards">
       {cardData.map((card, index) => {
         const category = getCategory(card.value, card.title);
-        const textColor = category === "Good" ? "#4CAF50" : "#FF6F61"; // Set text color
+        const textColor = category === "GOOD" ? "#33FF7A" : "#FF0A0A"; // Set text color
 
         return (
           <div className="parentContainer" key={index}>
             <DashboardCard
               cardData={cardData}
               title={card.title}
-              titleColor={card.titleColor}
+              // titleColor={card.titleColor}
               color={card.color}
               barValue={card.barValue}
               value={<span style={{ color: textColor }}>{category}</span>} // Apply color
               png={card.png}
-              iconColor={card.iconColor}
+              // iconColor={card.iconColor}
               series={card.series}
             />
           </div>

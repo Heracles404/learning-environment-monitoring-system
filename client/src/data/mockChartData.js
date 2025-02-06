@@ -17,8 +17,8 @@ export const cardsData = [
     },
     barValue: 0, // Placeholder until data is fetched
     value: 0, // Placeholder until data is fetched
-    iconColor: "#5CFFD3", // 🔥 Icon color
-    titleColor: "#5CFFD3", // 🟢 Title color
+    iconColor: "#85FFE0", // 🔥 Icon color
+    titleColor: "#85FFE0", // 🟢 Title color
     png: AirIcon,
     series: [
       {
@@ -28,15 +28,15 @@ export const cardsData = [
     ],
   },
   {
-    title: "Temperature",
+    title: "Heat Index",
     color: {
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
     barValue: 0, // Placeholder until data is fetched
     value: 0, // Placeholder until data is fetched
-    iconColor: "#FFC2C2", // 🔥 Icon color
-    titleColor: "#FFC2C2", // 🟢 Title color
+    iconColor: "#FFD8D6 ", // 🔥 Icon color
+    titleColor: "#FFD8D6 ", // 🟢 Title color
     png: DeviceThermostatIcon,
     series: [
       {
@@ -53,8 +53,8 @@ export const cardsData = [
     },
     barValue: 0, // Placeholder until data is fetched
     value: 0, // Placeholder until data is fetched
-    iconColor: "#E7E8B0", // 🔥 Icon color
-    titleColor: "#E7E8B0", // 🟢 Title color
+    iconColor: "#FFE699 ", // 🔥 Icon color
+    titleColor: "#FFE699 ", // 🟢 Title color
     png: WbIncandescentIcon,
     series: [
       {
@@ -70,8 +70,8 @@ export const cardsData = [
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
     },
-    iconColor: "#DA7356", // 🔥 Icon color
-    titleColor: "#DA7356", // 🟢 Title color
+    iconColor: "#FFD399 ", // 🔥 Icon color
+    titleColor: "#FFD399 ", // 🟢 Title color
     barValue: 0, // Placeholder until data is fetched
     value: 0, // Placeholder until data is fetched
     png: VolcanoIcon, // You can change the icon to something fitting for VOG
