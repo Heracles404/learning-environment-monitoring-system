@@ -117,7 +117,7 @@ const Dashboard = () => {
               borderRadius: '12px',
               height: '82px', 
               width: {
-                xs: '140%', // 0
+                xs: '130%', // 0
                 sm: 150, // 600
                 md: 156, // 900
                 lg: 156, // 1200
@@ -144,7 +144,7 @@ const Dashboard = () => {
               borderRadius: '12px',
               height: '82px', 
               width: {
-                xs: '140%', // 0
+                xs: '130%', // 0
                 sm: 150, // 600
                 md: 156, // 900
                 lg: 156, // 1200

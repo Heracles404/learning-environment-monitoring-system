@@ -120,10 +120,32 @@
       width: 90%;
     }
   }
+  @media screen and (max-width: 821px) {
+    .DBExpandedCard {
+      top: 8rem;
+      height: 50%;
+      left: 25px;
+      width: 90%;
+    }
+    .DBchartContainer {
+      width: 90%;
+    }
+  }
   @media screen and (max-width: 769px) {
     .DBExpandedCard {
       top: 8rem;
       height: 60%;
+      left: 25px;
+      width: 90%;
+    }
+    .DBchartContainer {
+      width: 90%;
+    }
+  }
+  @media screen and (max-width: 492px) {
+    .DBExpandedCard {
+      top: 8rem;
+      height: 40%;
       left: 25px;
       width: 90%;
     }
