@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 const Topbar = () => {
   return (
     <Box display="flex" justifyContent="right" p={2}>
@@ -5,5 +6,4 @@ const Topbar = () => {
     </Box>
   );
 };
-
 export default Topbar;
