@@ -22,7 +22,6 @@ import FAQ from "./pages/faq";
 import Accounts from "./pages/Accounts";
 import Records from "./pages/Records";
 import NewAccountForm from "./pages/CreateNewAccount";
-import PreviewAccounts from "./pages/Accounts/PreviewAccount";
 import VOGRecords from "./pages/Records/vog_record";
 import RegisterDevice from "./pages/Monitor/Devices/RegisterDevice";
 import UpdateDevice from "./pages/Monitor/Devices/UpdateDevice";
@@ -74,14 +73,7 @@ function App() {
               }
             />
             
-            <Route
-              path="/Members"
-              element={
-                <PrivateRoute>
-                  <PreviewAccounts />
-                </PrivateRoute>
-              }
-            />
+
             
             <Route
               path="/records"
