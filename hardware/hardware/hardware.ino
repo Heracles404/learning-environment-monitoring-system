@@ -41,7 +41,8 @@ const char* password = "0495452821@2024";
 
 const char* host = "http://192.168.45.196";
 const int port = 8000;
-const char* endpoint = "/sensors";
+const char* sensors = "/sensors";
+const char* devices = "/devices/classroom/";
 
 // Variables
 float temperature, humidity, voc, IAQIndex, lux;
@@ -261,11 +262,32 @@ int calculateHeatIndex(float T, float H) {
 }
 
 
+void setActive() {
+  HTTPClient http;
+  WiFiClient client;  
+
+  String url = String(host) + ":" + String(port) + String(devices) + String(classroom);
+  http.begin(client, url.c_str());  
+
+  StaticJsonDocument<200> jsonDoc;
+  String jsonPayload;
+
+  jsonDoc["status"] = "ACTIVE";
+
+  serializeJson(jsonDoc, jsonPayload);
+  http.addHeader("Content-Type", "application/json");
+  int responseCode = http.POST(jsonPayload);
+
+  Serial.print("Response Code: ");
+  Serial.println(responseCode);
+  http.end();
+}
+
 void sendDataToServer(String classroom, String recordTime, float temperature, float humidity, float voc, float IAQIndex, float lux, int heatIndex, String indoorAir, String temp, String lightRemarks) {
   HTTPClient http;
   WiFiClient client;  // Create a WiFiClient object
 
-  String url = String(host) + ":" + String(port) + String(endpoint);
+  String url = String(host) + ":" + String(port) + String(sensors);
   http.begin(client, url.c_str());  // Pass the WiFiClient object and the URL
 
   StaticJsonDocument<200> jsonDoc;
@@ -282,6 +304,90 @@ void sendDataToServer(String classroom, String recordTime, float temperature, fl
   jsonDoc["indoorAir"] = indoorAir;
   jsonDoc["temp"] = temp;
   jsonDoc["lightRemarks"] = lightRemarks;
+
+  serializeJson(jsonDoc, jsonPayload);
+  http.addHeader("Content-Type", "application/json");
+  int responseCode = http.POST(jsonPayload);
+
+  Serial.print("Response Code: ");
+  Serial.println(responseCode);
+  http.end();
+}
+
+void bmeActive() {
+  HTTPClient http;
+  WiFiClient client;  
+
+  String url = String(host) + ":" + String(port) + String(devices) + String(classroom);
+  http.begin(client, url.c_str());  
+
+  StaticJsonDocument<200> jsonDoc;
+  String jsonPayload;
+
+  jsonDoc["bme680"] = "ACTIVE";
+
+  serializeJson(jsonDoc, jsonPayload);
+  http.addHeader("Content-Type", "application/json");
+  int responseCode = http.POST(jsonPayload);
+
+  Serial.print("Response Code: ");
+  Serial.println(responseCode);
+  http.end();
+}
+
+void bmeInactive() {
+  HTTPClient http;
+  WiFiClient client;  
+
+  String url = String(host) + ":" + String(port) + String(devices) + String(classroom);
+  http.begin(client, url.c_str());  
+
+  StaticJsonDocument<200> jsonDoc;
+  String jsonPayload;
+
+  jsonDoc["bme680"] = "INACTIVE";
+
+  serializeJson(jsonDoc, jsonPayload);
+  http.addHeader("Content-Type", "application/json");
+  int responseCode = http.POST(jsonPayload);
+
+  Serial.print("Response Code: ");
+  Serial.println(responseCode);
+  http.end();
+}
+
+void bhActive() {
+  HTTPClient http;
+  WiFiClient client;  
+
+  String url = String(host) + ":" + String(port) + String(devices) + String(classroom);
+  http.begin(client, url.c_str());  
+
+  StaticJsonDocument<200> jsonDoc;
+  String jsonPayload;
+
+  jsonDoc["bh1750"] = "ACTIVE";
+
+  serializeJson(jsonDoc, jsonPayload);
+  http.addHeader("Content-Type", "application/json");
+  int responseCode = http.POST(jsonPayload);
+
+  Serial.print("Response Code: ");
+  Serial.println(responseCode);
+  http.end();
+}
+
+void bhInactive() {
+  HTTPClient http;
+  WiFiClient client;  
+
+  String url = String(host) + ":" + String(port) + String(devices) + String(classroom);
+  http.begin(client, url.c_str());  
+
+  StaticJsonDocument<200> jsonDoc;
+  String jsonPayload;
+
+  jsonDoc["bh1750"] = "INACTIVE";
 
   serializeJson(jsonDoc, jsonPayload);
   http.addHeader("Content-Type", "application/json");
