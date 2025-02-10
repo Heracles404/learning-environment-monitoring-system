@@ -49,10 +49,6 @@ const RegisterDevice = () => {
     setCheckedSecond([event.target.checked, checkedSecond[1]]);
   };
 
-  const handleSecondChange3 = (event) => {
-    setCheckedSecond([checkedSecond[0], event.target.checked]);
-  };
-
   const Register = async (values) => {
     const deviceData = {
       classroom: values.classroom,
