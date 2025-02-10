@@ -1,58 +1,77 @@
+import { useEffect, useState } from "react";
 import { ResponsivePie } from "@nivo/pie";
 import { tokens } from "../../theme";
 import { useTheme } from "@mui/material";
-import { vogPieData as data } from "../../data/pieData";
+import { httpGetAllReadouts } from "../../hooks/vog.requests"; // Fetch VOG data from API
 
 const VOGPieChart = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const customColors = ["#33FFC9", "#00F5B4", "#00A378", "#00664B", "#00291E"];
+  const defaultColors = ["#33FFC9", "#00F5B4", "#00A378", "#00664B"]; // Colors for levels 1-4
+  const fadedColor = "#50ccac"; // Faded color for levels above the latest one
+
+  const [pieData, setPieData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const readouts = await httpGetAllReadouts(); // Fetch VOG data from API
+        if (readouts.length === 0) {
+          console.warn("No VOG data available.");
+          setPieData([{ id: "No Data", label: "No Data", value: 1, color: "hsl(0, 0%, 80%)" }]);
+          return;
+        }
+
+        // Get the most recent level from the last data entry
+        const latestReadout = readouts[readouts.length - 1];
+        const latestLevel = latestReadout.level >= 1 && latestReadout.level <= 4 ? latestReadout.level : 1;
+
+        // Generate pie data
+        const vogPieData = Array.from({ length: 4 }, (_, i) => {
+          const level = i + 1;
+          const isHighlighted = level <= latestLevel;
+          return {
+            id: `Level ${level}`,
+            label: `Level ${level}`,
+            value: 1, // Keep all levels equally sized
+            color: isHighlighted ? defaultColors[level - 1] : fadedColor, // Highlight latest level and below, fade out above
+            textColor: isHighlighted ? "white" : fadedColor, // White for highlighted levels, invisible for faded
+          };
+        });
+
+        setPieData(vogPieData);
+      } catch (error) {
+        console.error("Error fetching VOG data:", error);
+      }
+    };
+
+    fetchData(); // Fetch immediately
+    const interval = setInterval(fetchData, 5000); // Auto-refresh every 5 sec
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <ResponsivePie
-      data={data}
+      data={pieData}
       theme={{
         axis: {
-          domain: {
-            line: {
-              stroke: colors.grey[500],
-            },
-          },
-          legend: {
-            text: {
-              fill: colors.greenAccent[100],
-            },
-          },
+          domain: { line: { stroke: colors.grey[500] } },
+          legend: { text: { fill: colors.greenAccent[100] } },
           ticks: {
-            line: {
-              stroke: colors.grey[100],
-              strokeWidth: 1,
-            },
-            text: {
-              fill: colors.grey[100],
-            },
+            line: { stroke: colors.grey[100], strokeWidth: 1 },
+            text: { fill: colors.grey[100] },
           },
         },
-        legends: {
-          text: {
-            fill: colors.grey[100],
-          },
-        },
+        legends: { text: { fill: colors.grey[100] } },
       }}
       margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
       innerRadius={0.5}
       padAngle={0.7}
       cornerRadius={3}
       activeOuterRadiusOffset={8}
-      borderColor={{
-        from: "color",
-        modifiers: [["darker", 0.2]],
-      }}
+      borderColor={{ from: "color", modifiers: [["darker", 0.2]] }}
       arcLinkLabelsSkipAngle={10}
-      colors={customColors}
-      // colors={{ scheme: 'greens' }}
-      // arcLinkLabelsTextColor={colors.greenAccent[400]}
-      arcLinkLabelsTextColor="white"
+      arcLinkLabelsTextColor={(slice) => slice.data.textColor} // Dynamic text color (invisible for faded)
       arcLinkLabelsThickness={2}
       arcLinkLabelsDiagonalLength={5}
       arcLinkLabelsStraightLength={14}
@@ -60,10 +79,9 @@ const VOGPieChart = () => {
       enableArcLabels={false}
       arcLabelsRadiusOffset={0.4}
       arcLabelsSkipAngle={7}
-      arcLabelsTextColor={{
-        from: "color",
-        modifiers: [["darker", 2]],
-      }}
+      arcLabelsTextColor={(slice) => slice.data.textColor} // Invisible text for faded levels
+      isInteractive={false}
+      colors={(slice) => slice.data.color} // Use assigned colors
       defs={[
         {
           id: "dots",
@@ -84,31 +102,7 @@ const VOGPieChart = () => {
           spacing: 10,
         },
       ]}
-      legends={[
-        {
-          anchor: "bottom-left",
-          direction: "column",
-          justify: false,
-          translateX: -50,
-          translateY: 40,
-          itemsSpacing: 0,
-          itemWidth: 100,
-          itemHeight: 18,
-          itemTextColor: "white",
-          itemDirection: "left-to-right",
-          itemOpacity: 1,
-          symbolSize: 14,
-          symbolShape: "circle",
-          effects: [
-            {
-              on: "hover",
-              style: {
-                itemTextColor: "#000",
-              },
-            },
-          ],
-        },
-      ]}
+
     />
   );
 };
