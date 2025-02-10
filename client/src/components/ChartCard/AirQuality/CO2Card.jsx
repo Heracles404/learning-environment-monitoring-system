@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./CO2Card.css";
-import { motion, LayoutGroup } from "framer-motion";
+import { motion } from "framer-motion";
 import Chart from "react-apexcharts";
 import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
 import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";

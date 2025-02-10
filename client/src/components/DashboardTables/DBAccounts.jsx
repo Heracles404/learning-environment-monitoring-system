@@ -1,11 +1,9 @@
-
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import {httpGetAllUsers} from "../../hooks/users.requests";
 import Header from "../../components/Header";
 import {useEffect, useState} from "react";
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 const DBAccounts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);

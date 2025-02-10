@@ -1,4 +1,3 @@
-// Sidebar imports
 import {
   UilUsdSquare,
 } from "@iconscout/react-unicons";

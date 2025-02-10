@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./DashboardCard.css";
-import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { motion, LayoutGroup } from "framer-motion";
 import { UilTimes } from "@iconscout/react-unicons";
