@@ -39,8 +39,8 @@ const Dashboard = () => {
         const active = await httpGetActive();
         const allDevices = await httpGetAllDevices();
 
-        console.log("Active Devices Data:", active);
-        console.log("All Devices Data:", allDevices);
+        // console.log("Active Devices Data:", active);allDevices
+        // console.log("All Devices Data:", allDevices);allDevices
 
         setActiveDevices(active.count || 0);
         setTotalDevices(allDevices.length || 0);

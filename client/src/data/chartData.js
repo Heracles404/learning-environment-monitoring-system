@@ -24,13 +24,13 @@ const getRandomColor = () => {
 const fetchData = async (key, deviceId) => {
   try {
     const response = await getAllSensorReadouts();
-    console.log("check sensor response:", response);
+    // console.log("check sensor response:", response);
 
     // Filter data for the specific classroom
     const data = response
       .filter(item => item.classroom === deviceId) // Filter by classroom ID
       .map(item => item[key]);
-    console.log("check sensor data:", data);
+    // console.log("check sensor data:", data);
     return data;
   } catch (error) {
     console.error(`Error fetching ${key} data:`, error);
@@ -45,7 +45,7 @@ const fetchAirQualityData = async () => {
 
   const airQualitySeries = await Promise.all(activeDevices.map(async (device) => {
     const data = await fetchData("IAQIndex", device.classroom);
-    console.log(`Air Quality Data for ${device.classroom}:`, data); // Log the fetched data
+    // console.log(`Air Quality Data for ${device.classroom}:`, data); // Log the fetched data
     return {
       name: `${device.classroom} Air Quality`,
       data: data.length > 0 ? data : [0], // Ensure there's data to display
@@ -93,7 +93,7 @@ const fetchVolcanicSmogData = async () => {
 
   const volcanicSmogSeries = await Promise.all(activeDevices.map(async (device) => {
     const data = await fetchData("voc", device.classroom);
-    console.log(`Volcanic Smog Data for ${device.classroom}:`, data); // Log the fetched data
+    // console.log(`Volcanic Smog Data for ${device.classroom}:`, data); // Log the fetched data
     return {
       name: `${device.classroom} Volcanic Smog`,
       data: data.length > 0 ? data : [0], // Ensure there's data to display

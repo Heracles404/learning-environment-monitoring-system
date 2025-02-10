@@ -56,10 +56,10 @@ const Records = () => {
     ];
 
     const handleDeleteSelected = async () => {
-        console.log("Selected Rows for deletion:", selectedRows);
+        // console.log("Selected Rows for deletion:", selectedRows);
 
         if (selectedRows.length === 0) {
-            console.log("No records selected for deletion");
+            // console.log("No records selected for deletion");
             return;
         }
 

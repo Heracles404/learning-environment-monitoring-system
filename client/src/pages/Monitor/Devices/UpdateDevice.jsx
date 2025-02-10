@@ -70,7 +70,7 @@ const UpdateDevice = () => {
     try {
       const response = await httpUpdateDevice(id, deviceData); // Update the device
       if (response.ok) {
-        console.log("Device updated successfully");
+        // console.log("Device updated successfully");
         navigate("/Device1");
       } else {
         setErrorMessage("Failed to update device. Please try again.");
