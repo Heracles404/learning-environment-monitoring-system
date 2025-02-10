@@ -169,7 +169,7 @@ const Dashboard = () => {
             INDOOR AIR QUALITY
           </Typography>
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
-            <Typography key={room}>Room {room}: {count} inactive sensor(s)</Typography>
+            <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
           ))}
           <Box height="300px">
             <AirQualityPieChart />
@@ -181,7 +181,7 @@ const Dashboard = () => {
             LIGHT
           </Typography>
           {Object.entries(inactiveDevices.bh1750Rooms).map(([room, count]) => (
-            <Typography key={room}>Room {room}: {count} inactive sensor(s)</Typography>
+            <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
           ))}
           <Box height="300px">
             <LightingPieChart />
@@ -194,7 +194,7 @@ const Dashboard = () => {
             HEAT INDEX
           </Typography>
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
-            <Typography key={room}>Room {room}: {count} inactive sensor(s)</Typography>
+            <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
           ))}
           <Box height="300px">
             <TemperaturePieChart />
@@ -206,7 +206,7 @@ const Dashboard = () => {
             VOG
           </Typography>
           {Object.entries(inactiveDevices.pms5003Rooms).map(([room, count]) => (
-            <Typography key={room}>Room {room}: {count} inactive sensor(s)</Typography>
+            <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
           ))}
           <Box height="300px">
             <VOGPieChart />
