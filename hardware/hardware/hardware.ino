@@ -261,7 +261,7 @@ int calculateHeatIndex(float T, float H) {
   return round(HI);  // Return rounded value of heat index
 }
 
-
+// VOID SETUP
 void setActive() {
   HTTPClient http;
   WiFiClient client;  
@@ -283,6 +283,7 @@ void setActive() {
   http.end();
 }
 
+// VOID LOOP
 void sendDataToServer(String classroom, String recordTime, float temperature, float humidity, float voc, float IAQIndex, float lux, int heatIndex, String indoorAir, String temp, String lightRemarks) {
   HTTPClient http;
   WiFiClient client;  // Create a WiFiClient object
