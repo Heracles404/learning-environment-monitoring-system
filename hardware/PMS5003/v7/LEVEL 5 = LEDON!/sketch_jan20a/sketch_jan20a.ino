@@ -86,6 +86,8 @@ void setup() {
 
   pms.passiveMode();
 
+  setActive();
+
   // Set up the LED pin as output
   pinMode(ledPin, OUTPUT);
   digitalWrite(ledPin, LOW); // Ensure LED is off initially
