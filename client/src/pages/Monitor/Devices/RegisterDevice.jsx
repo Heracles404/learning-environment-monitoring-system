@@ -62,7 +62,7 @@ const RegisterDevice = () => {
       const response = await httpNewDevice(deviceData);
       if (response.ok) {
         console.log("Device added successfully");
-        navigate("/Device1");
+        navigate("/DeviceStatus");
       } else {
         setErrorMessage("Failed to register device. Please try again.");
       }
