@@ -2,7 +2,6 @@ import React from 'react'
 import './LightingCards.css'
 import { LightingData } from '../../../data/chartData' 
 
-import CO2Card from '../../ChartCard/AirQuality/CO2Card'
 import LightingCard from '../../ChartCard/Lighting/LightingCard'
 
 const LightingCards = () => {

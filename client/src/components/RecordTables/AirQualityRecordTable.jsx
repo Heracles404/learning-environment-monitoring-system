@@ -3,9 +3,7 @@ import { httpGetAllReadouts } from "../../hooks/sensors.requests";
 import { Box, Typography, Paper } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 const AirQualityRecordTable = () => {
     const theme = useTheme();
