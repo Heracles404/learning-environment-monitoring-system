@@ -10,7 +10,6 @@ import VolcanoIcon from "@mui/icons-material/Volcano";
 
 import { httpGetAllReadouts as getAllSensorReadouts } from "../hooks/sensors.requests.js";
 import { httpGetAllDevices } from "../hooks/devices.requests";
-import { httpGetAllReadouts } from "../hooks/vog.requests.js"; // Import the VOG requests
 
 // Get random color for chart series
 const getRandomColor = () => {

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import AirIcon from "@mui/icons-material/Air";
 import DeviceThermostatIcon from "@mui/icons-material/DeviceThermostat";
 import WbIncandescentIcon from "@mui/icons-material/WbIncandescent";
