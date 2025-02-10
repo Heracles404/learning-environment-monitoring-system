@@ -1,13 +1,6 @@
 // sensors.model.js
 const Sensors = require('../schema/sensorsSchema');
 
-function normalizeToUppercase(data) {
-    const normalizedData = { ...data };
-    if (normalizedData.classroom) normalizedData.classroom = normalizedData.classroom.toUpperCase();
-    if (normalizedData.sensorType) normalizedData.sensorType = normalizedData.sensorType.toUpperCase(); // Example for sensorType
-    return normalizedData;
-}
-
 // Function to get all readouts
 async function getAllReadouts() {
     return await Sensors.find();
@@ -45,14 +38,12 @@ async function newReadouts(readout) {
     const currentDateTime = new Date();
     const currentDate = currentDateTime.toLocaleDateString();
 
-    const normalizedReadout = normalizeToUppercase(readout);
     const newReadout = new Sensors({
-        ...normalizedReadout,
-        date: currentDate
+        ...readout,
+        date: currentDate,
     });
 
     await newReadout.save();
-    return newReadout; // Return the saved readout if needed
 }
 
 // Function to delete a readout by ID

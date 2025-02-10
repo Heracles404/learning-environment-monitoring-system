@@ -1,29 +1,30 @@
 const device = require('../schema/deviceSchema');
 
-function normalizeToUppercase(data) {
-    const normalizedData = { ...data };
-    if (normalizedData.classroom) normalizedData.classroom = normalizedData.classroom.toUpperCase();
-    if (normalizedData.status) normalizedData.status = normalizedData.status.toUpperCase();
-    if (normalizedData.bh1750) normalizedData.bh1750 = normalizedData.bh1750.toUpperCase();
-    if (normalizedData.bme680) normalizedData.bme680 = normalizedData.bme680.toUpperCase();
-    if (normalizedData.pms5003) normalizedData.pms5003 = normalizedData.pms5003.toUpperCase();
-    return normalizedData;
-}
-
 async function newDevice(deviceData) {
     try {
-        const normalizedData = normalizeToUppercase(deviceData);
+        const options = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false // Ensure 24-hour format
+        };
+
+        const currentDate = new Date();
+        const currentDateTime = currentDate.toLocaleString('en-US', options); // Use toLocaleString for both date and time
+
         const newDevice = new device({
-            ...normalizedData,
-            lastUpdated: new Date().toISOString()
+            lastUpdated: currentDateTime,
+            ...deviceData
         });
 
         await newDevice.save();
         console.log('New device added:', newDevice);
-        return newDevice;
+        return newDevice; // Return the created device for further use
     } catch (error) {
         console.error('Error adding new device:', error.message);
-        throw new Error('Failed to add new device');
+        throw new Error('Failed to add new device'); // Throw an error if saving fails
     }
 }
 
@@ -58,23 +59,35 @@ async function deleteDevice(deviceId) {
 
 async function updateDevice(deviceId, updatedData) {
     try {
-        const normalizedData = normalizeToUppercase(updatedData);
+        const options = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false // Ensure 24-hour format
+        };
+
+        const currentDate = new Date();
+        const currentDateTime = currentDate.toLocaleString('en-US', options); // Use toLocaleString for both date and time
+
         const updatedDevice = await device.findByIdAndUpdate(
             deviceId,
             {
-                ...normalizedData,
-                lastUpdated: new Date().toISOString()
+                ...updatedData,
+                lastUpdated: currentDateTime // Update the lastUpdated field
             },
-            { new: true }
+            { new: true } // Return the updated document
         );
 
         if (!updatedDevice) {
             return { error: 'Device not found' };
         }
+
         return updatedDevice;
     } catch (error) {
         console.error('Error updating device:', error.message);
-        throw new Error('An error occurred while updating the device');
+        return { error: 'An error occurred while updating the device' };
     }
 }
 
