@@ -1,15 +1,9 @@
-import { Box, Button, IconButton, Typography, useTheme, Card, CardContent, CardActions, CardMedia } from "@mui/material";
+import { Box, Button, Typography, Card, CardContent, CardActions, CardMedia } from "@mui/material";
 import Header from "../../../components/Header";
-import Grid from '@mui/material/Grid2';
-import { tokens } from "../../../theme";
-import StatBox from "../../../components/StatBox";
-import Co2Icon from '@mui/icons-material/Co2';
 
 import HeatIndexCards from "../../../components/ChartCards/HeatIndex/HeatIndexCards";
-import ExpandedCard from "../../../components/ChartCards/AirQuality/CO2Cards";
 import HeatIndexRecordTable from "../../../components/RecordTables/HeatIndexRecordTable";
 const HeatIndexMonitor = () => {
-  
   return (
     <Box m="0 1px 0 1px" height="100vh" overflow="auto">
       {/* HEADER */}

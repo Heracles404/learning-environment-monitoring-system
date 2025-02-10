@@ -1,14 +1,7 @@
-import { Box, Button, IconButton, Typography, useTheme, Card, CardContent, CardActions, CardMedia } from "@mui/material";
+import { Box, Button, Typography, Card, CardContent, CardActions, CardMedia } from "@mui/material";
 import Header from "../../../components/Header";
-import CarbonDioxideChart from "../../../components/LineCharts/CarbonDioxide";
-import Grid from '@mui/material/Grid2';
-import { tokens } from "../../../theme";
-import StatBox from "../../../components/StatBox";
-import Co2Icon from '@mui/icons-material/Co2';
 
 import VolcanicSmogCards from "../../../components/ChartCards/VolcanicSmog/VolcanicSmogCards";
-import ExpandedCard from "../../../components/ChartCards/AirQuality/CO2Cards";
-import AirQualityRecordTable from "../../../components/RecordTables/AirQualityRecordTable";
 import VolcanicSmogRecordTable from "../../../components/RecordTables/VolcanicSmogRecordTable";
 const VolSmogMonitor = () => {
   

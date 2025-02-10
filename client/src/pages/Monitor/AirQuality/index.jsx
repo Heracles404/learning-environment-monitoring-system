@@ -1,11 +1,9 @@
-import { Box, Button, IconButton, Typography, useTheme, Card, CardContent, CardActions, CardMedia } from "@mui/material";
+import { Box, Button, Typography, Card, CardContent, CardActions, CardMedia } from "@mui/material";
 import Header from "../../../components/Header";
-import { tokens } from "../../../theme";
+
 import CO2Cards from "../../../components/ChartCards/AirQuality/CO2Cards";
 import AirQualityRecordTable from "../../../components/RecordTables/AirQualityRecordTable";
 const CarbonDioxideMonitor = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   return (
     <Box m="0 1px 0 1px" height="100vh" overflow="auto">
       {/* HEADER */}
