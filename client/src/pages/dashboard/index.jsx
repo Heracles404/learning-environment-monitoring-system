@@ -8,19 +8,11 @@ import StatBox from "../../components/StatBox";
 import DashboardCards from "../../components/DashboardCards/DashboardCards";
 import DBRecords from "../../components/DashboardTables/DBRecords";
 
-import RssFeedOutlinedIcon from '@mui/icons-material/RssFeedOutlined';
-import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import SensorsIcon from '@mui/icons-material/Sensors';
 
 import DBVog from "../../components/DashboardTables/DBVog";
 import { httpGetActive, httpGetAllDevices } from "../../hooks/devices.requests";  
 import React, { useState, useEffect } from "react"; 
-
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import TrafficIcon from "@mui/icons-material/Traffic";
 
 import TemperaturePieChart from "../../components/DashboardPieChart/TemperaturePieChart";
 import AirQualityPieChart from "../../components/DashboardPieChart/AirQualityPieChart";
@@ -47,8 +39,8 @@ const Dashboard = () => {
         const active = await httpGetActive();
         const allDevices = await httpGetAllDevices();
 
-        console.log("Active Devices Data:", active);
-        console.log("All Devices Data:", allDevices);
+        // console.log("Active Devices Data:", active);allDevices
+        // console.log("All Devices Data:", allDevices);allDevices
 
         setActiveDevices(active.count || 0);
         setTotalDevices(allDevices.length || 0);
@@ -177,7 +169,7 @@ const Dashboard = () => {
             INDOOR AIR QUALITY
           </Typography>
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
-            <Typography key={room}>Room {room}: {count} inactive sensor(s)</Typography>
+            <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
           ))}
           <Box height="300px">
             <AirQualityPieChart />
@@ -189,7 +181,7 @@ const Dashboard = () => {
             LIGHT
           </Typography>
           {Object.entries(inactiveDevices.bh1750Rooms).map(([room, count]) => (
-            <Typography key={room}>Room {room}: {count} inactive sensor(s)</Typography>
+            <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
           ))}
           <Box height="300px">
             <LightingPieChart />
@@ -202,7 +194,7 @@ const Dashboard = () => {
             HEAT INDEX
           </Typography>
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
-            <Typography key={room}>Room {room}: {count} inactive sensor(s)</Typography>
+            <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
           ))}
           <Box height="300px">
             <TemperaturePieChart />
@@ -214,7 +206,7 @@ const Dashboard = () => {
             VOG
           </Typography>
           {Object.entries(inactiveDevices.pms5003Rooms).map(([room, count]) => (
-            <Typography key={room}>Room {room}: {count} inactive sensor(s)</Typography>
+            <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
           ))}
           <Box height="300px">
             <VOGPieChart />

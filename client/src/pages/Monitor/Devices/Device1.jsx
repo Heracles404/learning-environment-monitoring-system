@@ -4,12 +4,10 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { tokens } from "../../../theme";
 import { httpGetAllDevices, httpDeleteDevice } from "../../../hooks/devices.requests";
 import Header from "../../../components/Header";
-import { useNavigate } from "react-router-dom";
 
 const Device1 = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-    const navigate = useNavigate();
 
     const [rows, setRows] = useState([]);
     const [page, setPage] = useState(0);
@@ -26,7 +24,7 @@ const Device1 = () => {
     useEffect(() => {
         const fetchData = async () => {
             const data = await httpGetAllDevices(); // Fetch data from API
-            console.log("API Response:", data); // Log the API response
+            // console.log("API Response:", data); // Log the API response
             if (data && data.length > 0) {
                 const formattedData = data.map(device => ({
                     id: device._id,
@@ -36,7 +34,7 @@ const Device1 = () => {
                     bme680: device.bme680,
                     pms5003: device.pms5003,
                 }));
-                console.log("Formatted Data:", formattedData); // Log the formatted data
+                // console.log("Formatted Data:", formattedData); // Log the formatted data
                 setRows(formattedData);
             } else {
                 console.warn("No devices found in the API response.");

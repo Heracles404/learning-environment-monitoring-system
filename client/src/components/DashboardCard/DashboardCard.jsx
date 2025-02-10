@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./DashboardCard.css";
-import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { motion, LayoutGroup } from "framer-motion";
 import { UilTimes } from "@iconscout/react-unicons";
@@ -50,7 +49,7 @@ function DBCompactCard({ param, setExpanded }) {
         {/* 🔥 Apply iconColor dynamically */}
         <Png style={{ width: "50px", height: "50px", color: param.iconColor }} />
         <span>{param.value}</span>
-        <span>Current Status</span>
+        <span>Latest Status</span>
       </div>
     </motion.div>
   );

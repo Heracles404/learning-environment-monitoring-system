@@ -1,13 +1,7 @@
-import { Box, Button, IconButton, Typography, useTheme, Card, CardContent, CardActions, CardMedia } from "@mui/material";
+import { Box, Button, Typography, Card, CardContent, CardActions, CardMedia } from "@mui/material";
 import Header from "../../../components/Header";
-import CarbonDioxideChart from "../../../components/LineCharts/CarbonDioxide";
-import Grid from '@mui/material/Grid2';
-import { tokens } from "../../../theme";
-import StatBox from "../../../components/StatBox";
-import Co2Icon from '@mui/icons-material/Co2';
 
 import LightingCards from "../../../components/ChartCards/Lighting/LightingCards";
-import ExpandedCard from "../../../components/ChartCards/AirQuality/CO2Cards";
 import LightingRecordTable from "../../../components/RecordTables/LightingRecordTable";
 const LightingMonitor = () => {
   

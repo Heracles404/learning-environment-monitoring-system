@@ -12,9 +12,9 @@ const LightingChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("Fetching lighting data...");
+        // console.log("Fetching lighting data...");
         const fetchedData = await httpGetAllReadouts(); // Fetch data from the same API
-        console.log("Fetched data:", fetchedData); // Log the entire fetched data
+        // console.log("Fetched data:", fetchedData); // Log the entire fetched data
 
         // Transform fetched data into the format expected by ResponsiveLine
         const transformedData = [{
@@ -32,7 +32,7 @@ const LightingChart = () => {
           transformedData[0].data.push(dataPoint); // Push data point to the existing entry
         });
 
-        console.log("Transformed lighting data for chart:", transformedData); // Log the transformed data for the chart
+        // console.log("Transformed lighting data for chart:", transformedData); // Log the transformed data for the chart
         setData(transformedData);
       } catch (error) {
         console.error("Error fetching lighting data:", error);

@@ -49,10 +49,6 @@ const RegisterDevice = () => {
     setCheckedSecond([event.target.checked, checkedSecond[1]]);
   };
 
-  const handleSecondChange3 = (event) => {
-    setCheckedSecond([checkedSecond[0], event.target.checked]);
-  };
-
   const Register = async (values) => {
     const deviceData = {
       classroom: values.classroom,
@@ -65,8 +61,8 @@ const RegisterDevice = () => {
     try {
       const response = await httpNewDevice(deviceData);
       if (response.ok) {
-        console.log("Device added successfully");
-        navigate("/Device1");
+        // console.log("Device added successfully");
+        navigate("/DeviceStatus");
       } else {
         setErrorMessage("Failed to register device. Please try again.");
       }

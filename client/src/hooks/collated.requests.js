@@ -30,7 +30,7 @@ async function httpFetchAllReadouts() {
         const allReadouts = await Promise.all(readoutPromises);
 
         // Step 5: Do something with the allReadouts data
-        console.log(allReadouts);
+        // console.log(allReadouts);
     } catch (error) {
         console.error('Error fetching readouts:', error);
     }

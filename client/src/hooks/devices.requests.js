@@ -53,7 +53,7 @@ async function httpDeleteDevice(_id){
             method: "DELETE",
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return {
             ok: false,
         };

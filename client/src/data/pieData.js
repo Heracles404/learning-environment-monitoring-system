@@ -137,9 +137,13 @@ export const fetchPieData = async () => {
       { id: "Bad", label: `Bad: ${lightingBadData.length}`, value: lightingBadData.length, color: "hsl(0, 70%, 50%)" },
     ];
 
-    console.log("Updated Indoor Air Pie Data:", indoorAirPieData);
-    console.log("Updated Temperature Pie Data:", HeatIndexPieData);
-    console.log("Updated Lighting Pie Data:", lightingPieData);
+
+
+
+    // console.log("Updated Indoor Air Pie Data:", indoorAirPieData);
+    // console.log("Updated Temperature Pie Data:", temperaturePieData);
+    // console.log("Updated Lighting Pie Data:", lightingPieData);
+
 
     // Fetch VOG data (unchanged)
     // fetchVogPieData();
@@ -184,7 +188,11 @@ export const fetchPieData = async () => {
 //   }
 // };
 
-
+// console.log("VOG Pie Data:", vogPieData);
+  } catch (error) {
+    console.error("Error fetching or processing VOG data:", error);
+  }
+};
 
 
 // Call the fetch function on module load

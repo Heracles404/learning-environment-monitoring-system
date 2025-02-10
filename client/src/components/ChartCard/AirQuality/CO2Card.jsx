@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./CO2Card.css";
-import { motion, LayoutGroup } from "framer-motion";
+import { motion } from "framer-motion";
 import Chart from "react-apexcharts";
 import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
 import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
@@ -29,7 +29,7 @@ const CO2Card = (props) => {
       try {
         const response = await httpGetAllReadouts();
 
-        console.log("Fetched Data:", response);
+        // console.log("Fetched Data:", response);
 
         if (response && response.length > 0) {
           const iaqIndexes = response.map((item) => item.IAQIndex);
@@ -86,7 +86,7 @@ const CO2Card = (props) => {
   // Use filtered data if available, else use the original IAQ data
   const sortedData = filteredData.iaqIndexes.length > 0 ? filteredData : iaqData;
 
-  console.log("Sorted Data for Chart:", sortedData);
+  // console.log("Sorted Data for Chart:", sortedData);
 
   const data = {
     options: {
@@ -142,7 +142,7 @@ const CO2Card = (props) => {
     ],
   };
 
-  console.log("Chart Data Passed:", data);
+  // console.log("Chart Data Passed:", data);
 
   return (
     <motion.div
