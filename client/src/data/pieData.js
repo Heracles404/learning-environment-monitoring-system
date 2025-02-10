@@ -189,10 +189,10 @@ export const fetchPieData = async () => {
 // };
 
 // console.log("VOG Pie Data:", vogPieData);
-  } catch (error) {
-    console.error("Error fetching or processing VOG data:", error);
-  }
-};
+// } catch (error) {
+//     console.error("Error fetching or processing VOG data:", error);
+//   }
+// };
 
 
 // Call the fetch function on module load

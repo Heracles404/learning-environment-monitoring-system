@@ -22,9 +22,18 @@ const VOGPieChart = () => {
           return;
         }
 
-        // Get the most recent level from the last data entry
-        const latestReadout = readouts[readouts.length - 1];
-        const latestLevel = latestReadout.level >= 1 && latestReadout.level <= 4 ? latestReadout.level : 1;
+        // Filter out any levels that are outside the range of 1 to 4
+        const validReadouts = readouts.filter(item => item.level >= 1 && item.level <= 4);
+
+        if (validReadouts.length === 0) {
+          console.warn("No valid VOG data available.");
+          setPieData([{ id: "No Data", label: "No Data", value: 1, color: "hsl(0, 0%, 80%)" }]);
+          return;
+        }
+
+        // Get the most recent valid level from the filtered data
+        const latestReadout = validReadouts[validReadouts.length - 1];
+        const latestLevel = latestReadout.level;
 
         // Generate pie data
         const vogPieData = Array.from({ length: 4 }, (_, i) => {
@@ -102,7 +111,6 @@ const VOGPieChart = () => {
           spacing: 10,
         },
       ]}
-
     />
   );
 };
