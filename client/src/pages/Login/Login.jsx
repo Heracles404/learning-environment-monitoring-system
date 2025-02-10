@@ -44,7 +44,7 @@ const LoginPage = () => {
     return (
         <Box
             sx={{
-                height: '100vh',
+                height: '110%',
                 width: '100vw',
                 backgroundImage: `linear-gradient(rgba(153, 235, 222, 0.3), rgba(153, 235, 222, 0.2)), url(${backgroundImage})`,
                 backgroundSize: 'cover',
@@ -52,7 +52,7 @@ const LoginPage = () => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                overflow: 'hidden',
+                overflow: 'auto',
                 p: 2
             }}
         >
