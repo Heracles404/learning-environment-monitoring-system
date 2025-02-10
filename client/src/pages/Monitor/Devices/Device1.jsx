@@ -4,12 +4,10 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { tokens } from "../../../theme";
 import { httpGetAllDevices, httpDeleteDevice } from "../../../hooks/devices.requests";
 import Header from "../../../components/Header";
-import { useNavigate } from "react-router-dom";
 
 const Device1 = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-    const navigate = useNavigate();
 
     const [rows, setRows] = useState([]);
     const [page, setPage] = useState(0);

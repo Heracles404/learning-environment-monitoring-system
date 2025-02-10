@@ -47,7 +47,7 @@ const Item = ({ title, to, icon, selected, setSelected, onClick }) => {
 const Sidebar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
   const navigate = useNavigate();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));

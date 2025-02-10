@@ -8,19 +8,11 @@ import StatBox from "../../components/StatBox";
 import DashboardCards from "../../components/DashboardCards/DashboardCards";
 import DBRecords from "../../components/DashboardTables/DBRecords";
 
-import RssFeedOutlinedIcon from '@mui/icons-material/RssFeedOutlined';
-import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import SensorsIcon from '@mui/icons-material/Sensors';
 
 import DBVog from "../../components/DashboardTables/DBVog";
 import { httpGetActive, httpGetAllDevices } from "../../hooks/devices.requests";  
 import React, { useState, useEffect } from "react"; 
-
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import TrafficIcon from "@mui/icons-material/Traffic";
 
 import TemperaturePieChart from "../../components/DashboardPieChart/TemperaturePieChart";
 import AirQualityPieChart from "../../components/DashboardPieChart/AirQualityPieChart";

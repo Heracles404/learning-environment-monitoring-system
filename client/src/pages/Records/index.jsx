@@ -78,15 +78,6 @@ const Records = () => {
         }
     };
 
-    const handleDeleteAll = async () => {
-        const result = await httpDeleteAllReadouts();
-        if (result.ok) {
-            setRows([]); // Clear all rows after deletion
-        } else {
-            console.error("Error deleting all records");
-        }
-    };
-
     const handleDownload = () => {
         // Filter rows based on date range
         const filteredRows = rows.filter((row) => {
@@ -117,25 +108,6 @@ const Records = () => {
 
         // Close the dialog after download
         setOpen(false);
-    };
-
-    const handleDownloadAll = () => {
-        const csvHeaders = columns.map((col) => col.headerName).join(",");
-        const csvRows = rows.map((row) =>
-            columns.map((col) => row[col.field] || "").join(",")
-        );
-        const csvContent = [csvHeaders, ...csvRows].join("\n");
-
-        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "all_records_report.csv";
-        link.style.display = "none";
-
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
     };
 
     const handleCloseDialog = () => setOpen(false);

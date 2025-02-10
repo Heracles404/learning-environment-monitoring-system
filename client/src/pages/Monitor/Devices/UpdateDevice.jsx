@@ -61,9 +61,6 @@ const UpdateDevice = () => {
     setCheckedSecond([event.target.checked, checkedSecond[1]]);
   };
 
-  const handleSecondChange3 = (event) => {
-    setCheckedSecond([checkedSecond[0], event.target.checked]);
-  };
   const handleUpdate = async (values) => {
     const deviceData = {
       status: values.status,
