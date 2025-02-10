@@ -14,7 +14,6 @@ import Device1 from "./pages/Monitor/Devices/Device1";
 
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
-import Calendar from "./pages/calendar/calendar";
 import LoginPage from "./pages/Login/Login";
 import FAQ from "./pages/faq";
 
