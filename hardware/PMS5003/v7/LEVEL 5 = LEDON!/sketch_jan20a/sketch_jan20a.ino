@@ -14,7 +14,7 @@ const char* password = "IoT@2025";
 const char* host = "api.lems.systems";
 const int port = 443;
 const char* endpoint = "/vog";
-const char* update_endpoint = "/devices";
+const char* update_endpoint = "/devices/classroom/";
 
 const char* ntpServer = "time.nist.gov"; // Reliable NTP server
 const long gmtOffset_sec = 8 * 3600;     // Adjust for your timezone (GMT+8)
@@ -101,7 +101,7 @@ void loop() {
 
   pms.requestRead();
   if (pms.readUntil(data)) {
-    updateSensorStatus("active");
+    updateSensorStatus("ACTIVE");
     // Apply calibration
     pm25 = a_pm25 * data.PM_AE_UG_2_5 + b_pm25;
     pm10 = a_pm10 * data.PM_AE_UG_10_0 + b_pm10;
@@ -127,7 +127,7 @@ void loop() {
     }
   } else {
     Serial.println(F("No data."));
-    updateSensorStatus("inactive");
+    updateSensorStatus("INACTIVE");
   }
 
   pms.sleep();
@@ -195,6 +195,28 @@ int calculateAQI(float concentration, String pollutant) {
   return 501; // Out of range
 }
 
+void setActive() {
+  HTTPClient http;
+  WiFiClient client;  
+
+  String url = String(host) + ":" + String(port) + String(devices) + String(classroom);
+  http.begin(client, url.c_str());  
+
+  StaticJsonDocument<200> jsonDoc;
+  String jsonPayload;
+
+  jsonDoc["status"] = "ACTIVE";
+
+  serializeJson(jsonDoc, jsonPayload);
+  http.addHeader("Content-Type", "application/json");
+  int responseCode = http.POST(jsonPayload);
+
+  Serial.print("Response Code: ");
+  Serial.println(responseCode);
+  http.end();
+}
+
+
 void sendDataToServer(String classroom, String recordTime, float pm25, float pm10, int OAQIndex, int level) {
   if (WiFi.status() == WL_CONNECTED) {
     WiFiClientSecure client;
@@ -246,7 +268,7 @@ void updateSensorStatus(String pms5003) {
   if (WiFi.status() == WL_CONNECTED) {
     WiFiClient client;
     HTTPClient http;
-    String url = String(host) + ":" + String(port) + update_endpoint + "/classroom/" + String(room);
+    String url = String(host) + ":" + String(port) + update_endpoint + String(room);
 
     http.begin(client, url); // Use WiFiClient object
     http.addHeader("Content-Type", "application/json");
