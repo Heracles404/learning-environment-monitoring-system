@@ -9,8 +9,8 @@
 // Time Components
 #include "time.h"
 
-const char* ssid = "ACM2";
-const char* password = "0495452821@2024";
+const char* ssid = "AccessPoint";
+const char* password = "IoT@2025";
 const char* host = "api.lems.systems";
 const int port = 443;
 const char* endpoint = "/vog";
