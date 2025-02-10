@@ -153,30 +153,39 @@ const fetchVogPieData = async () => {
   try {
     const readouts = await httpGetAllReadouts(); // Fetch VOG sensor data
 
-    const levelCounts = [0, 0, 0, 0, 0];
+    if (readouts.length === 0) {
+      console.warn("No VOG data available.");
+      vogPieData = [{ id: "No Data", label: "No Data", value: 1, color: "hsl(0, 0%, 80%)" }];
+      return;
+    }
 
-    readouts.forEach((item) => {
-      const { level } = item;
+    const levelCounts = [0, 0, 0, 0, 0]; // Initialize counts for levels 0-4
+
+    readouts.forEach(({ level }) => {
       if (level >= 0 && level <= 4) {
-        levelCounts[level] += 1;
+        levelCounts[level] += 1; // Count occurrences of each level
       }
     });
 
-    const maxLevel = levelCounts.indexOf(Math.max(...levelCounts));
+    const { level } = readouts[readouts.length - 1]; // Get the most recent level
+    const validLevel = level >= 0 && level <= 4 ? level : 0; // Ensure valid range
 
     vogPieData = Array.from({ length: 5 }, (_, i) => ({
       id: `Level ${i}`,
       label: `Level ${i}`,
-      value: i === maxLevel ? 1 : 0,
-      color: i === 0 ? "hsl(120, 70%, 50%)" : "hsl(0, 70%, 50%)",
+      value: i === validLevel ? levelCounts[i] : 1, // Show only current level, retain others with small value
+      color: i === validLevel ? "hsl(0, 70%, 50%)" : "hsl(0, 0%, 90%)", // Highlight current level, dim others
       tooltip: `Level ${i}: ${levelCounts[i]} readings`,
     }));
 
-    console.log("VOG Pie Data:", vogPieData);
+    console.log("Updated VOG Pie Data:", vogPieData);
   } catch (error) {
     console.error("Error fetching or processing VOG data:", error);
   }
 };
+
+
+
 
 // Call the fetch function on module load
 fetchPieData();
