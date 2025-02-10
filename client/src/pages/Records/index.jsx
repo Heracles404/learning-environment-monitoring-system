@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { httpGetAllReadouts, httpDeleteReadout, httpDeleteAllReadouts } from "../../hooks/sensors.requests";
-import { Box, Button, Paper, Typography, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { Box, Button, Paper, Typography, Dialog, DialogActions, DialogContent,DialogContentText, DialogTitle, TextField } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
@@ -17,6 +17,7 @@ const Records = () => {
     const [open, setOpen] = useState(false);
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    const [openDialog, setOpenDialog] = useState(false); // State for confirmation dialog
 
     useEffect(() => {
         const fetchData = async () => {
@@ -118,7 +119,7 @@ const Records = () => {
                 <Header title="Records" subtitle="Managing the Records" />
                 <Box>
                     <Button
-                        onClick={handleDeleteSelected}
+                        onClick={() => setOpenDialog(true)}
                         sx={{
                             backgroundColor: colors.redAccent[500],
                             color: "white",
@@ -176,6 +177,21 @@ const Records = () => {
                     />
                 </Paper>
             </Box>
+            <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+                <DialogTitle>Delete Record</DialogTitle>
+                <DialogContent>
+                <DialogContentText>Are you sure you want to delete?</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={() => setOpenDialog(false)} color="secondary">
+                    Cancel
+                </Button>
+                <Button sx={{backgroundColor: '#4cceac',height: '30px', borderRadius: '25px', fontWeight: 'bold',}}
+                onClick={handleDeleteSelected} color="primary" variant="contained">
+                    Delete Record
+                </Button>
+                </DialogActions>
+            </Dialog>
 
             {/* Date Range Dialog */}
             <Dialog open={open} onClose={handleCloseDialog}>
