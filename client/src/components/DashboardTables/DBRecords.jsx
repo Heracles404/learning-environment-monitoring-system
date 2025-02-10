@@ -38,19 +38,21 @@ const DBRecords = () => {
 
     const columns = [
         { field: "classroom", headerName: "Classroom", minWidth: 100, flex: 1 },
-        { field: "currentHeatIndex", headerName: "Current Heat Index", minWidth: 100, flex: 1 },
-        { field: "currentIAQIndex", headerName: "Current IAQ Index", minWidth: 100, flex: 1 },
-        { field: "currentLighting", headerName: "Current Light Level", minWidth: 100, flex: 1 },
-        { field: "concernLevel", headerName: "Current Status", minWidth: 100, flex: 1 },
+        { field: "currentHeatIndex", headerName: "Latest Heat Index", minWidth: 100, flex: 1 },
+        { field: "currentIAQIndex", headerName: "Latest IAQ Index", minWidth: 100, flex: 1 },
+        { field: "currentLighting", headerName: "Latest Light Level", minWidth: 100, flex: 1 },
+        { field: "concernLevel", headerName: "Heat Index Status", minWidth: 100, flex: 1 },
+        { field: "IAQStatus", headerName: "IAQ Status", minWidth: 100, flex: 1 },
+        { field: "LightStatus", headerName: "Light Status", minWidth: 100, flex: 1 },
     ];
 
     return (
         <Box m="5px">
-            <Header title="Records" subtitle="Monitoring the Current Records" />
+            <Header title="Latest Records" subtitle="Monitoring the Latest Records" />
             <Box>
                 <Paper sx={{ maxHeight: "65vh", width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
-                        Records for Environmental Parameters
+                        Latest Records for Environmental Parameters
                     </Typography>
                     <DataGrid
                         rows={rows}
