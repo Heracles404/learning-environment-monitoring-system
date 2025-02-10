@@ -37,18 +37,18 @@ const DBVOGRecords = () => {
 
     const columns = [
         { field: "classroom", headerName: "Outdoor", minWidth: 100, flex: 1 },
-        { field: "currentPM25", headerName: "Current PM 2.5", minWidth: 100, flex: 1 },
-        { field: "currentPM10", headerName: "Current PM 10.0", minWidth: 100, flex: 1 },
-        { field: "concernLevel", headerName: "Current Status", minWidth: 100, flex: 1 },
+        { field: "currentPM25", headerName: "Latest PM 2.5", minWidth: 100, flex: 1 },
+        { field: "currentPM10", headerName: "Latest PM 10.0", minWidth: 100, flex: 1 },
+        { field: "concernLevel", headerName: "Latest VOG Status", minWidth: 100, flex: 1 },
     ];
 
     return (
         <Box m="5px">
-            <Header title="VOG Records" subtitle="Monitoring the Current VOG Records" />
+            <Header title="Latest VOG Records" subtitle="Monitoring the Latest VOG Records" />
             <Box>
                 <Paper sx={{ maxHeight: "65vh", width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
-                        Records for Volcanic Smog Parameters
+                        Latest Records for Volcanic Smog Parameters
                     </Typography>
                     <DataGrid
                         rows={Object.values(rows)}

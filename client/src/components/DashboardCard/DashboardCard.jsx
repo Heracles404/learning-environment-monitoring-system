@@ -50,7 +50,7 @@ function DBCompactCard({ param, setExpanded }) {
         {/* 🔥 Apply iconColor dynamically */}
         <Png style={{ width: "50px", height: "50px", color: param.iconColor }} />
         <span>{param.value}</span>
-        <span>Current Status</span>
+        <span>Latest Status</span>
       </div>
     </motion.div>
   );
