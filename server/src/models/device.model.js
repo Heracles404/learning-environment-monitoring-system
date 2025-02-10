@@ -46,11 +46,11 @@ async function getDeviceByClassroom(classroom) {
 }
 
 async function getActive() {
-    return await device.find({ status: 'active' });
+    return await device.find({ status: 'ACTIVE' });
 }
 
 async function getInactive() {
-    return await device.find({ status: 'inactive' });
+    return await device.find({ status: 'INACTIVE' });
 }
 
 async function deleteDevice(deviceId) {

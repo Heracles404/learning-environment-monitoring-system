@@ -53,10 +53,10 @@ const RegisterDevice = () => {
   const Register = async (values) => {
     const deviceData = {
       classroom: values.classroom,
-      status: "inactive",
-      bh1750: checked[0] ? "inactive" : "-",
-      bme680: checked[1] ? "inactive" : "-",
-      pms5003: checkedSecond[0] ? "inactive" : "-",
+      status: "INACTIVE",
+      bh1750: checked[0] ? "INACTIVE" : "-",
+      bme680: checked[1] ? "INACTIVE" : "-",
+      pms5003: checkedSecond[0] ? "INACTIVE" : "-",
     };
 
     try {
