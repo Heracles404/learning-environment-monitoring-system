@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const deviceSchema = new mongoose.Schema({
-    classroom: { type: String, required: true },
-    status: { type: String, enum: ['ACTIVE', 'INACTIVE'], required: true },
+    classroom: { type: String, required: true, unique: true },
+    status: { type: String, enum: ['active', 'inactive'], required: true },
     bh1750: { type: String, required: true },
     bme680: { type: String, required: true },
     pms5003: { type: String, required: true },
