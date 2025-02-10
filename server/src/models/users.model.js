@@ -1,15 +1,8 @@
-// users.model.js
 const User = require('../schema/userSchema');
 
-// Helper function to normalize strings to uppercase
-function normalizeToUppercase(value) {
-    return value ? value.toUpperCase() : value;
-}
-
-// Function to check if a username exists (with normalization)
+// Function to check if a username exists
 async function existsUserName(userName) {
-    const normalizedUserName = normalizeToUppercase(userName);
-    const user = await User.findOne({ userName: normalizedUserName });
+    const user = await User.findOne({ userName });
     return user !== null;
 }
 
@@ -19,10 +12,9 @@ async function getAllUsers() {
     return users.map(({ password, ...userWithoutPassword }) => userWithoutPassword);
 }
 
-// Function to authenticate a user (with normalization)
-async function authenticateUser(userName, password) {
-    const normalizedUserName = normalizeToUppercase(userName);
-    const user = await User.findOne({ userName: normalizedUserName, password }).lean(); // Use .lean() here as well
+// Function to authenticate a user
+async function authenticateUser (userName, password) {
+    const user = await User.findOne({ userName, password }).lean(); // Use .lean() here as well
     if (user) {
         const { password, ...userWithoutPassword } = user; // Exclude password
         return userWithoutPassword; // Return user data without password
@@ -30,10 +22,9 @@ async function authenticateUser(userName, password) {
     return null;
 }
 
-// Function to get a user by username (with normalization)
+// Function to get a user by username
 async function getUserByUserName(userName) {
-    const normalizedUserName = normalizeToUppercase(userName);
-    const user = await User.findOne({ userName: normalizedUserName }).lean(); // Use .lean() here as well
+    const user = await User.findOne({ userName }).lean(); // Use .lean() here as well
     if (user) {
         const { password, ...userWithoutPassword } = user; // Exclude password
         return userWithoutPassword;
@@ -42,41 +33,29 @@ async function getUserByUserName(userName) {
 }
 
 // Function to add a new user
-async function addNewUser(user) {
-    const normalizedUser = {
-        ...user,
-        userName: normalizeToUppercase(user.userName),
-    };
-    const newUser = new User(normalizedUser);
-    await newUser.save();
+async function addNewUser (user) {
+    const newUser  = new User(user);
+    await newUser .save();
 }
 
-// Function to delete a user by username (with normalization)
+// Function to delete a user by username
 async function deleteUserByUserName(userName) {
-    const normalizedUserName = normalizeToUppercase(userName);
-    const result = await User.deleteOne({ userName: normalizedUserName });
-    return result.deletedCount > 0 ? `User ${userName} has been deleted.` : `User ${userName} not found.`;
+    const result = await User.deleteOne({ userName });
+    return result.deletedCount > 0 ? `User  ${userName} has been deleted.` : `User  ${userName} not found.`;
 }
 
-// Function to update a user by username (with normalization)
+// Function to update a user by username
 async function updateUserByUserName(userName, updates) {
-    const normalizedUserName = normalizeToUppercase(userName);
-    const normalizedUpdates = { ...updates };
-
-    if (normalizedUpdates.userName) {
-        normalizedUpdates.userName = normalizeToUppercase(normalizedUpdates.userName);
-    }
-
-    const result = await User.updateOne({ userName: normalizedUserName }, { $set: normalizedUpdates });
-    return result.modifiedCount > 0 ? `User ${userName} has been updated.` : `User ${userName} not found.`;
+    const result = await User.updateOne({ userName }, { $set: updates });
+    return result.modifiedCount > 0 ? `User  ${userName} has been updated.` : `User  ${userName} not found.`;
 }
 
 module.exports = {
     existsUserName,
     getAllUsers,
-    authenticateUser,
+    authenticateUser ,
     getUserByUserName,
-    addNewUser,
+    addNewUser ,
     deleteUserByUserName,
     updateUserByUserName,
 };
