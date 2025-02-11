@@ -6,6 +6,8 @@ import { UilTimes } from "@iconscout/react-unicons";
 import Chart from "react-apexcharts";
 import { fetchCardData } from "../../data/mockChartData"; // Import the fetchCardData function
 
+
+
 // parent Card
 const DashboardCard = (props) => {
   const [expanded, setExpanded] = useState(false);

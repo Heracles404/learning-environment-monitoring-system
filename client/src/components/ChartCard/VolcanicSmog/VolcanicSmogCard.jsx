@@ -37,9 +37,17 @@ function ExpandedCard({ param }) {
 
         if (response && response.length > 0) {
           const vocLevels = response.map((item) => item.voc);
-          const timestamps = response.map((item) =>
-            new Date(`${item.date} ${item.time}`).getTime()
-          );
+
+          // Create timestamps using date and time fields
+          const timestamps = response.map((item) => {
+            // Combine the 'date' and 'time' to create a valid timestamp
+            const combinedDate = `${item.date} ${item.time}`;
+            const timestamp = new Date(combinedDate).getTime(); // Convert to milliseconds
+            console.log(`Raw date from data: ${item.date}`);  // Log date
+            console.log(`Raw time from data: ${item.time}`);  // Log time
+            return timestamp;
+          });
+
           setVocData({ vocLevels, timestamps });
         } else {
           console.error("No data found.");
@@ -116,7 +124,7 @@ function ExpandedCard({ param }) {
       },
       tooltip: {
         x: {
-          format: "dd/MM/yy HH:mm",
+          format: "dd/MM/yy HH:mm", // Modify this as needed
         },
       },
       grid: {
@@ -124,19 +132,19 @@ function ExpandedCard({ param }) {
       },
       xaxis: {
         type: "datetime", // Set type to datetime to plot actual timestamps
-        categories: vocData.timestamps.map((timestamp, index) => {
-          return new Date(Date.now() - (vocData.vocLevels.length - index) * 1000 * 60 * 60).toISOString();
+        categories: sortedData.timestamps.map((timestamp) => {
+          // Use the timestamp directly here, no need to dynamically calculate it
+          return new Date(timestamp).toISOString();
         }),
       },
     },
     series: [
       {
         name: "VOC Level",
-        data: vocData.vocLevels,
+        data: sortedData.vocLevels,
       },
     ],
   };
-  
 
   return (
     <motion.div
