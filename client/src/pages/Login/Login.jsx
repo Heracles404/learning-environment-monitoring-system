@@ -35,6 +35,7 @@ const LoginPage = () => {
                     setTimeout(() => {
                         navigate(`/dashboard`);
                     }, 1500); // 1.5 seconds delay before redirecting
+                  
                 } catch (error) {
                     console.error("Error storing user data:", error);
                     setSnackbar({ open: true, message: 'Failed to save user data.', severity: 'warning' });

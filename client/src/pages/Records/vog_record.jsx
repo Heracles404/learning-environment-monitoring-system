@@ -85,6 +85,7 @@ const VOGRecords = () => {
     const handleDeleteSelected = async () => {
 
         if (selectedRows.length === 0) {
+
             return;
         }
 

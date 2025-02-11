@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ResponsivePie } from "@nivo/pie";
 import { tokens } from "../../theme";
 import { useTheme, Card, CardContent, Typography, Button } from "@mui/material";
-import { temperaturePieData as data, temperaturePieDataWithData } from "../../data/pieData";
+import { HeatIndexPieData as data, HeatIndexPieDataWithData } from "../../data/pieData";
 
 const TemperaturePieChart = () => {
   const theme = useTheme();
@@ -12,7 +12,7 @@ const TemperaturePieChart = () => {
 
   const handleClick = (e) => {
     const clickedCategory = e.id; // "Good" or "Bad"
-    const matchedData = temperaturePieDataWithData.find((item) =>
+    const matchedData = HeatIndexPieDataWithData.find((item) =>
       item.label.includes(clickedCategory)
     );
 

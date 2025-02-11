@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./DashboardCard.css";
-import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { motion, LayoutGroup } from "framer-motion";
 import { UilTimes } from "@iconscout/react-unicons";
@@ -57,6 +56,7 @@ function DBCompactCard({ param, setExpanded }) {
 }
 
 // Expanded Card
+// Expanded Card
 function DBExpandedCard({ param, setExpanded }) {
   const data = {
     options: {
@@ -78,7 +78,7 @@ function DBExpandedCard({ param, setExpanded }) {
         type: "gradient",
       },
       dataLabels: {
-        enabled: false,
+        enabled: false, // Disables the small boxes with data values
       },
       stroke: {
         curve: "smooth",
@@ -86,7 +86,7 @@ function DBExpandedCard({ param, setExpanded }) {
       },
       tooltip: {
         x: {
-          format: "dd/MM/yy HH:mm",
+          format: "dd/MM/yy HH:mm", // Format for tooltip X-axis values (time)
         },
       },
       grid: {
@@ -95,7 +95,6 @@ function DBExpandedCard({ param, setExpanded }) {
       xaxis: {
         type: "datetime",
         categories: param.series[0].data.map((_, index) => {
-          // Using the timestamp or index to create datetime categories
           return new Date(Date.now() - (param.series[0].data.length - index) * 1000 * 60 * 60).toISOString();
         }),
       },
@@ -118,16 +117,7 @@ function DBExpandedCard({ param, setExpanded }) {
       <span style={{ color: param.titleColor }}>{param.title}</span>
       <div className="DBchartContainer">
         <Chart
-          options={{
-            chart: { type: "area", height: "auto" },
-            stroke: { curve: "smooth", colors: ["white"] },
-            xaxis: {
-              type: "datetime",
-              categories: param.series[0].data.map((_, index) =>
-                new Date(Date.now() - (param.series[0].data.length - index) * 1000 * 60 * 60).toISOString()
-              ),
-            },
-          }}
+          options={data.options}
           series={param.series}
           type="area"
         />
@@ -135,6 +125,7 @@ function DBExpandedCard({ param, setExpanded }) {
     </motion.div>
   );
 }
+
 
 
 export default DashboardCard;

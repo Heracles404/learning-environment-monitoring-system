@@ -12,9 +12,9 @@ const CarbonDioxideChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("Fetching CO2 data...");
+        // console.log("Fetching CO2 data...");
         const fetchedData = await httpGetAllReadouts();
-        console.log("Fetched data:", fetchedData); // Log the entire fetched data
+        // console.log("Fetched data:", fetchedData); // Log the entire fetched data
 
         // Transform fetched data into the format expected by ResponsiveLine
         const transformedData = [{
@@ -32,7 +32,7 @@ const CarbonDioxideChart = () => {
           transformedData[0].data.push(dataPoint); // Push data point to the existing entry
         });
 
-        console.log("Transformed CO2 data for chart:", transformedData); // Log the transformed data for the chart
+        // console.log("Transformed CO2 data for chart:", transformedData); // Log the transformed data for the chart
         setData(transformedData);
       } catch (error) {
         console.error("Error fetching CO2 data:", error);

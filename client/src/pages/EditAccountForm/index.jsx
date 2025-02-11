@@ -25,13 +25,13 @@ const Form = () => {
   const [initialValues, setInitialValues] = useState(null);
   const [alertMessage, setAlertMessage] = useState(null);
 
-  console.log("Username from URL:", userName);
+  // console.log("Username from URL:", userName);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const userData = await httpGetUser(userName);
-        console.log("Fetched User Data:", userData);
+        // console.log("Fetched User Data:", userData);
         setInitialValues({
           firstName: userData.firstName || "",
           lastName: userData.lastName || "",

@@ -24,7 +24,7 @@ const Device1 = () => {
     useEffect(() => {
         const fetchData = async () => {
             const data = await httpGetAllDevices(); // Fetch data from API
-            console.log("API Response:", data); // Log the API response
+            // console.log("API Response:", data); // Log the API response
             if (data && data.length > 0) {
                 const formattedData = data.map(device => ({
                     id: device._id,
@@ -34,7 +34,7 @@ const Device1 = () => {
                     bme680: device.bme680,
                     pms5003: device.pms5003,
                 }));
-                console.log("Formatted Data:", formattedData); // Log the formatted data
+                // console.log("Formatted Data:", formattedData); // Log the formatted data
                 setRows(formattedData);
             } else {
                 console.warn("No devices found in the API response.");

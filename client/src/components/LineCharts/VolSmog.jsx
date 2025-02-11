@@ -12,9 +12,9 @@ const VolSmogChart = ({ isCustomLineColors = false, isDashboard = false }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("Fetching Particulate Matter data...");
+        // console.log("Fetching Particulate Matter data...");
         const fetchedData = await httpGetAllReadouts(); // Fetch data from the same API
-        console.log("Fetched data:", fetchedData); // Log the entire fetched data
+        // console.log("Fetched data:", fetchedData); // Log the entire fetched data
 
         // Transform fetched data into the format expected by ResponsiveLine
         const transformedData = [{
@@ -37,7 +37,7 @@ const VolSmogChart = ({ isCustomLineColors = false, isDashboard = false }) => {
           }
         });
 
-        console.log("Transformed Particulate Matter data for chart:", transformedData); // Log the transformed data for the chart
+        // console.log("Transformed Particulate Matter data for chart:", transformedData); // Log the transformed data for the chart
         setData(transformedData);
       } catch (error) {
         console.error("Error fetching Particulate Matter data:", error);

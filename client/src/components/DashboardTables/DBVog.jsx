@@ -14,7 +14,7 @@ const DBVOGRecords = () => {
     useEffect(() => {
         const fetchData = async () => {
             const data = await httpGetAllReadouts();
-            console.log(data);
+            // console.log(data);
 
             const updatedData = { ...rows };
             data.forEach((readout) => {

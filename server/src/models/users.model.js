@@ -1,4 +1,3 @@
-// users.model.js
 const User = require('../schema/userSchema');
 
 // Function to check if a username exists
