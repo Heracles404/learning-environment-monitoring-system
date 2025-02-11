@@ -47,9 +47,9 @@ const Device1 = () => {
     useEffect(() => {
         const role = localStorage.getItem("role");
         const newColumns = [
-            { id: "id", label: "ID", minWidth: 60 },
-            { id: "status", label: "Status", minWidth: 150 },
+            // { id: "id", label: "ID", minWidth: 60 },
             { id: "classroom", label: "Classroom", minWidth: 150 },
+            { id: "status", label: "Status", minWidth: 150 },       
             { id: "bh1750", label: "BH1750", minWidth: 150 },
             { id: "bme680", label: "BME680", minWidth: 150 },
             { id: "pms5003", label: "PMS5003", minWidth: 150 },

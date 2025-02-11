@@ -191,7 +191,8 @@ const NewAccountForm = () => {
               </Box>
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
-              <Button type="submit" color="secondary" variant="contained">
+            <Button sx={{backgroundColor: '#4cceac',height: '30px', borderRadius: '25px', fontWeight: 'bold',}}
+              type="submit" variant="contained">
                 Create New User
               </Button>
             </Box>

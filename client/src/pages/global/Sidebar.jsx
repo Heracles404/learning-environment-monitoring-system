@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme, useMediaQuery  } from "@mui/material";
+import { Box, IconButton, Typography, useTheme, useMediaQuery, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
@@ -52,6 +52,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [isSidebarVisible, setIsSidebarVisible] = useState(!isSmallScreen);
+  const [openDialog, setOpenDialog] = useState(false); // State for confirmation dialog
 
   const username = localStorage.getItem("username");
   const name = localStorage.getItem("firstname");
@@ -335,16 +336,32 @@ const Sidebar = () => {
             />            
             <Item
               title="Sign Out"
-              to="/"
+              to="#"
               icon={<ExitToAppIcon />}
               selected={selected}
               setSelected={setSelected}
-              onClick={handleLogout}
-            />
+              onClick={() => setOpenDialog(true)} // Open confirmation dialog
+              />
             </Box>
           </Menu>
         </ProSidebar>
       </Box>
+      {/* Confirmation Dialog */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>Sign Out</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Are you sure you want to sign out?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)} color="secondary">
+            Cancel
+          </Button>
+          <Button sx={{backgroundColor: '#4cceac',height: '30px', borderRadius: '25px', fontWeight: 'bold',}}
+          onClick={handleLogout} color="primary" variant="contained">
+            Sign Out
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

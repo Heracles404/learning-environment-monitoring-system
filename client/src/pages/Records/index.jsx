@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { httpGetAllReadouts, httpDeleteReadout, httpDeleteAllReadouts } from "../../hooks/sensors.requests";
-import { Box, Button, Paper, Typography, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { Box, Button, Paper, Typography, Dialog, DialogActions, DialogContent,DialogContentText, DialogTitle, TextField } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
@@ -14,9 +14,10 @@ const Records = () => {
     const colors = tokens(theme.palette.mode);
     const [rows, setRows] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]); // Store selected rows
-    const [open, setOpen] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false); // State for confirmation dialog
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    const [openDownloadDialog, setOpenDownloadDialog] = useState(false); // For download confirmation
 
     useEffect(() => {
         const fetchData = async () => {
@@ -49,17 +50,17 @@ const Records = () => {
         { field: "humidity", headerName: "Humidity", minWidth: 100, flex: 1 },
         { field: "heatIndex", headerName: "Heat Index", minWidth: 100, flex: 1 },
         { field: "lighting", headerName: "Lighting", minWidth: 100, flex: 1 },
-        { field: "voc", headerName: "VOC", minWidth: 91, flex: 1 },
         { field: "IAQIndex", headerName: "IAQ Index", minWidth: 100, flex: 1 },
         { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
         { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
+        { field: "", headerName: "Lighting Stat", minWidth: 91, flex: 1 },
     ];
 
     const handleDeleteSelected = async () => {
-        // console.log("Selected Rows for deletion:", selectedRows);
+      
 
         if (selectedRows.length === 0) {
-            // console.log("No records selected for deletion");
+
             return;
         }
 
@@ -76,6 +77,8 @@ const Records = () => {
         } catch (error) {
             console.error("Error during deletion:", error);
         }
+        setOpenDialog(false); // Close dialog after deletion
+
     };
 
     const handleDownload = () => {
@@ -107,10 +110,9 @@ const Records = () => {
         document.body.removeChild(link);
 
         // Close the dialog after download
-        setOpen(false);
+        setOpenDownloadDialog(false); // Close download dialog
     };
 
-    const handleCloseDialog = () => setOpen(false);
 
     return (
         <Box m="5px 25px">
@@ -118,7 +120,7 @@ const Records = () => {
                 <Header title="Records" subtitle="Managing the Records" />
                 <Box>
                     <Button
-                        onClick={handleDeleteSelected}
+                        onClick={() => setOpenDialog(true)}
                         sx={{
                             backgroundColor: colors.redAccent[500],
                             color: "white",
@@ -132,7 +134,7 @@ const Records = () => {
                         Delete Selected Rows
                     </Button>
                     <Button
-                        onClick={() => setOpen(true)}
+                        onClick={() => setOpenDownloadDialog(true)}
                         sx={{
                             backgroundColor: colors.greenAccent[400],
                             color: "white",
@@ -172,13 +174,31 @@ const Records = () => {
                             "& .MuiDataGrid-footerContainer": {
                                 backgroundColor: colors.greenAccent[700],
                             },
+                            "& .MuiTablePagination-toolbar": {
+                                paddingBottom:"15px",
+                            },
                         }}
                     />
                 </Paper>
             </Box>
+            <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+                <DialogTitle>Delete Record</DialogTitle>
+                <DialogContent>
+                <DialogContentText>Are you sure you want to delete?</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={() => setOpenDialog(false)} color="secondary">
+                    Cancel
+                </Button>
+                <Button sx={{backgroundColor: '#4cceac',height: '30px', borderRadius: '25px', fontWeight: 'bold',}}
+                onClick={handleDeleteSelected} color="primary" variant="contained">
+                    Delete Record
+                </Button>
+                </DialogActions>
+            </Dialog>
 
             {/* Date Range Dialog */}
-            <Dialog open={open} onClose={handleCloseDialog}>
+            <Dialog open={openDownloadDialog} onClose={() => setOpenDownloadDialog(false)}>
                 <DialogTitle>Select Date Range</DialogTitle>
                 <DialogContent>
                     <TextField
@@ -208,8 +228,8 @@ const Records = () => {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDialog} color="primary">Cancel</Button>
-                    <Button onClick={handleDownload} color="primary">Download</Button>
+                <Button onClick={() => setOpenDownloadDialog(false)}>Cancel</Button>
+                <Button onClick={handleDownload} color="primary">Download</Button>
                 </DialogActions>
             </Dialog>
         </Box>

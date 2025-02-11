@@ -162,11 +162,13 @@ const RegisterDevice = () => {
                 </Box>
               </Box>
 
-              {/* Second Checkbox - Outdoor */}
-              <Box sx={{ gridColumn: "span 1" }}>
-                <Box display="flex">
-                  <LocationOnOutlinedIcon sx={{ fontSize: 19, color: "red", mr: .4 }} />
-                  <Typography>Location</Typography>
+
+                <Box display="flex" justifyContent="center" mt="20px">
+                <Button sx={{backgroundColor: '#4cceac',height: '30px', borderRadius: '25px', fontWeight: 'bold',}}
+                  type="submit" variant="contained">
+                    Register Device
+                  </Button>
+
                 </Box>
                 <FormControlLabel
                   label="Outdoor"

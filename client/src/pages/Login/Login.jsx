@@ -1,50 +1,56 @@
 import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, Grid } from '@mui/material';
+import { Box, Typography, TextField, Button, Grid, Snackbar, Alert } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import backgroundImage from '../../imgs/ESLIHS_BG.png';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import LockIcon from '@mui/icons-material/Lock';
-import { storeUserDataToLocalStorage } from "../global/LocalStorage";
 
+import { storeUserDataToLocalStorage } from "../global/LocalStorage";
 import { httpAuthenticateUser } from "../../hooks/users.requests";
 
 const LoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
 
         try {
-            const userData = await httpAuthenticateUser(username, password); // Call the authenticate function with username and password
+            const userData = await httpAuthenticateUser(username, password);
 
             if (userData.ok === false) {
-                alert(userData.error || "Invalid credentials"); // Show error message if authentication fails
+                setSnackbar({ open: true, message: 'Invalid credentials', severity: 'error' });
             } else {
                 localStorage.setItem("auth", "true");
                 localStorage.setItem("username", username);
                 localStorage.setItem("role", userData.role);
+
                 try {
                     await storeUserDataToLocalStorage(username);
-                    // console.log("User data stored successfully.");
+                    setSnackbar({ open: true, message: 'Login successful! Welcome!', severity: 'success' });
+
+                    // Delay navigation to show the success message
+                    setTimeout(() => {
+                        navigate(`/dashboard`);
+                    }, 1500); // 1.5 seconds delay before redirecting
+                  
                 } catch (error) {
                     console.error("Error storing user data:", error);
-                    alert("Failed to load additional user data.");
+                    setSnackbar({ open: true, message: 'Failed to save user data.', severity: 'warning' });
                 }
-
-                navigate(`/dashboard`); // Navigate to the dashboard on successful authentication
             }
         } catch (error) {
             console.error("Authentication error:", error);
-            alert("Authentication failed. Please try again later.");
+            setSnackbar({ open: true, message: 'Authentication failed. Try again later.', severity: 'error' });
         }
     };
 
     return (
         <Box
             sx={{
-                height: '100vh',
+                height: '110%',
                 width: '100vw',
                 backgroundImage: `linear-gradient(rgba(153, 235, 222, 0.3), rgba(153, 235, 222, 0.2)), url(${backgroundImage})`,
                 backgroundSize: 'cover',
@@ -52,7 +58,7 @@ const LoginPage = () => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                overflow: 'hidden',
+                overflow: 'auto',
                 p: 2
             }}
         >
@@ -157,7 +163,7 @@ const LoginPage = () => {
                         </form>
                     </Box>
                 </Grid>
-
+                
                 {/* Links Box */}
                 <Grid item xs={12} sm={12} md={4} display="flex" justifyContent="center" alignItems="center">
                     <Box
@@ -204,6 +210,18 @@ const LoginPage = () => {
                     </Box>
                 </Grid>
             </Grid>
+
+            {/* Snackbar Alerts */}
+            <Snackbar 
+                open={snackbar.open} 
+                autoHideDuration={2000} 
+                onClose={() => setSnackbar({ ...snackbar, open: false })} 
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+                <Alert onClose={() => setSnackbar({ ...snackbar, open: false })} severity={snackbar.severity} sx={{ width: '100%' }}>
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 };
