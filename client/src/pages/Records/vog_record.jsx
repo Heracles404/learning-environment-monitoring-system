@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { httpGetAllReadouts, httpDeleteReadout } from "../../hooks/vog.requests";
-import { Box, Button, Typography, Paper, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { Box, Button, Typography, Paper, Dialog,DialogContentText, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
@@ -14,9 +14,11 @@ const VOGRecords = () => {
     const colors = tokens(theme.palette.mode);
     const [rows, setRows] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]); // Store selected rows
-    const [open, setOpen] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false); // State for confirmation dialog
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    const [openDownloadDialog, setOpenDownloadDialog] = useState(false); // For download confirmation
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -76,17 +78,13 @@ const VOGRecords = () => {
         document.body.removeChild(link);
 
         // Close the dialog
-        setOpen(false);
+        setOpenDownloadDialog(false); // Close download dialog
     };
 
-    const handleOpenDialog = () => setOpen(true);
-    const handleCloseDialog = () => setOpen(false);
 
     const handleDeleteSelected = async () => {
-        console.log("Selected Rows for deletion:", selectedRows);
 
         if (selectedRows.length === 0) {
-            console.log("No records selected for deletion");
             return;
         }
 
@@ -103,6 +101,8 @@ const VOGRecords = () => {
         } catch (error) {
             console.error("Error during deletion:", error);
         }
+        setOpenDialog(false); // Close dialog after deletion
+
     };
 
     return (
@@ -120,7 +120,7 @@ const VOGRecords = () => {
 
                 <Box>
                     <Button
-                        onClick={handleDeleteSelected}
+                        onClick={() => setOpenDialog(true)}
                         sx={{
                             backgroundColor: colors.redAccent[500],
                             color: "white",
@@ -134,7 +134,7 @@ const VOGRecords = () => {
                         Delete Selected Rows
                     </Button>
                     <Button
-                        onClick={handleOpenDialog}
+                        onClick={() => setOpenDownloadDialog(true)}
                         sx={{
                             backgroundColor: colors.greenAccent[400],
                             color: "white",
@@ -186,9 +186,24 @@ const VOGRecords = () => {
                     />
                 </Paper>
             </Box>
+            <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+                <DialogTitle>Delete Record</DialogTitle>
+                <DialogContent>
+                <DialogContentText>Are you sure you want to delete?</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={() => setOpenDialog(false)} color="secondary">
+                    Cancel
+                </Button>
+                <Button sx={{backgroundColor: '#4cceac',height: '30px', borderRadius: '25px', fontWeight: 'bold',}}
+                onClick={handleDeleteSelected} color="primary" variant="contained">
+                    Delete Record
+                </Button>
+                </DialogActions>
+            </Dialog>
 
             {/* Date Range Dialog */}
-            <Dialog open={open} onClose={handleCloseDialog}>
+            <Dialog open={openDownloadDialog} onClose={() => setOpenDownloadDialog(false)}>
                 <DialogTitle>Select Date Range</DialogTitle>
                 <DialogContent>
                     <TextField
@@ -214,7 +229,7 @@ const VOGRecords = () => {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDialog}>Cancel</Button>
+                <Button onClick={() => setOpenDownloadDialog(false)}>Cancel</Button>
                     <Button
                         onClick={handleDownload}
                         sx={{

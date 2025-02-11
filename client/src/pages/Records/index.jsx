@@ -14,10 +14,10 @@ const Records = () => {
     const colors = tokens(theme.palette.mode);
     const [rows, setRows] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]); // Store selected rows
-    const [open, setOpen] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false); // State for confirmation dialog
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
-    const [openDialog, setOpenDialog] = useState(false); // State for confirmation dialog
+    const [openDownloadDialog, setOpenDownloadDialog] = useState(false); // For download confirmation
 
     useEffect(() => {
         const fetchData = async () => {
@@ -57,10 +57,8 @@ const Records = () => {
     ];
 
     const handleDeleteSelected = async () => {
-        console.log("Selected Rows for deletion:", selectedRows);
 
         if (selectedRows.length === 0) {
-            console.log("No records selected for deletion");
             return;
         }
 
@@ -77,6 +75,8 @@ const Records = () => {
         } catch (error) {
             console.error("Error during deletion:", error);
         }
+        setOpenDialog(false); // Close dialog after deletion
+
     };
 
     const handleDownload = () => {
@@ -108,10 +108,9 @@ const Records = () => {
         document.body.removeChild(link);
 
         // Close the dialog after download
-        setOpen(false);
+        setOpenDownloadDialog(false); // Close download dialog
     };
 
-    const handleCloseDialog = () => setOpen(false);
 
     return (
         <Box m="5px 25px">
@@ -133,7 +132,7 @@ const Records = () => {
                         Delete Selected Rows
                     </Button>
                     <Button
-                        onClick={() => setOpen(true)}
+                        onClick={() => setOpenDownloadDialog(true)}
                         sx={{
                             backgroundColor: colors.greenAccent[400],
                             color: "white",
@@ -194,7 +193,7 @@ const Records = () => {
             </Dialog>
 
             {/* Date Range Dialog */}
-            <Dialog open={open} onClose={handleCloseDialog}>
+            <Dialog open={openDownloadDialog} onClose={() => setOpenDownloadDialog(false)}>
                 <DialogTitle>Select Date Range</DialogTitle>
                 <DialogContent>
                     <TextField
@@ -224,8 +223,8 @@ const Records = () => {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDialog} color="primary">Cancel</Button>
-                    <Button onClick={handleDownload} color="primary">Download</Button>
+                <Button onClick={() => setOpenDownloadDialog(false)}>Cancel</Button>
+                <Button onClick={handleDownload} color="primary">Download</Button>
                 </DialogActions>
             </Dialog>
         </Box>
