@@ -25,6 +25,8 @@ const DBRecords = () => {
                     currentIAQIndex: readout.IAQIndex,
                     currentLighting: readout.lighting,
                     concernLevel: (readout.heatIndex > 29 || readout.IAQIndex > 60 || readout.lighting > 200) ? "Bad" : "Good",
+                    IAQStatus: readout.IAQIndex > 100 ? "Bad" : "Good", // Adjust the threshold as needed
+                    LightStatus: readout.lighting > 300 ? "Bad" : "Good", // Adjust the threshold as needed
                 };
             });
 

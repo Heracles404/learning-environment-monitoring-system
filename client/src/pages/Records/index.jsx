@@ -35,6 +35,7 @@ const Records = () => {
                 IAQIndex: readout.IAQIndex,
                 indoorAir: readout.indoorAir,
                 temp: readout.temp,
+                lightRemarks: readout.lightRemarks,
             }));
             setRows(formattedData);
         };
@@ -53,7 +54,7 @@ const Records = () => {
         { field: "IAQIndex", headerName: "IAQ Index", minWidth: 100, flex: 1 },
         { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
         { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
-        { field: "", headerName: "Lighting Stat", minWidth: 91, flex: 1 },
+        { field: "lightRemarks", headerName: "Lighting Stat", minWidth: 91, flex: 1 },
     ];
 
     const handleDeleteSelected = async () => {

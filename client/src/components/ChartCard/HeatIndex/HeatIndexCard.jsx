@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import "./HeatIndexCard.css";
 import { motion, LayoutGroup } from "framer-motion";
@@ -37,17 +38,9 @@ function ExpandedCard({ param }) {
 
         if (response && response.length > 0) {
           const heatIndexes = response.map((item) => item.heatIndex);
-
-          // Create timestamps using date and time fields
-          const timestamps = response.map((item) => {
-            // Combine the 'date' and 'time' to create a valid timestamp
-            const combinedDate = `${item.date} ${item.time}`;
-            const timestamp = new Date(combinedDate).getTime(); // Convert to milliseconds
-            console.log(`Raw date from data: ${item.date}`);  // Log date
-            console.log(`Raw time from data: ${item.time}`);  // Log time
-            return timestamp;
-          });
-
+          const timestamps = response.map((item) =>
+            new Date(`${item.date} ${item.time}`).getTime()
+          );
           setHeatIndexData({ heatIndexes, timestamps });
         } else {
           console.error("No data found.");
@@ -134,8 +127,7 @@ function ExpandedCard({ param }) {
         type: "datetime", // Set type to 'datetime'
         categories: sortedData.timestamps.map((timestamp, index) => {
           // Adjust the timestamp based on dynamic calculation
-          // We now correctly use the fetched timestamps from `date` and `time`
-          return new Date(timestamp).toISOString();
+          return new Date(Date.now() - (sortedData.heatIndexes.length - index) * 1000 * 60 * 60).toISOString();
         }),
       },
     },

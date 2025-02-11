@@ -20,33 +20,16 @@ const CO2Card = (props) => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [filteredData, setFilteredData] = useState({ iaqIndexes: [], timestamps: [] });
-  const [noDataFound, setNoDataFound] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
-    // Fetch data similar to the DashboardCard fetching method
     const fetchIAQData = async () => {
       try {
         const response = await httpGetAllReadouts();
 
-        console.log("Fetched IAQ Data:", response);
-
         if (response && response.length > 0) {
           const iaqIndexes = response.map((item) => item.IAQIndex);
-
-          // Create timestamps using date and time fields
-          const timestamps = response.map((item) => {
-            // Combine the 'date' and 'time' to create a valid timestamp
-            const combinedDate = `${item.date} ${item.time}`;
-            const timestamp = new Date(combinedDate).getTime(); // Convert to milliseconds
-            return timestamp;
-          });
-
-          // Log the date and time to check how it's being processed
-          response.forEach((item) => {
-            console.log(`Raw date from data: ${item.date}`);
-            console.log(`Raw time from data: ${item.time}`);
-          });
+          const timestamps = response.map((item) => new Date(`${item.date} ${item.time}`).getTime());
 
           setIaqData({ iaqIndexes, timestamps });
         } else {
@@ -61,41 +44,23 @@ const CO2Card = (props) => {
   }, []);
 
   const filterData = () => {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-
-    // Normalize time to handle full day range
-    start.setHours(0, 0, 0, 0);
-    end.setHours(23, 59, 59, 999);
+    const start = new Date(startDate).setHours(0, 0, 0, 0);
+    const end = new Date(endDate).setHours(23, 59, 59, 999);
 
     const filtered = iaqData.timestamps
-      .map((timestamp, index) => {
-        const currentTimestamp = new Date(timestamp);
-        if (currentTimestamp >= start && currentTimestamp <= end) {
-          return { timestamp, iaqIndex: iaqData.iaqIndexes[index] };
-        }
-        return null;
-      })
-      .filter((item) => item !== null);
+      .map((timestamp, index) =>
+        timestamp >= start && timestamp <= end ? { timestamp, iaqIndex: iaqData.iaqIndexes[index] } : null
+      )
+      .filter(Boolean);
 
-    if (filtered.length === 0) {
-      setNoDataFound(true);
-      setOpenDialog(true);
-    } else {
-      setNoDataFound(false);
-    }
+    setFilteredData({
+      iaqIndexes: filtered.map((item) => item.iaqIndex),
+      timestamps: filtered.map((item) => item.timestamp),
+    });
 
-    const filteredTimestamps = filtered.map((item) => item.timestamp);
-    const filteredIaqIndexes = filtered.map((item) => item.iaqIndex);
-
-    setFilteredData({ iaqIndexes: filteredIaqIndexes, timestamps: filteredTimestamps });
+    setOpenDialog(filtered.length === 0);
   };
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
-  // Use filtered data if available, else use the original IAQ data
   const sortedData = filteredData.iaqIndexes.length > 0 ? filteredData : iaqData;
 
   const data = {
@@ -113,79 +78,35 @@ const CO2Card = (props) => {
         opacity: 0.35,
       },
       fill: {
-        colors: [getRandomColor()], // Apply random color for gradient
+        colors: [getRandomColor()],
         type: "gradient",
       },
-      dataLabels: {
-        enabled: false,
-      },
+      dataLabels: { enabled: false },
       stroke: {
         curve: "smooth",
-        colors: [getRandomColor()], // Apply random color to the line
+        colors: [getRandomColor()],
       },
       tooltip: {
-        x: {
-          format: "dd/MM/yy HH:mm",
-        },
+        x: { format: "dd/MM/yy HH:mm" },
       },
-      grid: {
-        show: true,
-      },
+      grid: { show: true },
       xaxis: {
-        type: "datetime", // Set type to 'datetime'
-        categories: sortedData.timestamps.map((timestamp) => {
-          // Convert the timestamp into a formatted ISO string
-          return new Date(timestamp).toISOString();
-        }),
+        type: "datetime",
+        categories: sortedData.timestamps.map((_, index) =>
+          new Date(Date.now() - (sortedData.iaqIndexes.length - index) * 1000 * 60 * 60).toISOString()
+        ),
       },
     },
-    series: [
-      {
-        name: "IAQ Index",
-        data: sortedData.iaqIndexes,
-        markers: {
-          size: 6,
-          colors: [getRandomColor()],
-          strokeColor: "#ffffff",
-          strokeWidth: 2,
-        },
-      },
-    ],
+    series: [{ name: "IAQ Index", data: sortedData.iaqIndexes }],
   };
 
   return (
-    <motion.div
-      className="ExpandedCard"
-      style={{
-        background: props.color.backGround,
-        boxShadow: props.color.boxShadow,
-      }}
-      layoutId={`expandableCard-${props.title}`}
-    >
+    <motion.div className="ExpandedCard" style={{ background: props.color.backGround, boxShadow: props.color.boxShadow }} layoutId={`expandableCard-${props.title}`}>
       <span>{props.title}</span>
 
       <div className="date-filter">
-        <TextField
-          type="date"
-          label="Start Date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField
-          type="date"
-          label="End Date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          inputProps={{
-            min: startDate,
-          }}
-        />
+        <TextField type="date" label="Start Date" value={startDate} onChange={(e) => setStartDate(e.target.value)} InputLabelProps={{ shrink: true }} />
+        <TextField type="date" label="End Date" value={endDate} onChange={(e) => setEndDate(e.target.value)} InputLabelProps={{ shrink: true }} inputProps={{ min: startDate }} />
         <Button onClick={filterData} variant="contained" color="primary">
           Filter
         </Button>
@@ -195,13 +116,13 @@ const CO2Card = (props) => {
         <Chart options={data.options} series={data.series} type="area" />
       </div>
 
-      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="sm" fullWidth>
         <DialogTitle sx={{ fontSize: "1.5rem", fontWeight: "bold" }}>No Data Found</DialogTitle>
         <DialogContent>
           <p style={{ fontSize: "1.2rem" }}>No data detected for the selected date range.</p>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary" style={{ fontSize: "1.1rem" }}>
+          <Button onClick={() => setOpenDialog(false)} color="primary" style={{ fontSize: "1.1rem" }}>
             Close
           </Button>
         </DialogActions>
@@ -211,4 +132,3 @@ const CO2Card = (props) => {
 };
 
 export default CO2Card;
-
