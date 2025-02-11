@@ -161,15 +161,14 @@ const RegisterDevice = () => {
                   />
                 </Box>
               </Box>
-
-
-                <Box display="flex" justifyContent="center" mt="20px">
-                <Button sx={{backgroundColor: '#4cceac',height: '30px', borderRadius: '25px', fontWeight: 'bold',}}
-                  type="submit" variant="contained">
-                    Register Device
-                  </Button>
-
+              <Box sx={{ gridColumn: "span 1" }}>
+                <Box display="flex">
+                  <LocationOnOutlinedIcon sx={{ fontSize: 19, color: "red", mr: .4 }} />
+                  <Typography>Location</Typography>
                 </Box>
+
+
+                
                 <FormControlLabel
                   label="Outdoor"
                   control={
@@ -199,10 +198,12 @@ const RegisterDevice = () => {
             </Box>
 
             <Box display="flex" justifyContent="center" mt="20px">
-              <Button type="submit" color="secondary" variant="contained">
-                Register Device
-              </Button>
-            </Box>
+                <Button sx={{backgroundColor: '#4cceac',height: '30px', borderRadius: '25px', fontWeight: 'bold',}}
+                  type="submit" variant="contained">
+                    Register Device
+                  </Button>
+
+                </Box>
             {touched.selection && errors.selection && (
               <Box color="red" mt="10px">
                 {errors.selection}
