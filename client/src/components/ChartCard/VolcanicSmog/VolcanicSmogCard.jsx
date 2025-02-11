@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./VolcanicSmogCard.css";
 import { motion, LayoutGroup } from "framer-motion";
 import Chart from "react-apexcharts";
-import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
 import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
 
 const VolcanicSmogCard = (props) => {
   return (
@@ -18,7 +18,6 @@ function ExpandedCard({ param }) {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [filteredData, setFilteredData] = useState({ vocLevels: [], timestamps: [] });
-  const [noDataFound, setNoDataFound] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
 
   const getRandomColor = () => {
@@ -37,16 +36,7 @@ function ExpandedCard({ param }) {
 
         if (response && response.length > 0) {
           const vocLevels = response.map((item) => item.voc);
-
-          // Create timestamps using date and time fields
-          const timestamps = response.map((item) => {
-            // Combine the 'date' and 'time' to create a valid timestamp
-            const combinedDate = `${item.date} ${item.time}`;
-            const timestamp = new Date(combinedDate).getTime(); // Convert to milliseconds
-            console.log(`Raw date from data: ${item.date}`);  // Log date
-            console.log(`Raw time from data: ${item.time}`);  // Log time
-            return timestamp;
-          });
+          const timestamps = response.map((item) => new Date(`${item.date} ${item.time}`).getTime());
 
           setVocData({ vocLevels, timestamps });
         } else {
@@ -61,38 +51,21 @@ function ExpandedCard({ param }) {
   }, []);
 
   const filterData = () => {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-
-    // Normalize time to handle full day range
-    start.setHours(0, 0, 0, 0);
-    end.setHours(23, 59, 59, 999);
+    const start = new Date(startDate).setHours(0, 0, 0, 0);
+    const end = new Date(endDate).setHours(23, 59, 59, 999);
 
     const filtered = vocData.timestamps
-      .map((timestamp, index) => {
-        const currentTimestamp = new Date(timestamp);
-        if (currentTimestamp >= start && currentTimestamp <= end) {
-          return { timestamp, vocLevel: vocData.vocLevels[index] };
-        }
-        return null;
-      })
-      .filter((item) => item !== null);
+      .map((timestamp, index) =>
+        timestamp >= start && timestamp <= end ? { timestamp, vocLevel: vocData.vocLevels[index] } : null
+      )
+      .filter(Boolean);
 
-    if (filtered.length === 0) {
-      setNoDataFound(true);
-      setOpenDialog(true);
-    } else {
-      setNoDataFound(false);
-    }
+    setFilteredData({
+      vocLevels: filtered.map((item) => item.vocLevel),
+      timestamps: filtered.map((item) => item.timestamp),
+    });
 
-    const filteredTimestamps = filtered.map((item) => item.timestamp);
-    const filteredVocLevels = filtered.map((item) => item.vocLevel);
-
-    setFilteredData({ vocLevels: filteredVocLevels, timestamps: filteredTimestamps });
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
+    setOpenDialog(filtered.length === 0);
   };
 
   const sortedData = filteredData.vocLevels.length > 0 ? filteredData : vocData;
@@ -112,73 +85,35 @@ function ExpandedCard({ param }) {
         opacity: 0.35,
       },
       fill: {
-        colors: ["#1e5245"],
+        colors: [getRandomColor()],
         type: "gradient",
       },
-      dataLabels: {
-        enabled: false,
-      },
+      dataLabels: { enabled: false },
       stroke: {
         curve: "smooth",
         colors: [getRandomColor()],
       },
       tooltip: {
-        x: {
-          format: "dd/MM/yy HH:mm", // Modify this as needed
-        },
+        x: { format: "dd/MM/yy HH:mm" },
       },
-      grid: {
-        show: true,
-      },
+      grid: { show: true },
       xaxis: {
-        type: "datetime", // Set type to datetime to plot actual timestamps
-        categories: sortedData.timestamps.map((timestamp) => {
-          // Use the timestamp directly here, no need to dynamically calculate it
-          return new Date(timestamp).toISOString();
-        }),
+        type: "datetime",
+        categories: sortedData.timestamps.map((_, index) =>
+          new Date(Date.now() - (sortedData.vocLevels.length - index) * 1000 * 60 * 60).toISOString()
+        ),
       },
     },
-    series: [
-      {
-        name: "VOC Level",
-        data: sortedData.vocLevels,
-      },
-    ],
+    series: [{ name: "VOC Level", data: sortedData.vocLevels }],
   };
 
   return (
-    <motion.div
-      className="ExpandedCard"
-      style={{
-        background: param.color.backGround,
-        boxShadow: param.color.boxShadow,
-      }}
-      layoutId={`expandableCard-${param.title}`}
-    >
+    <motion.div className="ExpandedCard" style={{ background: param.color.backGround, boxShadow: param.color.boxShadow }} layoutId={`expandableCard-${param.title}`}>
       <span>{param.title}</span>
 
       <div className="date-filter">
-        <TextField
-          type="date"
-          label="Start Date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField
-          type="date"
-          label="End Date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          inputProps={{
-            min: startDate,
-          }}
-        />
+        <TextField type="date" label="Start Date" value={startDate} onChange={(e) => setStartDate(e.target.value)} InputLabelProps={{ shrink: true }} />
+        <TextField type="date" label="End Date" value={endDate} onChange={(e) => setEndDate(e.target.value)} InputLabelProps={{ shrink: true }} inputProps={{ min: startDate }} />
         <Button onClick={filterData} variant="contained" color="primary">
           Filter
         </Button>
@@ -188,13 +123,13 @@ function ExpandedCard({ param }) {
         <Chart options={data.options} series={data.series} type="area" />
       </div>
 
-      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="sm" fullWidth>
         <DialogTitle sx={{ fontSize: "1.5rem", fontWeight: "bold" }}>No Data Found</DialogTitle>
         <DialogContent>
           <p style={{ fontSize: "1.2rem" }}>No data detected for the selected date range.</p>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary" style={{ fontSize: "1.1rem" }}>
+          <Button onClick={() => setOpenDialog(false)} color="primary" style={{ fontSize: "1.1rem" }}>
             Close
           </Button>
         </DialogActions>
