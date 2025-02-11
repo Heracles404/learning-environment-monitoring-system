@@ -182,6 +182,9 @@ const VOGRecords = () => {
                             "& .MuiDataGrid-footerContainer": {
                                 backgroundColor: colors.greenAccent[700],
                             },
+                            "& .MuiTablePagination-toolbar": {
+                                paddingBottom:"15px",
+                            },
                         }}
                     />
                 </Paper>

@@ -50,10 +50,10 @@ const Records = () => {
         { field: "humidity", headerName: "Humidity", minWidth: 100, flex: 1 },
         { field: "heatIndex", headerName: "Heat Index", minWidth: 100, flex: 1 },
         { field: "lighting", headerName: "Lighting", minWidth: 100, flex: 1 },
-        { field: "voc", headerName: "VOC", minWidth: 91, flex: 1 },
         { field: "IAQIndex", headerName: "IAQ Index", minWidth: 100, flex: 1 },
         { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
         { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
+        { field: "", headerName: "Lighting Stat", minWidth: 91, flex: 1 },
     ];
 
     const handleDeleteSelected = async () => {
@@ -171,6 +171,9 @@ const Records = () => {
                             },
                             "& .MuiDataGrid-footerContainer": {
                                 backgroundColor: colors.greenAccent[700],
+                            },
+                            "& .MuiTablePagination-toolbar": {
+                                paddingBottom:"15px",
                             },
                         }}
                     />
