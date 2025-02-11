@@ -200,7 +200,8 @@ const RegisterDevice = () => {
                 </Box>
 
                 <Box display="flex" justifyContent="center" mt="20px">
-                  <Button type="submit" color="secondary" variant="contained">
+                <Button sx={{backgroundColor: '#4cceac',height: '30px', borderRadius: '25px', fontWeight: 'bold',}}
+                  type="submit" variant="contained">
                     Register Device
                   </Button>
                 </Box>
