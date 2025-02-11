@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Typography, useTheme } from "@mui/material";
+import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Typography, useTheme, Dialog,DialogContentText, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { tokens } from "../../theme";
@@ -15,11 +15,13 @@ const Accounts = () => {
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await httpGetAllUsers(); // Fetch data from API
-      const formattedData = data.map(user => ({
+      const data = await httpGetAllUsers();
+      const formattedData = data.map((user) => ({
         id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
@@ -29,11 +31,31 @@ const Accounts = () => {
       setRows(formattedData);
     };
 
-    fetchData(); // Fetch data when component mounts
+    fetchData();
   }, []);
 
+  const handleDeleteClick = (user) => {
+    setSelectedUser(user);
+    setOpenDialog(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (selectedUser) {
+      const response = await httpDeleteUser(selectedUser.userName);
+      if (response.ok) {
+        setRows((prevRows) => prevRows.filter((user) => user.userName !== selectedUser.userName));
+      } else {
+        alert("Failed to delete user. Please try again.");
+      }
+    }
+    setOpenDialog(false);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
   const columns = [
-    // { id: "id", label: "ID", minWidth: 60 },
     { id: "userName", label: "Username", minWidth: 150 },
     { id: "firstName", label: "First Name", minWidth: 150 },
     { id: "lastName", label: "Last Name", minWidth: 150 },
@@ -44,12 +66,12 @@ const Accounts = () => {
       minWidth: 80,
       align: "center",
       renderCell: (row) => (
-          <button
-              style={{ background: "none", border: "none", cursor: "pointer" }}
-              onClick={() => navigate(`../EditAccount/${row.userName}`)} // Navigate to edit page with user ID
-          >
-            <EditOutlinedIcon style={{ color: "orange", fontSize: "20px" }} />
-          </button>
+        <button
+          style={{ background: "none", border: "none", cursor: "pointer" }}
+          onClick={() => navigate(`../EditAccount/${row.userName}`)}
+        >
+          <EditOutlinedIcon style={{ color: "orange", fontSize: "20px" }} />
+        </button>
       ),
     },
     {
@@ -58,25 +80,14 @@ const Accounts = () => {
       minWidth: 80,
       align: "center",
       renderCell: (row) => (
-          <button
-              style={{ background: "none", border: "none", cursor: "pointer" }}
-              onClick={async () => {
-                const confirmed = window.confirm(`Are you sure you want to delete ${row.userName}?`);
-                if (confirmed) {
-                  const response = await httpDeleteUser(row.userName);
-                  if (response.ok) {
-                    // Update the rows state to remove the deleted user
-                    setRows((prevRows) => prevRows.filter((user) => user.userName !== row.userName));
-                  } else {
-                    alert("Failed to delete user. Please try again.");
-                  }
-                }
-              }}
-          >
-            <DeleteOutlineIcon style={{ color: "red", fontSize: "20px" }} />
-          </button>
+        <button
+          style={{ background: "none", border: "none", cursor: "pointer" }}
+          onClick={() => handleDeleteClick(row)}
+        >
+          <DeleteOutlineIcon style={{ color: "red", fontSize: "20px" }} />
+        </button>
       ),
-    }
+    },
   ];
 
   const handleChangePage = (event, newPage) => {
@@ -93,9 +104,9 @@ const Accounts = () => {
       <Header title="ACCOUNTS" subtitle="Managing the Users" />
       <Box mt="1px">
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
-<Typography variant="caption" sx={{ ml: 2 }}>
-                         Account User Record
-                    </Typography>          
+          <Typography variant="caption" sx={{ ml: 2 }}>
+            Account User Record
+          </Typography>
           <TableContainer sx={{ height: "65vh" }}>
             <Table stickyHeader>
               <TableHead>
@@ -105,7 +116,6 @@ const Accounts = () => {
                       key={column.id}
                       style={{
                         minWidth: column.minWidth,
-                        // fontWeight: "bold",
                         backgroundColor: colors.greenAccent[700],
                         color: colors.grey[100],
                       }}
@@ -117,31 +127,24 @@ const Accounts = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
-                    <TableRow hover key={row.id}>
-                      {columns.map((column) => {
-                        const value = row[column.id];
-                        return (
-                          <TableCell
-                            key={column.id}
-                            align={column.align || "left"}
-                            sx={{
-                              color:
-                                column.id === "role"
-                                  ? colors.greenAccent[300]
-                                  : "inherit",
-                            }}
-                          >
-                            {column.renderCell
-                              ? column.renderCell(row)
-                              : value}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  ))}
+                {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                  <TableRow hover key={row.id}>
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      return (
+                        <TableCell
+                          key={column.id}
+                          align={column.align || "left"}
+                          sx={{
+                            color: column.id === "role" ? colors.greenAccent[300] : "inherit",
+                          }}
+                        >
+                          {column.renderCell ? column.renderCell(row) : value}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
@@ -153,13 +156,27 @@ const Accounts = () => {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
-            sx={{
-              backgroundColor: colors.greenAccent[700],
-              color: colors.grey[100],
-            }}
+            sx={{ backgroundColor: colors.greenAccent[700], color: colors.grey[100] }}
           />
         </Paper>
       </Box>
+      
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete <strong>{selectedUser?.userName}</strong>?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmDelete} color="error">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
