@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Typography, useTheme, Dialog,DialogContentText, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { Box, Snackbar, Alert, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Typography, useTheme, Dialog,DialogContentText, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { tokens } from "../../theme";
@@ -17,6 +17,8 @@ const Accounts = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,7 +47,8 @@ const Accounts = () => {
       if (response.ok) {
         setRows((prevRows) => prevRows.filter((user) => user.userName !== selectedUser.userName));
       } else {
-        alert("Failed to delete user. Please try again.");
+        setSnackbar({ open: true, message: 'Failed to delete user. Please try again.', severity: 'error' });
+
       }
     }
     setOpenDialog(false);
@@ -160,6 +163,17 @@ const Accounts = () => {
           />
         </Paper>
       </Box>
+       {/* Snackbar Alerts */}
+       <Snackbar 
+                open={snackbar.open} 
+                autoHideDuration={2000} 
+                onClose={() => setSnackbar({ ...snackbar, open: false })} 
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+                <Alert onClose={() => setSnackbar({ ...snackbar, open: false })} severity={snackbar.severity} sx={{ width: '100%' }}>
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
       
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Confirm Deletion</DialogTitle>
