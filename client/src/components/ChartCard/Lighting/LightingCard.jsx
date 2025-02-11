@@ -37,9 +37,17 @@ function ExpandedCard({ param }) {
 
         if (response && response.length > 0) {
           const lightingLevels = response.map((item) => item.lighting);
-          const timestamps = response.map((item) =>
-            new Date(`${item.date} ${item.time}`).getTime()
-          );
+          
+          // Create timestamps using date and time fields
+          const timestamps = response.map((item) => {
+            // Combine the 'date' and 'time' to create a valid timestamp
+            const combinedDate = `${item.date} ${item.time}`;
+            const timestamp = new Date(combinedDate).getTime(); // Convert to milliseconds
+            console.log(`Raw date from data: ${item.date}`);  // Log date
+            console.log(`Raw time from data: ${item.time}`);  // Log time
+            return timestamp;
+          });
+
           setLightingData({ lightingLevels, timestamps });
         } else {
           console.error("No data found.");
@@ -104,7 +112,7 @@ function ExpandedCard({ param }) {
         opacity: 0.35,
       },
       fill: {
-        colors: ["#FFE400"],
+        colors: ["#FFE400"], // Apply color for gradient
         type: "gradient",
       },
       dataLabels: {
@@ -116,7 +124,7 @@ function ExpandedCard({ param }) {
       },
       tooltip: {
         x: {
-          format: "dd/MM/yy HH:mm", // Modify this as needed
+          format: "dd/MM/yy HH:mm", // Format for tooltip X-axis values (time)
         },
       },
       grid: {
@@ -124,9 +132,9 @@ function ExpandedCard({ param }) {
       },
       xaxis: {
         type: "datetime", // Set type to 'datetime'
-        categories: sortedData.timestamps.map((timestamp, index) => {
-          // Use dynamic calculation for the x-axis timestamps (adjust as needed)
-          return new Date(Date.now() - (sortedData.lightingLevels.length - index) * 1000 * 60 * 60).toISOString();
+        categories: sortedData.timestamps.map((timestamp) => {
+          // Use the timestamp directly here, no need to dynamically calculate it
+          return new Date(timestamp).toISOString();
         }),
       },
     },
@@ -137,7 +145,6 @@ function ExpandedCard({ param }) {
       },
     ],
   };
-  
 
   return (
     <motion.div

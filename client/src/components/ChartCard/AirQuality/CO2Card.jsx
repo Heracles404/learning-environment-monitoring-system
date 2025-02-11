@@ -29,13 +29,25 @@ const CO2Card = (props) => {
       try {
         const response = await httpGetAllReadouts();
 
-        // console.log("Fetched Data:", response);
+        console.log("Fetched IAQ Data:", response);
 
         if (response && response.length > 0) {
           const iaqIndexes = response.map((item) => item.IAQIndex);
-          const timestamps = response.map((item) =>
-            new Date(`${item.date} ${item.time}`).getTime()
-          );
+
+          // Create timestamps using date and time fields
+          const timestamps = response.map((item) => {
+            // Combine the 'date' and 'time' to create a valid timestamp
+            const combinedDate = `${item.date} ${item.time}`;
+            const timestamp = new Date(combinedDate).getTime(); // Convert to milliseconds
+            return timestamp;
+          });
+
+          // Log the date and time to check how it's being processed
+          response.forEach((item) => {
+            console.log(`Raw date from data: ${item.date}`);
+            console.log(`Raw time from data: ${item.time}`);
+          });
+
           setIaqData({ iaqIndexes, timestamps });
         } else {
           console.error("No data found.");
@@ -86,8 +98,6 @@ const CO2Card = (props) => {
   // Use filtered data if available, else use the original IAQ data
   const sortedData = filteredData.iaqIndexes.length > 0 ? filteredData : iaqData;
 
-  // console.log("Sorted Data for Chart:", sortedData);
-
   const data = {
     options: {
       chart: {
@@ -123,8 +133,9 @@ const CO2Card = (props) => {
       },
       xaxis: {
         type: "datetime", // Set type to 'datetime'
-        categories: sortedData.timestamps.map((timestamp, index) => {
-          return new Date(Date.now() - (sortedData.iaqIndexes.length - index) * 1000 * 60 * 60).toISOString();
+        categories: sortedData.timestamps.map((timestamp) => {
+          // Convert the timestamp into a formatted ISO string
+          return new Date(timestamp).toISOString();
         }),
       },
     },
@@ -141,8 +152,6 @@ const CO2Card = (props) => {
       },
     ],
   };
-
-  // console.log("Chart Data Passed:", data);
 
   return (
     <motion.div
@@ -202,3 +211,4 @@ const CO2Card = (props) => {
 };
 
 export default CO2Card;
+

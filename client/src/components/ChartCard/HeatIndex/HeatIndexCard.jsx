@@ -37,9 +37,17 @@ function ExpandedCard({ param }) {
 
         if (response && response.length > 0) {
           const heatIndexes = response.map((item) => item.heatIndex);
-          const timestamps = response.map((item) =>
-            new Date(`${item.date} ${item.time}`).getTime()
-          );
+
+          // Create timestamps using date and time fields
+          const timestamps = response.map((item) => {
+            // Combine the 'date' and 'time' to create a valid timestamp
+            const combinedDate = `${item.date} ${item.time}`;
+            const timestamp = new Date(combinedDate).getTime(); // Convert to milliseconds
+            console.log(`Raw date from data: ${item.date}`);  // Log date
+            console.log(`Raw time from data: ${item.time}`);  // Log time
+            return timestamp;
+          });
+
           setHeatIndexData({ heatIndexes, timestamps });
         } else {
           console.error("No data found.");
@@ -126,7 +134,8 @@ function ExpandedCard({ param }) {
         type: "datetime", // Set type to 'datetime'
         categories: sortedData.timestamps.map((timestamp, index) => {
           // Adjust the timestamp based on dynamic calculation
-          return new Date(Date.now() - (sortedData.heatIndexes.length - index) * 1000 * 60 * 60).toISOString();
+          // We now correctly use the fetched timestamps from `date` and `time`
+          return new Date(timestamp).toISOString();
         }),
       },
     },
