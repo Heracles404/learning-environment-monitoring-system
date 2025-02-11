@@ -33,10 +33,10 @@ const Accounts = () => {
   }, []);
 
   const columns = [
-    { id: "id", label: "ID", minWidth: 60 },
+    // { id: "id", label: "ID", minWidth: 60 },
+    { id: "userName", label: "Username", minWidth: 150 },
     { id: "firstName", label: "First Name", minWidth: 150 },
     { id: "lastName", label: "Last Name", minWidth: 150 },
-    { id: "userName", label: "Username", minWidth: 150 },
     { id: "role", label: "Role", minWidth: 120 },
     {
       id: "edit",
