@@ -123,10 +123,10 @@ const RegisterDevice = () => {
               <Box sx={{ gridColumn: "span 1" }}>
                 <Box display="flex">
                   <LocationOnOutlinedIcon sx={{ fontSize: 19, color: "red", mr: .4 }} />
-                  <Typography>Location</Typography>
+                  <Typography>Sensors</Typography>
                 </Box>
-                <FormControlLabel
-                  label="Indoor"
+                {/* <FormControlLabel
+                  // label="Indoor"
                   control={
                     <Checkbox
                       checked={checked[0] && checked[1]}
@@ -137,7 +137,7 @@ const RegisterDevice = () => {
                       }}
                     />
                   }
-                />
+                /> */}
                 <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
                   <FormControlLabel
                     label="BH1750"
@@ -161,7 +161,7 @@ const RegisterDevice = () => {
                   />
                 </Box>
               </Box>
-              <Box sx={{ gridColumn: "span 1" }}>
+              {/* <Box sx={{ gridColumn: "span 1" }}>
                 <Box display="flex">
                   <LocationOnOutlinedIcon sx={{ fontSize: 19, color: "red", mr: .4 }} />
                   <Typography>Location</Typography>
@@ -194,7 +194,7 @@ const RegisterDevice = () => {
                     }
                   />
                 </Box>
-              </Box>
+              </Box> */}
             </Box>
 
             <Box display="flex" justifyContent="center" mt="20px">
@@ -219,7 +219,7 @@ const RegisterDevice = () => {
 };
 
 const checkoutSchema = yup.object().shape({
-  classroom: yup.string().required("Classroom is required"),
+  classroom: yup.string().required("Classroom Name is required"),
   selection: yup
     .boolean()
     .oneOf([true], "Please select either Indoor or Outdoor"),
