@@ -43,9 +43,99 @@ const DBRecords = () => {
         { field: "currentHeatIndex", headerName: "Latest Heat Index", minWidth: 100, flex: 1 },
         { field: "currentIAQIndex", headerName: "Latest IAQ Index", minWidth: 100, flex: 1 },
         { field: "currentLighting", headerName: "Latest Light Level", minWidth: 100, flex: 1 },
-        { field: "concernLevel", headerName: "Heat Index Status", minWidth: 100, flex: 1 },
-        { field: "IAQStatus", headerName: "IAQ Status", minWidth: 100, flex: 1 },
-        { field: "LightStatus", headerName: "Light Status", minWidth: 100, flex: 1 },
+        // { field: "concernLevel", headerName: "Heat Index Status", minWidth: 100, flex: 1 },
+        {
+            field: "concernLevel",
+            headerName: "Heat Index Status",
+            flex: 1,
+            renderCell: ({ row: { concernLevel } }) => {
+              return (
+                <Box
+                //   width="100%"
+                  m="8px auto"
+                  p="5px"
+                  display="flex"
+                  justifyContent="center"
+                  backgroundColor={
+                    concernLevel === "Good"
+                      ? colors.greenAccent[600]
+                      : concernLevel === "Bad"
+                      ? colors.redAccent[700]
+                      : colors.redAccent[700]
+                  }
+                  borderRadius="4px"
+                >
+                  {concernLevel === "Good" }
+                  {concernLevel === "Bad" }
+                  <Typography color={"white"} >
+                    {concernLevel}
+                  </Typography>
+                </Box>
+              );
+            },
+        },
+        // { field: "IAQStatus", headerName: "IAQ Status", minWidth: 100, flex: 1 },
+        {
+            field: "IAQStatus",
+            headerName: "IAQ Stat",
+            flex: 1,
+            renderCell: ({ row: { IAQStatus } }) => {
+              return (
+                <Box
+                  width="120%"
+                  m="8px auto"
+                  p="5px"
+                  display="flex"
+                  justifyContent="center"
+                  backgroundColor={
+                    IAQStatus === "Good"
+                      ? colors.greenAccent[600]
+                      : IAQStatus === "Bad"
+                      ? colors.redAccent[700]
+                      : colors.redAccent[700]
+                  }
+                  borderRadius="4px"
+                >
+                  {IAQStatus === "Good" }
+                  {IAQStatus === "Bad" }
+                  <Typography color={"white"} >
+                    {IAQStatus}
+                  </Typography>
+                </Box>
+              );
+            },
+        },
+        // { field: "LightStatus", headerName: "Light Status", minWidth: 100, flex: 1 },
+        {
+                    field: "LightStatus",
+                    headerName: "Light Status",
+                    flex: 1,
+                    renderCell: ({ row: { LightStatus } }) => {
+                      return (
+                        <Box
+                        //   width="60%"
+                          m="8px auto"
+                          p="5px"
+                          display="flex"
+                          justifyContent="center"
+                          backgroundColor={
+                            LightStatus === "Good"
+                              ? colors.greenAccent[600]
+                              : LightStatus === "Bad"
+                              ? colors.redAccent[700]
+                              : colors.redAccent[700]
+                          }
+                          borderRadius="4px"
+                        >
+                          {LightStatus === "Good" }
+                          {LightStatus === "Bad" }
+                          <Typography color={"white"} >
+                            {LightStatus}
+                          </Typography>
+                        </Box>
+                      );
+                    },
+                },
     ];
 
     return (
