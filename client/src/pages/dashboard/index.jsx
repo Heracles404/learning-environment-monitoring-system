@@ -166,7 +166,13 @@ const Dashboard = () => {
         {/* ROW 1 */}
         <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[500]} padding="5px">
           <Typography variant="h4" fontWeight="700" display="flex" justifyContent="center" color="white">
-            INDOOR AIR QUALITY
+            INDOOR AIR QUALITY (IAQ)
+          </Typography>
+          <Typography variant="h7" fontWeight="400" display="flex" justifyContent="center" color="white">
+          (PL) Ideal Range for Good Heat Index is (G) <br/>
+          (PL) Ideal Range for Bad Heat Index is (B) <br/>
+          (PL) Threshold for Good is (G) <br/>
+          (PL) Threshold for Bad is (B)
           </Typography>
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
             <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
@@ -179,6 +185,12 @@ const Dashboard = () => {
         <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[500]} padding="5px">
           <Typography variant="h4" fontWeight="700" display="flex" justifyContent="center" color="white">
             LIGHT
+          </Typography>
+          <Typography variant="h7" fontWeight="400" display="flex" justifyContent="center" color="white">
+          (PL) Ideal Range for Good Heat Index is (G) <br/>
+          (PL) Ideal Range for Bad Heat Index is (B) <br/>
+          (PL) Threshold for Good is (G) <br/>
+          (PL) Threshold for Bad is (B)
           </Typography>
           {Object.entries(inactiveDevices.bh1750Rooms).map(([room, count]) => (
             <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
@@ -193,6 +205,12 @@ const Dashboard = () => {
           <Typography variant="h4" fontWeight="700" display="flex" justifyContent="center" color="white">
             HEAT INDEX
           </Typography>
+          <Typography variant="h7" fontWeight="400" display="flex" justifyContent="center" color="white">
+          (PL) Ideal Range for Good Heat Index is (G) <br/>
+          (PL) Ideal Range for Bad Heat Index is (B) <br/>
+          (PL) Threshold for Good is (G) <br/>
+          (PL) Threshold for Bad is (B)
+          </Typography>
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
             <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
           ))}
@@ -205,12 +223,21 @@ const Dashboard = () => {
           <Typography variant="h4" fontWeight="700" display="flex" justifyContent="center" color="white">
             VOG
           </Typography>
+          <Typography variant="h7" fontWeight="400" display="flex" justifyContent="center" color="white">
+          (PL) Concern Levels 1-4 <br/>
+          Level 1 - 0-0 <br/>
+          Level 2 - 0 - 0 <br/>
+          Level 3 - 0 - 0 <br/>
+          Level 4 - 0 - 0 <br/>
+          </Typography>
           {Object.entries(inactiveDevices.pms5003Rooms).map(([room, count]) => (
             <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
           ))}
           <Box height="300px">
             <VOGPieChart />
+            
           </Box>
+          
         </Box>
 
         {/* TABLE ROW */}

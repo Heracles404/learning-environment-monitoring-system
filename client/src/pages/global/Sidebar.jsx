@@ -135,15 +135,15 @@ const Sidebar = () => {
                 <Box display="flex" justifyContent="center" alignItems="center">
                   <img
                     alt="profile-user"
-                    width="140px"
-                    height="140px"
+                    width="220px"
+                    height="220px"
                     src={`../../assets/ESLIHS_Logo.png`}
                     style={{ 
                       // cursor: "pointer", 
                       borderRadius: "50%" }}
                   />
                 </Box>
-                <Box textAlign="center">
+                {/* <Box textAlign="center">
                   <Typography
                     variant="h1"
                     color={colors.greenAccent[100]}
@@ -155,7 +155,7 @@ const Sidebar = () => {
                   <Typography variant="h4" color={colors.greenAccent[500]}>
                       {`${role}`}
                   </Typography>
-                </Box>
+                </Box> */}
               </Box>
             )}
 
