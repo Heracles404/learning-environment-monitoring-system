@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import "./HeatIndexCard.css";
 import { motion, LayoutGroup } from "framer-motion";
@@ -57,7 +56,6 @@ function ExpandedCard({ param }) {
     const start = new Date(startDate);
     const end = new Date(endDate);
 
-    // Normalize time to handle full day range
     start.setHours(0, 0, 0, 0);
     end.setHours(23, 59, 59, 999);
 
@@ -124,11 +122,43 @@ function ExpandedCard({ param }) {
         show: true,
       },
       xaxis: {
-        type: "datetime", // Set type to 'datetime'
+        type: "datetime",
         categories: sortedData.timestamps.map((timestamp, index) => {
-          // Adjust the timestamp based on dynamic calculation
           return new Date(Date.now() - (sortedData.heatIndexes.length - index) * 1000 * 60 * 60).toISOString();
         }),
+      },
+      yaxis: {
+        title: {
+          text: "Heat Index",
+        },
+      },
+      annotations: {
+        yaxis: [
+          {
+            y: 35,
+            borderColor: "#008000",
+            label: {
+              borderColor: "#008000",
+              style: {
+                color: "#fff",
+                background: "#008000",
+              },
+              text: "Good",
+            },
+          },
+          {
+            y: 100,
+            borderColor: "#FF0000",
+            label: {
+              borderColor: "#FF0000",
+              style: {
+                color: "#fff",
+                background: "#FF0000",
+              },
+              text: "Bad",
+            },
+          },
+        ],
       },
     },
     series: [
