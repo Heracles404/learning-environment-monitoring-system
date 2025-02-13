@@ -50,9 +50,9 @@ const Device1 = () => {
             // { id: "id", label: "ID", minWidth: 60 },
             { id: "classroom", label: "Classroom", minWidth: 150 },
             { id: "status", label: "Status", minWidth: 150 },       
-            { id: "bh1750", label: "BH1750", minWidth: 150 },
-            { id: "bme680", label: "BME680", minWidth: 150 },
-            { id: "pms5003", label: "PMS5003", minWidth: 150 },
+            { id: "bh1750", label: "Light Sensor", minWidth: 150 },
+            { id: "bme680", label: "Air Quality, Heat Index Sensor", minWidth: 150 },
+            // { id: "pms5003", label: "PMS5003", minWidth: 150 },
         ];
 
         if (role.toUpperCase() === "PRINCIPAL" || role.toUpperCase() === "ADMIN") {

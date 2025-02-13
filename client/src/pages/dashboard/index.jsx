@@ -170,7 +170,9 @@ const Dashboard = () => {
           </Typography>
           <Typography variant="h7" fontWeight="400" display="flex" justifyContent="center" color="white">
           (PL) Ideal Range for Good Heat Index is (G) <br/>
-          (PL) Ideal Range for Bad Heat Index is (B) 
+          (PL) Ideal Range for Bad Heat Index is (B) <br/>
+          (PL) Threshold for Good is (G) <br/>
+          (PL) Threshold for Bad is (B)
           </Typography>
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
             <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
@@ -186,7 +188,9 @@ const Dashboard = () => {
           </Typography>
           <Typography variant="h7" fontWeight="400" display="flex" justifyContent="center" color="white">
           (PL) Ideal Range for Good Heat Index is (G) <br/>
-          (PL) Ideal Range for Bad Heat Index is (B) 
+          (PL) Ideal Range for Bad Heat Index is (B) <br/>
+          (PL) Threshold for Good is (G) <br/>
+          (PL) Threshold for Bad is (B)
           </Typography>
           {Object.entries(inactiveDevices.bh1750Rooms).map(([room, count]) => (
             <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
@@ -203,7 +207,9 @@ const Dashboard = () => {
           </Typography>
           <Typography variant="h7" fontWeight="400" display="flex" justifyContent="center" color="white">
           (PL) Ideal Range for Good Heat Index is (G) <br/>
-          (PL) Ideal Range for Bad Heat Index is (B) 
+          (PL) Ideal Range for Bad Heat Index is (B) <br/>
+          (PL) Threshold for Good is (G) <br/>
+          (PL) Threshold for Bad is (B)
           </Typography>
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
             <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
@@ -218,7 +224,11 @@ const Dashboard = () => {
             VOG
           </Typography>
           <Typography variant="h7" fontWeight="400" display="flex" justifyContent="center" color="white">
-          (PL) Concern Levels 1-4
+          (PL) Concern Levels 1-4 <br/>
+          Level 1 - 0-0 <br/>
+          Level 2 - 0 - 0 <br/>
+          Level 3 - 0 - 0 <br/>
+          Level 4 - 0 - 0 <br/>
           </Typography>
           {Object.entries(inactiveDevices.pms5003Rooms).map(([room, count]) => (
             <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
