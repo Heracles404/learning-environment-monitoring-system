@@ -103,9 +103,43 @@ function ExpandedCard({ param }) {
           new Date(Date.now() - (sortedData.vocLevels.length - index) * 1000 * 60 * 60).toISOString()
         ),
       },
+      yaxis: {
+        title: {
+          text: "VOC Level",
+        },
+      },
+      annotations: {
+        yaxis: [
+          {
+            y: 400,
+            borderColor: "#008000",
+            label: {
+              borderColor: "#008000",
+              style: {
+                color: "#fff",
+                background: "#008000",
+              },
+              text: "Good",
+            },
+          },
+          {
+            y: 300,
+            borderColor: "#FF0000",
+            label: {
+              borderColor: "#FF0000",
+              style: {
+                color: "#fff",
+                background: "#FF0000",
+              },
+              text: "Bad",
+            },
+          },
+        ],
+      },
     },
     series: [{ name: "VOC Level", data: sortedData.vocLevels }],
   };
+  
 
   return (
     <motion.div className="ExpandedCard" style={{ background: param.color.backGround, boxShadow: param.color.boxShadow }} layoutId={`expandableCard-${param.title}`}>

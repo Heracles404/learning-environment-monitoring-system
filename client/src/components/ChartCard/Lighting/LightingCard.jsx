@@ -103,6 +103,39 @@ function ExpandedCard({ param }) {
           new Date(Date.now() - (sortedData.lightingLevels.length - index) * 1000 * 60 * 60).toISOString()
         ),
       },
+      yaxis: {
+        title: {
+          text: "Lighting Level (lx)",
+        },
+      },
+      annotations: {
+        yaxis: [
+          {
+            y: 300, // Example: Above 300 lx is "Good"
+            borderColor: "#008000",
+            label: {
+              borderColor: "#008000",
+              style: {
+                color: "#fff",
+                background: "#008000",
+              },
+              text: "Good",
+            },
+          },
+          {
+            y: 100, // Example: Below 100 lx is "Bad"
+            borderColor: "#FF0000",
+            label: {
+              borderColor: "#FF0000",
+              style: {
+                color: "#fff",
+                background: "#FF0000",
+              },
+              text: "Bad",
+            },
+          },
+        ],
+      },
     },
     series: [{ name: "Lighting Level", data: sortedData.lightingLevels }],
   };

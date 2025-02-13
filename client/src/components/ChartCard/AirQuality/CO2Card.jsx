@@ -96,6 +96,32 @@ const CO2Card = (props) => {
           new Date(Date.now() - (sortedData.iaqIndexes.length - index) * 1000 * 60 * 60).toISOString()
         ),
       },
+      annotations: {
+        yaxis: [
+          {
+            y: 100, // === "Good" Line Position ===
+            borderColor: "#008000", // Green color for "Good"
+            label: {
+              text: "Good",
+              style: {
+                color: "#FFF",
+                background: "#008000",
+              },
+            },
+          },
+          {
+            y: 30, // === "Bad" Line Position ===
+            borderColor: "#FF0000", // Red color for "Bad"
+            label: {
+              text: "Bad",
+              style: {
+                color: "#FFF",
+                background: "#FF0000",
+              },
+            },
+          },
+        ],
+      },
     },
     series: [{ name: "IAQ Index", data: sortedData.iaqIndexes }],
   };
