@@ -24,7 +24,7 @@ async function newDevice(deviceData) {
         return newDevice; // Return the created device for further use
     } catch (error) {
         console.error('Error adding new device:', error.message);
-        throw new Error('Failed to add new device'); // Throw an error if saving fails
+        // throw new Error('Failed to add new device'); // Throw an error if saving fails
     }
 }
 
