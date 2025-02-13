@@ -39,7 +39,37 @@ const DBVOGRecords = () => {
         { field: "classroom", headerName: "Outdoor", minWidth: 100, flex: 1 },
         { field: "currentPM25", headerName: "Latest PM 2.5", minWidth: 100, flex: 1 },
         { field: "currentPM10", headerName: "Latest PM 10.0", minWidth: 100, flex: 1 },
-        { field: "concernLevel", headerName: "VOG Status", minWidth: 100, flex: 1 },
+        // { field: "concernLevel", headerName: "VOG Status", minWidth: 100, flex: 1 },
+        {
+                    field: "concernLevel",
+                    headerName: "VOG Status",
+                    flex: 1,
+                    renderCell: ({ row: { concernLevel } }) => {
+                      return (
+                        <Box
+                        //   width="60%"
+                          m="8px auto"
+                          p="5px"
+                          display="flex"
+                          justifyContent="center"
+                          backgroundColor={
+                            concernLevel === "Good"
+                              ? colors.greenAccent[600]
+                              : concernLevel === "Bad"
+                              ? colors.redAccent[700]
+                              : colors.redAccent[700]
+                          }
+                          borderRadius="4px"
+                        >
+                          {concernLevel === "Good" }
+                          {concernLevel === "Bad" }
+                          <Typography color={"white"} >
+                            {concernLevel}
+                          </Typography>
+                        </Box>
+                      );
+                    },
+                },
     ];
 
     return (

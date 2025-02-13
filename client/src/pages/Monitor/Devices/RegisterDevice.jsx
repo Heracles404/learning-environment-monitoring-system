@@ -120,7 +120,7 @@ const RegisterDevice = () => {
 
               {/* First Checkbox - Indoor */}
               <Box sx={{ gridColumn: "span 2" }}></Box>
-              <Box sx={{ gridColumn: "span 1" }}>
+              <Box sx={{ gridColumn: "span 2" }}>
                 <Box display="flex">
                   <LocationOnOutlinedIcon sx={{ fontSize: 19, color: "red", mr: .4 }} />
                   <Typography>Sensors</Typography>
@@ -140,7 +140,7 @@ const RegisterDevice = () => {
                 /> */}
                 <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
                   <FormControlLabel
-                    label="BH1750"
+                    label="Light Sensor"
                     control={
                       <Checkbox
                         checked={checked[0]}
@@ -150,7 +150,7 @@ const RegisterDevice = () => {
                     }
                   />
                   <FormControlLabel
-                    label="BME680"
+                    label="Air Quality, Heat Index Sensor"
                     control={
                       <Checkbox
                         checked={checked[1]}

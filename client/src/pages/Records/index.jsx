@@ -52,9 +52,97 @@ const Records = () => {
         { field: "heatIndex", headerName: "Heat Index", minWidth: 100, flex: 1 },
         { field: "lighting", headerName: "Lighting", minWidth: 100, flex: 1 },
         { field: "IAQIndex", headerName: "IAQ Index", minWidth: 100, flex: 1 },
-        { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
-        { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
-        { field: "lightRemarks", headerName: "Lighting Stat", minWidth: 91, flex: 1 },
+        // { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
+        {
+            field: "indoorAir",
+            headerName: "IAQ Stat",
+            flex: 1,
+            renderCell: ({ row: { indoorAir } }) => {
+              return (
+                <Box
+                //   width="60%"
+                  m="8px auto"
+                  p="5px"
+                  display="flex"
+                  justifyContent="center"
+                  backgroundColor={
+                    indoorAir === "Good"
+                      ? colors.greenAccent[600]
+                      : indoorAir === "Bad"
+                      ? colors.redAccent[700]
+                      : colors.redAccent[700]
+                  }
+                  borderRadius="4px"
+                >
+                  {indoorAir === "Good" }
+                  {indoorAir === "Bad" }
+                  <Typography color={"white"} >
+                    {indoorAir}
+                  </Typography>
+                </Box>
+              );
+            },
+        },
+        // { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
+        {
+            field: "temp",
+            headerName: "Temperature Stat",
+            flex: 1,
+            renderCell: ({ row: { temp } }) => {
+              return (
+                <Box
+                //   width="60%"
+                  m="8px auto"
+                  p="5px"
+                  display="flex"
+                  justifyContent="center"
+                  backgroundColor={
+                    temp === "Good"
+                      ? colors.greenAccent[600]
+                      : temp === "Bad"
+                      ? colors.redAccent[700]
+                      : colors.redAccent[700]
+                  }
+                  borderRadius="4px"
+                >
+                  {temp === "Good" }
+                  {temp === "Bad" }
+                  <Typography color={"white"} >
+                    {temp}
+                  </Typography>
+                </Box>
+              );
+            },
+        },
+        // { field: "lightRemarks", headerName: "Lighting Stat", minWidth: 91, flex: 1 },
+        {
+            field: "lightRemarks",
+            headerName: "Lighting Stat",
+            flex: 1,
+            renderCell: ({ row: { lightRemarks } }) => {
+              return (
+                <Box
+                //   width="60%"
+                  m="8px auto"
+                  p="5px"
+                  display="flex"
+                  justifyContent="center"
+                  backgroundColor={
+                    lightRemarks === "Good"
+                      ? colors.greenAccent[600]
+                      : lightRemarks === "Bad"
+                  }
+                  borderRadius="4px"
+                >
+                  {lightRemarks === "Good" }
+                  {lightRemarks === "Bad" }
+                  <Typography color={"white"} >
+                    {lightRemarks}
+                  </Typography>
+                </Box>
+              );
+            },
+        },
     ];
 
     const handleDeleteSelected = async () => {

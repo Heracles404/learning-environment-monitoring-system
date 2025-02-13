@@ -47,6 +47,7 @@ const VOGRecords = () => {
         { field: "pm10", headerName: "PM 10.0", minWidth: 100, flex: 1 },
         { field: "OAQIndex", headerName: "OAQ Index", minWidth: 100, flex: 1 },
         { field: "level", headerName: "Concern Level", minWidth: 100, flex: 1 },
+        { field: "", headerName: "VOG Status", minWidth: 100, flex: 1 },
     ];
 
     const handleDownload = () => {
