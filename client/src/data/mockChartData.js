@@ -25,7 +25,7 @@ export const cardsData = [
     title: "Heat Index",
     color: {
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
-      boxShadow: "0px 10px 20px 0px #FFD6D6",
+      boxShadow: "0px 10px 20px 0px #70FFDB",
     },
     barValue: 0,
     value: 0,
@@ -38,7 +38,7 @@ export const cardsData = [
     title: "Lighting",
     color: {
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
-      boxShadow: "0px 10px 20px 0px #FFF0C2",
+      boxShadow: "0px 10px 20px 0px #70FFDB",
     },
     barValue: 0,
     value: 0,
@@ -51,7 +51,7 @@ export const cardsData = [
     title: "Volcanic Smog",
     color: {
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
-      boxShadow: "0px 10px 20px 0px #FFDCAD",
+      boxShadow: "0px 10px 20px 0px #70FFDB",
     },
     iconColor: "#FFD399 ",
     titleColor: "#FFD399 ",
