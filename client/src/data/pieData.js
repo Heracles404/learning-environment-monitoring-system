@@ -56,21 +56,21 @@ export const fetchPieData = async () => {
     Object.keys(roomStatus).forEach((room) => {
       const { indoorAir, temp, lightRemarks, IAQIndex, heatIndex, lighting } = roomStatus[room];
 
-      if (indoorAir === "Good") {
+      if (indoorAir === "GOOD") {
         indoorAirGoodData.push({ classroom: room, data: IAQIndex });
-      } else if (indoorAir === "Bad") {
+      } else if (indoorAir === "BAD") {
         indoorAirBadData.push({ classroom: room, data: IAQIndex });
       }
 
-      if (temp === "Good") {
+      if (temp === "GOOD") {
         heatGoodData.push({ classroom: room, data: heatIndex });
-      } else if (temp === "Bad") {
+      } else if (temp === "BAD") {
         heatBadData.push({ classroom: room, data: heatIndex });
       }
 
-      if (lightRemarks === "Good") {
+      if (lightRemarks === "GOOD") {
         lightingGoodData.push({ classroom: room, data: lighting });
-      } else if (lightRemarks === "Bad") {
+      } else if (lightRemarks === "BAD") {
         lightingBadData.push({ classroom: room, data: lighting });
       }
     });
@@ -140,7 +140,7 @@ export const fetchPieData = async () => {
 
 
 
-    // console.log("Updated Indoor Air Pie Data:", indoorAirPieData);
+    console.log("Updated Indoor Air Pie Data:", indoorAirPieData);
     // console.log("Updated Temperature Pie Data:", temperaturePieData);
     // console.log("Updated Lighting Pie Data:", lightingPieData);
 
