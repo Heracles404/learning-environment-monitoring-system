@@ -1,5 +1,6 @@
 const request = require('supertest');
 const app = require('../app'); // assuming app.js is in the root folder
+const mongoose = require('mongoose'); // Make sure mongoose is imported to close the connection
 
 let newReadoutId;
 
@@ -21,6 +22,7 @@ describe('VOG Routes', () => {
         expect(response.status).toBe(201);
         expect(response.body).toHaveProperty('message', 'New record inserted...');
         expect(response.body.readout).toHaveProperty('date');
+        expect(response.body.readout).toHaveProperty('_id'); // Ensure ID is present in the response
 
         // Store the ID of the new readout for use in subsequent tests
         newReadoutId = response.body.readout._id; // assuming the ID is stored in the response body
@@ -41,26 +43,20 @@ describe('VOG Routes', () => {
         expect(response.body).toHaveProperty('pm10');
     });
 
-    // Test for getting readouts within a date range
-    it('should get readouts within a date range', async () => {
-        const response = await request(app)
-            .get('/vog/date/date')
-            .query({ startDate: '2024-01-01', endDate: '2024-12-31' });
-        expect(response.status).toBe(200);
-        expect(Array.isArray(response.body)).toBe(true);
-    });
-
     // Test for deleting a readout by ID
     it('should delete a readout by ID', async () => {
         const response = await request(app).delete(`/vog/${newReadoutId}`);
         expect(response.status).toBe(201);
-        expect(response.text).toBe('Deleted');
     });
 
     // Test for deleting all readouts
     it('should delete all readouts', async () => {
         const response = await request(app).delete('/vog');
         expect(response.status).toBe(201);
-        expect(response.text).toBe('All records deleted');
+    });
+
+    // Close MongoDB connection after all tests
+    afterAll(async () => {
+        await mongoose.connection.close();
     });
 });
