@@ -94,18 +94,16 @@ function ExpandedCard({ param }) {
         colors: [getRandomColor()],
       },
       tooltip: {
-        x: { format: "dd/MM/yy HH:mm" },
+        x: { format: "dd/MM/yy HH:mm" }, // Tooltip format remains unchanged
       },
       grid: { show: true },
       xaxis: {
-        type: "datetime",
-        categories: sortedData.timestamps.map((_, index) =>
-          new Date(Date.now() - (sortedData.lightingLevels.length - index) * 1000 * 60 * 60).toISOString()
-        ),
+        type: "datetime", // Ensures x-axis is in datetime format
+        categories: sortedData.timestamps.map((timestamp) => new Date(timestamp).toISOString()), // Use exact timestamps for accurate plotting
       },
       yaxis: {
         title: {
-          text: "Lighting Level (lx)",
+          text: "Lighting Level (lx)", // Y-axis title for lighting level
         },
       },
       annotations: {
@@ -137,8 +135,17 @@ function ExpandedCard({ param }) {
         ],
       },
     },
-    series: [{ name: "Lighting Level", data: sortedData.lightingLevels }],
+    series: [
+      {
+        name: "Lighting Level",
+        data: sortedData.timestamps.map((timestamp, index) => ({
+          x: timestamp, // Use exact timestamps for accurate x-axis plotting
+          y: sortedData.lightingLevels[index], // Use corresponding lighting level values
+        })),
+      },
+    ],
   };
+  
 
   return (
     <motion.div className="ExpandedCard" style={{ background: param.color.backGround, boxShadow: param.color.boxShadow }} layoutId={`expandableCard-${param.title}`}>

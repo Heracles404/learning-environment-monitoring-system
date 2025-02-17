@@ -94,24 +94,22 @@ function ExpandedCard({ param }) {
         colors: [getRandomColor()],
       },
       tooltip: {
-        x: { format: "dd/MM/yy HH:mm" },
+        x: { format: "dd/MM/yy HH:mm" }, // Tooltip format remains unchanged
       },
       grid: { show: true },
       xaxis: {
-        type: "datetime",
-        categories: sortedData.timestamps.map((_, index) =>
-          new Date(Date.now() - (sortedData.vocLevels.length - index) * 1000 * 60 * 60).toISOString()
-        ),
+        type: "datetime", // Ensures x-axis is in datetime format
+        categories: sortedData.timestamps.map((timestamp) => new Date(timestamp).toISOString()), // Use exact timestamps for accurate plotting
       },
       yaxis: {
         title: {
-          text: "VOC Level",
+          text: "VOC Level", // Y-axis title for VOC level
         },
       },
       annotations: {
         yaxis: [
           {
-            y: 400,
+            y: 400, // Example: Above 400 is "Good"
             borderColor: "#008000",
             label: {
               borderColor: "#008000",
@@ -123,7 +121,7 @@ function ExpandedCard({ param }) {
             },
           },
           {
-            y: 300,
+            y: 300, // Example: Below 300 is "Bad"
             borderColor: "#FF0000",
             label: {
               borderColor: "#FF0000",
@@ -137,8 +135,17 @@ function ExpandedCard({ param }) {
         ],
       },
     },
-    series: [{ name: "VOC Level", data: sortedData.vocLevels }],
+    series: [
+      {
+        name: "VOC Level",
+        data: sortedData.timestamps.map((timestamp, index) => ({
+          x: timestamp, // Use exact timestamps for accurate x-axis plotting
+          y: sortedData.vocLevels[index], // Use corresponding VOC level values
+        })),
+      },
+    ],
   };
+  
   
 
   return (

@@ -115,17 +115,15 @@ function ExpandedCard({ param }) {
       },
       tooltip: {
         x: {
-          format: "dd/MM/yy HH:mm",
+          format: "dd/MM/yy HH:mm", // Tooltip format remains the same
         },
       },
       grid: {
         show: true,
       },
       xaxis: {
-        type: "datetime",
-        categories: sortedData.timestamps.map((timestamp, index) => {
-          return new Date(Date.now() - (sortedData.heatIndexes.length - index) * 1000 * 60 * 60).toISOString();
-        }),
+        type: "datetime", // Ensures x-axis is in datetime format
+        categories: sortedData.timestamps.map((timestamp) => new Date(timestamp).toISOString()), // Use exact timestamps for accurate plotting
       },
       yaxis: {
         title: {
@@ -164,10 +162,14 @@ function ExpandedCard({ param }) {
     series: [
       {
         name: "Heat Index",
-        data: sortedData.heatIndexes,
+        data: sortedData.timestamps.map((timestamp, index) => ({
+          x: timestamp, // Use exact timestamps for accurate x-axis plotting
+          y: sortedData.heatIndexes[index], // Use corresponding Heat Index values
+        })),
       },
     ],
   };
+  
 
   return (
     <motion.div

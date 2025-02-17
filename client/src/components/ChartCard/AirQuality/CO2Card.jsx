@@ -87,14 +87,12 @@ const CO2Card = (props) => {
         colors: [getRandomColor()],
       },
       tooltip: {
-        x: { format: "dd/MM/yy HH:mm" },
+        x: { format: "dd/MM/yy HH:mm" }, // Tooltip shows exact date/time
       },
       grid: { show: true },
       xaxis: {
-        type: "datetime",
-        categories: sortedData.timestamps.map((_, index) =>
-          new Date(Date.now() - (sortedData.iaqIndexes.length - index) * 1000 * 60 * 60).toISOString()
-        ),
+        type: "datetime", // Ensure x-axis is of type datetime for correct formatting
+        categories: sortedData.timestamps.map((timestamp) => new Date(timestamp).toISOString()), // Use the accurate timestamps for plotting
       },
       annotations: {
         yaxis: [
@@ -123,8 +121,17 @@ const CO2Card = (props) => {
         ],
       },
     },
-    series: [{ name: "IAQ Index", data: sortedData.iaqIndexes }],
+    series: [
+      {
+        name: "IAQ Index",
+        data: sortedData.timestamps.map((timestamp, index) => ({
+          x: timestamp, // Use exact timestamps
+          y: sortedData.iaqIndexes[index], // Use corresponding IAQ values
+        })),
+      },
+    ],
   };
+  
 
   return (
     <motion.div className="ExpandedCard" style={{ background: props.color.backGround, boxShadow: props.color.boxShadow }} layoutId={`expandableCard-${props.title}`}>
