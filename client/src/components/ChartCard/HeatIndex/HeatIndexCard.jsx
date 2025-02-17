@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./HeatIndexCard.css";
 import { motion, LayoutGroup } from "framer-motion";
 import Chart from "react-apexcharts";
-import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Select, Checkbox, ListItemText, FormControl, InputLabel } from "@mui/material";
 import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
 
 const HeatIndexCard = (props) => {
@@ -14,12 +14,12 @@ const HeatIndexCard = (props) => {
 };
 
 function ExpandedCard({ param }) {
-  const [heatIndexData, setHeatIndexData] = useState({ heatIndexes: [], timestamps: [] });
+  const [heatIndexData, setHeatIndexData] = useState({});
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [filteredData, setFilteredData] = useState({ heatIndexes: [], timestamps: [] });
-  const [noDataFound, setNoDataFound] = useState(false);
+  const [filteredData, setFilteredData] = useState({});
   const [openDialog, setOpenDialog] = useState(false);
+  const [selectedRooms, setSelectedRooms] = useState([]); // State to store selected rooms
 
   const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
@@ -36,16 +36,23 @@ function ExpandedCard({ param }) {
         const response = await httpGetAllReadouts();
 
         if (response && response.length > 0) {
-          const heatIndexes = response.map((item) => item.heatIndex);
-          const timestamps = response.map((item) =>
-            new Date(`${item.date} ${item.time}`).getTime()
-          );
-          setHeatIndexData({ heatIndexes, timestamps });
+          const roomData = response.reduce((acc, item) => {
+            const room = item.classroom;
+            if (!acc[room]) {
+              acc[room] = { heatIndexLevels: [], timestamps: [] };
+            }
+            acc[room].heatIndexLevels.push(item.heatIndex);
+            acc[room].timestamps.push(new Date(`${item.date} ${item.time}`).getTime());
+            return acc;
+          }, {});
+
+          console.log("Fetched Heat Index Data:", roomData); // Debugging log
+          setHeatIndexData(roomData);
         } else {
           console.error("No data found.");
         }
       } catch (error) {
-        console.error("Error fetching heat index data:", error);
+        console.error("Error fetching Heat Index data:", error);
       }
     };
 
@@ -53,40 +60,48 @@ function ExpandedCard({ param }) {
   }, []);
 
   const filterData = () => {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
+    const start = new Date(startDate).setHours(0, 0, 0, 0);
+    const end = new Date(endDate).setHours(23, 59, 59, 999);
 
-    start.setHours(0, 0, 0, 0);
-    end.setHours(23, 59, 59, 999);
+    const filtered = Object.keys(heatIndexData).reduce((acc, room) => {
+      if (selectedRooms.length === 0 || selectedRooms.includes(room)) {
+        const filteredRoomData = heatIndexData[room].timestamps
+          .map((timestamp, index) =>
+            timestamp >= start && timestamp <= end ? { timestamp, heatIndexLevel: heatIndexData[room].heatIndexLevels[index] } : null
+          )
+          .filter(Boolean);
 
-    const filtered = heatIndexData.timestamps
-      .map((timestamp, index) => {
-        const currentTimestamp = new Date(timestamp);
-        if (currentTimestamp >= start && currentTimestamp <= end) {
-          return { timestamp, heatIndex: heatIndexData.heatIndexes[index] };
+        if (filteredRoomData.length > 0) {
+          acc[room] = {
+            heatIndexLevels: filteredRoomData.map((item) => item.heatIndexLevel),
+            timestamps: filteredRoomData.map((item) => item.timestamp),
+          };
         }
-        return null;
-      })
-      .filter((item) => item !== null);
+      }
+      return acc;
+    }, {});
 
-    if (filtered.length === 0) {
-      setNoDataFound(true);
-      setOpenDialog(true);
-    } else {
-      setNoDataFound(false);
+    setFilteredData(filtered);
+    setOpenDialog(Object.keys(filtered).length === 0);
+  };
+
+  const sortedData = Object.keys(filteredData).length > 0 ? filteredData : heatIndexData;
+
+  const seriesData = Object.keys(sortedData).map((room) => {
+    const roomData = sortedData[room];
+    if (!roomData || roomData.heatIndexLevels.length === 0 || roomData.timestamps.length === 0) {
+      return null; // Skip empty room data
     }
+    return {
+      name: `Room ${room}`,
+      data: roomData.timestamps.map((timestamp, index) => ({
+        x: timestamp,
+        y: roomData.heatIndexLevels[index],
+      })),
+    };
+  }).filter(Boolean); // Filter out any null or undefined series
 
-    const filteredTimestamps = filtered.map((item) => item.timestamp);
-    const filteredHeatIndexes = filtered.map((item) => item.heatIndex);
-
-    setFilteredData({ heatIndexes: filteredHeatIndexes, timestamps: filteredTimestamps });
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
-  const sortedData = filteredData.heatIndexes.length > 0 ? filteredData : heatIndexData;
+  console.log("Series Data:", seriesData); // Debugging log
 
   const data = {
     options: {
@@ -103,122 +118,120 @@ function ExpandedCard({ param }) {
         opacity: 0.35,
       },
       fill: {
-        colors: ["#FF4500"],
+        colors: Object.keys(sortedData).map(() => getRandomColor()),
         type: "gradient",
       },
-      dataLabels: {
-        enabled: false,
-      },
+      dataLabels: { enabled: false },
       stroke: {
         curve: "smooth",
-        colors: [getRandomColor()],
+        colors: Object.keys(sortedData).map(() => getRandomColor()),
       },
       tooltip: {
-        x: {
-          format: "dd/MM/yy HH:mm",
-        },
+        x: { format: "dd/MM/yy HH:mm" },
       },
-      grid: {
-        show: true,
-      },
+      grid: { show: true },
       xaxis: {
         type: "datetime",
-        categories: sortedData.timestamps.map((timestamp, index) => {
-          return new Date(Date.now() - (sortedData.heatIndexes.length - index) * 1000 * 60 * 60).toISOString();
-        }),
+        categories: Object.values(sortedData).flatMap((data) =>
+          data.timestamps.map((timestamp) => new Date(timestamp).toISOString())
+        ),
       },
       yaxis: {
         title: {
           text: "Heat Index",
         },
       },
-      annotations: {
-        yaxis: [
-          {
-            y: 35,
-            borderColor: "#008000",
-            label: {
-              borderColor: "#008000",
-              style: {
-                color: "#fff",
-                background: "#008000",
-              },
-              text: "Good",
-            },
-          },
-          {
-            y: 100,
-            borderColor: "#FF0000",
-            label: {
-              borderColor: "#FF0000",
-              style: {
-                color: "#fff",
-                background: "#FF0000",
-              },
-              text: "Bad",
-            },
-          },
-        ],
+      legend: {
+        show: false, // This removes the legends
       },
     },
-    series: [
-      {
-        name: "Heat Index",
-        data: sortedData.heatIndexes,
-      },
-    ],
+    series: seriesData,
+  };
+
+  const handleRoomChange = (event) => {
+    setSelectedRooms(event.target.value);
   };
 
   return (
-    <motion.div
-      className="ExpandedCard"
-      style={{
-        background: param.color.backGround,
-        boxShadow: param.color.boxShadow,
-      }}
-      layoutId={`expandableCard-${param.title}`}
-    >
-      <div style={{ alignSelf: "flex-end", cursor: "pointer", color: "white" }}></div>
+    <motion.div className="ExpandedCard" style={{ background: param.color.backGround, boxShadow: param.color.boxShadow }} layoutId={`expandableCard-${param.title}`} >
       <span>{param.title}</span>
 
-      <div className="date-filter">
-        <TextField
-          type="date"
-          label="Start Date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField
-          type="date"
-          label="End Date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          inputProps={{
-            min: startDate,
-          }}
-        />
-        <Button onClick={filterData} variant="contained" color="primary">
-          Filter
-        </Button>
+      <div className="filters" style={{ marginBottom: "20px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+          <TextField
+            type="date"
+            label="Start Date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+            style={{ width: "140px" }}
+          />
+          <TextField
+            type="date"
+            label="End Date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+            inputProps={{ min: startDate }}
+            style={{ width: "140px" }}
+          />
+          {/* Room filter */}
+          <FormControl
+            variant="outlined"
+            margin="normal"
+            style={{
+              minWidth: 100,
+              width: 140, // Same width as the date fields
+            }}
+          >
+            <InputLabel htmlFor="roomSelect" style={{ fontSize: "0.9rem" }}>Select Rooms</InputLabel>
+            <Select
+              multiple
+              value={selectedRooms}
+              onChange={handleRoomChange}
+              renderValue={(selected) => selected.join(", ")}
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: 200,
+                    width: 140, // Consistent dropdown width
+                  },
+                },
+              }}
+              inputProps={{ id: "roomSelect" }}
+              label="Select Rooms"
+              style={{
+                fontSize: "0.9rem", // Maintain consistent font size
+                padding: "5px", // Consistent padding
+                height: "40px", // Set height for alignment
+              }}
+            >
+              {Object.keys(heatIndexData).map((room) => (
+                <MenuItem key={room} value={room}>
+                  <Checkbox checked={selectedRooms.indexOf(room) > -1} />
+                  <ListItemText primary={`Room ${room}`} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <Button onClick={filterData} variant="contained" color="primary" style={{ height: "40px" }}>
+            Filter
+          </Button>
+        </div>
       </div>
 
-      <div className="chartContainer">
+      <div className="chartContainer" style={{ marginTop: "20px" }}>
         <Chart options={data.options} series={data.series} type="area" />
       </div>
 
-      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="sm" fullWidth>
         <DialogTitle sx={{ fontSize: "1.5rem", fontWeight: "bold" }}>No Data Found</DialogTitle>
         <DialogContent>
-          <p style={{ fontSize: "1.2rem" }}>No data detected for the selected date range.</p>
+          <p style={{ fontSize: "1.2rem" }}>No data detected for the selected date range and room(s).</p>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary" style={{ fontSize: "1.1rem" }}>
+          <Button onClick={() => setOpenDialog(false)} color="primary" style={{ fontSize: "1.1rem" }}>
             Close
           </Button>
         </DialogActions>
