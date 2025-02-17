@@ -19,12 +19,26 @@ import TemperaturePieChart from "../../components/DashboardPieChart/TemperatureP
 import AirQualityPieChart from "../../components/DashboardPieChart/AirQualityPieChart";
 import VOGPieChart from "../../components/DashboardPieChart/VOGPieChart";
 import LightingPieChart from "../../components/DashboardPieChart/LightingPieChart";
-const CustomDialog = ({ open, onClose, title, content }) => {
+const CustomDialog = ({ open, onClose, title, content1, content2, content3, content4, content5, content6, content7,content8 }) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>{title}</DialogTitle>
-      <DialogContent>
-        <Typography>{content}</Typography>
+      <DialogTitle>
+      <Typography variant="h5" fontWeight="bold" color="#3da58a">
+        {title}
+        </Typography>
+        </DialogTitle>
+      <DialogContent >
+        <Typography display="flex" justifyContent="center" variant="h5" fontWeight="bold" color="green">{content6}</Typography>
+        <Typography>{content1}</Typography>
+        <Typography>{content3}</Typography>
+        
+
+        {/* <Typography>{content5}</Typography> */}
+
+        <Typography display="flex" justifyContent="center" variant="h5" fontWeight="bold" color="red">{content7}</Typography>
+        <Typography display="flex" justifyContent="center" variant="h5" fontWeight="bold" color="blue">{content8}</Typography>
+        <Typography>{content2}</Typography>
+        <Typography>{content4}</Typography>
       </DialogContent>
       <DialogActions>
           <Button sx={{backgroundColor: '#0ECCFB',height: '30px', borderRadius: '25px', fontWeight: 'bold',}}
@@ -317,30 +331,55 @@ const Dashboard = () => {
       <CustomDialog 
             open={openDialog === "iaq"} 
             onClose={() => setOpenDialog(null)} 
-            title="Indoor Air Quality (IAQ) Details"
-            content="(PL) Ideal Range for Good Heat Index is (G)..."
-          />
+            title="Indoor Air Quality (IAQ) Details - DESIGN 1"
+            content6="Ideal Air Quality Ranges: "
+            content1="Ideal IAQ Range: Below 100 index"
+            content2="Ideal Air Threshold: line anywhere below 100 is good"
+
+            content8="Ideal Air Threshold"
+            content3="Bad Range: above 100"
+
+            content4="Bad Threshold: Line above 100"
+            content5="----"
+            />
       
           <CustomDialog 
             open={openDialog === "light"} 
             onClose={() => setOpenDialog(null)} 
-            title="Light Details"
-            content="(PL) Ideal Range for Good Heat Index is (G)..."
-          />
+            title="Light Details - DESIGN 2"
+            content1="Ideal Light Range: 300-500 lux"
+            content2="Bad Range: above 500"
+            content3="Ideal Light Threshold: line  anywhere  between 300-500"
+            content4="Bad Threshold: Line above 500 "
+            content5="----"
+            />
           
           <CustomDialog 
             open={openDialog === "heat"} 
             onClose={() => setOpenDialog(null)} 
-            title="Heat Index Details"
-            content="(PL) Ideal Range for Good Heat Index is (G)..."
-          />
+            title="HEAT INDEX DETAILS - DESIGN 3"
+            content6="Good Heat Index Ranges: "
+            content1="Good Heat Index Range: 27°C - 41°C"
+            content2="Bad Heat IndexRange: above 41°C"
+
+            content5="----"
+
+            content7="Bad Heat Index Ranges:"
+            content3="Good Heat Index Threshold: 27°C"
+            content4="Bad Heat Index Threshold: above 41°C"
+            />
           
           <CustomDialog 
             open={openDialog === "vog"} 
             onClose={() => setOpenDialog(null)} 
-            title="Volcanic Smog (VOG) Details"
-            content="Concern Levels 1-4..."
-          />
+            title="Volcanic Smog (VOG) Ideal Range"
+            content1="Level 1 - PPM 0-50 "
+            content2="Level 2 - PPM 50-150 "
+            content3="Level 3 - PPM 100-250 "
+            content4="Level 4 - PPM 250+ "
+            content5=""
+            content6="Concern Levels"
+           />
     </Box>
   );
 };
