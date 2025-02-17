@@ -38,8 +38,10 @@ async function newReadouts(readout) {
         date: currentDate,
     });
 
-    await newReadout.save();
+    const savedReadout = await newReadout.save();
+    return savedReadout;  // Return the full saved readout including its ID
 }
+
 
 
 // Function to delete a readout by ID
