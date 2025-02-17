@@ -156,7 +156,8 @@ const Device1 = () => {
                     <Button onClick={handleCloseDeleteDialog} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={handleConfirmDelete} color="error" autoFocus>
+                    <Button sx={{backgroundColor: '#4cceac',height: '30px', borderRadius: '25px', fontWeight: 'bold',}}
+                        onClick={handleConfirmDelete} color="primary" variant="contained">
                         Delete
                     </Button>
                 </DialogActions>
