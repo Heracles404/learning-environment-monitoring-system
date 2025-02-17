@@ -221,7 +221,7 @@ const Dashboard = () => {
 
         <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[500]} padding="5px">
           <Typography variant="h4" fontWeight="700" display="flex" justifyContent="center" color="white">
-            VOG
+            VOLCANIC SMOG (VOG)
           </Typography>
           <Typography variant="h7" fontWeight="400" display="flex" justifyContent="center" color="white">
           (PL) Concern Levels 1-4 <br/>

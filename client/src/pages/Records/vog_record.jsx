@@ -44,7 +44,7 @@ const VOGRecords = () => {
     }, []);
 
     const columns = [
-        { field: "classroom", headerName: "Room", minWidth: 100, flex: 1 },
+        // { field: "classroom", headerName: "Room", minWidth: 100, flex: 1 },
         { field: "date", headerName: "Date", minWidth: 100, flex: 1 },
         { field: "time", headerName: "Time", minWidth: 100, flex: 1 },
         { field: "pm25", headerName: "PM 2.5", minWidth: 100, flex: 1 },
