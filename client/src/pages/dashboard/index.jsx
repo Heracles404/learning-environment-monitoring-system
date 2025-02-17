@@ -9,6 +9,7 @@ import DashboardCards from "../../components/DashboardCards/DashboardCards";
 import DBRecords from "../../components/DashboardTables/DBRecords";
 
 import SensorsIcon from '@mui/icons-material/Sensors';
+import HelpIcon from '@mui/icons-material/Help';
 
 import DBVog from "../../components/DashboardTables/DBVog";
 import { httpGetActive, httpGetAllDevices } from "../../hooks/devices.requests";  
@@ -186,10 +187,17 @@ const Dashboard = () => {
           </Typography>
           <Box display="flex" justifyContent="center">
            <Button 
-            variant="outlined" 
-            color="inherit" 
+            variant="contained" 
+            // color="#0ECCFB" 
             onClick={() => setOpenDialog("iaq")}
-            sx={{ color: "white", textTransform: "none" }}
+            sx={{
+              backgroundColor: '#0ECCFB', 
+              // height: '50px',  
+              // borderRadius: '15px', 
+              fontWeight: 600,
+              mt: 1
+          }}
+          startIcon={<HelpIcon />} // Add the HelpOutlineOutlined icon here
           >
             View IAQ Details
           </Button> 
@@ -208,11 +216,18 @@ const Dashboard = () => {
             LIGHT
           </Typography>
           <Box display="flex" justifyContent="center">
-          <Button 
-            variant="outlined" 
-            color="inherit" 
+           <Button 
+            variant="contained" 
+            // color="#0ECCFB" 
             onClick={() => setOpenDialog("light")}
-            sx={{ color: "white", textTransform: "none" }}
+            sx={{
+              backgroundColor: '#0ECCFB', 
+              // height: '50px',  
+              // borderRadius: '15px', 
+              fontWeight: 600,
+              mt: 1
+          }}
+          startIcon={<HelpIcon />} // Add the HelpOutlineOutlined icon here
           >
             View Light Details
           </Button>  
@@ -232,11 +247,18 @@ const Dashboard = () => {
             HEAT INDEX
           </Typography>
           <Box display="flex" justifyContent="center">
-          <Button 
-            variant="outlined" 
-            color="inherit" 
+           <Button 
+            variant="contained" 
+            // color="#0ECCFB" 
             onClick={() => setOpenDialog("heat")}
-            sx={{ color: "white", textTransform: "none" }}
+            sx={{
+              backgroundColor: '#0ECCFB', 
+              // height: '50px',  
+              // borderRadius: '15px', 
+              fontWeight: 600,
+              mt: 1
+          }}
+          startIcon={<HelpIcon />} // Add the HelpOutlineOutlined icon here
           >
             View Heat Index Details
           </Button>  
@@ -255,52 +277,31 @@ const Dashboard = () => {
             VOLCANIC SMOG (VOG)
           </Typography>
           <Box display="flex" justifyContent="center">
-          <Button 
-            variant="outlined" 
-            color="inherit" 
+           <Button 
+            variant="contained" 
+            // color="#0ECCFB" 
             onClick={() => setOpenDialog("vog")}
-            sx={{ color: "white", textTransform: "none" }}
+            sx={{
+              backgroundColor: '#0ECCFB', 
+              // height: '50px',  
+              // borderRadius: '15px', 
+              fontWeight: 600,
+              mt: 1
+          }}
+          startIcon={<HelpIcon />} // Add the HelpOutlineOutlined icon here
           >
             View VOG Details
-          </Button>  
-          </Box>
-          
+          </Button> 
           {Object.entries(inactiveDevices.pms5003Rooms).map(([room, count]) => (
             <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
-          ))}
+          ))} 
+          </Box>
+          
+          
           <Box height="300px">
             <VOGPieChart />
-            
           </Box>
-          <CustomDialog 
-        open={openDialog === "iaq"} 
-        onClose={() => setOpenDialog(null)} 
-        title="Indoor Air Quality (IAQ) Details"
-        content="(PL) Ideal Range for Good Heat Index is (G)..."
-      />
-      
-      <CustomDialog 
-        open={openDialog === "light"} 
-        onClose={() => setOpenDialog(null)} 
-        title="Light Details"
-        content="(PL) Ideal Range for Good Heat Index is (G)..."
-      />
-      
-      <CustomDialog 
-        open={openDialog === "heat"} 
-        onClose={() => setOpenDialog(null)} 
-        title="Heat Index Details"
-        content="(PL) Ideal Range for Good Heat Index is (G)..."
-      />
-      
-      <CustomDialog 
-        open={openDialog === "vog"} 
-        onClose={() => setOpenDialog(null)} 
-        title="Volcanic Smog (VOG) Details"
-        content="Concern Levels 1-4..."
-      />
         </Box>
-
         {/* TABLE ROW */}
         <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" padding="5px">
           <Box height="30px">
@@ -313,6 +314,33 @@ const Dashboard = () => {
           </Box>
         </Box>
       </Box>
+      <CustomDialog 
+            open={openDialog === "iaq"} 
+            onClose={() => setOpenDialog(null)} 
+            title="Indoor Air Quality (IAQ) Details"
+            content="(PL) Ideal Range for Good Heat Index is (G)..."
+          />
+      
+          <CustomDialog 
+            open={openDialog === "light"} 
+            onClose={() => setOpenDialog(null)} 
+            title="Light Details"
+            content="(PL) Ideal Range for Good Heat Index is (G)..."
+          />
+          
+          <CustomDialog 
+            open={openDialog === "heat"} 
+            onClose={() => setOpenDialog(null)} 
+            title="Heat Index Details"
+            content="(PL) Ideal Range for Good Heat Index is (G)..."
+          />
+          
+          <CustomDialog 
+            open={openDialog === "vog"} 
+            onClose={() => setOpenDialog(null)} 
+            title="Volcanic Smog (VOG) Details"
+            content="Concern Levels 1-4..."
+          />
     </Box>
   );
 };
