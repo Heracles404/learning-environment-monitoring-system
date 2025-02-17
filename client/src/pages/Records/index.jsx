@@ -5,8 +5,8 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import DownloadIcon from '@mui/icons-material/Download';
+import DeleteIcon from '@mui/icons-material/Delete';
 import dayjs from "dayjs";
 
 const Records = () => {
@@ -219,7 +219,7 @@ const Records = () => {
                             margin: "5px",
                         }}
                     >
-                        <DeleteOutlinedIcon sx={{ mr: "10px" }} />
+                        <DeleteIcon sx={{ mr: "10px" }} />
                         Delete Selected Rows
                     </Button>
                     <Button
@@ -233,7 +233,7 @@ const Records = () => {
                             margin: "5px",
                         }}
                     >
-                        <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+                        <DownloadIcon sx={{ mr: "10px" }} />
                         Download Reports
                     </Button>
                 </Box>

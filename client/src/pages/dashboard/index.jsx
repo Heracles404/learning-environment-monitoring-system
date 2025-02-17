@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, useTheme } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 
 import { tokens } from "../../theme";
@@ -9,6 +9,7 @@ import DashboardCards from "../../components/DashboardCards/DashboardCards";
 import DBRecords from "../../components/DashboardTables/DBRecords";
 
 import SensorsIcon from '@mui/icons-material/Sensors';
+import HelpIcon from '@mui/icons-material/Help';
 
 import DBVog from "../../components/DashboardTables/DBVog";
 import { httpGetActive, httpGetAllDevices } from "../../hooks/devices.requests";  
@@ -18,9 +19,39 @@ import TemperaturePieChart from "../../components/DashboardPieChart/TemperatureP
 import AirQualityPieChart from "../../components/DashboardPieChart/AirQualityPieChart";
 import VOGPieChart from "../../components/DashboardPieChart/VOGPieChart";
 import LightingPieChart from "../../components/DashboardPieChart/LightingPieChart";
+const CustomDialog = ({ open, onClose, title, content1, content2, content3, content4, content5, content6, content7,content8 }) => {
+  return (
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogTitle>
+      <Typography variant="h5" fontWeight="bold" color="#3da58a">
+        {title}
+        </Typography>
+        </DialogTitle>
+      <DialogContent >
+        <Typography display="flex" justifyContent="center" variant="h5" fontWeight="bold" color="green">{content6}</Typography>
+        <Typography>{content1}</Typography>
+        <Typography>{content3}</Typography>
+        
 
+        {/* <Typography>{content5}</Typography> */}
+
+        <Typography display="flex" justifyContent="center" variant="h5" fontWeight="bold" color="red">{content7}</Typography>
+        <Typography display="flex" justifyContent="center" variant="h5" fontWeight="bold" color="blue">{content8}</Typography>
+        <Typography>{content2}</Typography>
+        <Typography>{content4}</Typography>
+      </DialogContent>
+      <DialogActions>
+          <Button sx={{backgroundColor: '#0ECCFB',height: '30px', borderRadius: '25px', fontWeight: 'bold',}}
+            onClick={onClose} color="primary" variant="contained">          
+            Close
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
 const Dashboard = () => {
   const theme = useTheme();
+  const [openDialog, setOpenDialog] = useState(null);
   const colors = tokens(theme.palette.mode);
   const [activeDevices, setActiveDevices] = useState(null);
   const [inactiveDevices, setInactiveDevices] = useState({
@@ -168,12 +199,24 @@ const Dashboard = () => {
           <Typography variant="h4" fontWeight="700" display="flex" justifyContent="center" color="white">
             INDOOR AIR QUALITY (IAQ)
           </Typography>
-          <Typography variant="h7" fontWeight="400" display="flex" justifyContent="center" color="white">
-          (PL) Ideal Range for Good Heat Index is (G) <br/>
-          (PL) Ideal Range for Bad Heat Index is (B) <br/>
-          (PL) Threshold for Good is (G) <br/>
-          (PL) Threshold for Bad is (B)
-          </Typography>
+          <Box display="flex" justifyContent="center">
+           <Button 
+            variant="contained" 
+            // color="#0ECCFB" 
+            onClick={() => setOpenDialog("iaq")}
+            sx={{
+              backgroundColor: '#0ECCFB', 
+              // height: '50px',  
+              // borderRadius: '15px', 
+              fontWeight: 600,
+              mt: 1
+          }}
+          startIcon={<HelpIcon />} // Add the HelpOutlineOutlined icon here
+          >
+            View IAQ Details
+          </Button> 
+          </Box>
+          
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
             <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
           ))}
@@ -186,12 +229,24 @@ const Dashboard = () => {
           <Typography variant="h4" fontWeight="700" display="flex" justifyContent="center" color="white">
             LIGHT
           </Typography>
-          <Typography variant="h7" fontWeight="400" display="flex" justifyContent="center" color="white">
-          (PL) Ideal Range for Good Heat Index is (G) <br/>
-          (PL) Ideal Range for Bad Heat Index is (B) <br/>
-          (PL) Threshold for Good is (G) <br/>
-          (PL) Threshold for Bad is (B)
-          </Typography>
+          <Box display="flex" justifyContent="center">
+           <Button 
+            variant="contained" 
+            // color="#0ECCFB" 
+            onClick={() => setOpenDialog("light")}
+            sx={{
+              backgroundColor: '#0ECCFB', 
+              // height: '50px',  
+              // borderRadius: '15px', 
+              fontWeight: 600,
+              mt: 1
+          }}
+          startIcon={<HelpIcon />} // Add the HelpOutlineOutlined icon here
+          >
+            View Light Details
+          </Button>  
+          </Box>
+          
           {Object.entries(inactiveDevices.bh1750Rooms).map(([room, count]) => (
             <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
           ))}
@@ -205,12 +260,24 @@ const Dashboard = () => {
           <Typography variant="h4" fontWeight="700" display="flex" justifyContent="center" color="white">
             HEAT INDEX
           </Typography>
-          <Typography variant="h7" fontWeight="400" display="flex" justifyContent="center" color="white">
-          (PL) Ideal Range for Good Heat Index is (G) <br/>
-          (PL) Ideal Range for Bad Heat Index is (B) <br/>
-          (PL) Threshold for Good is (G) <br/>
-          (PL) Threshold for Bad is (B)
-          </Typography>
+          <Box display="flex" justifyContent="center">
+           <Button 
+            variant="contained" 
+            // color="#0ECCFB" 
+            onClick={() => setOpenDialog("heat")}
+            sx={{
+              backgroundColor: '#0ECCFB', 
+              // height: '50px',  
+              // borderRadius: '15px', 
+              fontWeight: 600,
+              mt: 1
+          }}
+          startIcon={<HelpIcon />} // Add the HelpOutlineOutlined icon here
+          >
+            View Heat Index Details
+          </Button>  
+          </Box>
+          
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
             <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
           ))}
@@ -221,25 +288,34 @@ const Dashboard = () => {
 
         <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" backgroundColor={colors.greenAccent[500]} padding="5px">
           <Typography variant="h4" fontWeight="700" display="flex" justifyContent="center" color="white">
-            VOG
+            VOLCANIC SMOG (VOG)
           </Typography>
-          <Typography variant="h7" fontWeight="400" display="flex" justifyContent="center" color="white">
-          (PL) Concern Levels 1-4 <br/>
-          Level 1 - 0-0 <br/>
-          Level 2 - 0 - 0 <br/>
-          Level 3 - 0 - 0 <br/>
-          Level 4 - 0 - 0 <br/>
-          </Typography>
+          <Box display="flex" justifyContent="center">
+           <Button 
+            variant="contained" 
+            // color="#0ECCFB" 
+            onClick={() => setOpenDialog("vog")}
+            sx={{
+              backgroundColor: '#0ECCFB', 
+              // height: '50px',  
+              // borderRadius: '15px', 
+              fontWeight: 600,
+              mt: 1
+          }}
+          startIcon={<HelpIcon />} // Add the HelpOutlineOutlined icon here
+          >
+            View VOG Details
+          </Button> 
           {Object.entries(inactiveDevices.pms5003Rooms).map(([room, count]) => (
             <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
-          ))}
-          <Box height="300px">
-            <VOGPieChart />
-            
+          ))} 
           </Box>
           
+          
+          <Box height="300px">
+            <VOGPieChart />
+          </Box>
         </Box>
-
         {/* TABLE ROW */}
         <Box gridColumn={{ xs: "span 12", sm: "span 6" }} gridRow="span 2" padding="5px">
           <Box height="30px">
@@ -252,6 +328,58 @@ const Dashboard = () => {
           </Box>
         </Box>
       </Box>
+      <CustomDialog 
+            open={openDialog === "iaq"} 
+            onClose={() => setOpenDialog(null)} 
+            title="Indoor Air Quality (IAQ) Details - DESIGN 1"
+            content6="Ideal Air Quality Ranges: "
+            content1="Ideal IAQ Range: Below 100 index"
+            content2="Ideal Air Threshold: line anywhere below 100 is good"
+
+            content8="Ideal Air Threshold"
+            content3="Bad Range: above 100"
+
+            content4="Bad Threshold: Line above 100"
+            content5="----"
+            />
+      
+          <CustomDialog 
+            open={openDialog === "light"} 
+            onClose={() => setOpenDialog(null)} 
+            title="Light Details - DESIGN 2"
+            content1="Ideal Light Range: 300-500 lux"
+            content2="Bad Range: above 500"
+            content3="Ideal Light Threshold: line  anywhere  between 300-500"
+            content4="Bad Threshold: Line above 500 "
+            content5="----"
+            />
+          
+          <CustomDialog 
+            open={openDialog === "heat"} 
+            onClose={() => setOpenDialog(null)} 
+            title="HEAT INDEX DETAILS - DESIGN 3"
+            content6="Good Heat Index Ranges: "
+            content1="Good Heat Index Range: 27°C - 41°C"
+            content2="Bad Heat IndexRange: above 41°C"
+
+            content5="----"
+
+            content7="Bad Heat Index Ranges:"
+            content3="Good Heat Index Threshold: 27°C"
+            content4="Bad Heat Index Threshold: above 41°C"
+            />
+          
+          <CustomDialog 
+            open={openDialog === "vog"} 
+            onClose={() => setOpenDialog(null)} 
+            title="Volcanic Smog (VOG) Ideal Range"
+            content1="Level 1 - PPM 0-50 "
+            content2="Level 2 - PPM 50-150 "
+            content3="Level 3 - PPM 100-250 "
+            content4="Level 4 - PPM 250+ "
+            content5=""
+            content6="Concern Levels"
+           />
     </Box>
   );
 };

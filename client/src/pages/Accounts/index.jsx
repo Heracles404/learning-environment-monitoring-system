@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Snackbar, Alert, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Typography, useTheme, Dialog,DialogContentText, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { tokens } from "../../theme";
 import { httpGetAllUsers, httpDeleteUser } from "../../hooks/users.requests";
 import Header from "../../components/Header";
@@ -73,7 +73,7 @@ const Accounts = () => {
           style={{ background: "none", border: "none", cursor: "pointer" }}
           onClick={() => navigate(`../EditAccount/${row.userName}`)}
         >
-          <EditOutlinedIcon style={{ color: "orange", fontSize: "20px" }} />
+          <EditIcon style={{ color: "orange", fontSize: "20px" }} />
         </button>
       ),
     },
@@ -87,7 +87,7 @@ const Accounts = () => {
           style={{ background: "none", border: "none", cursor: "pointer" }}
           onClick={() => handleDeleteClick(row)}
         >
-          <DeleteOutlineIcon style={{ color: "red", fontSize: "20px" }} />
+          <DeleteIcon style={{ color: "red", fontSize: "20px" }} />
         </button>
       ),
     },

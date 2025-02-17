@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
     Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Typography, useTheme, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button
 } from "@mui/material";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import DeleteIcon from '@mui/icons-material/Delete';
 import { tokens } from "../../../theme";
 import { httpGetAllDevices, httpDeleteDevice } from "../../../hooks/devices.requests";
 import Header from "../../../components/Header";
@@ -79,7 +79,7 @@ const Device1 = () => {
                     style={{ background: "none", border: "none", cursor: "pointer" }}
                     onClick={() => handleOpenDeleteDialog(row.id)}
                 >
-                    <DeleteOutlineIcon style={{ color: "red", fontSize: "20px" }} />
+                    <DeleteIcon style={{ color: "red", fontSize: "20px" }} />
                 </button>
             ),
         });
