@@ -12,7 +12,7 @@ async function newDevice(deviceData) {
         };
 
         const currentDate = new Date();
-        const currentDateTime = currentDate.toLocaleString('en-US', options); // Use toLocaleString for both date and time
+        const currentDateTime = currentDate.toLocaleString('en-US', options);
 
         const newDevice = new device({
             lastUpdated: currentDateTime,
@@ -20,13 +20,13 @@ async function newDevice(deviceData) {
         });
 
         await newDevice.save();
-        console.log('New device added:', newDevice);
-        return newDevice; // Return the created device for further use
+        return newDevice; // Return the created device
     } catch (error) {
         console.error('Error adding new device:', error.message);
-        // throw new Error('Failed to add new device'); // Throw an error if saving fails
+        throw error;
     }
 }
+
 
 
 async function getAllDevices() {
