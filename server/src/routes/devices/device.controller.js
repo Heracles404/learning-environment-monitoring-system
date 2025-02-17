@@ -24,13 +24,15 @@ function httpNewDevice(req, res) {
         ...device
     };
 
-    newDevice(readout);
-
-    return res.status(201).json({
-        message: 'New device inserted...',
-        readout: readout
+    newDevice(readout).then(newDeviceData => {
+        return res.status(201).json({
+            readout: newDeviceData // Pass the created device back
+        });
+    }).catch(err => {
+        res.status(500).json({ error: 'Error adding new device' });
     });
 }
+
 
 async function httpGetDeviceById(req, res) {
     const deviceId = req.params.id;

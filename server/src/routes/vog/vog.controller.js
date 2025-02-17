@@ -83,14 +83,16 @@ async function httpNewReadouts(req, res) {
         ...readout
     };
 
-    // Call the model to insert the new readout, which now includes date and time dynamically
-    await newReadouts(readoutWithTimestamp);
+    // Call the model to insert the new readout
+    const newReadout = await newReadouts(readoutWithTimestamp);
 
+    // Include the generated ID from MongoDB in the response
     return res.status(201).json({
         message: 'New record inserted...',
-        readout: readoutWithTimestamp
+        readout: newReadout
     });
 }
+
 
 // Function to delete a specific readout by ID
 async function httpDeleteReadout(req, res) {
