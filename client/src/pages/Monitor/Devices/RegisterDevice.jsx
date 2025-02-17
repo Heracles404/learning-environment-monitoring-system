@@ -10,7 +10,7 @@ import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import React from 'react';
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import SensorsIcon from '@mui/icons-material/Sensors';
 import { httpGetAllDevices } from "../../../hooks/devices.requests"; // Added function import
 
 const RegisterDevice = () => {
@@ -106,7 +106,7 @@ const RegisterDevice = () => {
               <Box sx={{ gridColumn: "span 2" }}></Box>
               <Box sx={{ gridColumn: "span 2" }}>
                 <Box display="flex">
-                  <LocationOnOutlinedIcon sx={{ fontSize: 19, color: "red", mr: .4 }} />
+                  <SensorsIcon sx={{ fontSize: 19, color: "red", mr: .4 }} />
                   <Typography>Sensors</Typography>
                 </Box>
                 <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>

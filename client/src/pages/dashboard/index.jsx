@@ -27,7 +27,7 @@ const CustomDialog = ({ open, onClose, title, content }) => {
         <Typography>{content}</Typography>
       </DialogContent>
       <DialogActions>
-          <Button sx={{backgroundColor: '#4cceac',height: '30px', borderRadius: '25px', fontWeight: 'bold',}}
+          <Button sx={{backgroundColor: '#0ECCFB',height: '30px', borderRadius: '25px', fontWeight: 'bold',}}
             onClick={onClose} color="primary" variant="contained">          
             Close
         </Button>

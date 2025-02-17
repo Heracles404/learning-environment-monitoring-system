@@ -5,8 +5,8 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
+import DownloadIcon from '@mui/icons-material/Download';
+import DeleteIcon from '@mui/icons-material/Delete';
 import dayjs from "dayjs";
 
 const VOGRecords = () => {
@@ -137,10 +137,10 @@ const VOGRecords = () => {
                 <Header title="VOG Records" subtitle="Managing the VOG Records" />
                 <Box>
                     <Button onClick={() => setOpenDialog(true)} sx={{ backgroundColor: colors.redAccent[500], color: "white", fontSize: "14px", fontWeight: "bold", padding: "10px 20px", margin: "5px" }}>
-                        <DeleteOutlinedIcon sx={{ mr: "10px" }} /> Delete Selected Rows
+                        <DeleteIcon sx={{ mr: "10px" }} /> Delete Selected Rows
                     </Button>
                     <Button onClick={() => setOpenDownloadDialog(true)} sx={{ backgroundColor: colors.greenAccent[400], color: "white", fontSize: "14px", fontWeight: "bold", padding: "10px 20px", margin: "5px" }}>
-                        <DownloadOutlinedIcon sx={{ mr: "10px" }} /> Download Reports
+                        <DownloadIcon sx={{ mr: "10px" }} /> Download Reports
                     </Button>
                 </Box>
             </Box>
