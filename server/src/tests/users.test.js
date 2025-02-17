@@ -1,7 +1,8 @@
 const request = require('supertest');
-const app = require('../app'); // Path to your app.js file
-const User = require('../schema/userSchema'); // Path to your user schema
+const app = require('../app');
+const User = require('../schema/userSchema');
 const argon2 = require('argon2');
+const mongoose = require('mongoose');
 
 describe('Users API', () => {
     const user = {
@@ -19,6 +20,10 @@ describe('Users API', () => {
 
     afterEach(() => {
         jest.clearAllMocks(); // Clear all mocks after each test
+    });
+
+    afterAll(async () => {
+        await mongoose.disconnect();  // Disconnect from the database after tests
     });
 
     it('should create a new user', async () => {
@@ -71,7 +76,7 @@ describe('Users API', () => {
         await request(app).post('/users').send(user);
         const updatedUser  = { firstName: 'Johnny' };
 
-        const response = await request(app).patch(`/users/${user.userName}`).send(updatedUser );
+        const response = await request(app).patch(`/users/${user.userName}`).send(updatedUser);
         expect(response.status).toBe(200);
         expect(response.body.message).toBe(`User ${user.userName} has been updated.`);
 
