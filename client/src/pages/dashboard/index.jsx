@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, useTheme } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 
 import { tokens } from "../../theme";
@@ -18,9 +18,25 @@ import TemperaturePieChart from "../../components/DashboardPieChart/TemperatureP
 import AirQualityPieChart from "../../components/DashboardPieChart/AirQualityPieChart";
 import VOGPieChart from "../../components/DashboardPieChart/VOGPieChart";
 import LightingPieChart from "../../components/DashboardPieChart/LightingPieChart";
-
+const CustomDialog = ({ open, onClose, title, content }) => {
+  return (
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogTitle>{title}</DialogTitle>
+      <DialogContent>
+        <Typography>{content}</Typography>
+      </DialogContent>
+      <DialogActions>
+          <Button sx={{backgroundColor: '#4cceac',height: '30px', borderRadius: '25px', fontWeight: 'bold',}}
+            onClick={onClose} color="primary" variant="contained">          
+            Close
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
 const Dashboard = () => {
   const theme = useTheme();
+  const [openDialog, setOpenDialog] = useState(null);
   const colors = tokens(theme.palette.mode);
   const [activeDevices, setActiveDevices] = useState(null);
   const [inactiveDevices, setInactiveDevices] = useState({
@@ -168,12 +184,17 @@ const Dashboard = () => {
           <Typography variant="h4" fontWeight="700" display="flex" justifyContent="center" color="white">
             INDOOR AIR QUALITY (IAQ)
           </Typography>
-          <Typography variant="h7" fontWeight="400" display="flex" justifyContent="center" color="white">
-          (PL) Ideal Range for Good Heat Index is (G) <br/>
-          (PL) Ideal Range for Bad Heat Index is (B) <br/>
-          (PL) Threshold for Good is (G) <br/>
-          (PL) Threshold for Bad is (B)
-          </Typography>
+          <Box display="flex" justifyContent="center">
+           <Button 
+            variant="outlined" 
+            color="inherit" 
+            onClick={() => setOpenDialog("iaq")}
+            sx={{ color: "white", textTransform: "none" }}
+          >
+            View IAQ Details
+          </Button> 
+          </Box>
+          
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
             <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
           ))}
@@ -186,12 +207,17 @@ const Dashboard = () => {
           <Typography variant="h4" fontWeight="700" display="flex" justifyContent="center" color="white">
             LIGHT
           </Typography>
-          <Typography variant="h7" fontWeight="400" display="flex" justifyContent="center" color="white">
-          (PL) Ideal Range for Good Heat Index is (G) <br/>
-          (PL) Ideal Range for Bad Heat Index is (B) <br/>
-          (PL) Threshold for Good is (G) <br/>
-          (PL) Threshold for Bad is (B)
-          </Typography>
+          <Box display="flex" justifyContent="center">
+          <Button 
+            variant="outlined" 
+            color="inherit" 
+            onClick={() => setOpenDialog("light")}
+            sx={{ color: "white", textTransform: "none" }}
+          >
+            View Light Details
+          </Button>  
+          </Box>
+          
           {Object.entries(inactiveDevices.bh1750Rooms).map(([room, count]) => (
             <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
           ))}
@@ -205,12 +231,17 @@ const Dashboard = () => {
           <Typography variant="h4" fontWeight="700" display="flex" justifyContent="center" color="white">
             HEAT INDEX
           </Typography>
-          <Typography variant="h7" fontWeight="400" display="flex" justifyContent="center" color="white">
-          (PL) Ideal Range for Good Heat Index is (G) <br/>
-          (PL) Ideal Range for Bad Heat Index is (B) <br/>
-          (PL) Threshold for Good is (G) <br/>
-          (PL) Threshold for Bad is (B)
-          </Typography>
+          <Box display="flex" justifyContent="center">
+          <Button 
+            variant="outlined" 
+            color="inherit" 
+            onClick={() => setOpenDialog("heat")}
+            sx={{ color: "white", textTransform: "none" }}
+          >
+            View Heat Index Details
+          </Button>  
+          </Box>
+          
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
             <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
           ))}
@@ -223,13 +254,17 @@ const Dashboard = () => {
           <Typography variant="h4" fontWeight="700" display="flex" justifyContent="center" color="white">
             VOLCANIC SMOG (VOG)
           </Typography>
-          <Typography variant="h7" fontWeight="400" display="flex" justifyContent="center" color="white">
-          (PL) Concern Levels 1-4 <br/>
-          Level 1 - 0-0 <br/>
-          Level 2 - 0 - 0 <br/>
-          Level 3 - 0 - 0 <br/>
-          Level 4 - 0 - 0 <br/>
-          </Typography>
+          <Box display="flex" justifyContent="center">
+          <Button 
+            variant="outlined" 
+            color="inherit" 
+            onClick={() => setOpenDialog("vog")}
+            sx={{ color: "white", textTransform: "none" }}
+          >
+            View VOG Details
+          </Button>  
+          </Box>
+          
           {Object.entries(inactiveDevices.pms5003Rooms).map(([room, count]) => (
             <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
           ))}
@@ -237,7 +272,33 @@ const Dashboard = () => {
             <VOGPieChart />
             
           </Box>
-          
+          <CustomDialog 
+        open={openDialog === "iaq"} 
+        onClose={() => setOpenDialog(null)} 
+        title="Indoor Air Quality (IAQ) Details"
+        content="(PL) Ideal Range for Good Heat Index is (G)..."
+      />
+      
+      <CustomDialog 
+        open={openDialog === "light"} 
+        onClose={() => setOpenDialog(null)} 
+        title="Light Details"
+        content="(PL) Ideal Range for Good Heat Index is (G)..."
+      />
+      
+      <CustomDialog 
+        open={openDialog === "heat"} 
+        onClose={() => setOpenDialog(null)} 
+        title="Heat Index Details"
+        content="(PL) Ideal Range for Good Heat Index is (G)..."
+      />
+      
+      <CustomDialog 
+        open={openDialog === "vog"} 
+        onClose={() => setOpenDialog(null)} 
+        title="Volcanic Smog (VOG) Details"
+        content="Concern Levels 1-4..."
+      />
         </Box>
 
         {/* TABLE ROW */}
