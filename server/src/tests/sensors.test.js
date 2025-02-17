@@ -2,9 +2,10 @@ const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const request = require('supertest');
 const app = require('../app');
-const Sensors = require('../models/sensors.model'); // Ensure correct import path
+const {newReadouts} = require('../models/sensors.model'); // Ensure correct import path
 
 let mongoServer;
+let newReadoutId;
 
 beforeAll(async () => {
     mongoServer = await MongoMemoryServer.create();
@@ -49,6 +50,10 @@ describe('Sensors API', () => {
 
         expect(res.body.message).toBe('New record inserted...');
         expect(res.body.readout.classroom).toBe(newReadout.classroom);
+        expect(res.body.readout._id).toBeDefined();  // Check if _id is included
+
+        // Store the _id for future queries
+        newReadoutId = res.body.readout._id;
     });
 
     // Test GET /sensors to fetch all readouts
@@ -63,35 +68,19 @@ describe('Sensors API', () => {
 
     // Test GET /sensors/:id to fetch a specific readout by ID
     it('should return a readout by ID', async () => {
-        const sensor = new Sensors({
-            classroom: '102',
-            date: '2025-02-17',
-            time: '02:00 PM',
-            temperature: 22,
-            humidity: 55,
-            heatIndex: 26,
-            lighting: 400,
-            voc: 0.4,
-            IAQIndex: 48,
-            indoorAir: 'Normal',
-            temp: 'Normal',
-            lightRemarks: 'Optimal'
-        });
-
-        await sensor.save(); // Save the sensor before using it
-
         const res = await request(app)
-            .get(`/sensors/${sensor._id}`)
+            .get(`/sensors/${newReadoutId}`)
             .expect(200);
 
-        expect(res.body.classroom).toBe(sensor.classroom);
-        expect(res.body.date).toBe(sensor.date);
+        expect(res.body._id).toBe(newReadoutId); // Check that the returned ID matches
+        expect(res.body.classroom).toBe('101');
     });
 
-    // Test GET /sensors/classroom/:classroom to fetch readouts by classroom
     it('should return readouts by classroom', async () => {
         const classroom = '102';
-        const sensor1 = new Sensors({
+
+        // Use the newReadouts function from your model to save the readout
+        const sensor1 = await newReadouts({
             classroom: classroom,
             date: '2025-02-17',
             time: '02:00 PM',
@@ -105,9 +94,8 @@ describe('Sensors API', () => {
             temp: 'Normal',
             lightRemarks: 'Optimal'
         });
-        await sensor1.save();
 
-        const sensor2 = new Sensors({
+        const sensor2 = await newReadouts({
             classroom: classroom,
             date: '2025-02-17',
             time: '03:00 PM',
@@ -121,7 +109,6 @@ describe('Sensors API', () => {
             temp: 'Normal',
             lightRemarks: 'Optimal'
         });
-        await sensor2.save();
 
         const res = await request(app)
             .get(`/sensors/classroom/${classroom}`)
@@ -132,83 +119,19 @@ describe('Sensors API', () => {
         expect(res.body.length).toBeGreaterThan(0);
     });
 
-    // // Test GET /sensors/date/date to fetch readouts by date range
-    // it('should return readouts by date range', async () => {
-    //     const startDate = '2025-02-01';
-    //     const endDate = '2025-02-17';
-    //     const sensor = new Sensors({
-    //         classroom: '103',
-    //         date: '2025-02-17',
-    //         time: '03:00 PM',
-    //         temperature: 24,
-    //         humidity: 58,
-    //         heatIndex: 27,
-    //         lighting: 450,
-    //         voc: 0.6,
-    //         IAQIndex: 55,
-    //         indoorAir: 'Good',
-    //         temp: 'Normal',
-    //         lightRemarks: 'Optimal'
-    //     });
-    //     await sensor.save();
-    //
-    //     const res = await request(app)
-    //         .get(`/sensors/date/date?startDate=${startDate}&endDate=${endDate}`)
-    //         .expect(200);
-    //
-    //     expect(Array.isArray(res.body)).toBeTruthy();
-    // });
-
-    // // Test GET /sensors/time/:time to fetch readouts by time
-    // it('should return readouts by time', async () => {
-    //     const time = '12:00 PM';
-    //     const sensor = new Sensors({
-    //         classroom: '104',
-    //         date: '2025-02-17',
-    //         time: time,
-    //         temperature: 22,
-    //         humidity: 55,
-    //         heatIndex: 26,
-    //         lighting: 400,
-    //         voc: 0.4,
-    //         IAQIndex: 48,
-    //         indoorAir: 'Normal',
-    //         temp: 'Normal',
-    //         lightRemarks: 'Optimal'
-    //     });
-    //     await sensor.save();
-    //
-    //     const res = await request(app)
-    //         .get(`/sensors/time/${time}`)
-    //         .expect(200);
-    //
-    //     expect(Array.isArray(res.body)).toBeTruthy();
-    //     expect(res.body[0].time).toBe(time);
-    // });
 
     // Test DELETE /sensors/:id to delete a specific readout by ID
     it('should delete a readout by ID', async () => {
-        const sensor = new Sensors({
-            classroom: '105',
-            date: '2025-02-17',
-            time: '04:00 PM',
-            temperature: 26,
-            humidity: 60,
-            heatIndex: 28,
-            lighting: 470,
-            voc: 0.7,
-            IAQIndex: 58,
-            indoorAir: 'Good',
-            temp: 'Normal',
-            lightRemarks: 'Optimal'
-        });
-        await sensor.save();
-
         const res = await request(app)
-            .delete(`/sensors/${sensor._id}`)
-            .expect(201);
+            .delete(`/sensors/${newReadoutId}`)
+            .expect(200);
 
-        expect(res.body).toBe('Deleted');
+        expect(res.body.message).toBe('Deleted'); // Assuming the response message for delete is 'Deleted'
+
+        // Verify deletion
+        const deletedRes = await request(app)
+            .get(`/sensors/${newReadoutId}`)
+            .expect(404); // Verify it returns a 404 after deletion
     });
 
     // Test DELETE /sensors to delete all readouts
@@ -217,6 +140,6 @@ describe('Sensors API', () => {
             .delete('/sensors')
             .expect(204);
 
-        expect(res.body.message).toBeUndefined();
+        expect(res.body.message).toBeUndefined(); // Expecting no response body
     });
 });

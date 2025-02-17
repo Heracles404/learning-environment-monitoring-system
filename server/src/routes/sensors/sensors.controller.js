@@ -108,7 +108,7 @@ async function httpDeleteReadout(req, res) {
 
     if (await existsId(readoutId)) {
         await deleteReadout(readoutId);
-        return res.status(201).json('Deleted');
+        return res.status(200).json({message: 'Deleted'});
     } else {
         return res.status(404).json({ message: 'Readout not found' });
     }
