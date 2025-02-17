@@ -59,18 +59,20 @@ const VolSmogMonitor = () => {
                 alt='img'/>   
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    Ideal IAQ
+                  Volcanic Smog (VOG) Ideal Range <br/>
                   </Typography>
-                  <Typography variant='body2' color="red">
-                    The ideal IAQ range is 1-5. <br/>
-                    Status: Good / Bad. <br/>
-                    Formula:
+                  <Typography variant='body2' color="green">
+                  Concern Levels <br/>
+                  Level 1 - PPM 0-50 <br/>
+                  Level 2 - PPM 50-150 <br/>
+                  Level 3 - PPM 100-250 <br/>
+                  Level 4 - PPM 250+ <br/>
                   </Typography>
                 </CardContent>
                 {/* dapat ma redirect sa faq page --> learn more button */}
-                <CardActions>
+                {/* <CardActions>
                   <Button size='small'>Learn more</Button>
-                </CardActions>
+                </CardActions> */}
               </Card>
           </Box>
         </Box>

@@ -58,18 +58,24 @@ const CarbonDioxideMonitor = () => {
                 alt='img'/>   
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    Ideal IAQ
+                  Indoor Air Quality (IAQ) Details <br/>
                   </Typography>
-                  <Typography variant='body2' color="red">
-                    The ideal IAQ range is 1-5. <br/>
-                    Status: Good / Bad. <br/>
-                    Formula:
+                  <Typography variant='body2' color="green">
+                    Ideal Air Quality Ranges:  <br/>
+                    Ideal IAQ Range: Below 100 index <br/>
+                    Ideal Air Threshold: line anywhere below 100 is good <br/>
+
+                  </Typography>
+                  <Typography variant='body2' color="blue">
+                  Ideal Air Threshold <br/>
+                    Bad Range: above 100 <br/>
+                    Bad Threshold: Line above 100 <br/>
                   </Typography>
                 </CardContent>
                 {/* dapat ma redirect sa faq page --> learn more button */}
-                <CardActions>
+                {/* <CardActions>
                   <Button size='small'>Learn more</Button>
-                </CardActions>
+                </CardActions> */}
               </Card>
           </Box>
         </Box>
