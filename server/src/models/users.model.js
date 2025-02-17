@@ -1,53 +1,83 @@
+const argon2 = require('argon2');
 const User = require('../schema/userSchema');
 
 // Function to check if a username exists
 async function existsUserName(userName) {
-    const user = await User.findOne({ userName });
-    return user !== null;
+    try {
+        const user = await User.findOne({ userName });
+        return user !== null;
+    } catch (error) {
+        throw new Error('Error checking username existence');
+    }
 }
 
 // Function to get all users
 async function getAllUsers() {
-    const users = await User.find().lean(); // Use .lean() to return plain objects
-    return users.map(({ password, ...userWithoutPassword }) => userWithoutPassword);
+    try {
+        const users = await User.find().lean();
+        return users.map(({ password, ...userWithoutPassword }) => userWithoutPassword);
+    } catch (error) {
+        throw new Error('Error fetching users');
+    }
 }
 
 // Function to authenticate a user
 async function authenticateUser (userName, password) {
-    const user = await User.findOne({ userName, password }).lean(); // Use .lean() here as well
-    if (user) {
-        const { password, ...userWithoutPassword } = user; // Exclude password
-        return userWithoutPassword; // Return user data without password
+    try {
+        const user = await User.findOne({ userName }).lean();
+        if (user && await argon2.verify(user.password, password)) {
+            const { password, ...userWithoutPassword } = user;
+            return userWithoutPassword;
+        }
+        return null;
+    } catch (error) {
+        throw new Error('Error authenticating user');
     }
-    return null;
 }
 
 // Function to get a user by username
 async function getUserByUserName(userName) {
-    const user = await User.findOne({ userName }).lean(); // Use .lean() here as well
-    if (user) {
-        const { password, ...userWithoutPassword } = user; // Exclude password
-        return userWithoutPassword;
+    try {
+        const user = await User.findOne({ userName }).lean();
+        if (user) {
+            const { password, ...userWithoutPassword } = user;
+            return userWithoutPassword;
+        }
+        return null;
+    } catch (error) {
+        throw new Error('Error fetching user');
     }
-    return null; // User not found
 }
 
 // Function to add a new user
 async function addNewUser (user) {
-    const newUser  = new User(user);
-    await newUser .save();
+    try {
+        const hashedPassword = await argon2.hash(user.password);
+        const newUser  = new User({ ...user, password: hashedPassword });
+        await newUser .save();
+    } catch (error) {
+        throw new Error('Error adding new user');
+    }
 }
 
 // Function to delete a user by username
 async function deleteUserByUserName(userName) {
-    const result = await User.deleteOne({ userName });
-    return result.deletedCount > 0 ? `User  ${userName} has been deleted.` : `User  ${userName} not found.`;
+    try {
+        const result = await User.deleteOne({ userName });
+        return result.deletedCount > 0 ? `User ${userName} has been deleted.` : `User  ${userName} not found.`;
+    } catch (error) {
+        throw new Error('Error deleting user');
+    }
 }
 
 // Function to update a user by username
 async function updateUserByUserName(userName, updates) {
-    const result = await User.updateOne({ userName }, { $set: updates });
-    return result.modifiedCount > 0 ? `User  ${userName} has been updated.` : `User  ${userName} not found.`;
+    try {
+        const result = await User.updateOne({ userName }, { $set: updates });
+        return result;
+    } catch (error) {
+        throw new Error('Error updating user');
+    }
 }
 
 module.exports = {
