@@ -59,18 +59,21 @@ const LightingMonitor = () => {
                 alt='img'/>   
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    Ideal IAQ
+                  Light Details <br/>
                   </Typography>
-                  <Typography variant='body2' color="red">
-                    The ideal IAQ range is 1-5. <br/>
-                    Status: Good / Bad. <br/>
-                    Formula:
+                  <Typography variant='body2' color="green">
+                  Ideal Light Range: 300-500 lux <br/>
+                  Bad Range: above 500 <br/>
+                  </Typography>
+                  <Typography variant='body2' color="blue">
+                  Ideal Light Threshold: line  anywhere  between 300-500 <br/>
+                  Bad Threshold: Line above 500 <br/>
                   </Typography>
                 </CardContent>
                 {/* dapat ma redirect sa faq page --> learn more button */}
-                <CardActions>
+                {/* <CardActions>
                   <Button size='small'>Learn more</Button>
-                </CardActions>
+                </CardActions> */}
               </Card>
           </Box>
         </Box>

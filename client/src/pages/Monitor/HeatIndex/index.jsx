@@ -58,18 +58,25 @@ const HeatIndexMonitor = () => {
                 alt='img'/>   
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    Ideal IAQ
+                  HEAT INDEX DETAILS <br/>
                   </Typography>
-                  <Typography variant='body2' color="red">
-                    The ideal IAQ range is 1-5. <br/>
-                    Status: Good / Bad. <br/>
-                    Formula:
+                  <Typography variant='body2' color="green">
+                  Good Heat Index Ranges: <br/>
+                  Good Heat Index Range: 27°C - 41°C <br/>
+                  Bad Heat IndexRange: above 41°C <br/>
+
+                  
+                  </Typography>
+                  <Typography variant='body2' color="blue">
+                  Bad Heat Index Ranges: <br/>
+                  Good Heat Index Threshold: 27°C <br/>
+                  Bad Heat Index Threshold: above 41°C <br/>
                   </Typography>
                 </CardContent>
                 {/* dapat ma redirect sa faq page --> learn more button */}
-                <CardActions>
+                {/* <CardActions>
                   <Button size='small'>Learn more</Button>
-                </CardActions>
+                </CardActions> */}
               </Card>
           </Box>
         </Box>
