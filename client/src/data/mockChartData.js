@@ -112,7 +112,7 @@ export const fetchCardData = async (setCardData) => {
     });
 
     const determineGoodBad = (remarks) => {
-      const goodCount = remarks.filter((remark) => remark === "Good").length;
+      const goodCount = remarks.filter((remark) => remark === "GOOD").length;
       return goodCount > remarks.length / 2 ? "Good" : "Bad";
     };
 

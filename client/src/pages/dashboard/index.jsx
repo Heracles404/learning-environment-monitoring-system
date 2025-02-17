@@ -81,15 +81,15 @@ const Dashboard = () => {
         let inactiveRooms = { bh1750Rooms: {}, bme680Rooms: {}, pms5003Rooms: {} };
 
         allDevices.forEach(device => {
-          if (device.bh1750 === "inactive") {
+          if (device.bh1750 === "INACTIVE") {
             inactive.bh1750 += 1;
             inactiveRooms.bh1750Rooms[device.classroom] = (inactiveRooms.bh1750Rooms[device.classroom] || 0) + 1;
           }
-          if (device.bme680 === "inactive") {
+          if (device.bme680 === "INACTIVE") {
             inactive.bme680 += 1;
             inactiveRooms.bme680Rooms[device.classroom] = (inactiveRooms.bme680Rooms[device.classroom] || 0) + 1;
           }
-          if (device.pms5003 === "inactive") {
+          if (device.pms5003 === "INACTIVE") {
             inactive.pms5003 += 1;
             inactiveRooms.pms5003Rooms[device.classroom] = (inactiveRooms.pms5003Rooms[device.classroom] || 0) + 1;
           }

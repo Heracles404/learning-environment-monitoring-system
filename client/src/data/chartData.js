@@ -41,7 +41,7 @@ const fetchData = async (key, deviceId) => {
 // Fetch Air Quality Data
 const fetchAirQualityData = async () => {
   const devices = await httpGetAllDevices();
-  const activeDevices = devices.filter(device => device.status === "active");
+  const activeDevices = devices.filter(device => device.status === "ACTIVE");
 
   const airQualitySeries = await Promise.all(activeDevices.map(async (device) => {
     const data = await fetchData("IAQIndex", device.classroom);
@@ -59,7 +59,7 @@ const fetchAirQualityData = async () => {
 // Fetch Temperature Data
 const fetchTempData = async () => {
   const devices = await httpGetAllDevices();
-  const activeDevices = devices.filter(device => device.status === "active");
+  const activeDevices = devices.filter(device => device.status === "ACTIVE");
 
   const TemperatureSeries = await Promise.all(activeDevices.map(async (device) => ({
     name: `${device.classroom} Temperature`,
@@ -74,7 +74,7 @@ const fetchTempData = async () => {
 // Fetch Lighting Data
 const fetchLightData = async () => {
   const devices = await httpGetAllDevices();
-  const activeDevices = devices.filter(device => device.status === "active");
+  const activeDevices = devices.filter(device => device.status === "ACTIVE");
 
   const LightSeries = await Promise.all(activeDevices.map(async (device) => ({
     name: `${device.classroom} Light`,
@@ -89,7 +89,7 @@ const fetchLightData = async () => {
 // Fetch Volcanic Smog Data (VOC)
 const fetchVolcanicSmogData = async () => {
   const devices = await httpGetAllDevices();
-  const activeDevices = devices.filter(device => device.status === "active");
+  const activeDevices = devices.filter(device => device.status === "ACTIVE");
 
   const volcanicSmogSeries = await Promise.all(activeDevices.map(async (device) => {
     const data = await fetchData("voc", device.classroom);

@@ -23,6 +23,7 @@ const DBVOGRecords = () => {
                     classroom: "Outdoor",
                     currentPM25: readout.pm25,
                     currentPM10: readout.pm10,
+                    currentlevel: readout.level,
                     concernLevel: (readout.pm25 > 30 || readout.pm10 > 50) ? "Bad" : "Good",
                 };
             });
@@ -39,7 +40,7 @@ const DBVOGRecords = () => {
         // { field: "classroom", headerName: "Outdoor", minWidth: 100, flex: 1 },
         { field: "currentPM25", headerName: "Latest PM 2.5", minWidth: 100, flex: 1 },
         { field: "currentPM10", headerName: "Latest PM 10.0", minWidth: 100, flex: 1 },
-        { field: "level", headerName: "Concern Level", minWidth: 100, flex: 1 },
+        { field: "currentlevel", headerName: "Concern Level", minWidth: 100, flex: 1 },
         // { field: "concernLevel", headerName: "VOG Status", minWidth: 100, flex: 1 },
         {
                     field: "concernLevel",
