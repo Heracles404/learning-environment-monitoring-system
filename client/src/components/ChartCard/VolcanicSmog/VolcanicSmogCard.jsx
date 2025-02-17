@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./VolcanicSmogCard.css";
 import { motion, LayoutGroup } from "framer-motion";
 import Chart from "react-apexcharts";
-import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Select, Checkbox, ListItemText, FormControl, InputLabel } from "@mui/material";
 import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
 
 const VolcanicSmogCard = (props) => {
@@ -14,11 +14,12 @@ const VolcanicSmogCard = (props) => {
 };
 
 function ExpandedCard({ param }) {
-  const [vocData, setVocData] = useState({ vocLevels: [], timestamps: [] });
+  const [vocData, setVocData] = useState({});
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [filteredData, setFilteredData] = useState({ vocLevels: [], timestamps: [] });
+  const [filteredData, setFilteredData] = useState({});
   const [openDialog, setOpenDialog] = useState(false);
+  const [selectedRooms, setSelectedRooms] = useState([]); // State to store selected rooms
 
   const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
@@ -35,10 +36,18 @@ function ExpandedCard({ param }) {
         const response = await httpGetAllReadouts();
 
         if (response && response.length > 0) {
-          const vocLevels = response.map((item) => item.voc);
-          const timestamps = response.map((item) => new Date(`${item.date} ${item.time}`).getTime());
+          const roomData = response.reduce((acc, item) => {
+            const room = item.classroom;
+            if (!acc[room]) {
+              acc[room] = { vocLevels: [], timestamps: [] };
+            }
+            acc[room].vocLevels.push(item.voc);
+            acc[room].timestamps.push(new Date(`${item.date} ${item.time}`).getTime());
+            return acc;
+          }, {});
 
-          setVocData({ vocLevels, timestamps });
+          console.log("Fetched VOC Data:", roomData); // Debugging log
+          setVocData(roomData);
         } else {
           console.error("No data found.");
         }
@@ -54,21 +63,45 @@ function ExpandedCard({ param }) {
     const start = new Date(startDate).setHours(0, 0, 0, 0);
     const end = new Date(endDate).setHours(23, 59, 59, 999);
 
-    const filtered = vocData.timestamps
-      .map((timestamp, index) =>
-        timestamp >= start && timestamp <= end ? { timestamp, vocLevel: vocData.vocLevels[index] } : null
-      )
-      .filter(Boolean);
+    const filtered = Object.keys(vocData).reduce((acc, room) => {
+      if (selectedRooms.length === 0 || selectedRooms.includes(room)) {
+        const filteredRoomData = vocData[room].timestamps
+          .map((timestamp, index) =>
+            timestamp >= start && timestamp <= end ? { timestamp, vocLevel: vocData[room].vocLevels[index] } : null
+          )
+          .filter(Boolean);
 
-    setFilteredData({
-      vocLevels: filtered.map((item) => item.vocLevel),
-      timestamps: filtered.map((item) => item.timestamp),
-    });
+        if (filteredRoomData.length > 0) {
+          acc[room] = {
+            vocLevels: filteredRoomData.map((item) => item.vocLevel),
+            timestamps: filteredRoomData.map((item) => item.timestamp),
+          };
+        }
+      }
+      return acc;
+    }, {});
 
-    setOpenDialog(filtered.length === 0);
+    setFilteredData(filtered);
+    setOpenDialog(Object.keys(filtered).length === 0);
   };
 
-  const sortedData = filteredData.vocLevels.length > 0 ? filteredData : vocData;
+  const sortedData = Object.keys(filteredData).length > 0 ? filteredData : vocData;
+
+  const seriesData = Object.keys(sortedData).map((room) => {
+    const roomData = sortedData[room];
+    if (!roomData || roomData.vocLevels.length === 0 || roomData.timestamps.length === 0) {
+      return null; // Skip empty room data
+    }
+    return {
+      name: `Room ${room}`,
+      data: roomData.timestamps.map((timestamp, index) => ({
+        x: timestamp,
+        y: roomData.vocLevels[index],
+      })),
+    };
+  }).filter(Boolean); // Filter out any null or undefined series
+
+  console.log("Series Data:", seriesData); // Debugging log
 
   const data = {
     options: {
@@ -85,89 +118,118 @@ function ExpandedCard({ param }) {
         opacity: 0.35,
       },
       fill: {
-        colors: [getRandomColor()],
+        colors: Object.keys(sortedData).map(() => getRandomColor()),
         type: "gradient",
       },
       dataLabels: { enabled: false },
       stroke: {
         curve: "smooth",
-        colors: [getRandomColor()],
+        colors: Object.keys(sortedData).map(() => getRandomColor()),
       },
       tooltip: {
-        x: { format: "dd/MM/yy HH:mm" }, // Tooltip format remains unchanged
+        x: { format: "dd/MM/yy HH:mm" },
       },
       grid: { show: true },
       xaxis: {
-        type: "datetime", // Ensures x-axis is in datetime format
-        categories: sortedData.timestamps.map((timestamp) => new Date(timestamp).toISOString()), // Use exact timestamps for accurate plotting
+        type: "datetime",
+        categories: Object.values(sortedData).flatMap((data) =>
+          data.timestamps.map((timestamp) => new Date(timestamp).toISOString())
+        ),
       },
       yaxis: {
         title: {
-          text: "VOC Level", // Y-axis title for VOC level
+          text: "VOC Level",
         },
       },
-      annotations: {
-        yaxis: [
-          {
-            y: 400, // Example: Above 400 is "Good"
-            borderColor: "#008000",
-            label: {
-              borderColor: "#008000",
-              style: {
-                color: "#fff",
-                background: "#008000",
-              },
-              text: "Good",
-            },
-          },
-          {
-            y: 300, // Example: Below 300 is "Bad"
-            borderColor: "#FF0000",
-            label: {
-              borderColor: "#FF0000",
-              style: {
-                color: "#fff",
-                background: "#FF0000",
-              },
-              text: "Bad",
-            },
-          },
-        ],
+      legend: {
+        show: false, // This removes the legends
       },
     },
-    series: [
-      {
-        name: "VOC Level",
-        data: sortedData.timestamps.map((timestamp, index) => ({
-          x: timestamp, // Use exact timestamps for accurate x-axis plotting
-          y: sortedData.vocLevels[index], // Use corresponding VOC level values
-        })),
-      },
-    ],
+    series: seriesData,
   };
-  
-  
+
+  const handleRoomChange = (event) => {
+    setSelectedRooms(event.target.value);
+  };
 
   return (
-    <motion.div className="ExpandedCard" style={{ background: param.color.backGround, boxShadow: param.color.boxShadow }} layoutId={`expandableCard-${param.title}`}>
+    <motion.div className="ExpandedCard" style={{ background: param.color.backGround, boxShadow: param.color.boxShadow }} layoutId={`expandableCard-${param.title}`} >
       <span>{param.title}</span>
 
-      <div className="date-filter">
-        <TextField type="date" label="Start Date" value={startDate} onChange={(e) => setStartDate(e.target.value)} InputLabelProps={{ shrink: true }} />
-        <TextField type="date" label="End Date" value={endDate} onChange={(e) => setEndDate(e.target.value)} InputLabelProps={{ shrink: true }} inputProps={{ min: startDate }} />
-        <Button onClick={filterData} variant="contained" color="primary">
-          Filter
-        </Button>
-      </div>
+      <div className="filters" style={{ marginBottom: "20px" }}>
+  <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+    <TextField
+      type="date"
+      label="Start Date"
+      value={startDate}
+      onChange={(e) => setStartDate(e.target.value)}
+      InputLabelProps={{ shrink: true }}
+      style={{ width: "140px" }}
+    />
+    <TextField
+      type="date"
+      label="End Date"
+      value={endDate}
+      onChange={(e) => setEndDate(e.target.value)}
+      InputLabelProps={{ shrink: true }}
+      inputProps={{ min: startDate }}
+      style={{ width: "140px" }}
+    />
+    {/* Room filter */}
+    <FormControl
+      variant="outlined"
+      margin="normal"
+      style={{
+        minWidth: 100,
+        width: 140, // Same width as the date fields
+      }}
+    >
+      <InputLabel htmlFor="roomSelect" style={{ fontSize: "0.9rem" }}>Select Rooms</InputLabel>
+      <Select
+        multiple
+        value={selectedRooms}
+        onChange={handleRoomChange}
+        renderValue={(selected) => selected.join(", ")}
+        MenuProps={{
+          PaperProps: {
+            style: {
+              maxHeight: 200,
+              width: 140, // Consistent dropdown width
+            },
+          },
+        }}
+        inputProps={{ id: "roomSelect" }}
+        label="Select Rooms"
+        style={{
+          fontSize: "0.9rem", // Maintain consistent font size
+          padding: "5px", // Consistent padding
+          height: "40px", // Set height for alignment
+        }}
+      >
+        {Object.keys(vocData).map((room) => (
+          <MenuItem key={room} value={room}>
+            <Checkbox checked={selectedRooms.indexOf(room) > -1} />
+            <ListItemText primary={`Room ${room}`} />
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
 
-      <div className="chartContainer">
-        <Chart options={data.options} series={data.series} type="area" />
-      </div>
+    <Button onClick={filterData} variant="contained" color="primary" style={{ height: "40px" }}>
+      Filter
+    </Button>
+  </div>
+</div>
+
+<div className="chartContainer" style={{ marginTop: "20px" }}>
+  <Chart options={data.options} series={data.series} type="area" />
+</div>
+
 
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="sm" fullWidth>
         <DialogTitle sx={{ fontSize: "1.5rem", fontWeight: "bold" }}>No Data Found</DialogTitle>
         <DialogContent>
-          <p style={{ fontSize: "1.2rem" }}>No data detected for the selected date range.</p>
+          <p style={{ fontSize: "1.2rem" }}>No data detected for the selected date range and room(s).</p>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenDialog(false)} color="primary" style={{ fontSize: "1.1rem" }}>
