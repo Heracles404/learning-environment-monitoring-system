@@ -4,22 +4,32 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../../components/Header";
 import { httpNewDevice } from "../../../hooks/devices.requests";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import React from 'react';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import { httpGetAllDevices } from "../../../hooks/devices.requests"; // Added function import
 
 const RegisterDevice = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
+  const [existingDevices, setExistingDevices] = useState([]); // Store fetched devices
 
   const [checked, setChecked] = React.useState([false, false]);
   const [checkedSecond, setCheckedSecond] = React.useState([false, false]);
+
+  useEffect(() => {
+    const fetchDevices = async () => {
+      const devices = await httpGetAllDevices(); // Fetch all devices
+      setExistingDevices(devices);
+    };
+    fetchDevices();
+  }, []);
 
   const handleChange2 = (event) => {
     setChecked([event.target.checked, checked[1]]);
@@ -30,17 +40,23 @@ const RegisterDevice = () => {
   };
 
   const Register = async (values) => {
+    // Check if classroom name already exists
+    if (existingDevices.some(device => device.classroom === values.classroom)) {
+      setAlertMessage("Duplicate room detected. Please use a different room name.");
+      return;
+    }
+
     const deviceData = {
       classroom: values.classroom,
       status: "inactive",
       bh1750: checked[0] ? "inactive" : "-",
-      bme680: checked[1] ? "INACTIVE" : "-",
-      pms5003: checkedSecond[0] ? "INACTIVE" : "-",
+      bme680: checked[1] ? "inactive" : "-",
+      pms5003: checkedSecond[0] ? "inactive" : "-",
     };
 
     try {
       const response = await httpNewDevice(deviceData);
-      const responseData = await response.json(); // Read the JSON response
+      const responseData = await response.json();
 
       if (response.ok) {
         navigate("/DeviceStatus");
@@ -54,7 +70,6 @@ const RegisterDevice = () => {
       console.error("Error:", error);
     }
   };
-
 
   return (
     <Box m="20px">
