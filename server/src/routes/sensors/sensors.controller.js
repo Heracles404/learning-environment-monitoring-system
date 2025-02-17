@@ -83,21 +83,20 @@ async function httpNewReadouts(req, res) {
 
     const readout = req.body;
 
-    // Check for missing sensor parameters
     const badSensorParameters = sensors.filter(attr => !readout[attr]);
 
     if (badSensorParameters.length > 0) {
         return res.status(400).json({ error: 'Bad Sensor Parameters: ' + badSensorParameters.join(', ') });
     }
 
-    // Call the model to insert the new readout, which now includes date and time dynamically
-    await newReadouts(readout);
+    const savedReadout = await newReadouts(readout);
 
     return res.status(201).json({
         message: 'New record inserted...',
-        readout: readout
+        readout: savedReadout,
     });
 }
+
 
 // Function to delete a specific readout by ID
 async function httpDeleteReadout(req, res) {

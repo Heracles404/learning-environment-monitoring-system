@@ -1,4 +1,3 @@
-// sensors.model.js
 const Sensors = require('../schema/sensorsSchema');
 
 // Function to get all readouts
@@ -43,7 +42,7 @@ async function newReadouts(readout) {
         date: currentDate,
     });
 
-    await newReadout.save();
+    return await newReadout.save();
 }
 
 // Function to delete a readout by ID
