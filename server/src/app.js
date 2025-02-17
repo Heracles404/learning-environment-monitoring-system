@@ -13,7 +13,7 @@ const app = express();
 
 connectDB();
 
-startDeviceStatusScheduler();
+// startDeviceStatusScheduler();
 
 app.use(cors({
     // origin: ["http://localhost:3000"],
