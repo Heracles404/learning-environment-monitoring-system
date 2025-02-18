@@ -131,6 +131,34 @@ const CO2Card = (props) => {
           text: "IAQ Index",
         },
       },
+      annotations: {
+        yaxis: [
+          {
+            y: 50, // Good threshold
+            borderColor: 'green',
+            label: {
+              borderColor: 'green',
+              style: {
+                color: '#fff',
+                background: 'green',
+              },
+              text: 'Good',
+            }
+          },
+          {
+            y: 100, // Bad threshold
+            borderColor: 'red',
+            label: {
+              borderColor: 'red',
+              style: {
+                color: '#fff',
+                background: 'red',
+              },
+              text: 'Bad',
+            }
+          }
+        ]
+      },
       legend: {
         show: false, // This removes the legends
       },

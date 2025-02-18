@@ -141,6 +141,34 @@ function ExpandedCard({ param }) {
           text: "Heat Index",
         },
       },
+      annotations: {
+        yaxis: [
+          {
+            y: 27, // Good threshold
+            borderColor: 'green',
+            label: {
+              borderColor: 'green',
+              style: {
+                color: '#fff',
+                background: 'green',
+              },
+              text: 'Good',
+            }
+          },
+          {
+            y: 41, // Bad threshold
+            borderColor: 'red',
+            label: {
+              borderColor: 'red',
+              style: {
+                color: '#fff',
+                background: 'red',
+              },
+              text: 'Bad',
+            }
+          }
+        ]
+      },
       legend: {
         show: false, // This removes the legends
       },
