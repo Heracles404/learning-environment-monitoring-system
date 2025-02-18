@@ -141,6 +141,61 @@ function ExpandedCard({ param }) {
           text: "VOC Level",
         },
       },
+      annotations: {
+        yaxis: [
+          {
+            y: 50, // Good threshold
+            borderColor: 'red',
+            label: {
+              borderColor: 'red',
+              style: {
+                color: '#fff',
+                background: 'red',
+              },
+              text: 'Level 1',
+            }
+          },
+          {
+            y: 150, // Bad threshold
+            borderColor: 'red',
+            label: {
+              borderColor: 'red',
+              style: {
+                color: '#fff',
+                background: 'red',
+              },
+              text: 'Level 2',
+            }
+            
+          },
+          {
+            y: 250, // Bad threshold
+            borderColor: 'red',
+            label: {
+              borderColor: 'red',
+              style: {
+                color: '#fff',
+                background: 'red',
+              },
+              text: 'Level 3',
+            }
+            
+          },
+          {
+            y: 300, // Bad threshold
+            borderColor: 'red',
+            label: {
+              borderColor: 'red',
+              style: {
+                color: '#fff',
+                background: 'red',
+              },
+              text: 'Level 4',
+            }
+            
+          }
+        ]
+      },
       legend: {
         show: false, // This removes the legends
       },
