@@ -97,15 +97,23 @@ export const fetchCardData = async (setCardData) => {
       }
 
       // Ensure correct date parsing & timezone handling
-      const dateString = readout.date ? readout.date : new Date().toISOString().split('T')[0]; // Default to today if missing
-      const timeString = readout.time; // Example: "02:55 PM"
-      const localDate = new Date(`${dateString} ${timeString}`);
-      const timestamp = localDate.getTime() - localDate.getTimezoneOffset() * 60000; // Convert to UTC
+      const dateString = readout.date ? readout.date : new Date().toISOString().split('T')[0];
+      let timeString = readout.time; // Example: "02:55 PM"
 
-      // Debugging logs to verify correctness
+      // Convert 12-hour format to Date object
+      const localDate = new Date(`${dateString} ${timeString}`);
+
+      // Reformat to 12-hour AM/PM (ensures consistency)
+      const formattedTime = localDate.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      });
+
       console.log("Original Time:", readout.time);
-      console.log("Original Date:", readout.date);
-      console.log("Parsed Timestamp:", new Date(timestamp).toISOString());
+      console.log("Formatted Time:", formattedTime);
+
+      const timestamp = localDate.getTime() - localDate.getTimezoneOffset() * 60000; // Convert to UTC
 
       roomData[room].iaqIndex.push({ x: timestamp, y: readout.IAQIndex });
       roomData[room].heatIndex.push({ x: timestamp, y: readout.heatIndex });
@@ -123,8 +131,21 @@ export const fetchCardData = async (setCardData) => {
       }
 
       const dateString = readout.date ? readout.date : new Date().toISOString().split('T')[0];
-      const timeString = readout.time;
+      let timeString = readout.time;
+
+      // Convert 12-hour format to Date object
       const localDate = new Date(`${dateString} ${timeString}`);
+
+      // Reformat to 12-hour AM/PM
+      const formattedTime = localDate.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      });
+
+      console.log("Original Vog Time:", readout.time);
+      console.log("Formatted Vog Time:", formattedTime);
+
       const timestamp = localDate.getTime() - localDate.getTimezoneOffset() * 60000; // Convert to UTC
 
       vogRoomData[room].pm25.push({ x: timestamp, y: readout.pm25 });
@@ -185,7 +206,7 @@ export const fetchCardData = async (setCardData) => {
             name: "PMS2.5",
             data: vogReadouts.map((readout) => {
               const dateString = readout.date ? readout.date : new Date().toISOString().split('T')[0];
-              const timeString = readout.time;
+              let timeString = readout.time;
               const localDate = new Date(`${dateString} ${timeString}`);
               const timestamp = localDate.getTime() - localDate.getTimezoneOffset() * 60000; // Convert to UTC
               return { x: timestamp, y: readout.pm25 };
@@ -196,7 +217,7 @@ export const fetchCardData = async (setCardData) => {
             name: "PMS10",
             data: vogReadouts.map((readout) => {
               const dateString = readout.date ? readout.date : new Date().toISOString().split('T')[0];
-              const timeString = readout.time;
+              let timeString = readout.time;
               const localDate = new Date(`${dateString} ${timeString}`);
               const timestamp = localDate.getTime() - localDate.getTimezoneOffset() * 60000; // Convert to UTC
               return { x: timestamp, y: readout.pm10 };
