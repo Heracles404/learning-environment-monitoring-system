@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
 import "./LightingCard.css";
-import { motion } from "framer-motion";
+import { motion, LayoutGroup } from "framer-motion";
 import Chart from "react-apexcharts";
-import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
 import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Checkbox, ListItemText } from "@mui/material";
+import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
 
 const LightingCard = (props) => {
+  return (
+    <LayoutGroup>
+      <ExpandedCard param={props} />
+    </LayoutGroup>
+  );
+};
+
+function ExpandedCard({ param }) {
   const [lightingData, setLightingData] = useState({});
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -22,12 +30,25 @@ const LightingCard = (props) => {
             if (!acc[room]) {
               acc[room] = { lightingLevels: [], timestamps: [], formattedTimestamps: [] };
             }
-            const timestamp = new Date(`${item.date} ${item.time}`).getTime();
+
+            const dateString = item.date ? item.date : new Date().toISOString().split('T')[0];
+            let timeString = item.time;
+
+            const localDate = new Date(`${dateString} ${timeString}`);
+            const formattedTime = localDate.toLocaleTimeString("en-US", {
+              hour: "numeric",
+              minute: "2-digit",
+              hour12: true,
+            });
+
+            const timestamp = localDate.getTime() - localDate.getTimezoneOffset() * 60000;
+
             acc[room].lightingLevels.push(item.lighting);
             acc[room].timestamps.push(timestamp);
-            acc[room].formattedTimestamps.push(`${item.date} ${item.time}`);
+            acc[room].formattedTimestamps.push(`${dateString} ${formattedTime}`);
             return acc;
           }, {});
+
           setLightingData(roomData);
           setFilteredData(roomData);
         } else {
@@ -37,6 +58,7 @@ const LightingCard = (props) => {
         console.error("Error fetching lighting data:", error);
       }
     };
+
     fetchLightingData();
   }, []);
 
@@ -106,20 +128,68 @@ const LightingCard = (props) => {
           },
         },
       },
+      annotations: {
+        yaxis: [
+          {
+            y: 500, // Threshold Level 1
+            borderColor: 'red',
+            label: {
+              borderColor: 'red',
+              style: {
+                color: '#fff',
+                background: 'red',
+              },
+              text: 'Bad',
+            },
+          },
+          {
+            y: 350, // Threshold Level 2
+            borderColor: 'green',
+            label: {
+              borderColor: 'green',
+              style: {
+                color: '#fff',
+                background: 'green',
+              },
+              text: 'Good',
+            },
+          },
+        ],
+      },
     },
     series: seriesData,
   };
 
   return (
-    <motion.div className="ExpandedCard" style={{ background: props.color.backGround, boxShadow: props.color.boxShadow }}>
-      <span>{props.title}</span>
+    <motion.div className="ExpandedCard" style={{ background: param.color.backGround, boxShadow: param.color.boxShadow }} layoutId={`expandableCard-${param.title}`} >
+      <span>{param.title}</span>
       <div className="filters" style={{ marginBottom: "20px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-          <TextField type="date" label="Start Date" value={startDate} onChange={(e) => setStartDate(e.target.value)} InputLabelProps={{ shrink: true }} style={{ width: "140px" }} />
-          <TextField type="date" label="End Date" value={endDate} onChange={(e) => setEndDate(e.target.value)} InputLabelProps={{ shrink: true }} inputProps={{ min: startDate }} style={{ width: "140px" }} />
+          <TextField
+            type="date"
+            label="Start Date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+            style={{ width: "140px" }}
+          />
+          <TextField
+            type="date"
+            label="End Date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+            inputProps={{ min: startDate }}
+            style={{ width: "140px" }}
+          />
           <FormControl variant="outlined" margin="normal" style={{ minWidth: 100, width: 140 }}>
             <InputLabel htmlFor="roomSelect">Select Rooms</InputLabel>
-            <Select multiple value={selectedRooms} onChange={(e) => setSelectedRooms(e.target.value)} renderValue={(selected) => selected.join(", ")}> 
+            <Select
+              multiple
+              value={selectedRooms}
+              onChange={(e) => setSelectedRooms(e.target.value)}
+              renderValue={(selected) => selected.join(", ")}
+            >
               {Object.keys(lightingData).map((room) => (
                 <MenuItem key={room} value={room}>
                   <Checkbox checked={selectedRooms.includes(room)} />
@@ -137,6 +207,6 @@ const LightingCard = (props) => {
       </div>
     </motion.div>
   );
-};
+}
 
 export default LightingCard;

@@ -22,10 +22,27 @@ const CO2Card = (props) => {
             if (!acc[room]) {
               acc[room] = { iaqIndexes: [], timestamps: [], formattedTimestamps: [] };
             }
-            const timestamp = new Date(`${item.date} ${item.time}`).getTime();
+
+            // Keep the date intact, but handle the time properly
+            const dateString = item.date ? item.date : new Date().toISOString().split('T')[0];
+            let timeString = item.time; // Example: "02:55 PM"
+            
+            // Convert 12-hour format time to 24-hour format and build the Date object
+            const localDate = new Date(`${dateString} ${timeString}`);
+            
+            // Reformat to 12-hour AM/PM (ensures consistency)
+            const formattedTime = localDate.toLocaleTimeString("en-US", {
+              hour: "numeric",
+              minute: "2-digit",
+              hour12: true,
+            });
+
+            // Correct timestamp conversion for UTC (without altering the date)
+            const timestamp = localDate.getTime() - localDate.getTimezoneOffset() * 60000; // Convert to UTC
+
             acc[room].iaqIndexes.push(item.IAQIndex);
             acc[room].timestamps.push(timestamp);
-            acc[room].formattedTimestamps.push(`${item.date} ${item.time}`);
+            acc[room].formattedTimestamps.push(`${dateString} ${formattedTime}`); // Combine date and time for the tooltip
             return acc;
           }, {});
           setIaqData(roomData);
@@ -106,6 +123,34 @@ const CO2Card = (props) => {
           },
         },
       },
+      annotations: {
+        yaxis: [
+          {
+            y: 100, // Threshold Level 1
+            borderColor: 'red',
+            label: {
+              borderColor: 'red',
+              style: {
+                color: '#fff',
+                background: 'red',
+              },
+              text: 'Bad',
+            },
+          },
+          {
+            y: 50, // Threshold Level 2
+            borderColor: 'green',
+            label: {
+              borderColor: 'green',
+              style: {
+                color: '#fff',
+                background: 'green',
+              },
+              text: 'Good',
+            },
+          },
+        ],
+      },
     },
     series: seriesData,
   };
@@ -119,7 +164,7 @@ const CO2Card = (props) => {
           <TextField type="date" label="End Date" value={endDate} onChange={(e) => setEndDate(e.target.value)} InputLabelProps={{ shrink: true }} inputProps={{ min: startDate }} style={{ width: "140px" }} />
           <FormControl variant="outlined" margin="normal" style={{ minWidth: 100, width: 140 }}>
             <InputLabel htmlFor="roomSelect">Select Rooms</InputLabel>
-            <Select multiple value={selectedRooms} onChange={(e) => setSelectedRooms(e.target.value)} renderValue={(selected) => selected.join(", ")}> 
+            <Select multiple value={selectedRooms} onChange={(e) => setSelectedRooms(e.target.value)} renderValue={(selected) => selected.join(", ")}>
               {Object.keys(iaqData).map((room) => (
                 <MenuItem key={room} value={room}>
                   <Checkbox checked={selectedRooms.includes(room)} />
