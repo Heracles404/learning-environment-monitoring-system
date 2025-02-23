@@ -1,3 +1,4 @@
+const { getDeviceByClassroom, updateDevice } = require('../models/device.model');
 const Sensors = require('../schema/sensorsSchema');
 
 // Function to get all readouts
@@ -32,17 +33,47 @@ async function getReadoutsByTime(time) {
     return await Sensors.find({ time });
 }
 
-// Function to create a new readout
 async function newReadouts(readout) {
     const currentDateTime = new Date();
     const currentDate = currentDateTime.toLocaleDateString();
+
+    // Determine BME680 and BH1750 status based on readout values
+    const bme680Status = (readout.temperature && readout.humidity && readout.voc) ? 'ACTIVE' : 'INACTIVE';
+    const bh1750Status = (readout.lighting) ? 'ACTIVE' : 'INACTIVE';
+
+    // Determine overall device status
+    const deviceStatus = (bme680Status === 'ACTIVE' || bh1750Status === 'ACTIVE') ? 'ACTIVE' : 'INACTIVE';
 
     const newReadout = new Sensors({
         ...readout,
         date: currentDate,
     });
 
-    return await newReadout.save();
+    const savedReadout = await newReadout.save();
+
+    // Extract classroom from the readout and update devices directly
+    if (savedReadout.classroom) {
+        try {
+            const devicesToUpdate = await getDeviceByClassroom(savedReadout.classroom);
+
+            if (devicesToUpdate.length > 0) {
+                await Promise.all(
+                    devicesToUpdate.map(device =>
+                        updateDevice(device._id, {
+                            status: deviceStatus,
+                            bme680: bme680Status,
+                            bh1750: bh1750Status,
+                            lastUpdated: currentDateTime.toISOString(),
+                        })
+                    )
+                );
+            }
+        } catch (error) {
+            console.error('Error updating devices in classroom:', error);
+        }
+    }
+
+    return savedReadout;
 }
 
 // Function to delete a readout by ID

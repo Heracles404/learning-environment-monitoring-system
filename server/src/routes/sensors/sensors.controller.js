@@ -77,8 +77,9 @@ async function httpGetReadoutsByTime(req, res) {
 // Function to create a new readout (called when posting data)
 async function httpNewReadouts(req, res) {
     const sensors = [
-        'time', 'temperature', 'humidity', 'heatIndex', 'lighting',
-        'classroom', 'voc', 'IAQIndex', 'indoorAir', 'temp', 'lightRemarks'
+        'time',
+        // 'temperature', 'humidity', 'heatIndex', 'lighting',
+        // 'classroom', 'voc', 'IAQIndex', 'indoorAir', 'temp', 'lightRemarks'
     ];
 
     const readout = req.body;
