@@ -19,7 +19,7 @@ function ExpandedCard({ param }) {
   const [endDate, setEndDate] = useState("");
   const [filteredData, setFilteredData] = useState({});
   const [openDialog, setOpenDialog] = useState(false);
-  const [selectedRooms, setSelectedRooms] = useState([]); // State to store selected rooms
+  const [selectedRooms, setSelectedRooms] = useState([]);
 
   const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
@@ -39,14 +39,33 @@ function ExpandedCard({ param }) {
           const roomData = response.reduce((acc, item) => {
             const room = item.classroom;
             if (!acc[room]) {
-              acc[room] = { heatIndexLevels: [], timestamps: [] };
+              acc[room] = { heatIndexLevels: [], timestamps: [], formattedTimestamps: [] };
             }
+
+            // Handle date and time formatting
+            const dateString = item.date || new Date().toISOString().split('T')[0];
+            let timeString = item.time; // Example: "02:55 PM"
+            
+            // Convert 12-hour format time to 24-hour format and build the Date object
+            const localDate = new Date(`${dateString} ${timeString}`);
+            
+            // Reformat to 12-hour AM/PM (ensures consistency)
+            const formattedTime = localDate.toLocaleTimeString("en-US", {
+              hour: "numeric",
+              minute: "2-digit",
+              hour12: true,
+            });
+
+            // Correct timestamp conversion for UTC (without altering the date)
+            const timestamp = localDate.getTime() - localDate.getTimezoneOffset() * 60000; // Convert to UTC
+
             acc[room].heatIndexLevels.push(item.heatIndex);
-            acc[room].timestamps.push(new Date(`${item.date} ${item.time}`).getTime());
+            acc[room].timestamps.push(timestamp);
+            acc[room].formattedTimestamps.push(`${dateString} ${formattedTime}`);
             return acc;
           }, {});
 
-          console.log("Fetched Heat Index Data:", roomData); // Debugging log
+          console.log("Fetched Heat Index Data:", roomData);
           setHeatIndexData(roomData);
         } else {
           console.error("No data found.");
@@ -67,7 +86,7 @@ function ExpandedCard({ param }) {
       if (selectedRooms.length === 0 || selectedRooms.includes(room)) {
         const filteredRoomData = heatIndexData[room].timestamps
           .map((timestamp, index) =>
-            timestamp >= start && timestamp <= end ? { timestamp, heatIndexLevel: heatIndexData[room].heatIndexLevels[index] } : null
+            timestamp >= start && timestamp <= end ? { timestamp, heatIndexLevel: heatIndexData[room].heatIndexLevels[index], formattedTimestamp: heatIndexData[room].formattedTimestamps[index] } : null
           )
           .filter(Boolean);
 
@@ -75,6 +94,7 @@ function ExpandedCard({ param }) {
           acc[room] = {
             heatIndexLevels: filteredRoomData.map((item) => item.heatIndexLevel),
             timestamps: filteredRoomData.map((item) => item.timestamp),
+            formattedTimestamps: filteredRoomData.map((item) => item.formattedTimestamp),
           };
         }
       }
@@ -85,12 +105,19 @@ function ExpandedCard({ param }) {
     setOpenDialog(Object.keys(filtered).length === 0);
   };
 
+  const clearFilters = () => {
+    setStartDate("");
+    setEndDate("");
+    setSelectedRooms([]);
+    setFilteredData(heatIndexData); // Reset to the original data
+  };
+
   const sortedData = Object.keys(filteredData).length > 0 ? filteredData : heatIndexData;
 
   const seriesData = Object.keys(sortedData).map((room) => {
     const roomData = sortedData[room];
     if (!roomData || roomData.heatIndexLevels.length === 0 || roomData.timestamps.length === 0) {
-      return null; // Skip empty room data
+      return null;
     }
     return {
       name: `Room ${room}`,
@@ -99,9 +126,7 @@ function ExpandedCard({ param }) {
         y: roomData.heatIndexLevels[index],
       })),
     };
-  }).filter(Boolean); // Filter out any null or undefined series
-
-  console.log("Series Data:", seriesData); // Debugging log
+  }).filter(Boolean);
 
   const data = {
     options: {
@@ -127,7 +152,12 @@ function ExpandedCard({ param }) {
         colors: Object.keys(sortedData).map(() => getRandomColor()),
       },
       tooltip: {
-        x: { format: "dd/MM/yy HH:mm" },
+        x: {
+          formatter: function (value, { dataPointIndex, seriesIndex }) {
+            const roomKey = Object.keys(sortedData)[seriesIndex];
+            return sortedData[roomKey]?.formattedTimestamps?.[dataPointIndex] || "Unknown";
+          },
+        },
       },
       grid: { show: true },
       xaxis: {
@@ -245,6 +275,11 @@ function ExpandedCard({ param }) {
 
           <Button onClick={filterData} variant="contained" color="primary" style={{ height: "40px" }}>
             Filter
+          </Button>
+
+          {/* Clear Filters Button with Same Style as Filter Button */}
+          <Button onClick={clearFilters} variant="contained" color="primary" style={{ height: "40px" }}>
+            Clear Filters
           </Button>
         </div>
       </div>
