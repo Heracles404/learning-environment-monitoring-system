@@ -48,6 +48,7 @@ function ExpandedCard({ param }) {
 
           console.log("Fetched VOC Data:", roomData); // Debugging log
           setVocData(roomData);
+          setFilteredData(roomData);  // Initialize filtered data with all room data
         } else {
           console.error("No data found.");
         }
@@ -83,6 +84,13 @@ function ExpandedCard({ param }) {
 
     setFilteredData(filtered);
     setOpenDialog(Object.keys(filtered).length === 0);
+  };
+
+  const clearFilters = () => {
+    setStartDate("");
+    setEndDate("");
+    setSelectedRooms([]);
+    setFilteredData(vocData);  // Reset filtered data to the original data
   };
 
   const sortedData = Object.keys(filteredData).length > 0 ? filteredData : vocData;
@@ -166,7 +174,6 @@ function ExpandedCard({ param }) {
               },
               text: 'Level 2',
             }
-            
           },
           {
             y: 250, // Bad threshold
@@ -179,7 +186,6 @@ function ExpandedCard({ param }) {
               },
               text: 'Level 3',
             }
-            
           },
           {
             y: 300, // Bad threshold
@@ -192,7 +198,6 @@ function ExpandedCard({ param }) {
               },
               text: 'Level 4',
             }
-            
           }
         ]
       },
@@ -212,74 +217,77 @@ function ExpandedCard({ param }) {
       <span>{param.title}</span>
 
       <div className="filters" style={{ marginBottom: "20px" }}>
-  <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-    <TextField
-      type="date"
-      label="Start Date"
-      value={startDate}
-      onChange={(e) => setStartDate(e.target.value)}
-      InputLabelProps={{ shrink: true }}
-      style={{ width: "140px" }}
-    />
-    <TextField
-      type="date"
-      label="End Date"
-      value={endDate}
-      onChange={(e) => setEndDate(e.target.value)}
-      InputLabelProps={{ shrink: true }}
-      inputProps={{ min: startDate }}
-      style={{ width: "140px" }}
-    />
-    {/* Room filter */}
-    <FormControl
-      variant="outlined"
-      margin="normal"
-      style={{
-        minWidth: 100,
-        width: 140, // Same width as the date fields
-      }}
-    >
-      <InputLabel htmlFor="roomSelect" style={{ fontSize: "0.9rem" }}>Select Rooms</InputLabel>
-      <Select
-        multiple
-        value={selectedRooms}
-        onChange={handleRoomChange}
-        renderValue={(selected) => selected.join(", ")}
-        MenuProps={{
-          PaperProps: {
-            style: {
-              maxHeight: 200,
-              width: 140, // Consistent dropdown width
-            },
-          },
-        }}
-        inputProps={{ id: "roomSelect" }}
-        label="Select Rooms"
-        style={{
-          fontSize: "0.9rem", // Maintain consistent font size
-          padding: "5px", // Consistent padding
-          height: "40px", // Set height for alignment
-        }}
-      >
-        {Object.keys(vocData).map((room) => (
-          <MenuItem key={room} value={room}>
-            <Checkbox checked={selectedRooms.indexOf(room) > -1} />
-            <ListItemText primary={`Room ${room}`} />
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+          <TextField
+            type="date"
+            label="Start Date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+            style={{ width: "140px" }}
+          />
+          <TextField
+            type="date"
+            label="End Date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+            inputProps={{ min: startDate }}
+            style={{ width: "140px" }}
+          />
+          {/* Room filter */}
+          <FormControl
+            variant="outlined"
+            margin="normal"
+            style={{
+              minWidth: 100,
+              width: 140, // Same width as the date fields
+            }}
+          >
+            <InputLabel htmlFor="roomSelect" style={{ fontSize: "0.9rem" }}>Select Rooms</InputLabel>
+            <Select
+              multiple
+              value={selectedRooms}
+              onChange={handleRoomChange}
+              renderValue={(selected) => selected.join(", ")}
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: 200,
+                    width: 140, // Consistent dropdown width
+                  },
+                },
+              }}
+              inputProps={{ id: "roomSelect" }}
+              label="Select Rooms"
+              style={{
+                fontSize: "0.9rem", // Maintain consistent font size
+                padding: "5px", // Consistent padding
+                height: "40px", // Set height for alignment
+              }}
+            >
+              {Object.keys(vocData).map((room) => (
+                <MenuItem key={room} value={room}>
+                  <Checkbox checked={selectedRooms.indexOf(room) > -1} />
+                  <ListItemText primary={`Room ${room}`} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-    <Button onClick={filterData} variant="contained" color="primary" style={{ height: "40px" }}>
-      Filter
-    </Button>
-  </div>
-</div>
+          <Button onClick={filterData} variant="contained" color="primary" style={{ height: "40px" }}>
+  Filter
+</Button>
+<Button onClick={clearFilters} variant="contained" color="primary" style={{ height: "40px" }}>
+  Clear Filters
+</Button>
 
-<div className="chartContainer" style={{ marginTop: "20px" }}>
-  <Chart options={data.options} series={data.series} type="area" />
-</div>
+        </div>
+      </div>
 
+      <div className="chartContainer" style={{ marginTop: "20px" }}>
+        <Chart options={data.options} series={data.series} type="area" />
+      </div>
 
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="sm" fullWidth>
         <DialogTitle sx={{ fontSize: "1.5rem", fontWeight: "bold" }}>No Data Found</DialogTitle>
