@@ -81,6 +81,7 @@ export const fetchCardData = async (setCardData) => {
     const vogReadouts = await httpGetVogReadouts();
 
     const roomData = {};
+
     readouts.forEach((readout) => {
       const room = readout.classroom;
       if (!roomData[room]) {
@@ -93,9 +94,11 @@ export const fetchCardData = async (setCardData) => {
           lightRemarks: [],
         };
       }
-      roomData[room].iaqIndex.push(readout.IAQIndex);
-      roomData[room].heatIndex.push(readout.heatIndex);
-      roomData[room].lighting.push(readout.lighting);
+      const timestamp = new Date(`${readout.date} ${readout.time}`).getTime(); // Accurate timestamp
+
+      roomData[room].iaqIndex.push({ x: timestamp, y: readout.IAQIndex });
+      roomData[room].heatIndex.push({ x: timestamp, y: readout.heatIndex });
+      roomData[room].lighting.push({ x: timestamp, y: readout.lighting });
       roomData[room].indoorAirRemarks.push(readout.indoorAir);
       roomData[room].tempRemarks.push(readout.temp);
       roomData[room].lightRemarks.push(readout.lightRemarks);
@@ -107,8 +110,10 @@ export const fetchCardData = async (setCardData) => {
       if (!vogRoomData[room]) {
         vogRoomData[room] = { pm25: [], pm10: [] };
       }
-      vogRoomData[room].pm25.push(readout.pm25);
-      vogRoomData[room].pm10.push(readout.pm10);
+      const timestamp = new Date(`${readout.date} ${readout.time}`).getTime(); // Accurate timestamp
+
+      vogRoomData[room].pm25.push({ x: timestamp, y: readout.pm25 });
+      vogRoomData[room].pm10.push({ x: timestamp, y: readout.pm10 });
     });
 
     const determineGoodBad = (remarks) => {
@@ -123,7 +128,7 @@ export const fetchCardData = async (setCardData) => {
         value: readouts.length > 0 ? readouts[readouts.length - 1].IAQIndex : 0,
         series: Object.keys(roomData).map((room) => ({
           name: `Room ${room}`,
-          data: roomData[room].iaqIndex,
+          data: roomData[room].iaqIndex, // Accurate timestamps
           color: getRandomColor(),
         })),
         remark: determineGoodBad(
@@ -136,7 +141,7 @@ export const fetchCardData = async (setCardData) => {
         value: readouts.length > 0 ? readouts[readouts.length - 1].heatIndex : 0,
         series: Object.keys(roomData).map((room) => ({
           name: `Room ${room}`,
-          data: roomData[room].heatIndex,
+          data: roomData[room].heatIndex, // Accurate timestamps
           color: getRandomColor(),
         })),
         remark: determineGoodBad(
@@ -149,7 +154,7 @@ export const fetchCardData = async (setCardData) => {
         value: readouts.length > 0 ? readouts[readouts.length - 1].lighting : 0,
         series: Object.keys(roomData).map((room) => ({
           name: `Room ${room}`,
-          data: roomData[room].lighting,
+          data: roomData[room].lighting, // Accurate timestamps
           color: getRandomColor(),
         })),
         remark: determineGoodBad(
@@ -163,12 +168,12 @@ export const fetchCardData = async (setCardData) => {
         series: [
           {
             name: "PMS2.5",
-            data: vogReadouts.map((readout) => readout.pm25),
+            data: vogReadouts.map((readout) => ({ x: new Date(`${readout.date} ${readout.time}`).getTime(), y: readout.pm25 })),
             color: getRandomColor(),
           },
           {
             name: "PMS10",
-            data: vogReadouts.map((readout) => readout.pm10),
+            data: vogReadouts.map((readout) => ({ x: new Date(`${readout.date} ${readout.time}`).getTime(), y: readout.pm10 })),
             color: getRandomColor(),
           },
         ],
@@ -180,3 +185,5 @@ export const fetchCardData = async (setCardData) => {
     console.error("Error fetching data", error);
   }
 };
+
+
