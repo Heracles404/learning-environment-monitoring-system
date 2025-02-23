@@ -95,7 +95,17 @@ export const fetchCardData = async (setCardData) => {
           lightRemarks: [],
         };
       }
-      const timestamp = new Date(`${readout.date} ${readout.time}`).getTime(); // Accurate timestamp
+
+      // Ensure correct date parsing & timezone handling
+      const dateString = readout.date ? readout.date : new Date().toISOString().split('T')[0]; // Default to today if missing
+      const timeString = readout.time; // Example: "02:55 PM"
+      const localDate = new Date(`${dateString} ${timeString}`);
+      const timestamp = localDate.getTime() - localDate.getTimezoneOffset() * 60000; // Convert to UTC
+
+      // Debugging logs to verify correctness
+      console.log("Original Time:", readout.time);
+      console.log("Original Date:", readout.date);
+      console.log("Parsed Timestamp:", new Date(timestamp).toISOString());
 
       roomData[room].iaqIndex.push({ x: timestamp, y: readout.IAQIndex });
       roomData[room].heatIndex.push({ x: timestamp, y: readout.heatIndex });
@@ -111,7 +121,11 @@ export const fetchCardData = async (setCardData) => {
       if (!vogRoomData[room]) {
         vogRoomData[room] = { pm25: [], pm10: [] };
       }
-      const timestamp = new Date(`${readout.date} ${readout.time}`).getTime(); // Accurate timestamp
+
+      const dateString = readout.date ? readout.date : new Date().toISOString().split('T')[0];
+      const timeString = readout.time;
+      const localDate = new Date(`${dateString} ${timeString}`);
+      const timestamp = localDate.getTime() - localDate.getTimezoneOffset() * 60000; // Convert to UTC
 
       vogRoomData[room].pm25.push({ x: timestamp, y: readout.pm25 });
       vogRoomData[room].pm10.push({ x: timestamp, y: readout.pm10 });
@@ -129,7 +143,7 @@ export const fetchCardData = async (setCardData) => {
         value: readouts.length > 0 ? readouts[readouts.length - 1].IAQIndex : 0,
         series: Object.keys(roomData).map((room) => ({
           name: `Room ${room}`,
-          data: roomData[room].iaqIndex, // Accurate timestamps
+          data: roomData[room].iaqIndex,
           color: getRandomColor(),
         })),
         remark: determineGoodBad(
@@ -142,7 +156,7 @@ export const fetchCardData = async (setCardData) => {
         value: readouts.length > 0 ? readouts[readouts.length - 1].heatIndex : 0,
         series: Object.keys(roomData).map((room) => ({
           name: `Room ${room}`,
-          data: roomData[room].heatIndex, // Accurate timestamps
+          data: roomData[room].heatIndex,
           color: getRandomColor(),
         })),
         remark: determineGoodBad(
@@ -155,7 +169,7 @@ export const fetchCardData = async (setCardData) => {
         value: readouts.length > 0 ? readouts[readouts.length - 1].lighting : 0,
         series: Object.keys(roomData).map((room) => ({
           name: `Room ${room}`,
-          data: roomData[room].lighting, // Accurate timestamps
+          data: roomData[room].lighting,
           color: getRandomColor(),
         })),
         remark: determineGoodBad(
@@ -169,12 +183,24 @@ export const fetchCardData = async (setCardData) => {
         series: [
           {
             name: "PMS2.5",
-            data: vogReadouts.map((readout) => ({ x: new Date(`${readout.date} ${readout.time}`).getTime(), y: readout.pm25 })),
+            data: vogReadouts.map((readout) => {
+              const dateString = readout.date ? readout.date : new Date().toISOString().split('T')[0];
+              const timeString = readout.time;
+              const localDate = new Date(`${dateString} ${timeString}`);
+              const timestamp = localDate.getTime() - localDate.getTimezoneOffset() * 60000; // Convert to UTC
+              return { x: timestamp, y: readout.pm25 };
+            }),
             color: getRandomColor(),
           },
           {
             name: "PMS10",
-            data: vogReadouts.map((readout) => ({ x: new Date(`${readout.date} ${readout.time}`).getTime(), y: readout.pm10 })),
+            data: vogReadouts.map((readout) => {
+              const dateString = readout.date ? readout.date : new Date().toISOString().split('T')[0];
+              const timeString = readout.time;
+              const localDate = new Date(`${dateString} ${timeString}`);
+              const timestamp = localDate.getTime() - localDate.getTimezoneOffset() * 60000; // Convert to UTC
+              return { x: timestamp, y: readout.pm10 };
+            }),
             color: getRandomColor(),
           },
         ],
@@ -186,4 +212,5 @@ export const fetchCardData = async (setCardData) => {
     console.error("Error fetching data", error);
   }
 };
+
 
