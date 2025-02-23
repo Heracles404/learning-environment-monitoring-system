@@ -81,6 +81,7 @@ export const fetchCardData = async (setCardData) => {
     const vogReadouts = await httpGetVogReadouts();
 
     const roomData = {};
+
     readouts.forEach((readout) => {
       const room = readout.classroom;
       if (!roomData[room]) {
@@ -93,9 +94,11 @@ export const fetchCardData = async (setCardData) => {
           lightRemarks: [],
         };
       }
-      roomData[room].iaqIndex.push(readout.IAQIndex);
-      roomData[room].heatIndex.push(readout.heatIndex);
-      roomData[room].lighting.push(readout.lighting);
+      const timestamp = new Date(`${readout.date} ${readout.time}`).getTime();
+
+      roomData[room].iaqIndex.push({ x: timestamp, y: readout.IAQIndex });
+      roomData[room].heatIndex.push({ x: timestamp, y: readout.heatIndex });
+      roomData[room].lighting.push({ x: timestamp, y: readout.lighting });
       roomData[room].indoorAirRemarks.push(readout.indoorAir);
       roomData[room].tempRemarks.push(readout.temp);
       roomData[room].lightRemarks.push(readout.lightRemarks);
@@ -103,12 +106,12 @@ export const fetchCardData = async (setCardData) => {
 
     const vogRoomData = {};
     vogReadouts.forEach((readout) => {
-      const room = readout.classroom;
-      if (!vogRoomData[room]) {
-        vogRoomData[room] = { pm25: [], pm10: [] };
+      const timestamp = new Date(readout.Timestamp).getTime();
+      if (!vogRoomData['VOG']) {
+        vogRoomData['VOG'] = { pm25: [], pm10: [] };
       }
-      vogRoomData[room].pm25.push(readout.pm25);
-      vogRoomData[room].pm10.push(readout.pm10);
+      vogRoomData['VOG'].pm25.push({ x: timestamp, y: readout.Reference_PM2["5"] });
+      vogRoomData['VOG'].pm10.push({ x: timestamp, y: readout.Reference_PM10 });
     });
 
     const determineGoodBad = (remarks) => {
@@ -127,7 +130,7 @@ export const fetchCardData = async (setCardData) => {
           color: getRandomColor(),
         })),
         remark: determineGoodBad(
-          Object.values(roomData).map((room) => room.indoorAirRemarks).flat()
+          Object.values(roomData).flatMap((room) => room.indoorAirRemarks)
         ),
       },
       {
@@ -140,7 +143,7 @@ export const fetchCardData = async (setCardData) => {
           color: getRandomColor(),
         })),
         remark: determineGoodBad(
-          Object.values(roomData).map((room) => room.tempRemarks).flat()
+          Object.values(roomData).flatMap((room) => room.tempRemarks)
         ),
       },
       {
@@ -153,25 +156,25 @@ export const fetchCardData = async (setCardData) => {
           color: getRandomColor(),
         })),
         remark: determineGoodBad(
-          Object.values(roomData).map((room) => room.lightRemarks).flat()
+          Object.values(roomData).flatMap((room) => room.lightRemarks)
         ),
       },
       {
         ...cardsData[3],
-        barValue: vogReadouts.length > 0 ? vogReadouts[vogReadouts.length - 1].pm25 : 0,
-        value: vogReadouts.length > 0 ? vogReadouts[vogReadouts.length - 1].pm10 : 0,
-        series: [
+        barValue: vogReadouts.length > 0 ? vogReadouts[vogReadouts.length - 1].Reference_PM2["5"] : 0,
+        value: vogReadouts.length > 0 ? vogReadouts[vogReadouts.length - 1].Reference_PM10 : 0,
+        series: Object.keys(vogRoomData).flatMap((room) => [
           {
-            name: "PMS2.5",
-            data: vogReadouts.map((readout) => readout.pm25),
+            name: `PM2.5 - ${room}`,
+            data: vogRoomData[room].pm25,
             color: getRandomColor(),
           },
           {
-            name: "PMS10",
-            data: vogReadouts.map((readout) => readout.pm10),
+            name: `PM10 - ${room}`,
+            data: vogRoomData[room].pm10,
             color: getRandomColor(),
           },
-        ],
+        ]),
       },
     ];
 
@@ -180,3 +183,6 @@ export const fetchCardData = async (setCardData) => {
     console.error("Error fetching data", error);
   }
 };
+
+
+
