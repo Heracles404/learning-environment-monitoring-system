@@ -43,8 +43,37 @@ const AirQualityRecordTable = () => {
         // { field: "lighting", headerName: "Lighting", minWidth: 100, flex: 1 },
         // { field: "voc", headerName: "VOC", minWidth: 100, flex: 1 },
         { field: "IAQIndex", headerName: "IAQ Index", minWidth: 100, flex: 1 },
-        { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
-        // { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
+        // { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
+        {
+            field: "indoorAir",
+            headerName: "IAQ Stat",
+            flex: 1,
+            renderCell: ({ row: { indoorAir } }) => {
+              return (
+                <Box
+                //   width="60%"
+                  m="8px auto"
+                  p="5px"
+                  display="flex"
+                  justifyContent="center"
+                  backgroundColor={
+                    indoorAir === "GOOD"
+                      ? colors.greenAccent[600]
+                      : indoorAir === "BAD"
+                      ? colors.redAccent[700]
+                      : colors.redAccent[700]
+                  }
+                  borderRadius="4px"
+                >
+                  {indoorAir === "GOOD" }
+                  {indoorAir === "BAD" }
+                  <Typography color={"white"} >
+                    {indoorAir}
+                  </Typography>
+                </Box>
+              );
+            },
+        },        
     ];
 
     return (

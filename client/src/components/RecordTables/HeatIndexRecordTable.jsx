@@ -44,7 +44,37 @@ const HeatIndexRecordTable = () => {
         // { field: "voc", headerName: "VOC", minWidth: 100, flex: 1 },
         // { field: "IAQIndex", headerName: "IAQ Index", minWidth: 100, flex: 1 },
         // { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
-        { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
+        // { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
+        {
+            field: "temp",
+            headerName: "Temperature Stat",
+            flex: 1,
+            renderCell: ({ row: { temp } }) => {
+              return (
+                <Box
+                //   width="60%"
+                  m="8px auto"
+                  p="5px"
+                  display="flex"
+                  justifyContent="center"
+                  backgroundColor={
+                    temp === "GOOD"
+                      ? colors.greenAccent[600]
+                      : temp === "BAD"
+                      ? colors.redAccent[700]
+                      : colors.redAccent[700]
+                  }
+                  borderRadius="4px"
+                >
+                  {temp === "GOOD" }
+                  {temp === "BAD" }
+                  <Typography color={"white"} >
+                    {temp}
+                  </Typography>
+                </Box>
+              );
+            },
+        },        
     ];
 
     return (
