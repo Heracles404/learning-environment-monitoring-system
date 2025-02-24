@@ -23,7 +23,7 @@ const VOGRecords = () => {
         const fetchData = async () => {
             const data = await httpGetAllReadouts();
             const formattedData = data.map((readout, index) => {
-                const vogStatus = (readout.pm25 < 60 && readout.pm10 < 100) ? "Good" : "Bad"; // VOG Status logic
+                const vogStatus = (readout.pm25 < 60 && readout.pm10 < 100) ? "GOOD" : "BAD"; // VOG Status logic
                 
                 return {
                     id: readout._id || index,
@@ -65,16 +65,16 @@ const VOGRecords = () => {
                   display="flex"
                   justifyContent="center"
                   backgroundColor={
-                    vogStatus === "Good"
+                    vogStatus === "GOOD"
                       ? colors.greenAccent[600]
-                      : vogStatus === "Bad"
+                      : vogStatus === "BAD"
                       ? colors.redAccent[700]
                       : colors.redAccent[700]
                   }
                   borderRadius="4px"
                 >
-                  {vogStatus === "Good" }
-                  {vogStatus === "Bad" }
+                  {vogStatus === "GOOD" }
+                  {vogStatus === "BAD" }
                   <Typography color={"white"} >
                     {vogStatus}
                   </Typography>
