@@ -66,16 +66,16 @@ const Records = () => {
                   display="flex"
                   justifyContent="center"
                   backgroundColor={
-                    indoorAir === "Good"
+                    indoorAir === "GOOD"
                       ? colors.greenAccent[600]
-                      : indoorAir === "Bad"
+                      : indoorAir === "BAD"
                       ? colors.redAccent[700]
                       : colors.redAccent[700]
                   }
                   borderRadius="4px"
                 >
-                  {indoorAir === "Good" }
-                  {indoorAir === "Bad" }
+                  {indoorAir === "GOOD" }
+                  {indoorAir === "BAD" }
                   <Typography color={"white"} >
                     {indoorAir}
                   </Typography>
@@ -97,16 +97,16 @@ const Records = () => {
                   display="flex"
                   justifyContent="center"
                   backgroundColor={
-                    temp === "Good"
+                    temp === "GOOD"
                       ? colors.greenAccent[600]
-                      : temp === "Bad"
+                      : temp === "BAD"
                       ? colors.redAccent[700]
                       : colors.redAccent[700]
                   }
                   borderRadius="4px"
                 >
-                  {temp === "Good" }
-                  {temp === "Bad" }
+                  {temp === "GOOD" }
+                  {temp === "BAD" }
                   <Typography color={"white"} >
                     {temp}
                   </Typography>
@@ -128,14 +128,16 @@ const Records = () => {
                   display="flex"
                   justifyContent="center"
                   backgroundColor={
-                    lightRemarks === "Good"
+                    lightRemarks === "GOOD"
                       ? colors.greenAccent[600]
-                      : lightRemarks === "Bad"
-                  }
+                      : lightRemarks === "BAD"
+                      ? colors.redAccent[700]
+                      : colors.redAccent[700]
+                  } 
                   borderRadius="4px"
                 >
-                  {lightRemarks === "Good" }
-                  {lightRemarks === "Bad" }
+                  {lightRemarks === "GOOD" }
+                  {lightRemarks === "BAD" }
                   <Typography color={"white"} >
                     {lightRemarks}
                   </Typography>

@@ -26,6 +26,7 @@ const LightingRecordTable = () => {
                 IAQIndex: readout.IAQIndex,
                 indoorAir: readout.indoorAir,
                 temp: readout.temp,
+                LightStatus: readout.lighting > 300 ? "BAD" : "GOOD", // Adjust the threshold as needed
             }));
             setRows(formattedData);
         };
@@ -41,6 +42,36 @@ const LightingRecordTable = () => {
         // { field: "humidity", headerName: "Humidity", minWidth: 100, flex: 1 },
         // { field: "heatIndex", headerName: "Heat Index", minWidth: 100, flex: 1 },
         { field: "lighting", headerName: "Lighting", minWidth: 100, flex: 1 },
+        {
+                    field: "LightStatus",
+                    headerName: "Light Status",
+                    flex: 1,
+                    renderCell: ({ row: { LightStatus } }) => {
+                      return (
+                        <Box
+                        //   width="60%"
+                          m="8px auto"
+                          p="5px"
+                          display="flex"
+                          justifyContent="center"
+                          backgroundColor={
+                            LightStatus === "GOOD"
+                              ? colors.greenAccent[600]
+                              : LightStatus === "BAD"
+                              ? colors.redAccent[700]
+                              : colors.redAccent[700]
+                          }
+                          borderRadius="4px"
+                        >
+                          {LightStatus === "GOOD" }
+                          {LightStatus === "BAD" }
+                          <Typography color={"white"} >
+                            {LightStatus}
+                          </Typography>
+                        </Box>
+                      );
+                    },
+                },       
         // { field: "voc", headerName: "VOC", minWidth: 100, flex: 1 },
         // { field: "IAQIndex", headerName: "IAQ Index", minWidth: 100, flex: 1 },
         // { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },

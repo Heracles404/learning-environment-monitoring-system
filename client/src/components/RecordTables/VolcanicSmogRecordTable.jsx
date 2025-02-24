@@ -26,6 +26,7 @@ const VolcanicSmogRecordTable = () => {
                 IAQIndex: readout.IAQIndex,
                 indoorAir: readout.indoorAir,
                 temp: readout.temp,
+                concernLevel: (readout.pm25 > 30 || readout.pm10 > 50) ? "BAD" : "GOOD",
             }));
             setRows(formattedData);
         };
@@ -42,6 +43,36 @@ const VolcanicSmogRecordTable = () => {
         // // { field: "heatIndex", headerName: "Heat Index", minWidth: 100, flex: 1 },
         // { field: "lighting", headerName: "Lighting", minWidth: 100, flex: 1 },
         { field: "voc", headerName: "VOC", minWidth: 100, flex: 1 },
+        {
+                            field: "concernLevel",
+                            headerName: "VOG Status",
+                            flex: 1,
+                            renderCell: ({ row: { concernLevel } }) => {
+                              return (
+                                <Box
+                                //   width="60%"
+                                  m="8px auto"
+                                  p="5px"
+                                  display="flex"
+                                  justifyContent="center"
+                                  backgroundColor={
+                                    concernLevel === "GOOD"
+                                      ? colors.greenAccent[600]
+                                      : concernLevel === "BAD"
+                                      ? colors.redAccent[700]
+                                      : colors.redAccent[700]
+                                  }
+                                  borderRadius="4px"
+                                >
+                                  {concernLevel === "GOOD" }
+                                  {concernLevel === "BAD" }
+                                  <Typography color={"white"} >
+                                    {concernLevel}
+                                  </Typography>
+                                </Box>
+                              );
+                            },
+                        },
         // { field: "IAQIndex", headerName: "IAQ Index", minWidth: 100, flex: 1 },
         // { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
         // { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
