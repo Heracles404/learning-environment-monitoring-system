@@ -175,6 +175,7 @@ const VolcanicSmogCard = (props) => {
           },
         ],
       },
+      legend: { show: false }, // This removes the legend
     },
     series: seriesData,
   };

@@ -156,6 +156,7 @@ function ExpandedCard({ param }) {
           },
         ],
       },
+      legend: { show: false }, // This removes the legend
     },
     series: seriesData,
   };
