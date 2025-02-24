@@ -24,7 +24,7 @@ const DBVOGRecords = () => {
                     currentPM25: readout.pm25,
                     currentPM10: readout.pm10,
                     currentlevel: readout.level,
-                    concernLevel: (readout.pm25 > 30 || readout.pm10 > 50) ? "Bad" : "Good",
+                    concernLevel: (readout.pm25 > 30 || readout.pm10 > 50) ? "BAD" : "GOOD",
                 };
             });
 
@@ -55,16 +55,16 @@ const DBVOGRecords = () => {
                           display="flex"
                           justifyContent="center"
                           backgroundColor={
-                            concernLevel === "Good"
+                            concernLevel === "GOOD"
                               ? colors.greenAccent[600]
-                              : concernLevel === "Bad"
+                              : concernLevel === "BAD"
                               ? colors.redAccent[700]
                               : colors.redAccent[700]
                           }
                           borderRadius="4px"
                         >
-                          {concernLevel === "Good" }
-                          {concernLevel === "Bad" }
+                          {concernLevel === "GOOD" }
+                          {concernLevel === "BAD" }
                           <Typography color={"white"} >
                             {concernLevel}
                           </Typography>

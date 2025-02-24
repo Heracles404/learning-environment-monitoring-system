@@ -24,9 +24,9 @@ const DBRecords = () => {
                     currentHeatIndex: readout.heatIndex,
                     currentIAQIndex: readout.IAQIndex,
                     currentLighting: readout.lighting,
-                    concernLevel: (readout.heatIndex > 29 || readout.IAQIndex > 60 || readout.lighting > 200) ? "Bad" : "Good",
-                    IAQStatus: readout.IAQIndex > 100 ? "Bad" : "Good", // Adjust the threshold as needed
-                    LightStatus: readout.lighting > 300 ? "Bad" : "Good", // Adjust the threshold as needed
+                    concernLevel: (readout.heatIndex > 29 || readout.IAQIndex > 60 || readout.lighting > 200) ? "BAD" : "GOOD",
+                    IAQStatus: readout.IAQIndex > 100 ? "BAD" : "GOOD", // Adjust the threshold as needed
+                    LightStatus: readout.lighting > 300 ? "BAD" : "GOOD", // Adjust the threshold as needed
                 };
             });
 
@@ -57,16 +57,16 @@ const DBRecords = () => {
                   display="flex"
                   justifyContent="center"
                   backgroundColor={
-                    concernLevel === "Good"
+                    concernLevel === "GOOD"
                       ? colors.greenAccent[600]
-                      : concernLevel === "Bad"
+                      : concernLevel === "BAD"
                       ? colors.redAccent[700]
                       : colors.redAccent[700]
                   }
                   borderRadius="4px"
                 >
-                  {concernLevel === "Good" }
-                  {concernLevel === "Bad" }
+                  {concernLevel === "GOOD" }
+                  {concernLevel === "BAD" }
                   <Typography color={"white"} >
                     {concernLevel}
                   </Typography>
@@ -88,16 +88,16 @@ const DBRecords = () => {
                   display="flex"
                   justifyContent="center"
                   backgroundColor={
-                    IAQStatus === "Good"
+                    IAQStatus === "GOOD"
                       ? colors.greenAccent[600]
-                      : IAQStatus === "Bad"
+                      : IAQStatus === "BAD"
                       ? colors.redAccent[700]
                       : colors.redAccent[700]
                   }
                   borderRadius="4px"
                 >
-                  {IAQStatus === "Good" }
-                  {IAQStatus === "Bad" }
+                  {IAQStatus === "GOOD" }
+                  {IAQStatus === "BAD" }
                   <Typography color={"white"} >
                     {IAQStatus}
                   </Typography>
@@ -119,16 +119,16 @@ const DBRecords = () => {
                           display="flex"
                           justifyContent="center"
                           backgroundColor={
-                            LightStatus === "Good"
+                            LightStatus === "GOOD"
                               ? colors.greenAccent[600]
-                              : LightStatus === "Bad"
+                              : LightStatus === "BAD"
                               ? colors.redAccent[700]
                               : colors.redAccent[700]
                           }
                           borderRadius="4px"
                         >
-                          {LightStatus === "Good" }
-                          {LightStatus === "Bad" }
+                          {LightStatus === "GOOD" }
+                          {LightStatus === "BAD" }
                           <Typography color={"white"} >
                             {LightStatus}
                           </Typography>
