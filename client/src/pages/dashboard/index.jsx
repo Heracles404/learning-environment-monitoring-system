@@ -306,11 +306,11 @@ const Dashboard = () => {
           >
             View VOG Details
           </Button> 
+          
+          </Box>
           {Object.entries(inactiveDevices.pms5003Rooms).map(([room, count]) => (
             <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
           ))} 
-          </Box>
-          
           
           <Box height="300px">
             <VOGPieChart />

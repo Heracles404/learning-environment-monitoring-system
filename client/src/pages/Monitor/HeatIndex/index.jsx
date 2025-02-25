@@ -5,7 +5,7 @@ import HeatIndexCards from "../../../components/ChartCards/HeatIndex/HeatIndexCa
 import HeatIndexRecordTable from "../../../components/RecordTables/HeatIndexRecordTable";
 const HeatIndexMonitor = () => {
   return (
-    <Box m="0 1px 0 1px" height="100vh" overflow="auto">
+    <Box m="0 1px 0 1px" height="95vh" overflow="auto">
       {/* HEADER */}
       <Box 
       display="flex" 
