@@ -91,7 +91,7 @@
   @media screen and (max-width: 1200px) {
     .DBExpandedCard {
       top: 2rem;
-      height: 50%;
+      height: 55%;
       left: 20rem;
     }
   }
@@ -101,7 +101,7 @@
     }
     .DBExpandedCard {
       /* top: 8rem; */
-      height: 60%;
+      height: 65%;
       /* left: 25px; */
       /* width: 90%; */
     }
@@ -112,7 +112,7 @@
   @media screen and (max-width: 900px) {
     .DBExpandedCard {
       top: 8rem;
-      height: 70%;
+      height: 75%;
       left: 25px;
       width: 90%;
     }
@@ -123,7 +123,7 @@
   @media screen and (max-width: 821px) {
     .DBExpandedCard {
       top: 8rem;
-      height: 50%;
+      height: 55%;
       left: 25px;
       width: 90%;
     }
@@ -134,7 +134,7 @@
   @media screen and (max-width: 769px) {
     .DBExpandedCard {
       top: 8rem;
-      height: 60%;
+      height: 70%;
       left: 25px;
       width: 90%;
     }
@@ -157,7 +157,7 @@
   @media screen and (max-width: 426px) {
     .DBExpandedCard {
       top: 8rem;
-      height: 42%;
+      height: 52%;
       left: 8px;
       width: 92%;
     }
@@ -169,7 +169,7 @@
   @media screen and (max-width: 376px) {
     .DBExpandedCard {
       top: 8rem;
-      height: 48%;
+      height: 52%;
       left: 8px;
       width: 92%;
     }
@@ -180,7 +180,7 @@
   @media screen and (max-width: 320px) {
     .DBExpandedCard {
       top: 8rem;
-      height: 42%;
+      height: 47%;
       left: 8px;
       width: 92%;
     }
