@@ -164,7 +164,7 @@ const CO2Card = (props) => {
         <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
           <TextField type="date" label="Start Date" value={startDate} onChange={(e) => setStartDate(e.target.value)} InputLabelProps={{ shrink: true }} style={{ width: "140px" }} />
           <TextField type="date" label="End Date" value={endDate} onChange={(e) => setEndDate(e.target.value)} InputLabelProps={{ shrink: true }} inputProps={{ min: startDate }} style={{ width: "140px" }} />
-          <FormControl variant="outlined" margin="normal" style={{ minWidth: 100, width: 140 }}>
+          <FormControl variant="outlined" margin="normal" style={{ minWidth: 200, width: 140 }}>
             <InputLabel htmlFor="roomSelect">Select Rooms</InputLabel>
             <Select multiple value={selectedRooms} onChange={(e) => setSelectedRooms(e.target.value)} renderValue={(selected) => selected.join(", ")}>
               {Object.keys(iaqData).map((room) => (

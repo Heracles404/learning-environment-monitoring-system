@@ -202,7 +202,7 @@ const VolcanicSmogCard = (props) => {
             inputProps={{ min: startDate }}
             style={{ width: "140px" }}
           />
-          <FormControl variant="outlined" margin="normal" style={{ minWidth: 100, width: 140 }}>
+          <FormControl variant="outlined" margin="normal" style={{ minWidth: 200, width: 140 }}>
             <InputLabel htmlFor="roomSelect">Select Rooms</InputLabel>
             <Select multiple value={selectedRooms} onChange={(e) => setSelectedRooms(e.target.value)} renderValue={(selected) => selected.join(", ")}>
               {Object.keys(vocData).map((room) => (

@@ -183,7 +183,7 @@ function ExpandedCard({ param }) {
             inputProps={{ min: startDate }}
             style={{ width: "140px" }}
           />
-          <FormControl variant="outlined" margin="normal" style={{ minWidth: 100, width: 140 }}>
+          <FormControl variant="outlined" margin="normal" style={{ minWidth: 200, width: 140 }}>
             <InputLabel htmlFor="roomSelect">Select Rooms</InputLabel>
             <Select
               multiple

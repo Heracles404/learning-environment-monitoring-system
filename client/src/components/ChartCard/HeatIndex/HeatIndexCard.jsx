@@ -238,7 +238,7 @@ function ExpandedCard({ param }) {
             variant="outlined"
             margin="normal"
             style={{
-              minWidth: 100,
+              minWidth: 200,
               width: 140, // Same width as the date fields
             }}
           >
