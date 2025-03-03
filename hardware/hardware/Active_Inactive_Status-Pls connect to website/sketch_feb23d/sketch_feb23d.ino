@@ -22,9 +22,9 @@ Adafruit_BME680 bme;
 BH1750 lightMeter;
 
 // ==================== WIFI & SERVER ==================
-const char* ssid = "AccessPoint";
-const char* password = "IoT@2025";
-const char* host = "http://192.168.45.196";
+const char* ssid = "lems";
+const char* password = "Lems@2025";
+const char* host = "http://192.168.0.102";
 const int port = 8000;
 const char* sensors = "/sensors";
 const char* devices = "/devices/classroom/";
@@ -34,7 +34,7 @@ float temperature, humidity, voc, IAQIndex, lux;
 float ppm;
 int heatIndex;
 String indoorAir, tempLabel, lightLabel, recordTime;
-const String classroom = "402";
+const String classroom = "101";
 
 // ==================== GPIO PINS ======================
 #define alertPin D8
