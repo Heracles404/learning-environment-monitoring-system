@@ -110,50 +110,52 @@ const CO2Card = (props) => {
     })
     .filter(Boolean);
 
-  const data = {
-    options: {
-      chart: { type: "area" },
-      xaxis: { type: "datetime" },
-      dataLabels: { enabled: false },
-      tooltip: {
-        x: {
-          formatter: function (value, { dataPointIndex, seriesIndex }) {
-            const roomKey = Object.keys(sortedData)[seriesIndex];
-            return sortedData[roomKey]?.formattedTimestamps?.[dataPointIndex] || "Unknown";
+    const data = {
+      options: {
+        chart: { type: "area" },
+        xaxis: { type: "datetime" },
+        dataLabels: { enabled: false },
+        tooltip: {
+          x: {
+            formatter: function (value, { dataPointIndex, seriesIndex }) {
+              const roomKey = Object.keys(sortedData)[seriesIndex];
+              return sortedData[roomKey]?.formattedTimestamps?.[dataPointIndex] || "Unknown";
+            },
           },
         },
-      },
-      annotations: {
-        yaxis: [
-          {
-            y: 100, // Threshold Level 1
-            borderColor: 'red',
-            label: {
+        annotations: {
+          yaxis: [
+            {
+              y: 100, // Threshold Level 1
               borderColor: 'red',
-              style: {
-                color: '#fff',
-                background: 'red',
+              label: {
+                borderColor: 'red',
+                style: {
+                  color: '#fff',
+                  background: 'red',
+                },
+                text: 'Bad',
               },
-              text: 'Bad',
             },
-          },
-          {
-            y: 50, // Threshold Level 2
-            borderColor: 'green',
-            label: {
+            {
+              y: 50, // Threshold Level 2
               borderColor: 'green',
-              style: {
-                color: '#fff',
-                background: 'green',
+              label: {
+                borderColor: 'green',
+                style: {
+                  color: '#fff',
+                  background: 'green',
+                },
+                text: 'Good',
               },
-              text: 'Good',
             },
-          },
-        ],
+          ],
+        },
+        legend: { show: false }, // This removes the legend
       },
-    },
-    series: seriesData,
-  };
+      series: seriesData,
+    };
+    
 
   return (
     <motion.div className="ExpandedCard" style={{ background: props.color.backGround, boxShadow: props.color.boxShadow }}>
@@ -162,7 +164,7 @@ const CO2Card = (props) => {
         <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
           <TextField type="date" label="Start Date" value={startDate} onChange={(e) => setStartDate(e.target.value)} InputLabelProps={{ shrink: true }} style={{ width: "140px" }} />
           <TextField type="date" label="End Date" value={endDate} onChange={(e) => setEndDate(e.target.value)} InputLabelProps={{ shrink: true }} inputProps={{ min: startDate }} style={{ width: "140px" }} />
-          <FormControl variant="outlined" margin="normal" style={{ minWidth: 100, width: 140 }}>
+          <FormControl variant="outlined" margin="normal" style={{ minWidth: 200, width: 140 }}>
             <InputLabel htmlFor="roomSelect">Select Rooms</InputLabel>
             <Select multiple value={selectedRooms} onChange={(e) => setSelectedRooms(e.target.value)} renderValue={(selected) => selected.join(", ")}>
               {Object.keys(iaqData).map((room) => (

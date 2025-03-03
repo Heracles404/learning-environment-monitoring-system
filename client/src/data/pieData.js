@@ -78,13 +78,13 @@ export const fetchPieData = async () => {
     // Generate indoorAir pie data with latest values
     indoorAirPieWithData = [
       {
-        id: indoorAirGoodData.map((room) => `${room.classroom}: ${room.data}`).join("\n"),
+        id: indoorAirGoodData.map((room) => `Room ${room.classroom}: ${room.data} IAQ`).join("\n"),
         label: `Good: ${indoorAirGoodData.length}`,
         value: indoorAirGoodData.length,
         color: "hsl(120, 70%, 50%)",
       },
       {
-        id: indoorAirBadData.map((room) => `${room.classroom}: ${room.data}`).join("\n"),
+        id: indoorAirBadData.map((room) => `Room ${room.classroom}: ${room.data} IAQ`).join("\n"),
         label: `Bad: ${indoorAirBadData.length}`,
         value: indoorAirBadData.length,
         color: "hsl(0, 70%, 50%)",
@@ -93,13 +93,13 @@ export const fetchPieData = async () => {
 
     HeatIndexPieDataWithData = [
       {
-        id: heatGoodData.map((room) => `${room.classroom}: ${room.data}`).join("\n"),
+        id: heatGoodData.map((room) => `Room ${room.classroom}: ${room.data} Heat`).join("\n"),
         label: `Good: ${heatGoodData.length}`,
         value: heatGoodData.length,
         color: "hsl(120, 70%, 50%)",
       },
       {
-        id: heatBadData.map((room) => `${room.classroom}: ${room.data}`).join("\n"),
+        id: heatBadData.map((room) => `Rooms ${room.classroom}: ${room.data} Heat`).join("\n"),
         label: `Bad: ${heatBadData.length}`,
         value: heatBadData.length,
         color: "hsl(0, 70%, 50%)",
@@ -108,13 +108,13 @@ export const fetchPieData = async () => {
 
     lightingPieDataWithData = [
       {
-        id: lightingGoodData.map((room) => `${room.classroom}: ${room.data}`).join("\n"),
+        id: lightingGoodData.map((room) => `Room ${room.classroom}: ${room.data} Lux`).join("\n"),
         label: `Good: ${lightingGoodData.length}`,
         value: lightingGoodData.length,
         color: "hsl(120, 70%, 50%)",
       },
       {
-        id: lightingBadData.map((room) => `${room.classroom}: ${room.data}`).join("\n"),
+        id: lightingBadData.map((room) => `Room ${room.classroom}: ${room.data} Lux`).join("\n"),
         label: `Bad: ${lightingBadData.length}`,
         value: lightingBadData.length,
         color: "hsl(0, 70%, 50%)",

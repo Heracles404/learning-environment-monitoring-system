@@ -66,6 +66,7 @@ const Device1 = () => {
         { id: "status", label: "Status", minWidth: 150 },
         { id: "bh1750", label: "Light Sensor", minWidth: 150 },
         { id: "bme680", label: "Air Quality, Heat Index Sensor", minWidth: 150 },
+        { id: "pms5003", label: "Volcanic Smog Sensor", minWidth: 150 },
     ];
 
     if (role.toUpperCase() === "PRINCIPAL" || role.toUpperCase() === "ADMIN") {

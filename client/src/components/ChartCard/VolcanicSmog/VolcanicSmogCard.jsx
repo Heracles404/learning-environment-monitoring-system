@@ -1,54 +1,52 @@
 import React, { useState, useEffect } from "react";
 import "./VolcanicSmogCard.css";
-import { motion, LayoutGroup } from "framer-motion";
+import { motion } from "framer-motion";
 import Chart from "react-apexcharts";
-import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Select, Checkbox, ListItemText, FormControl, InputLabel } from "@mui/material";
 import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
+import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Checkbox, ListItemText } from "@mui/material";
 
 const VolcanicSmogCard = (props) => {
-  return (
-    <LayoutGroup>
-      <ExpandedCard param={props} />
-    </LayoutGroup>
-  );
-};
-
-function ExpandedCard({ param }) {
   const [vocData, setVocData] = useState({});
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [filteredData, setFilteredData] = useState({});
-  const [openDialog, setOpenDialog] = useState(false);
-  const [selectedRooms, setSelectedRooms] = useState([]); // State to store selected rooms
-
-  const getRandomColor = () => {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
+  const [selectedRooms, setSelectedRooms] = useState([]);
 
   useEffect(() => {
     const fetchVOCData = async () => {
       try {
         const response = await httpGetAllReadouts();
-
         if (response && response.length > 0) {
           const roomData = response.reduce((acc, item) => {
             const room = item.classroom;
             if (!acc[room]) {
-              acc[room] = { vocLevels: [], timestamps: [] };
+              acc[room] = { vocLevels: [], timestamps: [], formattedTimestamps: [] };
             }
-            acc[room].vocLevels.push(item.voc);
-            acc[room].timestamps.push(new Date(`${item.date} ${item.time}`).getTime());
-            return acc;
-          }, {});
 
-          console.log("Fetched VOC Data:", roomData); // Debugging log
+            // Keep the date intact, but handle the time properly
+            const dateString = item.date ? item.date : new Date().toISOString().split('T')[0];
+            let timeString = item.time; // Example: "02:55 PM"
+            
+            // Convert 12-hour format time to 24-hour format and build the Date object
+            const localDate = new Date(`${dateString} ${timeString}`);
+            
+            // Reformat to 12-hour AM/PM (ensures consistency)
+            const formattedTime = localDate.toLocaleTimeString("en-US", {
+              hour: "numeric",
+              minute: "2-digit",
+              hour12: true,
+            });
+
+            // Correct timestamp conversion for UTC (without altering the date)
+            const timestamp = localDate.getTime() - localDate.getTimezoneOffset() * 60000; // Convert to UTC
+
+            acc[room].vocLevels.push(item.voc);
+            acc[room].timestamps.push(timestamp);
+            acc[room].formattedTimestamps.push(`${dateString} ${formattedTime}`); // Combine date and time for the tooltip
+            return acc;
+          }, {});          
           setVocData(roomData);
-          setFilteredData(roomData);  // Initialize filtered data with all room data
+          setFilteredData(roomData);
         } else {
           console.error("No data found.");
         }
@@ -56,7 +54,6 @@ function ExpandedCard({ param }) {
         console.error("Error fetching VOC data:", error);
       }
     };
-
     fetchVOCData();
   }, []);
 
@@ -68,7 +65,9 @@ function ExpandedCard({ param }) {
       if (selectedRooms.length === 0 || selectedRooms.includes(room)) {
         const filteredRoomData = vocData[room].timestamps
           .map((timestamp, index) =>
-            timestamp >= start && timestamp <= end ? { timestamp, vocLevel: vocData[room].vocLevels[index] } : null
+            timestamp >= start && timestamp <= end
+              ? { timestamp, vocLevel: vocData[room].vocLevels[index], formattedTimestamp: vocData[room].formattedTimestamps[index] }
+              : null
           )
           .filter(Boolean);
 
@@ -76,6 +75,7 @@ function ExpandedCard({ param }) {
           acc[room] = {
             vocLevels: filteredRoomData.map((item) => item.vocLevel),
             timestamps: filteredRoomData.map((item) => item.timestamp),
+            formattedTimestamps: filteredRoomData.map((item) => item.formattedTimestamp),
           };
         }
       }
@@ -83,139 +83,106 @@ function ExpandedCard({ param }) {
     }, {});
 
     setFilteredData(filtered);
-    setOpenDialog(Object.keys(filtered).length === 0);
   };
 
   const clearFilters = () => {
     setStartDate("");
     setEndDate("");
     setSelectedRooms([]);
-    setFilteredData(vocData);  // Reset filtered data to the original data
+    setFilteredData(vocData);
   };
 
   const sortedData = Object.keys(filteredData).length > 0 ? filteredData : vocData;
 
-  const seriesData = Object.keys(sortedData).map((room) => {
-    const roomData = sortedData[room];
-    if (!roomData || roomData.vocLevels.length === 0 || roomData.timestamps.length === 0) {
-      return null; // Skip empty room data
-    }
-    return {
-      name: `Room ${room}`,
-      data: roomData.timestamps.map((timestamp, index) => ({
-        x: timestamp,
-        y: roomData.vocLevels[index],
-      })),
-    };
-  }).filter(Boolean); // Filter out any null or undefined series
-
-  console.log("Series Data:", seriesData); // Debugging log
+  const seriesData = Object.keys(sortedData)
+    .map((room) => {
+      const roomData = sortedData[room];
+      if (!roomData || roomData.vocLevels.length === 0 || roomData.timestamps.length === 0) {
+        return null;
+      }
+      return {
+        name: `Room ${room}`,
+        data: roomData.timestamps.map((timestamp, index) => ({
+          x: timestamp,
+          y: roomData.vocLevels[index],
+        })),
+      };
+    })
+    .filter(Boolean);
 
   const data = {
     options: {
-      chart: {
-        type: "area",
-        height: "auto",
-      },
-      dropShadow: {
-        enabled: false,
-        top: 0,
-        left: 0,
-        blur: 3,
-        color: "#000",
-        opacity: 0.35,
-      },
-      fill: {
-        colors: Object.keys(sortedData).map(() => getRandomColor()),
-        type: "gradient",
-      },
+      chart: { type: "area" },
+      xaxis: { type: "datetime" },
       dataLabels: { enabled: false },
-      stroke: {
-        curve: "smooth",
-        colors: Object.keys(sortedData).map(() => getRandomColor()),
-      },
       tooltip: {
-        x: { format: "dd/MM/yy HH:mm" },
-      },
-      grid: { show: true },
-      xaxis: {
-        type: "datetime",
-        categories: Object.values(sortedData).flatMap((data) =>
-          data.timestamps.map((timestamp) => new Date(timestamp).toISOString())
-        ),
-      },
-      yaxis: {
-        title: {
-          text: "VOC Level",
+        x: {
+          formatter: function (value, { dataPointIndex, seriesIndex }) {
+            const roomKey = Object.keys(sortedData)[seriesIndex];
+            return sortedData[roomKey]?.formattedTimestamps?.[dataPointIndex] || "Unknown";
+          },
         },
       },
       annotations: {
         yaxis: [
           {
-            y: 50, // Good threshold
-            borderColor: 'red',
+            y: 50, // Threshold Level 1
+            borderColor: '#70FFA2',
             label: {
-              borderColor: 'red',
+              borderColor: '#70FFA2',
               style: {
                 color: '#fff',
-                background: 'red',
+                background: '#70FFA2',
               },
               text: 'Level 1',
-            }
+            },
           },
           {
-            y: 150, // Bad threshold
-            borderColor: 'red',
+            y: 150, // Threshold Level 2
+            borderColor: '#FFC2C2',
             label: {
-              borderColor: 'red',
+              borderColor: '#FFC2C2',
               style: {
                 color: '#fff',
-                background: 'red',
+                background: '#FFC2C2',
               },
               text: 'Level 2',
-            }
+            },
           },
           {
-            y: 250, // Bad threshold
-            borderColor: 'red',
+            y: 250, // Threshold Level 2
+            borderColor: '#FF7070',
             label: {
-              borderColor: 'red',
+              borderColor: '#FF7070',
               style: {
                 color: '#fff',
-                background: 'red',
+                background: '#FF7070',
               },
               text: 'Level 3',
-            }
+            },
           },
           {
-            y: 300, // Bad threshold
-            borderColor: 'red',
+            y: 300, // Threshold Level 2
+            borderColor: '#FF1F1F',
             label: {
-              borderColor: 'red',
+              borderColor: '#FF1F1F',
               style: {
                 color: '#fff',
-                background: 'red',
+                background: '#FF1F1F',
               },
               text: 'Level 4',
-            }
-          }
-        ]
+            },
+          },
+        ],
       },
-      legend: {
-        show: false, // This removes the legends
-      },
+      legend: { show: false }, // This removes the legend
     },
     series: seriesData,
   };
 
-  const handleRoomChange = (event) => {
-    setSelectedRooms(event.target.value);
-  };
-
   return (
-    <motion.div className="ExpandedCard" style={{ background: param.color.backGround, boxShadow: param.color.boxShadow }} layoutId={`expandableCard-${param.title}`} >
-      <span>{param.title}</span>
-
+    <motion.div className="ExpandedCard" style={{ background: props.color.backGround, boxShadow: props.color.boxShadow }}>
+      <span>{props.title}</span>
       <div className="filters" style={{ marginBottom: "20px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
           <TextField
@@ -235,73 +202,26 @@ function ExpandedCard({ param }) {
             inputProps={{ min: startDate }}
             style={{ width: "140px" }}
           />
-          {/* Room filter */}
-          <FormControl
-            variant="outlined"
-            margin="normal"
-            style={{
-              minWidth: 100,
-              width: 140, // Same width as the date fields
-            }}
-          >
-            <InputLabel htmlFor="roomSelect" style={{ fontSize: "0.9rem" }}>Select Rooms</InputLabel>
-            <Select
-              multiple
-              value={selectedRooms}
-              onChange={handleRoomChange}
-              renderValue={(selected) => selected.join(", ")}
-              MenuProps={{
-                PaperProps: {
-                  style: {
-                    maxHeight: 200,
-                    width: 140, // Consistent dropdown width
-                  },
-                },
-              }}
-              inputProps={{ id: "roomSelect" }}
-              label="Select Rooms"
-              style={{
-                fontSize: "0.9rem", // Maintain consistent font size
-                padding: "5px", // Consistent padding
-                height: "40px", // Set height for alignment
-              }}
-            >
+          <FormControl variant="outlined" margin="normal" style={{ minWidth: 200, width: 140 }}>
+            <InputLabel htmlFor="roomSelect">Select Rooms</InputLabel>
+            <Select multiple value={selectedRooms} onChange={(e) => setSelectedRooms(e.target.value)} renderValue={(selected) => selected.join(", ")}>
               {Object.keys(vocData).map((room) => (
                 <MenuItem key={room} value={room}>
-                  <Checkbox checked={selectedRooms.indexOf(room) > -1} />
+                  <Checkbox checked={selectedRooms.includes(room)} />
                   <ListItemText primary={`Room ${room}`} />
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
-
-          <Button onClick={filterData} variant="contained" color="primary" style={{ height: "40px" }}>
-  Filter
-</Button>
-<Button onClick={clearFilters} variant="contained" color="primary" style={{ height: "40px" }}>
-  Clear Filters
-</Button>
-
+          <Button onClick={filterData} variant="contained" color="primary">Filter</Button>
+          <Button onClick={clearFilters} variant="contained" color="primary">Clear Filters</Button>
         </div>
       </div>
-
       <div className="chartContainer" style={{ marginTop: "20px" }}>
         <Chart options={data.options} series={data.series} type="area" />
       </div>
-
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="sm" fullWidth>
-        <DialogTitle sx={{ fontSize: "1.5rem", fontWeight: "bold" }}>No Data Found</DialogTitle>
-        <DialogContent>
-          <p style={{ fontSize: "1.2rem" }}>No data detected for the selected date range and room(s).</p>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)} color="primary" style={{ fontSize: "1.1rem" }}>
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
     </motion.div>
   );
-}
+};
 
 export default VolcanicSmogCard;

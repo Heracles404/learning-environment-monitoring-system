@@ -5,7 +5,7 @@ import CO2Cards from "../../../components/ChartCards/AirQuality/CO2Cards";
 import AirQualityRecordTable from "../../../components/RecordTables/AirQualityRecordTable";
 const CarbonDioxideMonitor = () => {
   return (
-    <Box m="0 1px 0 1px" height="100vh" overflow="auto">
+    <Box m="0 1px 0 1px" height="95vh" overflow="auto">
       {/* HEADER */}
       <Box 
       display="flex" 
