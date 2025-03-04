@@ -19,7 +19,7 @@ import TemperaturePieChart from "../../components/DashboardPieChart/TemperatureP
 import AirQualityPieChart from "../../components/DashboardPieChart/AirQualityPieChart";
 import VOGPieChart from "../../components/DashboardPieChart/VOGPieChart";
 import LightingPieChart from "../../components/DashboardPieChart/LightingPieChart";
-const CustomDialog = ({ open, onClose, title, content1, content2, content3, content4, content5, content6, content7,content8 }) => {
+const CustomDialog = ({ open, onClose, title, content1, content2, content3, content4, content5, content6, content7,content8,content9,content10,content11,content12,content13 }) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>
@@ -28,17 +28,23 @@ const CustomDialog = ({ open, onClose, title, content1, content2, content3, cont
         </Typography>
         </DialogTitle>
       <DialogContent >
-        <Typography display="flex" justifyContent="center" variant="h5" fontWeight="bold" color="green">{content6}</Typography>
-        <Typography>{content1}</Typography>
-        <Typography>{content3}</Typography>
+        <Typography display="flex" justifyContent="center" variant="h5" fontWeight="bold" >{content1}</Typography>
+        <Typography color="green">{content2}</Typography>
+        <Typography color="red">{content3}</Typography>
         
 
-        {/* <Typography>{content5}</Typography> */}
+        <Typography display="flex" justifyContent="center" variant="h5" fontWeight="bold" >{content4}</Typography>
+        <Typography color="green">{content5}</Typography>
+        <Typography color="red">{content6}</Typography>
 
-        <Typography display="flex" justifyContent="center" variant="h5" fontWeight="bold" color="red">{content7}</Typography>
-        <Typography display="flex" justifyContent="center" variant="h5" fontWeight="bold" color="blue">{content8}</Typography>
-        <Typography>{content2}</Typography>
-        <Typography>{content4}</Typography>
+        <Typography display="flex" justifyContent="center" variant="h5" fontWeight="bold" >{content12}</Typography>
+        <Typography display="flex" justifyContent="center" color="green" >{content7}</Typography>
+        <Typography display="flex" justifyContent="center" color="red" >{content8}</Typography>
+        <Typography display="flex" justifyContent="center" color="red" >{content9}</Typography>
+        <Typography display="flex" justifyContent="center" color="red" >{content10}</Typography>
+        <Typography display="flex" justifyContent="center"  >{content11}</Typography>
+        <Typography display="flex" justifyContent="center"  >{content13}</Typography>
+
       </DialogContent>
       <DialogActions>
           <Button sx={{backgroundColor: '#0ECCFB',height: '30px', borderRadius: '25px', fontWeight: 'bold',}}
@@ -331,54 +337,54 @@ const Dashboard = () => {
       <CustomDialog 
             open={openDialog === "iaq"} 
             onClose={() => setOpenDialog(null)} 
-            title="Indoor Air Quality (IAQ) Details - DESIGN 1"
-            content6="Ideal Air Quality Ranges: "
-            content1="Ideal IAQ Range: Below 100 index"
-            content2="Ideal Air Threshold: line anywhere below 100 is good"
+            title="Indoor Air Quality (IAQ) Details"
+            content1="Ideal Air Quality Ranges: "
+            content2="Good IAQ Range: Values below 100 index = GOOD"
+            content3="Bad IAQ Range: Values above 100 = BAD"
 
-            content8="Ideal Air Threshold"
-            content3="Bad Range: above 100"
-
-            content4="Bad Threshold: Line above 100"
-            content5="----"
+            content4="Indoor Air Quality Threshold"
+            content5="Good IAQ Threshold: Line in (Parameters), below 100 = GOOD"
+            content6="Bad IAQ Threshold: Line in (Parameters), above 100 = BAD"
+            // content7="----"
             />
       
           <CustomDialog 
             open={openDialog === "light"} 
             onClose={() => setOpenDialog(null)} 
-            title="Light Details - DESIGN 2"
-            content1="Ideal Light Range: 300-500 lux"
-            content2="Bad Range: above 500"
-            content3="Ideal Light Threshold: line  anywhere  between 300-500"
-            content4="Bad Threshold: Line above 500 "
-            content5="----"
+            title="Light Details"
+            content1="Ideal Light Ranges: "
+            content2="Good Light Range: Values between 300-500 lux = GOOD"
+            content3="Bad Light Range: Values below 300 & above 500 lux = BAD"
+
+            content4="Light Threshold"
+            content5="Good Light Threshold: Line in (Parameters), values between 300-500 lux = GOOD"
+            content6="Bad Light Threshold: Line in (Parameters), values above 500 lux = BAD"
             />
           
           <CustomDialog 
             open={openDialog === "heat"} 
             onClose={() => setOpenDialog(null)} 
-            title="HEAT INDEX DETAILS - DESIGN 3"
-            content6="Good Heat Index Ranges: "
-            content1="Good Heat Index Range: 27°C - 41°C"
-            content2="Bad Heat IndexRange: above 41°C"
+            title="HEAT INDEX DETAILS"
+            content1="Ideal Heat Index Ranges: "
+            content2="Good Heat Index Range: Values between 27°C - 41°C = GOOD"
+            content3="Bad Heat Index Range: Values above 41°C, below 27°C = BAD"
 
-            content5="----"
-
-            content7="Bad Heat Index Ranges:"
-            content3="Good Heat Index Threshold: 27°C"
-            content4="Bad Heat Index Threshold: above 41°C"
+            content4="Heat Index Threshold"
+            content5="Good Heat Index Threshold: Line in (Parameters), values below 27°C = GOOD"
+            content6="Bad Heat Index Threshold: Line in (Parameters), values above 41°C = BAD"
             />
           
           <CustomDialog 
             open={openDialog === "vog"} 
             onClose={() => setOpenDialog(null)} 
             title="Volcanic Smog (VOG) Ideal Range"
-            content1="Level 1 - PPM 0-50 "
-            content2="Level 2 - PPM 50-150 "
-            content3="Level 3 - PPM 100-250 "
-            content4="Level 4 - PPM 250+ "
-            content5=""
-            content6="Concern Levels"
+            content7="Level 1 - PPM 0-50 = GOOD"
+            content8="Level 2 - PPM 50-150 = BAD "
+            content9="Level 3 - PPM 100-250 = BAD"
+            content10="Level 4 - PPM 250+ = BAD" 
+            content11=""
+            content12="Concern Levels"
+            content13="When the Particulate Matter (PPM) reaches a certain concern level, it is considered to be bad for individuals. The circle displays the current concern level for visualization. "
            />
     </Box>
   );
