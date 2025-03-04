@@ -132,7 +132,7 @@ const VOGRecords = () => {
     };
 
     return (
-        <Box m="5px 25px">
+        <Box m="5px 25px" height="100%">
             <Box display="flex" justifyContent="space-between" sx={{ flexDirection: { xs: "column", sm: "row" } }}>
                 <Header title="VOG Records" subtitle="Managing the VOG Records" />
                 <Box>
@@ -146,7 +146,7 @@ const VOGRecords = () => {
             </Box>
 
             <Box mt="1px">
-                <Paper sx={{ height: "70vh", width: "100%", overflow: "hidden" }}>
+                <Paper sx={{ height: {xs:"60vh", md: "70vh"}, width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
                         Records for Volcanic Smog Parameters
                     </Typography>
