@@ -39,14 +39,14 @@ const DBRecords = () => {
     }, []);
 
     const columns = [
-        { field: "classroom", headerName: "Classroom", width: 123,  },
+        { field: "classroom", headerName: "Room", width: 123,   },
 
         // { field: "concernLevel", headerName: "Heat Index Status", minWidth: 100, flex: 1 },
         {
             field: "concernLevel",
             headerName: "Heat Status",
-            width: 130,
-            // flex: 2,
+            minWidth: 130,
+            flex: 1,
             renderCell: ({ row: { concernLevel } }) => {
               return (
                 <Box
@@ -77,8 +77,8 @@ const DBRecords = () => {
         {
             field: "IAQStatus",
             headerName: "IAQ Stat",
-            width: 130,
-            // flex: 2,
+            minWidth: 130,
+            flex: 1,
             renderCell: ({ row: { IAQStatus } }) => {
               return (
                 <Box
@@ -109,8 +109,8 @@ const DBRecords = () => {
         {
                     field: "LightStatus",
                     headerName: "Light Status",
-                    width: 130,
-                    // flex: 2,
+                    minWidth: 130,
+                    flex: 1,
                     renderCell: ({ row: { LightStatus } }) => {
                       return (
                         <Box
@@ -139,7 +139,7 @@ const DBRecords = () => {
                 },        
         { field: "currentHeatIndex", headerName: "Heat Index", width: 130,  },
         { field: "currentIAQIndex", headerName: "IAQ Index", width: 130,  },
-        { field: "currentLighting", headerName: "Light Level", width: 130,  },
+        { field: "currentLighting", headerName: "Light Level", width: 130, },
     ];
 
     return (

@@ -38,13 +38,12 @@ const DBVOGRecords = () => {
 
     const columns = [
         // { field: "classroom", headerName: "Outdoor", minWidth: 100, flex: 1 },
-        { field: "currentPM25", headerName: "Latest PM 2.5", minWidth: 100, flex: 1 },
-        { field: "currentPM10", headerName: "Latest PM 10.0", minWidth: 100, flex: 1 },
-        { field: "currentlevel", headerName: "Concern Level", minWidth: 100, flex: 1 },
+        { field: "currentlevel", headerName: "Concern Level", minWidth:140,  },
         // { field: "concernLevel", headerName: "VOG Status", minWidth: 100, flex: 1 },
         {
                     field: "concernLevel",
                     headerName: "VOG Status",
+                    minWidth:150,
                     flex: 1,
                     renderCell: ({ row: { concernLevel } }) => {
                       return (
@@ -72,6 +71,8 @@ const DBVOGRecords = () => {
                       );
                     },
                 },
+        { field: "currentPM25", headerName: "PM 2.5", minWidth:130,  },
+        { field: "currentPM10", headerName: "PM 10.0", minWidth:130,  },
     ];
 
     return (
@@ -114,6 +115,7 @@ const DBVOGRecords = () => {
                             },
                             "& .MuiDataGrid-root": {
                                 border: "none",
+                                tableLayout: "auto", 
                             },
                             "& .MuiDataGrid-cell": {
                                 borderBottom: "none",
