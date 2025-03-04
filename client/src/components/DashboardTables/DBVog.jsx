@@ -76,7 +76,7 @@ const DBVOGRecords = () => {
 
     return (
         <Box m="5px">
-            <Header title="Latest VOG Records" subtitle="Monitoring the Latest VOG Records" />
+            <Header title="Latest Volcanic Smog Record" subtitle="Monitoring the Latest Captured Value" />
             <Box>
                 <Paper sx={{ maxHeight: "65vh", width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
