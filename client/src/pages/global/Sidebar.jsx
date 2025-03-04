@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme, useMediaQuery, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
@@ -58,11 +58,44 @@ const Sidebar = () => {
   const name = localStorage.getItem("firstname");
   const role = localStorage.getItem("role");
 
-
+ 
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
     navigate("/"); 
   };
+
+  //sidebar swipe
+  useEffect(() => {
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  const handleTouchStart = (e) => {
+    touchStartX = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX - touchEndX > 50) {
+      setIsSidebarVisible(false);
+    } else if (touchEndX - touchStartX > 50) {
+      setIsSidebarVisible(true);
+    }
+  };
+
+  document.addEventListener("touchstart", handleTouchStart);
+  document.addEventListener("touchmove", handleTouchMove);
+  document.addEventListener("touchend", handleTouchEnd);
+
+  return () => {
+    document.removeEventListener("touchstart", handleTouchStart);
+    document.removeEventListener("touchmove", handleTouchMove);
+    document.removeEventListener("touchend", handleTouchEnd);
+  };
+}, []);
+
 
   return (
     
