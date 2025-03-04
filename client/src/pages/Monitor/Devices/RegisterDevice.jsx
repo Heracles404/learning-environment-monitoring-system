@@ -49,9 +49,9 @@ const RegisterDevice = () => {
     const deviceData = {
       classroom: values.classroom,
       status: "INACTIVE",
-      bh1750: checked[0] ? "INACTIVE" : "-",
-      bme680: checked[1] ? "INACTIVE" : "-",
-      pms5003: checkedSecond[0] ? "INACTIVE" : "-",
+      bh1750: checked[0] ? "INACTIVE" : "UNREGISTERED",
+      bme680: checked[1] ? "INACTIVE" : "UNREGISTERED",
+      pms5003: checkedSecond[0] ? "INACTIVE" : "UNREGISTERED",
     };
 
     try {
