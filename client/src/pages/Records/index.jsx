@@ -22,24 +22,31 @@ const Records = () => {
     useEffect(() => {
         const fetchData = async () => {
             const data = await httpGetAllReadouts();
-            const formattedData = data.map((readout, index) => ({
-                id: readout._id || index, // Ensure `id` is unique
-                classroom: readout.classroom,
-                date: readout.date,
-                time: readout.time,
-                temperature: readout.temperature,
-                humidity: readout.humidity,
-                heatIndex: readout.heatIndex,
-                lighting: readout.lighting,
-                voc: readout.voc,
-                IAQIndex: readout.IAQIndex,
-                indoorAir: readout.indoorAir,
-                temp: readout.temp,
-                lightRemarks: readout.lightRemarks,
-            }));
+            const formattedData = data.map((readout, index) => {
+                const iaqStatus = readout.IAQIndex > 100 ? "BAD" : "GOOD";
+                const lightingStatus = readout.lighting >= 300 && readout.lighting <= 500 ? "GOOD" : "BAD";
+                const tempStatus = readout.temperature < 29 ? "GOOD" : "BAD";
+    
+                return {
+                    id: readout._id || index, // Ensure `id` is unique
+                    classroom: readout.classroom,
+                    date: readout.date,
+                    time: readout.time,
+                    temperature: readout.temperature,
+                    humidity: readout.humidity,
+                    heatIndex: readout.heatIndex,
+                    lighting: readout.lighting,
+                    voc: readout.voc,
+                    IAQIndex: readout.IAQIndex,
+                    indoorAir: iaqStatus,   // Updated IAQ Status
+                    temp: tempStatus,       // Updated Temperature Status
+                    lightRemarks: lightingStatus, // Updated Lighting Status
+                };
+            });
+    
             setRows(formattedData);
         };
-
+    
         fetchData();
     }, []);
 

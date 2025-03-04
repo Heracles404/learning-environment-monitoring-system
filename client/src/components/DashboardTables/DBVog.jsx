@@ -24,7 +24,9 @@ const DBVOGRecords = () => {
                     currentPM25: readout.pm25,
                     currentPM10: readout.pm10,
                     currentlevel: readout.level,
-                    concernLevel: (readout.pm25 > 30 || readout.pm10 > 50) ? "BAD" : "GOOD",
+                    concernLevel: (Number(readout.level) === 1) ? "GOOD" : "BAD",
+
+
                 };
             });
 
