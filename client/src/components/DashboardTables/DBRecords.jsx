@@ -39,14 +39,13 @@ const DBRecords = () => {
     }, []);
 
     const columns = [
-        { field: "classroom", headerName: "Classroom", minWidth: 100, flex: 1 },
-        { field: "currentHeatIndex", headerName: "Latest Heat Index", minWidth: 100, flex: 1 },
-        { field: "currentIAQIndex", headerName: "Latest IAQ Index", minWidth: 100, flex: 1 },
-        { field: "currentLighting", headerName: "Latest Light Level", minWidth: 100, flex: 1 },
+        { field: "classroom", headerName: "Room", width: 123,   },
+
         // { field: "concernLevel", headerName: "Heat Index Status", minWidth: 100, flex: 1 },
         {
             field: "concernLevel",
-            headerName: "Heat Index Status",
+            headerName: "Heat Status",
+            minWidth: 130,
             flex: 1,
             renderCell: ({ row: { concernLevel } }) => {
               return (
@@ -78,6 +77,7 @@ const DBRecords = () => {
         {
             field: "IAQStatus",
             headerName: "IAQ Stat",
+            minWidth: 130,
             flex: 1,
             renderCell: ({ row: { IAQStatus } }) => {
               return (
@@ -109,6 +109,7 @@ const DBRecords = () => {
         {
                     field: "LightStatus",
                     headerName: "Light Status",
+                    minWidth: 130,
                     flex: 1,
                     renderCell: ({ row: { LightStatus } }) => {
                       return (
@@ -135,16 +136,19 @@ const DBRecords = () => {
                         </Box>
                       );
                     },
-                },
+                },        
+        { field: "currentHeatIndex", headerName: "Heat Index", width: 130,  },
+        { field: "currentIAQIndex", headerName: "IAQ Index", width: 130,  },
+        { field: "currentLighting", headerName: "Light Level", width: 130, },
     ];
 
     return (
         <Box m="5px">
-            <Header title="Latest Records" subtitle="Monitoring the Latest Records" />
+            <Header title="Latest Records" subtitle="Monitoring the Latest Captured Value" />
             <Box>
                 <Paper sx={{ maxHeight: "65vh", width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
-                        Latest Records for Environmental Parameters
+                        Latest Record for Environmental Parameters
                     </Typography>
                     <DataGrid
                         rows={rows}
@@ -178,6 +182,7 @@ const DBRecords = () => {
                             },
                             "& .MuiDataGrid-root": {
                                 border: "none",
+                                tableLayout: "auto", // Added this line
                             },
                             "& .MuiDataGrid-cell": {
                                 borderBottom: "none",

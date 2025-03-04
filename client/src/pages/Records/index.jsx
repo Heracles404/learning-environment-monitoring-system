@@ -206,7 +206,7 @@ const Records = () => {
 
 
     return (
-        <Box m="5px 25px">
+        <Box m="5px 25px" height="100%">
             <Box display="flex" justifyContent="space-between" alignItems="space-between" sx={{ flexDirection: { xs: "column", sm: "row" } }}>
                 <Header title="Records" subtitle="Managing the Records" />
                 <Box>
@@ -242,11 +242,12 @@ const Records = () => {
             </Box>
 
             <Box mt="1px">
-                <Paper sx={{ height: "70vh", width: "100%", overflow: "hidden" }}>
+                <Paper sx={{ height: {xs:"60vh", md: "70vh"}, width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
                         Records for Environmental Parameters
                     </Typography>
                     <DataGrid
+                    pagination
                         rows={rows}
                         columns={columns}
                         disableSelectionOnClick
