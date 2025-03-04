@@ -23,8 +23,9 @@ const FAQ = () => {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+          This system is designed to track and analyze environmental conditions in real time using various sensors. 
+          It measures key factors such as heat index, temperature, lighting, smog levels, air quality, and humidity. 
+          By continuously collecting and displaying this data, the system helps users make informed decisions regarding safety, comfort, and potential environmental risks.
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -36,8 +37,9 @@ const FAQ = () => {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+          We are monitoring various environmental factors, including heat index, temperature, lighting, and smog levels. 
+          Additionally, the system tracks air quality, humidity, and other relevant parameters to provide real-time insights into environmental conditions. 
+          This data helps assess safety, comfort, and potential hazards in a given area.
           </Typography>
         </AccordionDetails>
       </Accordion>
