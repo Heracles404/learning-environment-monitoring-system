@@ -19,7 +19,7 @@ import TemperaturePieChart from "../../components/DashboardPieChart/TemperatureP
 import AirQualityPieChart from "../../components/DashboardPieChart/AirQualityPieChart";
 import VOGPieChart from "../../components/DashboardPieChart/VOGPieChart";
 import LightingPieChart from "../../components/DashboardPieChart/LightingPieChart";
-const CustomDialog = ({ open, onClose, title, content1, content2, content3, content4, content5, content6, content7,content8,content9,content10,content11,content12,content13 }) => {
+const CustomDialog = ({ open, onClose, title, content1, content2, content3, content4, content5, content6, content7,content8,content9,content10,content11,content12,content13,content14,content15, }) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>
@@ -28,6 +28,8 @@ const CustomDialog = ({ open, onClose, title, content1, content2, content3, cont
         </Typography>
         </DialogTitle>
       <DialogContent >
+      <Typography display="flex"  variant="h7"  >{content14}</Typography>
+      <Typography display="flex"  variant="h7"  >{content15}</Typography>
         <Typography display="flex" justifyContent="center" variant="h5" fontWeight="bold" >{content1}</Typography>
         <Typography color="green">{content2}</Typography>
         <Typography color="red">{content3}</Typography>
@@ -37,13 +39,16 @@ const CustomDialog = ({ open, onClose, title, content1, content2, content3, cont
         <Typography color="green">{content5}</Typography>
         <Typography color="red">{content6}</Typography>
 
+
+
+        {/* for VOG */}
+        <Typography display="flex" justifyContent="center"  >{content13}</Typography>
         <Typography display="flex" justifyContent="center" variant="h5" fontWeight="bold" >{content12}</Typography>
         <Typography display="flex" justifyContent="center" color="green" >{content7}</Typography>
         <Typography display="flex" justifyContent="center" color="red" >{content8}</Typography>
         <Typography display="flex" justifyContent="center" color="red" >{content9}</Typography>
         <Typography display="flex" justifyContent="center" color="red" >{content10}</Typography>
         <Typography display="flex" justifyContent="center"  >{content11}</Typography>
-        <Typography display="flex" justifyContent="center"  >{content13}</Typography>
 
       </DialogContent>
       <DialogActions>
@@ -266,6 +271,7 @@ const Dashboard = () => {
           <Typography variant="h4" fontWeight="700" display="flex" justifyContent="center" color="white">
             HEAT INDEX
           </Typography>
+
           <Box display="flex" justifyContent="center">
            <Button 
             variant="contained" 
@@ -282,13 +288,16 @@ const Dashboard = () => {
           >
             View Heat Index Details
           </Button>  
+          
           </Box>
           
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
             <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
           ))}
           <Box height="300px">
+
             <TemperaturePieChart />
+            
           </Box>
         </Box>
 
@@ -345,7 +354,8 @@ const Dashboard = () => {
             content4="Indoor Air Quality Threshold"
             content5="Good IAQ Threshold: Line in (Parameters), below 100 = GOOD"
             content6="Bad IAQ Threshold: Line in (Parameters), above 100 = BAD"
-            // content7="----"
+            content14="Displays the number of Rooms that are Good/Bad when Chart is HOVERED."
+            content15="Displays which Rooms are Good/Bad when Chart is CLICKED."
             />
       
           <CustomDialog 
@@ -359,6 +369,8 @@ const Dashboard = () => {
             content4="Light Threshold"
             content5="Good Light Threshold: Line in (Parameters), values between 300-500 lux = GOOD"
             content6="Bad Light Threshold: Line in (Parameters), values above 500 lux = BAD"
+            content14="Displays the number of Rooms that are Good/Bad when Chart is HOVERED."
+            content15="Displays which Rooms are Good/Bad when Chart is CLICKED."            
             />
           
           <CustomDialog 
@@ -372,6 +384,8 @@ const Dashboard = () => {
             content4="Heat Index Threshold"
             content5="Good Heat Index Threshold: Line in (Parameters), values below 27°C = GOOD"
             content6="Bad Heat Index Threshold: Line in (Parameters), values above 41°C = BAD"
+            content14="Displays the number of Rooms that are Good/Bad when Chart is HOVERED."
+            content15="Displays which Rooms are Good/Bad when Chart is CLICKED."            
             />
           
           <CustomDialog 
@@ -381,7 +395,7 @@ const Dashboard = () => {
             content7="Level 1 - PPM 0-50 = GOOD"
             content8="Level 2 - PPM 50-150 = BAD "
             content9="Level 3 - PPM 100-250 = BAD"
-            content10="Level 4 - PPM 250+ = BAD" 
+            content10="Level 4 - PPM 250 and above = BAD" 
             content11=""
             content12="Concern Levels"
             content13="When the Particulate Matter (PPM) reaches a certain concern level, it is considered to be bad for individuals. The circle displays the current concern level for visualization. "
