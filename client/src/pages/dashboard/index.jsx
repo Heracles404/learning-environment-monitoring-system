@@ -130,7 +130,9 @@ const Dashboard = () => {
           flexDirection: { xs: 'column', sm: 'row', md: "column", lg: "row" }
         }}
       >
-        <Header title="DASHBOARD" subtitle="Welcome to Edilberto S. Legaspi Integrated High School Dashboard" />
+        <Header title="DASHBOARD" subtitle="Welcome to Edilberto S. Legaspi Integrated High School Dashboard"
+        // subtitle2="Monitored using Charts, Tables, Graphs" 
+        />
         <Grid container
         display='flex'
         justifyContent="space-between"
@@ -142,6 +144,9 @@ const Dashboard = () => {
         mb="30px"
       >
         <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 2 }}>
+        <Typography justifyContent="center" variant="h7" fontWeight="bold" >
+        SENSOR 
+          </Typography>
           <Box
             backgroundColor={colors.greenAccent[600]}
             display="flex"
@@ -168,6 +173,9 @@ const Dashboard = () => {
           </Box>
         </Grid>
         <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 2 }} >
+        <Typography justifyContent="center" variant="h7" fontWeight="bold" >
+        SENSOR 
+          </Typography>
           <Box
             backgroundColor={colors.greenAccent[600]}
             display="flex"
@@ -186,6 +194,7 @@ const Dashboard = () => {
               },
             }}
           >
+
             <StatBox
               title="OUTDOOR"
               subtitle={`Active: ${totalDevices - activeDevices}`}
