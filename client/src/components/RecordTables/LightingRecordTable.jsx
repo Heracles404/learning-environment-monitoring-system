@@ -35,17 +35,15 @@ const LightingRecordTable = () => {
     }, []);
 
     const columns = [
-        { field: "classroom", headerName: "Classroom", minWidth: 100, flex: 1 },  // Updated header to Classroom
-        { field: "date", headerName: "Date", minWidth: 100, flex: 1 },
-        { field: "time", headerName: "Time", minWidth: 100, flex: 1 },
-        // { field: "temperature", headerName: "Temperature", minWidth: 100, flex: 1 },
-        // { field: "humidity", headerName: "Humidity", minWidth: 100, flex: 1 },
-        // { field: "heatIndex", headerName: "Heat Index", minWidth: 100, flex: 1 },
-        { field: "lighting", headerName: "Lighting", minWidth: 100, flex: 1 },
+        { field: "classroom", headerName: "Room", width: 100, },  // Updated header to Classroom
+        { field: "date", headerName: "Date", width: 100, },
+        { field: "time", headerName: "Time", width: 100, },
+        { field: "lighting", headerName: "Lighting", width: 110, },
         {
                     field: "LightStatus",
                     headerName: "Light Status",
                     flex: 1,
+                    minWidth: 150,
                     renderCell: ({ row: { LightStatus } }) => {
                       return (
                         <Box
@@ -118,6 +116,7 @@ const LightingRecordTable = () => {
                             },
                             "& .MuiDataGrid-root": {
                                 border: "none",
+                                tableLayout: "auto", 
                             },
                             "& .MuiDataGrid-cell": {
                                 borderBottom: "none",

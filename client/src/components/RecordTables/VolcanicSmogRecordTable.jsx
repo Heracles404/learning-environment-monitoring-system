@@ -35,17 +35,14 @@ const VolcanicSmogRecordTable = () => {
     }, []);
 
     const columns = [
-        { field: "classroom", headerName: "Classroom", minWidth: 100, flex: 1 },  // Updated header to Classroom
-        { field: "date", headerName: "Date", minWidth: 100, flex: 1 },
-        { field: "time", headerName: "Time", minWidth: 100, flex: 1 },
-        // // { field: "temperature", headerName: "Temperature", minWidth: 100, flex: 1 },
-        // // { field: "humidity", headerName: "Humidity", minWidth: 100, flex: 1 },
-        // // { field: "heatIndex", headerName: "Heat Index", minWidth: 100, flex: 1 },
-        // { field: "lighting", headerName: "Lighting", minWidth: 100, flex: 1 },
-        { field: "voc", headerName: "VOC", minWidth: 100, flex: 1 },
+        { field: "classroom", headerName: "Room", width: 100,},  // Updated header to Classroom
+        { field: "date", headerName: "Date", width: 100,},
+        { field: "time", headerName: "Time", width: 100,},
+        { field: "voc", headerName: "VOG", width: 120,},
         {
                             field: "concernLevel",
                             headerName: "VOG Status",
+                            minWidth: 150,
                             flex: 1,
                             renderCell: ({ row: { concernLevel } }) => {
                               return (
@@ -84,7 +81,7 @@ const VolcanicSmogRecordTable = () => {
             <Box>
                 <Paper sx={{ maxHeight: "65vh", width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
-                        Records for Volcanic Smog Parameters
+                        Records for Volcanic Smog (VOG) Parameters
                     </Typography>
                     <DataGrid
                         rows={rows}
@@ -118,6 +115,7 @@ const VolcanicSmogRecordTable = () => {
                             },
                             "& .MuiDataGrid-root": {
                                 border: "none",
+                                tableLayout: "auto", 
                             },
                             "& .MuiDataGrid-cell": {
                                 borderBottom: "none",
