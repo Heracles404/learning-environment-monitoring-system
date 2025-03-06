@@ -34,19 +34,15 @@ const AirQualityRecordTable = () => {
     }, []);
 
     const columns = [
-        { field: "classroom", headerName: "Classroom", minWidth: 100, flex: 1 },  // Updated header to Classroom
-        { field: "date", headerName: "Date", minWidth: 100, flex: 1 },
-        { field: "time", headerName: "Time", minWidth: 100, flex: 1 },
-        // { field: "temperature", headerName: "Temperature", minWidth: 100, flex: 1 },
-        // { field: "humidity", headerName: "Humidity", minWidth: 100, flex: 1 },
-        // { field: "heatIndex", headerName: "Heat Index", minWidth: 100, flex: 1 },
-        // { field: "lighting", headerName: "Lighting", minWidth: 100, flex: 1 },
-        // { field: "voc", headerName: "VOC", minWidth: 100, flex: 1 },
-        { field: "IAQIndex", headerName: "IAQ Index", minWidth: 100, flex: 1 },
-        // { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
+        { field: "classroom", headerName: "Room", width: 100, },  // Updated header to Classroom
+        { field: "date", headerName: "Date", width: 100, },
+        { field: "time", headerName: "Time", width: 100, },
+        { field: "IAQIndex", headerName: "IAQ Index", minWidth: 120, flex:1 },
+        // { field: "indoorAir", headerName: "IAQ Stat", width: 100, },
         {
             field: "indoorAir",
-            headerName: "IAQ Stat",
+            headerName: "IAQ Status",
+            minWidth: 150,
             flex: 1,
             renderCell: ({ row: { indoorAir } }) => {
               return (
@@ -82,7 +78,7 @@ const AirQualityRecordTable = () => {
             <Box>
                 <Paper sx={{ maxHeight: "65vh", width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
-                        Records for Air Quality Parameters
+                        Records for Indoor Air Quality (IAQ) Parameters
                     </Typography>
                     <DataGrid
                         rows={rows}
@@ -116,6 +112,7 @@ const AirQualityRecordTable = () => {
                             },
                             "& .MuiDataGrid-root": {
                                 border: "none",
+                                tableLayout: "auto", 
                             },
                             "& .MuiDataGrid-cell": {
                                 borderBottom: "none",
