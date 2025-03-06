@@ -19,14 +19,15 @@ const DBRecords = () => {
             const updatedData = {};
             data.forEach((readout) => {
                 updatedData[readout.classroom] = {
-                    id: readout.classroom,
-                    classroom: readout.classroom,
-                    currentHeatIndex: readout.heatIndex,
-                    currentIAQIndex: readout.IAQIndex,
-                    currentLighting: readout.lighting,
-                    concernLevel: (readout.heatIndex > 29 || readout.IAQIndex > 60 || readout.lighting > 200) ? "BAD" : "GOOD",
-                    IAQStatus: readout.IAQIndex > 100 ? "BAD" : "GOOD", // Adjust the threshold as needed
-                    LightStatus: readout.lighting > 300 ? "BAD" : "GOOD", // Adjust the threshold as needed
+                  id: readout.classroom,
+                  classroom: readout.classroom,
+                  currentHeatIndex: readout.heatIndex,
+                  currentIAQIndex: readout.IAQIndex,
+                  currentLighting: readout.lighting,
+                  concernLevel: (readout.heatIndex < 26) ? "GOOD" : 
+                               (readout.heatIndex > 32) ? "BAD" : "GOOD",
+                  IAQStatus: readout.IAQIndex > 100 ? "BAD" : "GOOD",
+                  LightStatus: (readout.lighting >= 300 && readout.lighting < 500) ? "GOOD" : "BAD",
                 };
             });
 

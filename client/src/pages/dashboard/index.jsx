@@ -197,7 +197,7 @@ const Dashboard = () => {
 
             <StatBox
               title="OUTDOOR"
-              subtitle={`Active: ${totalDevices - activeDevices}`}
+              subtitle={`Active: ${activeDevices}`}
               subtitle2={`Inactive: ${inactiveDevices.pms5003}`}
               icon2={<SensorsIcon sx={{ color: "#0AFFBE", fontSize: "46px" }} />}
             />

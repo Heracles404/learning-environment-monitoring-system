@@ -23,7 +23,7 @@ const VOGRecords = () => {
         const fetchData = async () => {
             const data = await httpGetAllReadouts();
             const formattedData = data.map((readout, index) => {
-                const vogStatus = (readout.pm25 < 60 && readout.pm10 < 100) ? "GOOD" : "BAD"; // VOG Status logic
+                const vogStatus = readout.level === 1 ? "GOOD" : "BAD"; // Updated VOG Status logic
                 
                 return {
                     id: readout._id || index,
@@ -39,7 +39,7 @@ const VOGRecords = () => {
             });
             setRows(formattedData);
         };
-
+    
         fetchData();
     }, []);
 
