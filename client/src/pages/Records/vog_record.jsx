@@ -163,8 +163,15 @@ const VOGRecords = () => {
                             "& .MuiDataGrid-row:hover": { backgroundColor: colors.greenAccent[500] },
                             "& .MuiDataGrid-columnHeader": { backgroundColor: colors.greenAccent[700] },
                             "& .MuiDataGrid-footerContainer": { backgroundColor: colors.greenAccent[700] },
-                            "& .MuiTablePagination-toolbar": { paddingBottom: "15px" },
-                        }}
+                            "& .MuiTablePagination-toolbar": {
+                                paddingBottom:"20px",
+                            },
+                            "& .MuiTablePagination-root .MuiTablePagination-input": {
+                                display: "flex"
+                            },
+                            "& .MuiTablePagination-root .MuiTablePagination-selectLabel": {
+                                display: "flex"
+                            },                        }}
                     />
                 </Paper>
             </Box>
