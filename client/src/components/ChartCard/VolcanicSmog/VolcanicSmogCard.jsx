@@ -133,6 +133,11 @@ const VolcanicSmogCard = (props) => {
           },
         },
       },
+      yaxis: {
+        title: {
+          text: "VOG Value",
+        },
+      },
       annotations: {
         yaxis: [
           {
