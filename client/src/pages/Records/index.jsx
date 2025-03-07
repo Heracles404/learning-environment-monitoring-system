@@ -215,7 +215,7 @@ const Records = () => {
     return (
         <Box m="5px 25px" height="100%">
             <Box display="flex" justifyContent="space-between" alignItems="space-between" sx={{ flexDirection: { xs: "column", sm: "row" } }}>
-                <Header title="Records" subtitle="Managing the Records" />
+                <Header title="RECORDS" subtitle="Managing the Records" />
                 <Box>
                     <Button
                         onClick={() => setOpenDialog(true)}
@@ -254,7 +254,6 @@ const Records = () => {
                         Records for Environmental Parameters
                     </Typography>
                     <DataGrid
-                    pagination
                         rows={rows}
                         columns={columns}
                         disableSelectionOnClick
@@ -274,7 +273,13 @@ const Records = () => {
                                 backgroundColor: colors.greenAccent[700],
                             },
                             "& .MuiTablePagination-toolbar": {
-                                paddingBottom:"15px",
+                                paddingBottom:"5px",
+                            },
+                            "& .MuiTablePagination-root .MuiTablePagination-input": {
+                                display: "flex"
+                            },
+                            "& .MuiTablePagination-root .MuiTablePagination-selectLabel": {
+                                display: "flex"
                             },
                         }}
                     />
