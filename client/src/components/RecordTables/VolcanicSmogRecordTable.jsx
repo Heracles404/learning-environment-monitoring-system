@@ -67,7 +67,7 @@ const VolcanicSmogRecordTable = () => {
                                     {concernLevel}
                                   </Typography>
                                 </Box>
-                              );
+                              )
                             },
                         },
         // { field: "IAQIndex", headerName: "IAQ Index", minWidth: 100, flex: 1 },
@@ -76,7 +76,7 @@ const VolcanicSmogRecordTable = () => {
     ];
 
     return (
-        <Box m="5px">
+        <Box m="5px" mt="12.5px">
             {/* <Header title="Records" subtitle="Managing the Records" /> */}
             <Box>
                 <Paper sx={{ maxHeight: "65vh", width: "100%", overflow: "hidden" }}>
