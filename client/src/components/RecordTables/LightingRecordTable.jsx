@@ -26,7 +26,7 @@ const LightingRecordTable = () => {
                 IAQIndex: readout.IAQIndex,
                 indoorAir: readout.indoorAir,
                 temp: readout.temp,
-                LightStatus: readout.lighting > 300 ? "BAD" : "GOOD", // Adjust the threshold as needed
+                LightStatus: readout.lighting >= 300 && readout.lighting <= 500 ? "GOOD" : "BAD",
             }));
             setRows(formattedData);
         };

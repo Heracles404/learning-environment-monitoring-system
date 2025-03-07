@@ -14,8 +14,8 @@ const HeatIndexRecordTable = () => {
         const fetchData = async () => {
             const data = await httpGetAllReadouts();
             const formattedData = data.map((readout, index) => ({
-                id: readout._id || index, // Use `classroom` instead of `id`
-                classroom: readout.classroom,   // Add classroom to the row data
+                id: readout._id || index,
+                classroom: readout.classroom,
                 date: readout.date,
                 time: readout.time,
                 temperature: readout.temperature,
@@ -25,7 +25,7 @@ const HeatIndexRecordTable = () => {
                 voc: readout.voc,
                 IAQIndex: readout.IAQIndex,
                 indoorAir: readout.indoorAir,
-                temp: readout.temp,
+                temp: readout.heatIndex < 26 ? "GOOD" : readout.heatIndex > 32 ? "BAD" : "NORMAL",
             }));
             setRows(formattedData);
         };
@@ -34,48 +34,44 @@ const HeatIndexRecordTable = () => {
     }, []);
 
     const columns = [
-        { field: "classroom", headerName: "Room", width: 100,  },  // Updated header to Classroom
-        { field: "date", headerName: "Date", width: 100,  },
-        { field: "time", headerName: "Time", width: 100,  },
-        { field: "temperature", headerName: "Temperature", width: 120,  },
-        { field: "humidity", headerName: "Humidity", width: 120,  },
-        { field: "heatIndex", headerName: "Heat Index", width: 120,  },
+        { field: "classroom", headerName: "Room", width: 100 },
+        { field: "date", headerName: "Date", width: 100 },
+        { field: "time", headerName: "Time", width: 100 },
+        { field: "temperature", headerName: "Temperature", width: 120 },
+        { field: "humidity", headerName: "Humidity", width: 120 },
+        { field: "heatIndex", headerName: "Heat Index", width: 120 },
         {
             field: "temp",
             headerName: "Heat Index Status",
             flex: 1,
             minWidth: 180,
             renderCell: ({ row: { temp } }) => {
-              return (
-                <Box
-                //   width="60%"
-                  m="8px auto"
-                  p="5px"
-                  display="flex"
-                  justifyContent="center"
-                  backgroundColor={
-                    temp === "GOOD"
-                      ? colors.greenAccent[600]
-                      : temp === "BAD"
-                      ? colors.redAccent[700]
-                      : colors.redAccent[700]
-                  }
-                  borderRadius="4px"
-                >
-                  {temp === "GOOD" }
-                  {temp === "BAD" }
-                  <Typography color={"white"} >
-                    {temp}
-                  </Typography>
-                </Box>
-              );
+                return (
+                    <Box
+                        m="8px auto"
+                        p="5px"
+                        display="flex"
+                        justifyContent="center"
+                        backgroundColor={
+                            temp === "GOOD"
+                                ? colors.greenAccent[600]
+                                : temp === "BAD"
+                                ? colors.redAccent[700]
+                                : colors.yellowAccent[700]
+                        }
+                        borderRadius="4px"
+                    >
+                        <Typography color={"white"}>
+                            {temp}
+                        </Typography>
+                    </Box>
+                );
             },
-        },        
+        },
     ];
 
     return (
         <Box m="5px">
-            {/* <Header title="Records" subtitle="Managing the Records" /> */}
             <Box>
                 <Paper sx={{ maxHeight: "65vh", width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
@@ -89,12 +85,11 @@ const HeatIndexRecordTable = () => {
                         }}
                         initialState={{
                             pagination: {
-                              paginationModel: {
-                                pageSize: 3,
-                              },
+                                paginationModel: {
+                                    pageSize: 3,
+                                },
                             },
-                          }}
-                        //   pageSizeOptions={[3, 5, 10, 15]}
+                        }}
                         sx={{
                             "& .MuiDataGrid-row:hover": {
                                 backgroundColor: colors.greenAccent[500],
@@ -113,20 +108,14 @@ const HeatIndexRecordTable = () => {
                             },
                             "& .MuiDataGrid-root": {
                                 border: "none",
-                                tableLayout: "auto", 
+                                tableLayout: "auto",
                             },
                             "& .MuiDataGrid-cell": {
                                 borderBottom: "none",
                             },
-                            "& .name-column--cell": {
-                                color: colors.greenAccent[300],
-                            },
                             "& .MuiDataGrid-columnHeader": {
                                 backgroundColor: colors.greenAccent[700],
                                 borderBottom: "none",
-                            },
-                            "& .MuiDataGrid-virtualScroller": {
-                                // backgroundColor: colors.primary[400],
                             },
                             "& .MuiDataGrid-footerContainer": {
                                 borderTop: "none",

@@ -24,7 +24,7 @@ const AirQualityRecordTable = () => {
                 lighting: readout.lighting,
                 voc: readout.voc,
                 IAQIndex: readout.IAQIndex,
-                indoorAir: readout.indoorAir,
+                indoorAir: readout.IAQIndex < 100 ? "GOOD" : "BAD",
                 temp: readout.temp,
             }));
             setRows(formattedData);
