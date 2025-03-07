@@ -83,7 +83,7 @@ const DBVOGRecords = () => {
             <Box>
                 <Paper sx={{ maxHeight: "65vh", width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
-                        Latest Records for Volcanic Smog Parameters
+                        Volcanic Smog (VOG)
                     </Typography>
                     <DataGrid
                         rows={Object.values(rows)}
