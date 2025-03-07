@@ -15,7 +15,7 @@ const CarbonDioxideMonitor = () => {
        sx={{
         flexDirection: { xs: 'column', sm: 'row', md: "column", lg: "row" }
       }}>   
-        <Header title="Indoor Air Quality (IAQ)" subtitle="Monitoring the IAQ" />
+        <Header title="INDOOR AIR QUALITY (IAQ)" subtitle="Monitoring the IAQ" />
       </Box>   
     {/* GRID & CHARTS */}
     <Box
