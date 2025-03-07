@@ -75,10 +75,10 @@ const LightingMonitor = () => {
                   Light Threshold <br/>
                   </Typography>
                   <Typography variant='body2' color="green">
-                  Good Light Threshold: Line in (Parameters), values between 300-500 lux = GOOD <br/>
+                  Good Light Threshold: Line in (Chart), values between 300-500 lux = GOOD <br/>
                   </Typography>
                   <Typography variant='body2' color="red">
-                  Bad Light Threshold: Line in (Parameters), values above 500 lux = BAD <br/>
+                  Bad Light Threshold: Line in (Chart), values above 500 lux = BAD <br/>
                   </Typography>
                 </CardContent>
                 {/* dapat ma redirect sa faq page --> learn more button */}

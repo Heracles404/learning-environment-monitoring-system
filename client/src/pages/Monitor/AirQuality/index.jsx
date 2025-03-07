@@ -74,10 +74,10 @@ const CarbonDioxideMonitor = () => {
                   Indoor Air Quality Threshold: <br/>
                   </Typography>
                   <Typography variant='body2' color="green">
-                  Good IAQ Threshold: Line in (Parameters), below 100 = GOOD <br/>
+                  Good IAQ Threshold: Line in (Chart), below 100 = GOOD <br/>
                   </Typography>
                   <Typography variant='body2' color="red">
-                  Bad IAQ Threshold: Line in (Parameters), above 100 = BAD <br/>
+                  Bad IAQ Threshold: Line in (Chart), above 100 = BAD <br/>
                   </Typography>
                 </CardContent>
                 {/* dapat ma redirect sa faq page --> learn more button */}

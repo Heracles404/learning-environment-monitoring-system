@@ -74,10 +74,10 @@ const HeatIndexMonitor = () => {
                   Heat Index Threshold <br/>
                   </Typography>
                   <Typography variant='body2' color="green">
-                  Good Heat Index Threshold: Line in (Parameters), values below 27°C = GOOD <br/>
+                  Good Heat Index Threshold: Line in (Chart), values below 27°C = GOOD <br/>
                   </Typography>
                   <Typography variant='body2' color="red">
-                  Bad Heat Index Threshold: Line in (Parameters), values above 41°C = BAD <br/>
+                  Bad Heat Index Threshold: Line in (Chart), values above 41°C = BAD <br/>
                   </Typography>
                 </CardContent>
                 {/* dapat ma redirect sa faq page --> learn more button */}
