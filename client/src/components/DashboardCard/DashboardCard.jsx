@@ -6,8 +6,6 @@ import { UilTimes } from "@iconscout/react-unicons";
 import Chart from "react-apexcharts";
 import { fetchCardData } from "../../data/mockChartData"; // Import the fetchCardData function
 
-
-
 // parent Card
 const DashboardCard = (props) => {
   const [expanded, setExpanded] = useState(false);
@@ -44,11 +42,9 @@ function DBCompactCard({ param, setExpanded }) {
       onClick={setExpanded}
     >
       <div className="DBradialBar">
-        {/* 🟢 Apply titleColor dynamically */}
         <span style={{ color: param.titleColor }}>{param.title}</span>
       </div>
       <div className="detail">
-        {/* 🔥 Apply iconColor dynamically */}
         <Png style={{ width: "50px", height: "50px", color: param.iconColor }} />
         <span>{param.value}</span>
         <span>Latest Status</span>
@@ -57,7 +53,6 @@ function DBCompactCard({ param, setExpanded }) {
   );
 }
 
-// Expanded Card
 // Expanded Card
 function DBExpandedCard({ param, setExpanded }) {
   const data = {
@@ -100,6 +95,14 @@ function DBExpandedCard({ param, setExpanded }) {
           return new Date(Date.now() - (param.series[0].data.length - index) * 1000 * 60 * 60).toISOString();
         }),
       },
+      yaxis: {
+        title: {
+          text: "Values",
+          style: {
+            color: "black", // Adjust color if necessary
+          },
+        },
+      },
     },
   };
 
@@ -115,7 +118,6 @@ function DBExpandedCard({ param, setExpanded }) {
       <div style={{ alignSelf: "flex-end", cursor: "pointer", color: "white" }}>
         <UilTimes onClick={setExpanded} />
       </div>
-      {/* 🟢 Apply titleColor dynamically */}
       <span style={{ color: param.titleColor }}>{param.title}</span>
       <div className="DBchartContainer">
         <Chart
@@ -127,7 +129,5 @@ function DBExpandedCard({ param, setExpanded }) {
     </motion.div>
   );
 }
-
-
 
 export default DashboardCard;
