@@ -2,78 +2,78 @@ import React, { useState, useEffect } from "react";
 import "./VolcanicSmogCard.css";
 import { motion } from "framer-motion";
 import Chart from "react-apexcharts";
-import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
+import { httpGetAllReadouts } from "../../../hooks/vog.requests.js";
 import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Checkbox, ListItemText } from "@mui/material";
 
 const VolcanicSmogCard = (props) => {
-  const [vocData, setVocData] = useState({});
+  const [airData, setAirData] = useState({});
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [filteredData, setFilteredData] = useState({});
   const [selectedRooms, setSelectedRooms] = useState([]);
 
   useEffect(() => {
-    const fetchVOCData = async () => {
+    const fetchAirData = async () => {
       try {
         const response = await httpGetAllReadouts();
         if (response && response.length > 0) {
           const roomData = response.reduce((acc, item) => {
             const room = item.classroom;
             if (!acc[room]) {
-              acc[room] = { vocLevels: [], timestamps: [], formattedTimestamps: [] };
+              acc[room] = { pm25Levels: [], pm10Levels: [], timestamps: [], formattedTimestamps: [] };
             }
 
-            // Keep the date intact, but handle the time properly
             const dateString = item.date ? item.date : new Date().toISOString().split('T')[0];
-            let timeString = item.time; // Example: "02:55 PM"
-            
-            // Convert 12-hour format time to 24-hour format and build the Date object
+            let timeString = item.time;
             const localDate = new Date(`${dateString} ${timeString}`);
-            
-            // Reformat to 12-hour AM/PM (ensures consistency)
             const formattedTime = localDate.toLocaleTimeString("en-US", {
               hour: "numeric",
               minute: "2-digit",
               hour12: true,
             });
+            const timestamp = localDate.getTime() - localDate.getTimezoneOffset() * 60000;
 
-            // Correct timestamp conversion for UTC (without altering the date)
-            const timestamp = localDate.getTime() - localDate.getTimezoneOffset() * 60000; // Convert to UTC
-
-            acc[room].vocLevels.push(item.voc);
+            acc[room].pm25Levels.push(item.pm25);
+            acc[room].pm10Levels.push(item.pm10);
             acc[room].timestamps.push(timestamp);
-            acc[room].formattedTimestamps.push(`${dateString} ${formattedTime}`); // Combine date and time for the tooltip
+            acc[room].formattedTimestamps.push(`${dateString} ${formattedTime}`);
             return acc;
-          }, {});          
-          setVocData(roomData);
+          }, {});
+          setAirData(roomData);
           setFilteredData(roomData);
         } else {
           console.error("No data found.");
         }
       } catch (error) {
-        console.error("Error fetching VOC data:", error);
+        console.error("Error fetching air data:", error);
       }
     };
-    fetchVOCData();
+    fetchAirData();
   }, []);
 
   const filterData = () => {
     const start = new Date(startDate).setHours(0, 0, 0, 0);
     const end = new Date(endDate).setHours(23, 59, 59, 999);
 
-    const filtered = Object.keys(vocData).reduce((acc, room) => {
+    const filtered = Object.keys(airData).reduce((acc, room) => {
       if (selectedRooms.length === 0 || selectedRooms.includes(room)) {
-        const filteredRoomData = vocData[room].timestamps
+        const filteredRoomData = airData[room].timestamps
           .map((timestamp, index) =>
             timestamp >= start && timestamp <= end
-              ? { timestamp, vocLevel: vocData[room].vocLevels[index], formattedTimestamp: vocData[room].formattedTimestamps[index] }
+              ? { 
+                  timestamp, 
+                  pm25Level: airData[room].pm25Levels[index], 
+                  pm10Level: airData[room].pm10Levels[index],
+                  formattedTimestamp: airData[room].formattedTimestamps[index] 
+                }
               : null
           )
           .filter(Boolean);
 
         if (filteredRoomData.length > 0) {
           acc[room] = {
-            vocLevels: filteredRoomData.map((item) => item.vocLevel),
+            pm25Levels: filteredRoomData.map((item) => item.pm25Level),
+            pm10Levels: filteredRoomData.map((item) => item.pm10Level),
             timestamps: filteredRoomData.map((item) => item.timestamp),
             formattedTimestamps: filteredRoomData.map((item) => item.formattedTimestamp),
           };
@@ -89,25 +89,35 @@ const VolcanicSmogCard = (props) => {
     setStartDate("");
     setEndDate("");
     setSelectedRooms([]);
-    setFilteredData(vocData);
+    setFilteredData(airData);
   };
 
-  const sortedData = Object.keys(filteredData).length > 0 ? filteredData : vocData;
+  const sortedData = Object.keys(filteredData).length > 0 ? filteredData : airData;
 
   const seriesData = Object.keys(sortedData)
     .map((room) => {
       const roomData = sortedData[room];
-      if (!roomData || roomData.vocLevels.length === 0 || roomData.timestamps.length === 0) {
+      if (!roomData || roomData.pm25Levels.length === 0 || roomData.pm10Levels.length === 0) {
         return null;
       }
-      return {
-        name: `Room ${room}`,
-        data: roomData.timestamps.map((timestamp, index) => ({
-          x: timestamp,
-          y: roomData.vocLevels[index],
-        })),
-      };
+      return [
+        {
+          name: `Room ${room} PM2.5`,
+          data: roomData.timestamps.map((timestamp, index) => ({
+            x: timestamp,
+            y: roomData.pm25Levels[index],
+          })),
+        },
+        {
+          name: `Room ${room} PM10`,
+          data: roomData.timestamps.map((timestamp, index) => ({
+            x: timestamp,
+            y: roomData.pm10Levels[index],
+          })),
+        },
+      ];
     })
+    .flat()
     .filter(Boolean);
 
   const data = {
@@ -118,7 +128,7 @@ const VolcanicSmogCard = (props) => {
       tooltip: {
         x: {
           formatter: function (value, { dataPointIndex, seriesIndex }) {
-            const roomKey = Object.keys(sortedData)[seriesIndex];
+            const roomKey = Object.keys(sortedData)[Math.floor(seriesIndex / 2)];
             return sortedData[roomKey]?.formattedTimestamps?.[dataPointIndex] || "Unknown";
           },
         },
@@ -176,6 +186,7 @@ const VolcanicSmogCard = (props) => {
         ],
       },
       legend: { show: false }, // This removes the legend
+
     },
     series: seriesData,
   };
@@ -205,7 +216,7 @@ const VolcanicSmogCard = (props) => {
           <FormControl variant="outlined" margin="normal" style={{ minWidth: 200, width: 140 }}>
             <InputLabel htmlFor="roomSelect">Select Rooms</InputLabel>
             <Select multiple value={selectedRooms} onChange={(e) => setSelectedRooms(e.target.value)} renderValue={(selected) => selected.join(", ")}>
-              {Object.keys(vocData).map((room) => (
+              {Object.keys(airData).map((room) => (
                 <MenuItem key={room} value={room}>
                   <Checkbox checked={selectedRooms.includes(room)} />
                   <ListItemText primary={`Room ${room}`} />
