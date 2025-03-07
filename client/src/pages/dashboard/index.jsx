@@ -135,8 +135,8 @@ const Dashboard = () => {
         />
         <Grid container
         display='flex'
-        justifyContent="space-between"
-        alignContent="space-between"
+        justifyContent={{xs:"space-around",sm:"space-between", lg:"space-around"}}
+        alignContent={{xs:"space-around",sm:"space-between", lg:"space-around"}}
         pr="120px"
         ml="4px"
         rowSpacing={1}
@@ -144,9 +144,7 @@ const Dashboard = () => {
         mb="30px"
       >
         <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 2 }}>
-        <Typography justifyContent="center" variant="h7" fontWeight="bold" >
-        SENSOR 
-          </Typography>
+
           <Box
             backgroundColor={colors.greenAccent[600]}
             display="flex"
@@ -154,28 +152,27 @@ const Dashboard = () => {
             justifyContent="center"
             sx={{
               borderRadius: '12px',
-              height: '82px', 
+              height: '102px', 
               width: {
-                xs: '130%', // 0
-                sm: 150, // 600
-                md: 156, // 900
-                lg: 156, // 1200
-                xl: 156, // 1536
+                xs: '140%', // 0
+                sm: 166, // 600
+                md: 166, // 900
+                lg: 166, // 1200
+                xl: 166, // 1536
               },
             }}
           >
             <StatBox
               title="INDOOR"
+              title2="DEVICE"
               subtitle={`Active: ${activeDevices}`}
               subtitle2={`Inactive: ${inactiveDevices.bme680}`}
+              subtitle3={`Status`}
               icon2={<SensorsIcon sx={{ color: "#0AFFBE", fontSize: "46px" }} />}
             />
           </Box>
         </Grid>
         <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 2 }} >
-        <Typography justifyContent="center" variant="h7" fontWeight="bold" >
-        SENSOR 
-          </Typography>
           <Box
             backgroundColor={colors.greenAccent[600]}
             display="flex"
@@ -184,21 +181,22 @@ const Dashboard = () => {
             mr="5px"
             sx={{
               borderRadius: '12px',
-              height: '82px', 
+              height: '102px', 
               width: {
-                xs: '130%', // 0
-                sm: 150, // 600
-                md: 156, // 900
-                lg: 156, // 1200
-                xl: 156, // 1536
+                xs: '140%', // 0
+                sm: 166, // 600
+                md: 166, // 900
+                lg: 166, // 1200
+                xl: 166, // 1536
               },
             }}
           >
-
             <StatBox
               title="OUTDOOR"
+              title2="DEVICE"
               subtitle={`Active: ${activeDevices}`}
               subtitle2={`Inactive: ${inactiveDevices.pms5003}`}
+              subtitle3={`Status`}
               icon2={<SensorsIcon sx={{ color: "#0AFFBE", fontSize: "46px" }} />}
             />
           </Box>
@@ -387,8 +385,8 @@ const Dashboard = () => {
             onClose={() => setOpenDialog(null)} 
             title="HEAT INDEX DETAILS"
             content1="Ideal Heat Index Ranges: "
-            content2="Good Heat Index Range: Values between 27°C - 41°C = GOOD"
-            content3="Bad Heat Index Range: Values above 41°C, below 27°C = BAD"
+            content2="Good Heat Index Range: Values between 27°C - 32°C = GOOD"
+            content3="Bad Heat Index Range: Values above 32°C, below 27°C = BAD"
 
             content4="Heat Index Threshold"
             content5="Good Heat Index Threshold: Line in (Parameters), values below 27°C = GOOD"
