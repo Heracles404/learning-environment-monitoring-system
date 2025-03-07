@@ -378,8 +378,8 @@ const Dashboard = () => {
             content4="Indoor Air Quality Threshold"
             content5="Good IAQ Threshold: Line in (Parameters), below 100 = GOOD"
             content6="Bad IAQ Threshold: Line in (Parameters), above 100 = BAD"
-            content14="Displays the number of Rooms that are Good/Bad when Chart is HOVERED."
-            content15="Displays which Rooms are Good/Bad when Chart is CLICKED."
+            content14="(1) Displays the number of Rooms that are Good/Bad when 'HOVERED' in PieChart below."
+            content15="(2) Displays which Rooms are Good/Bad when PieChart below is 'CLICKED'."     
             />
       
           <CustomDialog 
@@ -393,8 +393,9 @@ const Dashboard = () => {
             content4="Light Threshold"
             content5="Good Light Threshold: Line in (Parameters), values between 300-500 lux = GOOD"
             content6="Bad Light Threshold: Line in (Parameters), values above 500 lux = BAD"
-            content14="Displays the number of Rooms that are Good/Bad when Chart is HOVERED."
-            content15="Displays which Rooms are Good/Bad when Chart is CLICKED."            
+            
+            content14="(1) Displays the number of Rooms that are Good/Bad when 'HOVERED' in PieChart below."
+            content15="(2) Displays which Rooms are Good/Bad when PieChart below is 'CLICKED'."          
             />
           
           <CustomDialog 
@@ -408,8 +409,9 @@ const Dashboard = () => {
             content4="Heat Index Threshold"
             content5="Good Heat Index Threshold: Line in (Parameters), values below 27°C = GOOD"
             content6="Bad Heat Index Threshold: Line in (Parameters), values above 41°C = BAD"
-            content14="Displays the number of Rooms that are Good/Bad when Chart is HOVERED."
-            content15="Displays which Rooms are Good/Bad when Chart is CLICKED."            
+            
+            content14="(1) Displays the number of Rooms that are Good/Bad when 'HOVERED' in PieChart below."
+            content15="(2) Displays which Rooms are Good/Bad when PieChart below is 'CLICKED'."           
             />
           
           <CustomDialog 

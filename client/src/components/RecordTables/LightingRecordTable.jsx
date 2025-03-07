@@ -77,7 +77,7 @@ const LightingRecordTable = () => {
     ];
 
     return (
-        <Box m="5px">
+        <Box m="5px" mt="19px">
             {/* <Header title="Records" subtitle="Managing the Records" /> */}
             <Box>
                 <Paper sx={{ maxHeight: "65vh", width: "100%", overflow: "hidden" }}>

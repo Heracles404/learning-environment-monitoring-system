@@ -54,20 +54,31 @@ const LightingMonitor = () => {
           <Box >
             <LightingRecordTable/>
             <Card width="300px">
-                <CardMedia component='img' height='240vh'
+                <CardMedia component='img' height='200vh'
                 // image="../../../assets/iaq.png"
                 alt='img'/>   
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                  Light Details <br/>
+                  LIGHT DETAILS <br/>
+                  </Typography>
+                  <Typography variant='body2' color="black">
+                  Ideal Light Ranges <br/>
                   </Typography>
                   <Typography variant='body2' color="green">
-                  Ideal Light Range: 300-500 lux <br/>
-                  Bad Range: above 500 <br/>
+                  Good Light Range: Values between 300-500 lux = GOOD <br/>
                   </Typography>
-                  <Typography variant='body2' color="blue">
-                  Ideal Light Threshold: line  anywhere  between 300-500 <br/>
-                  Bad Threshold: Line above 500 <br/>
+                  <Typography variant='body2' color="red">
+                  Bad Light Range: Values below 300 & above 500 lux = BAD <br/>
+                  <br/>
+                  </Typography>
+                  <Typography variant='body2' color="black">
+                  Light Threshold <br/>
+                  </Typography>
+                  <Typography variant='body2' color="green">
+                  Good Light Threshold: Line in (Chart), values between 300-500 lux = GOOD <br/>
+                  </Typography>
+                  <Typography variant='body2' color="red">
+                  Bad Light Threshold: Line in (Chart), values above 500 lux = BAD <br/>
                   </Typography>
                 </CardContent>
                 {/* dapat ma redirect sa faq page --> learn more button */}

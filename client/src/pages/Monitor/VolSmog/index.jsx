@@ -54,19 +54,26 @@ const VolSmogMonitor = () => {
           <Box >
             <VolcanicSmogRecordTable/>
             <Card width="300px">
-                <CardMedia component='img' height='240vh'
+                <CardMedia component='img' height='210vh'
                 // image="../../../assets/iaq.png"
                 alt='img'/>   
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                  Volcanic Smog (VOG) Ideal Range <br/>
+                  VOLCANIC SMOG (VOG) DETAILS <br/>
+                  </Typography>
+                  <Typography variant='body2' color="black">
+                  Concern Levels <br/>
                   </Typography>
                   <Typography variant='body2' color="green">
-                  Concern Levels <br/>
-                  Level 1 - PPM 0-50 <br/>
-                  Level 2 - PPM 50-150 <br/>
-                  Level 3 - PPM 100-250 <br/>
-                  Level 4 - PPM 250+ <br/>
+                  Level 1 - PPM 0-50 = GOOD <br/>
+                  </Typography>
+                  <Typography variant='body2' color="red">
+                  Level 2 - PPM 50-150 = BAD <br/>
+                  Level 3 - PPM 100-250 = BAD <br/>
+                  Level 4 - PPM 250 and above = BAD <br/>
+                  </Typography>
+                  <Typography variant='body2' color="black">
+                  When the Particulate Matter (PPM) reaches a certain concern level, it is considered to be bad for individuals. <br/>
                   </Typography>
                 </CardContent>
                 {/* dapat ma redirect sa faq page --> learn more button */}

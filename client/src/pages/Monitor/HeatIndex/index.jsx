@@ -53,24 +53,31 @@ const HeatIndexMonitor = () => {
           <Box >
             <HeatIndexRecordTable/>
             <Card width="300px">
-                <CardMedia component='img' height='240vh'
+                <CardMedia component='img' height='210vh'
                 // image="../../../assets/iaq.png"
                 alt='img'/>   
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
                   HEAT INDEX DETAILS <br/>
                   </Typography>
-                  <Typography variant='body2' color="green">
-                  Good Heat Index Ranges: <br/>
-                  Good Heat Index Range: 27°C - 41°C <br/>
-                  Bad Heat IndexRange: above 41°C <br/>
-
-                  
+                  <Typography variant='body2' color="black">
+                  Ideal Heat Index Ranges <br/>
                   </Typography>
-                  <Typography variant='body2' color="blue">
-                  Bad Heat Index Ranges: <br/>
-                  Good Heat Index Threshold: 27°C <br/>
-                  Bad Heat Index Threshold: above 41°C <br/>
+                  <Typography variant='body2' color="green">
+                  Good Heat Index Range: Values between 27°C - 32°C = GOOD <br/>
+                  </Typography>
+                  <Typography variant='body2' color="red">
+                  Bad Heat Index Range: Values above 32°C, below 27°C = BAD <br/>
+                  <br/>
+                  </Typography>
+                  <Typography variant='body2' color="black">
+                  Heat Index Threshold <br/>
+                  </Typography>
+                  <Typography variant='body2' color="green">
+                  Good Heat Index Threshold: Line in (Chart), values below 27°C = GOOD <br/>
+                  </Typography>
+                  <Typography variant='body2' color="red">
+                  Bad Heat Index Threshold: Line in (Chart), values above 41°C = BAD <br/>
                   </Typography>
                 </CardContent>
                 {/* dapat ma redirect sa faq page --> learn more button */}

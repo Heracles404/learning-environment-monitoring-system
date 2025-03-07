@@ -53,23 +53,31 @@ const CarbonDioxideMonitor = () => {
           <Box >
             <AirQualityRecordTable/>
             <Card width="300px">
-                <CardMedia component='img' height='240vh'
+                <CardMedia component='img' height='210vh'
                 // image="../../../assets/iaq.png"
                 alt='img'/>   
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                  Indoor Air Quality (IAQ) Details <br/>
+                  INDOOR AIR QUALITY (IAQ) DETAILS <br/>
+                  </Typography>
+                  <Typography variant='body2' color="black">
+                  Ideal Air Quality Ranges:  <br/>
+                    </Typography>
+                  <Typography variant='body2' justifyContent="center" color="green">
+                  Good IAQ Range: Values below 100 index = GOOD" <br/>
+                  </Typography>
+                  <Typography variant='body2' color="red">
+                  Bad IAQ Range: Values above 100 = BAD <br/>
+                  <br/>
+                  </Typography>
+                  <Typography variant='body2' justifyContent="center" color="black">
+                  Indoor Air Quality Threshold: <br/>
                   </Typography>
                   <Typography variant='body2' color="green">
-                    Ideal Air Quality Ranges:  <br/>
-                    Ideal IAQ Range: Below 100 index <br/>
-                    Ideal Air Threshold: line anywhere below 100 is good <br/>
-
+                  Good IAQ Threshold: Line in (Chart), below 100 = GOOD <br/>
                   </Typography>
-                  <Typography variant='body2' color="blue">
-                  Ideal Air Threshold <br/>
-                    Bad Range: above 100 <br/>
-                    Bad Threshold: Line above 100 <br/>
+                  <Typography variant='body2' color="red">
+                  Bad IAQ Threshold: Line in (Chart), above 100 = BAD <br/>
                   </Typography>
                 </CardContent>
                 {/* dapat ma redirect sa faq page --> learn more button */}
