@@ -45,16 +45,14 @@ const VOGRecords = () => {
 
     const columns = [
         // { field: "classroom", headerName: "Room", minWidth: 100, flex: 1 },
-        { field: "date", headerName: "Date", minWidth: 100, flex: 1 },
-        { field: "time", headerName: "Time", minWidth: 100, flex: 1 },
-        { field: "pm25", headerName: "PM 2.5", minWidth: 100, flex: 1 },
-        { field: "pm10", headerName: "PM 10.0", minWidth: 100, flex: 1 },
-        { field: "OAQIndex", headerName: "OAQ Index", minWidth: 100, flex: 1 },
-        { field: "level", headerName: "Concern Level", minWidth: 100, flex: 1 },
+        { field: "date", headerName: "Date", width: 91, },
+        { field: "time", headerName: "Time", width: 94, },
+        { field: "level", headerName: "Concern Level", width: 140, },
         // { field: "vogStatus", headerName: "VOG Status", minWidth: 100, flex: 1 }, // Display computed VOG Status
         {
             field: "vogStatus",
             headerName: "VOG Status",
+            minWidth:125,
             flex: 1,
             renderCell: ({ row: { vogStatus } }) => {
               return (
@@ -82,6 +80,10 @@ const VOGRecords = () => {
               );
             },
         },
+        { field: "pm25", headerName: "PM 2.5", width: 120, },
+        { field: "pm10", headerName: "PM 10.0", width: 120, },
+        { field: "OAQIndex", headerName: "OAQ Index", width: 130, },
+
     ];
 
     const handleDownload = () => {
@@ -171,6 +173,10 @@ const VOGRecords = () => {
                             },
                             "& .MuiTablePagination-root .MuiTablePagination-selectLabel": {
                                 display: "flex"
+                            },
+                            "& .MuiDataGrid-root": {
+                                border: "none",
+                                tableLayout: "auto", 
                             },                        }}
                     />
                 </Paper>
