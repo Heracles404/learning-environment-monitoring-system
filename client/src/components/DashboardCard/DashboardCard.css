@@ -88,10 +88,10 @@
     width: 80%;
   }
   
-  @media screen and (max-width: 1200px) {
+  @media screen and (min-width: 1200px) {
     .DBExpandedCard {
       top: 2rem;
-      height: 55%;
+      height: 75%;
       left: 20rem;
     }
   }
