@@ -66,6 +66,7 @@ const Dashboard = () => {
   const [openDialog, setOpenDialog] = useState(null);
   const colors = tokens(theme.palette.mode);
   const [activeDevices, setActiveDevices] = useState(null);
+  const [activePMS, setActivePMS] = useState(0);
   const [inactiveDevices, setInactiveDevices] = useState({
     bh1750: 0,
     bme680: 0,
@@ -91,6 +92,7 @@ const Dashboard = () => {
         // Calculate inactive devices for each sensor type and store rooms with count
         let inactive = { bh1750: 0, bme680: 0, pms5003: 0 };
         let inactiveRooms = { bh1750Rooms: {}, bme680Rooms: {}, pms5003Rooms: {} };
+        let activePMSCount = 0; // Track active PMS5003 separately
 
         allDevices.forEach(device => {
           if (device.bh1750 === "INACTIVE") {
@@ -101,6 +103,9 @@ const Dashboard = () => {
             inactive.bme680 += 1;
             inactiveRooms.bme680Rooms[device.classroom] = (inactiveRooms.bme680Rooms[device.classroom] || 0) + 1;
           }
+          if (device.pms5003 === "ACTIVE") {
+            activePMSCount += 1; // Count active PMS5003 devices
+          }
           if (device.pms5003 === "INACTIVE") {
             inactive.pms5003 += 1;
             inactiveRooms.pms5003Rooms[device.classroom] = (inactiveRooms.pms5003Rooms[device.classroom] || 0) + 1;
@@ -108,6 +113,7 @@ const Dashboard = () => {
         });
 
         setInactiveDevices({ ...inactive, ...inactiveRooms });
+        setActivePMS(activePMSCount);
       } catch (error) {
         console.error("Error fetching devices:", error);
       }
@@ -167,7 +173,7 @@ const Dashboard = () => {
               title="INDOOR"
               title2="DEVICE"
               subtitle={`Active: ${activeDevices}`}
-              subtitle2={`Inactive: ${inactiveDevices.bme680}`}
+              subtitle2={`Inactive: ${inactiveDevices.bme680 + inactiveDevices.bh1750}`}
               subtitle3={`Status`}
               icon2={<SensorsIcon sx={{ color: "#0AFFBE", fontSize: "46px" }} />}
             />
@@ -195,7 +201,7 @@ const Dashboard = () => {
             <StatBox
               title="OUTDOOR"
               title2="DEVICE"
-              subtitle={`Active: ${activeDevices}`}
+              subtitle={`Active: ${activePMS}`}
               subtitle2={`Inactive: ${inactiveDevices.pms5003}`}
               subtitle3={`Status`}
               icon2={<SensorsIcon sx={{ color: "#0AFFBE", fontSize: "46px" }} />}
