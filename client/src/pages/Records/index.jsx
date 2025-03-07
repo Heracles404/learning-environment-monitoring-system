@@ -51,18 +51,15 @@ const Records = () => {
     }, []);
 
     const columns = [
-        { field: "classroom", headerName: "Room", minWidth: 98, flex: 1 },
-        { field: "date", headerName: "Date", minWidth: 91, flex: 1 },
-        { field: "time", headerName: "Time", minWidth: 94, flex: 1 },
-        { field: "temperature", headerName: "Temperature", minWidth: 100, flex: 1 },
-        { field: "humidity", headerName: "Humidity", minWidth: 100, flex: 1 },
-        { field: "heatIndex", headerName: "Heat Index", minWidth: 100, flex: 1 },
-        { field: "lighting", headerName: "Lighting", minWidth: 100, flex: 1 },
-        { field: "IAQIndex", headerName: "IAQ Index", minWidth: 100, flex: 1 },
-        // { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
+        { field: "classroom", headerName: "Room", width: 98, },
+        { field: "date", headerName: "Date", width: 91, },
+        { field: "time", headerName: "Time", width: 94, },
+        // { field: "temperature", headerName: "Temperature", minWidth: 100, flex: 1 },
+        // { field: "humidity", headerName: "Humidity", minWidth: 100, flex: 1 },
         {
             field: "indoorAir",
-            headerName: "IAQ Stat",
+            headerName: "IAQ Status",
+            minWidth:120,
             flex: 1,
             renderCell: ({ row: { indoorAir } }) => {
               return (
@@ -93,7 +90,8 @@ const Records = () => {
         // { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
         {
             field: "temp",
-            headerName: "Temperature Stat",
+            headerName: "Temperature Status",
+            minWidth:170,
             flex: 1,
             renderCell: ({ row: { temp } }) => {
               return (
@@ -124,7 +122,8 @@ const Records = () => {
         // { field: "lightRemarks", headerName: "Lighting Stat", minWidth: 91, flex: 1 },
         {
             field: "lightRemarks",
-            headerName: "Lighting Stat",
+            headerName: "Lighting Status",
+            minWidth:145,
             flex: 1,
             renderCell: ({ row: { lightRemarks } }) => {
               return (
@@ -152,6 +151,11 @@ const Records = () => {
               );
             },
         },
+        { field: "heatIndex", headerName: "Heat Index", width: 121.5, },
+        { field: "lighting", headerName: "Lighting", width: 105, },
+        { field: "IAQIndex", headerName: "IAQ Index", width: 115.5, },
+        // { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
+        
     ];
 
     const handleDeleteSelected = async () => {
@@ -280,6 +284,10 @@ const Records = () => {
                             },
                             "& .MuiTablePagination-root .MuiTablePagination-selectLabel": {
                                 display: "flex"
+                            },
+                            "& .MuiDataGrid-root": {
+                                border: "none",
+                                tableLayout: "auto", 
                             },
                         }}
                     />
