@@ -91,7 +91,7 @@ const RegisterDevice = () => {
                   fullWidth
                   variant="outlined"
                   type="text"
-                  label="Classroom"
+                  label="Room"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.classroom}
@@ -138,7 +138,7 @@ const RegisterDevice = () => {
 };
 
 const checkoutSchema = yup.object().shape({
-  classroom: yup.string().required("Classroom Name is required"),
+  classroom: yup.string().required("Room Name is required"),
 });
 
 const initialValues = {
