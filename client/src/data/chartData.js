@@ -173,7 +173,7 @@ export const CardsData = [
 // Export other data with deduplication
 export const CO2Data = [
   {
-    title: "CO2 Levels",
+    title: "Indoor Air Quality",
     color: {
       backGround: "linear-gradient(180deg, #4cceac 0%, #b7ebde 200%)",
       boxShadow: "0px 10px 20px 0px #e0c6f5",
