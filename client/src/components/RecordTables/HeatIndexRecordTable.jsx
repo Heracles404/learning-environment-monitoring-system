@@ -25,7 +25,9 @@ const HeatIndexRecordTable = () => {
                 voc: readout.voc,
                 IAQIndex: readout.IAQIndex,
                 indoorAir: readout.indoorAir,
-                temp: readout.heatIndex < 26 ? "GOOD" : readout.heatIndex > 32 ? "BAD" : "NORMAL",
+                temp: readout.heatIndex < 26 ? "GOOD" : readout.heatIndex > 32 ? "BAD" : "GOOD",
+
+
             }));
             setRows(formattedData);
         };
@@ -57,7 +59,7 @@ const HeatIndexRecordTable = () => {
                                 ? colors.greenAccent[600]
                                 : temp === "BAD"
                                 ? colors.redAccent[700]
-                                : colors.yellowAccent[700]
+                                : colors.redAccent[700]
                         }
                         borderRadius="4px"
                     >
