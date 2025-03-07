@@ -202,6 +202,12 @@ const DBRecords = () => {
                             "& .MuiCheckbox-root": {
                                 color: `${colors.greenAccent[200]} !important`,
                             },
+                            "& .MuiTablePagination-root .MuiTablePagination-input": {
+                              display: "flex"
+                          },
+                          "& .MuiTablePagination-root .MuiTablePagination-selectLabel": {
+                              display: "flex"
+                          },
                         }}
                     />
                 </Paper>
