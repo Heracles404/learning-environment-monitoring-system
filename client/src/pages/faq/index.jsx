@@ -23,30 +23,28 @@ const FAQ = () => {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-          This system is designed to track and analyze environmental conditions in real time using various sensors. 
-          It measures key factors such as heat index, temperature, lighting, smog levels, air quality, and humidity. 
-          By continuously collecting and displaying this data, the system helps users make informed decisions regarding safety, comfort, and potential environmental risks.
+          This system is designed to read and capture environmental parameters using various sensors. 
+          It measures key factors such as heat index, lighting, volcanic smog levels, and indoor air quality. 
+          The system helps users make informed decisions regarding safety, comfort, and potential environmental risks.
           </Typography>
         </AccordionDetails>
       </Accordion>
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-            What are we monitoring? 
+          Placeholder
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-          We are monitoring various environmental factors, including heat index, temperature, lighting, and smog levels. 
-          Additionally, the system tracks air quality, humidity, and other relevant parameters to provide real-time insights into environmental conditions. 
-          This data helps assess safety, comfort, and potential hazards in a given area.
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni pariatur neque aliquam modi eligendi vitae incidunt eos fugit porro? Dolorum autem modi saepe omnis quibusdam nulla adipisci, cumque rerum fugit!
           </Typography>
         </AccordionDetails>
       </Accordion>
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-          Placeholer
+          Placeholder
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -60,7 +58,7 @@ const FAQ = () => {
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-          Placeholer
+          Placeholder
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -75,7 +73,7 @@ const FAQ = () => {
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-          Placeholer
+          Placeholder
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
