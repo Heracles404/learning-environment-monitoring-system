@@ -10,6 +10,7 @@ import DBRecords from "../../components/DashboardTables/DBRecords";
 
 import SensorsIcon from '@mui/icons-material/Sensors';
 import HelpIcon from '@mui/icons-material/Help';
+import CrisisAlertIcon from '@mui/icons-material/CrisisAlert';
 
 import DBVog from "../../components/DashboardTables/DBVog";
 import { httpGetActive, httpGetAllDevices } from "../../hooks/devices.requests";  
@@ -236,8 +237,11 @@ const Dashboard = () => {
           </Box>
           
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
-            <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
-          ))}
+            <Box backgroundColor="orange" display="inline-flex" pr="10px" borderRadius='15px' mt="5px">
+            <CrisisAlertIcon sx={{ fontSize: 21, color: 'white', mr: 1 }}/>
+          <Typography color="white" key={room}>Room {room}: '{count}' Inactive IAQ Sensor</Typography>
+          </Box>
+        ))}
           <Box height="300px">
             <AirQualityPieChart />
           </Box>
@@ -266,7 +270,10 @@ const Dashboard = () => {
           </Box>
           
           {Object.entries(inactiveDevices.bh1750Rooms).map(([room, count]) => (
-            <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
+            <Box backgroundColor="orange" display="inline-flex" pr="10px" borderRadius='15px' mt="5px">
+              <CrisisAlertIcon sx={{ fontSize: 21, color: 'white', mr: 1 }}/>
+            <Typography color="white" key={room}>Room {room}: '{count}' Inactive Light Sensor</Typography>
+            </Box>
           ))}
           <Box height="300px">
             <LightingPieChart />
@@ -299,12 +306,13 @@ const Dashboard = () => {
           </Box>
           
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
-            <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
-          ))}
+            <Box backgroundColor="orange" display="inline-flex" pr="10px" borderRadius='15px' mt="5px">
+            <CrisisAlertIcon sx={{ fontSize: 21, color: 'white', mr: 1 }}/>
+          <Typography color="white" key={room}>Room {room}: '{count}' Inactive Heat Index Sensor</Typography>
+          </Box>
+        ))}
           <Box height="300px">
-
             <TemperaturePieChart />
-            
           </Box>
         </Box>
 
@@ -331,8 +339,11 @@ const Dashboard = () => {
           
           </Box>
           {Object.entries(inactiveDevices.pms5003Rooms).map(([room, count]) => (
-            <Typography color="white" key={room}>Room {room}: {count} inactive sensor(s)</Typography>
-          ))} 
+            <Box backgroundColor="orange" display="inline-flex" pr="10px" borderRadius='15px' mt="5px">
+            <CrisisAlertIcon sx={{ fontSize: 21, color: 'white', mr: 1 }}/>
+          <Typography color="white" key={room}>Room {room}: '{count}' Inactive VOG Sensor</Typography>
+          </Box>
+        ))}
           
           <Box height="300px">
             <VOGPieChart />
