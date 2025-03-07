@@ -16,7 +16,7 @@ const VolSmogMonitor = () => {
        sx={{
         flexDirection: { xs: 'column', sm: 'row', md: "column", lg: "row" }
       }}>   
-        <Header title="Volcanic Smog" subtitle="Monitoring the Volcanic Smog" />
+        <Header title="VOLCANIC SMOG" subtitle="Monitoring the Volcanic Smog" />
       </Box>   
     {/* GRID & CHARTS */}
     <Box

@@ -16,7 +16,7 @@ const LightingMonitor = () => {
        sx={{
         flexDirection: { xs: 'column', sm: 'row', md: "column", lg: "row" }
       }}>   
-        <Header title="Lighting" subtitle="Monitoring the Lighting" />
+        <Header title="LIGHTING" subtitle="Monitoring the Lighting" />
       </Box>   
     {/* GRID & CHARTS */}
     <Box

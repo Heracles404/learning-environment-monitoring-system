@@ -15,7 +15,7 @@ const HeatIndexMonitor = () => {
        sx={{
         flexDirection: { xs: 'column', sm: 'row', md: "column", lg: "row" }
       }}>   
-        <Header title="Heat Index" subtitle="Monitoring the Heat Index" />
+        <Header title="HEAT INDEX" subtitle="Monitoring the Heat Index" />
       </Box>   
     {/* GRID & CHARTS */}
     <Box

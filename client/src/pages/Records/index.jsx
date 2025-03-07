@@ -90,7 +90,7 @@ const Records = () => {
         // { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
         {
             field: "temp",
-            headerName: "Temperature Status",
+            headerName: "Heat Index Status",
             minWidth:170,
             flex: 1,
             renderCell: ({ row: { temp } }) => {
@@ -151,9 +151,9 @@ const Records = () => {
               );
             },
         },
+        { field: "IAQIndex", headerName: "IAQ Index", width: 115.5, },
         { field: "heatIndex", headerName: "Heat Index", width: 121.5, },
         { field: "lighting", headerName: "Lighting", width: 105, },
-        { field: "IAQIndex", headerName: "IAQ Index", width: 115.5, },
         // { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
         
     ];
@@ -255,7 +255,7 @@ const Records = () => {
             <Box mt="1px">
                 <Paper sx={{ height: {xs:"60vh", md: "70vh"}, width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
-                        Records for Environmental Parameters
+                    Indoor Air Quality (IAQ), Heat Index, Light
                     </Typography>
                     <DataGrid
                         rows={rows}

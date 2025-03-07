@@ -150,7 +150,7 @@ const VOGRecords = () => {
             <Box mt="1px">
                 <Paper sx={{ height: {xs:"60vh", md: "70vh"}, width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
-                        Records for Volcanic Smog Parameters
+                    Volcanic Smog (VOG)
                     </Typography>
                     <DataGrid
                         rows={rows}

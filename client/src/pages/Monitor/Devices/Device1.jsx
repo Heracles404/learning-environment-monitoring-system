@@ -63,10 +63,10 @@ const Device1 = () => {
     const role = localStorage.getItem("role");
     const columns = [
         { id: "classroom", label: "Classroom", minWidth: 150 },
-        { id: "status", label: "Status", minWidth: 150 },
+        { id: "status", label: "Device Status", minWidth: 150 },
         { id: "bh1750", label: "Light Sensor", minWidth: 150 },
         { id: "bme680", label: "Air Quality, Heat Index Sensor", minWidth: 150 },
-        { id: "pms5003", label: "Volcanic Smog Sensor", minWidth: 150 },
+        // { id: "pms5003", label: "Volcanic Smog Sensor", minWidth: 150 },
     ];
 
     if (role.toUpperCase() === "PRINCIPAL" || role.toUpperCase() === "ADMIN") {

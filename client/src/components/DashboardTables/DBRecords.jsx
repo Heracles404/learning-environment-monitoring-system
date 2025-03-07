@@ -41,39 +41,6 @@ const DBRecords = () => {
 
     const columns = [
         { field: "classroom", headerName: "Room", width: 123,   },
-
-        // { field: "concernLevel", headerName: "Heat Index Status", minWidth: 100, flex: 1 },
-        {
-            field: "concernLevel",
-            headerName: "Heat Status",
-            minWidth: 130,
-            flex: 1,
-            renderCell: ({ row: { concernLevel } }) => {
-              return (
-                <Box
-                //   width="100%"
-                  m="8px auto"
-                  p="5px"
-                  display="flex"
-                  justifyContent="center"
-                  backgroundColor={
-                    concernLevel === "GOOD"
-                      ? colors.greenAccent[600]
-                      : concernLevel === "BAD"
-                      ? colors.redAccent[700]
-                      : colors.redAccent[700]
-                  }
-                  borderRadius="4px"
-                >
-                  {concernLevel === "GOOD" }
-                  {concernLevel === "BAD" }
-                  <Typography color={"white"} >
-                    {concernLevel}
-                  </Typography>
-                </Box>
-              );
-            },
-        },
         // { field: "IAQStatus", headerName: "IAQ Status", minWidth: 100, flex: 1 },
         {
             field: "IAQStatus",
@@ -106,6 +73,39 @@ const DBRecords = () => {
               );
             },
         },
+        // { field: "concernLevel", headerName: "Heat Index Status", minWidth: 100, flex: 1 },
+        {
+            field: "concernLevel",
+            headerName: "Heat Index Status",
+            minWidth: 157,
+            flex: 1,
+            renderCell: ({ row: { concernLevel } }) => {
+              return (
+                <Box
+                //   width="100%"
+                  m="8px auto"
+                  p="5px"
+                  display="flex"
+                  justifyContent="center"
+                  backgroundColor={
+                    concernLevel === "GOOD"
+                      ? colors.greenAccent[600]
+                      : concernLevel === "BAD"
+                      ? colors.redAccent[700]
+                      : colors.redAccent[700]
+                  }
+                  borderRadius="4px"
+                >
+                  {concernLevel === "GOOD" }
+                  {concernLevel === "BAD" }
+                  <Typography color={"white"} >
+                    {concernLevel}
+                  </Typography>
+                </Box>
+              );
+            },
+        },
+
         // { field: "LightStatus", headerName: "Light Status", minWidth: 100, flex: 1 },
         {
                     field: "LightStatus",
@@ -149,7 +149,7 @@ const DBRecords = () => {
             <Box>
                 <Paper sx={{ maxHeight: "65vh", width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
-                        Latest Record for Environmental Parameters
+                        Indoor Air Quality (IAQ), Heat Index, Light
                     </Typography>
                     <DataGrid
                         rows={rows}
