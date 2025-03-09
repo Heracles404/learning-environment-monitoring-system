@@ -23,6 +23,7 @@ import NewAccountForm from "./pages/CreateNewAccount";
 import VOGRecords from "./pages/Records/vog_record";
 import RegisterDevice from "./pages/Monitor/Devices/RegisterDevice";
 import UpdateDevice from "./pages/Monitor/Devices/UpdateDevice";
+import RoomLayout from "./pages/Monitor/RoomLayout";
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
@@ -55,6 +56,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Dashboard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/RoomLayout"
+              element={
+                <PrivateRoute>
+                  <RoomLayout />
                 </PrivateRoute>
               }
             />
