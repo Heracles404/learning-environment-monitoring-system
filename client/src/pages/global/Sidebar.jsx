@@ -17,6 +17,7 @@ import DeviceThermostatIcon from '@mui/icons-material/DeviceThermostat';
 import VolcanoOutlinedIcon from '@mui/icons-material/VolcanoOutlined';
 import WbIncandescentOutlinedIcon from '@mui/icons-material/WbIncandescentOutlined';
 import DeviceHubOutlinedIcon from '@mui/icons-material/DeviceHubOutlined';
+import PreviewIcon from '@mui/icons-material/Preview';
 
 import DevicesOutlinedIcon from '@mui/icons-material/DevicesOutlined';
 
@@ -347,6 +348,13 @@ const Sidebar = () => {
                 title="Heat Index"
                 to="/HeatIndex"
                 icon={<DeviceThermostatIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />              
+              <Item
+                title="Room Layout"
+                to="/RoomLayout"
+                icon={<PreviewIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />              
