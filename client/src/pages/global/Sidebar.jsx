@@ -79,11 +79,12 @@ const Sidebar = () => {
   };
 
   const handleTouchEnd = () => {
-    if (touchStartX - touchEndX > 50) {
+    if (touchStartX - touchEndX > 70) {
       setIsSidebarVisible(false);
-    } else if (touchEndX - touchStartX > 50) {
-      setIsSidebarVisible(true);
-    }
+    } 
+    // else if (touchEndX - touchStartX > 70) {
+    //   setIsSidebarVisible(true);
+    // }
   };
 
   document.addEventListener("touchstart", handleTouchStart);
