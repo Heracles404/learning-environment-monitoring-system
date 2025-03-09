@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { httpGetAllReadouts, httpDeleteReadout, httpDeleteAllReadouts } from "../../hooks/sensors.requests";
-import { Box, Button, Paper, Typography, Dialog, DialogActions, DialogContent,DialogContentText, DialogTitle, TextField } from "@mui/material";
+import { Box, Button, Paper, Typography, Snackbar, Alert, Dialog, DialogActions, DialogContent,DialogContentText, DialogTitle, TextField } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
@@ -18,6 +18,7 @@ const Records = () => {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [openDownloadDialog, setOpenDownloadDialog] = useState(false); // For download confirmation
+    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -159,13 +160,10 @@ const Records = () => {
     ];
 
     const handleDeleteSelected = async () => {
-      
-
         if (selectedRows.length === 0) {
 
             return;
         }
-
         try {
             for (const id of selectedRows) {
                 const result = await httpDeleteReadout(id);
@@ -176,11 +174,13 @@ const Records = () => {
                 }
             }
             setSelectedRows([]); // Clear selection after deletion
+            setSnackbar({ open: true, message: 'Row Deleted Successfully!', severity: 'success' });
+
         } catch (error) {
             console.error("Error during deletion:", error);
         }
-        setOpenDialog(false); // Close dialog after deletion
-
+        setOpenDialog(false); // Close dialog after deletion 
+        
     };
 
     const handleDownload = () => {
@@ -293,6 +293,17 @@ const Records = () => {
                     />
                 </Paper>
             </Box>
+            {/* Snackbar Alerts */}
+            <Snackbar 
+                open={snackbar.open} 
+                autoHideDuration={2000} 
+                onClose={() => setSnackbar({ ...snackbar, open: false })} 
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+                <Alert onClose={() => setSnackbar({ ...snackbar, open: false })} severity={snackbar.severity} sx={{ width: '100%' }}>
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
             <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
                 <DialogTitle>Delete Record</DialogTitle>
                 <DialogContent>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-    Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Typography, useTheme, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button
+    Box, Paper, Table, TableBody, TableCell, TableContainer,Snackbar, Alert, TableHead, TableRow, TablePagination, Typography, useTheme, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { tokens } from "../../../theme";
@@ -16,6 +16,7 @@ const Device1 = () => {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [selectedDeviceId, setSelectedDeviceId] = useState(null);
+    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -53,6 +54,7 @@ const Device1 = () => {
             const response = await httpDeleteDevice(selectedDeviceId);
             if (response.ok) {
                 setRows(prevRows => prevRows.filter(device => device.id !== selectedDeviceId));
+                setSnackbar({ open: true, message: 'Device Deleted Successfully!', severity: 'success' });
             } else {
                 alert("Failed to delete device. Please try again.");
             }
@@ -145,6 +147,17 @@ const Device1 = () => {
                     />
                 </Paper>
             </Box>
+            {/* Snackbar Alerts */}
+            <Snackbar 
+                open={snackbar.open} 
+                autoHideDuration={2000} 
+                onClose={() => setSnackbar({ ...snackbar, open: false })} 
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+                <Alert onClose={() => setSnackbar({ ...snackbar, open: false })} severity={snackbar.severity} sx={{ width: '100%' }}>
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
             {/* Delete Confirmation Dialog */}
             <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
                 <DialogTitle>Confirm Deletion</DialogTitle>

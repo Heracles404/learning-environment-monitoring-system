@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { httpGetAllReadouts, httpDeleteReadout } from "../../hooks/vog.requests";
-import { Box, Button, Typography, Paper, Dialog, DialogContentText, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { Box, Button, Typography, Paper, Dialog, Snackbar, Alert, DialogContentText, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
@@ -18,6 +18,7 @@ const VOGRecords = () => {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [openDownloadDialog, setOpenDownloadDialog] = useState(false);
+    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -127,6 +128,7 @@ const VOGRecords = () => {
                 }
             }
             setSelectedRows([]);
+            setSnackbar({ open: true, message: 'Row Deleted Successfully!', severity: 'success' });
         } catch (error) {
             console.error("Error during deletion:", error);
         }
@@ -181,7 +183,17 @@ const VOGRecords = () => {
                     />
                 </Paper>
             </Box>
-
+            {/* Snackbar Alerts */}
+            <Snackbar 
+                open={snackbar.open} 
+                autoHideDuration={2000} 
+                onClose={() => setSnackbar({ ...snackbar, open: false })} 
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+                <Alert onClose={() => setSnackbar({ ...snackbar, open: false })} severity={snackbar.severity} sx={{ width: '100%' }}>
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
             <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
                 <DialogTitle>Delete Record</DialogTitle>
                 <DialogContent>

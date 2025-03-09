@@ -79,11 +79,12 @@ const Sidebar = () => {
   };
 
   const handleTouchEnd = () => {
-    if (touchStartX - touchEndX > 50) {
+    if (touchStartX - touchEndX > 70) {
       setIsSidebarVisible(false);
-    } else if (touchEndX - touchStartX > 50) {
-      setIsSidebarVisible(true);
-    }
+    } 
+    // else if (touchEndX - touchStartX > 70) {
+    //   setIsSidebarVisible(true);
+    // }
   };
 
   document.addEventListener("touchstart", handleTouchStart);
@@ -351,13 +352,13 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />              
-              <Item
+              {/* <Item
                 title="Room Layout"
                 to="/RoomLayout"
                 icon={<PreviewIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />              
+              />               */}
               </SubMenu>
   
             

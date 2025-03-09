@@ -46,6 +46,7 @@ const Accounts = () => {
       const response = await httpDeleteUser(selectedUser.userName);
       if (response.ok) {
         setRows((prevRows) => prevRows.filter((user) => user.userName !== selectedUser.userName));
+        setSnackbar({ open: true, message: 'User Deleted Successfully!', severity: 'success' });
       } else {
         setSnackbar({ open: true, message: 'Failed to delete user. Please try again.', severity: 'error' });
 
