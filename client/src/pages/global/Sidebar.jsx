@@ -351,13 +351,13 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />              
-              <Item
+              {/* <Item
                 title="Room Layout"
                 to="/RoomLayout"
                 icon={<PreviewIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />              
+              />               */}
               </SubMenu>
   
             
