@@ -79,7 +79,7 @@ const Sidebar = () => {
   };
 
   const handleTouchEnd = () => {
-    if (touchStartX - touchEndX > 70) {
+    if (touchStartX - touchEndX > 150) {
       setIsSidebarVisible(false);
     } 
     // else if (touchEndX - touchStartX > 70) {
