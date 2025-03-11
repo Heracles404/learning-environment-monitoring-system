@@ -225,7 +225,7 @@ const Dashboard = () => {
             INDOOR AIR QUALITY (IAQ)
           </Typography>
           <Box display="flex" justifyContent="center">
-           <Button 
+           {/* <Button 
             variant="contained" 
             // color="#0ECCFB" 
             onClick={() => setOpenDialog("iaq")}
@@ -239,7 +239,7 @@ const Dashboard = () => {
           startIcon={<HelpIcon />} // Add the HelpOutlineOutlined icon here
           >
             View IAQ Details
-          </Button> 
+          </Button>  */}
           </Box>
           
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
@@ -258,7 +258,7 @@ const Dashboard = () => {
             LIGHT
           </Typography>
           <Box display="flex" justifyContent="center">
-           <Button 
+           {/* <Button 
             variant="contained" 
             // color="#0ECCFB" 
             onClick={() => setOpenDialog("light")}
@@ -272,7 +272,7 @@ const Dashboard = () => {
           startIcon={<HelpIcon />} // Add the HelpOutlineOutlined icon here
           >
             View Light Details
-          </Button>  
+          </Button>   */}
           </Box>
           
           {Object.entries(inactiveDevices.bh1750Rooms).map(([room, count]) => (
@@ -293,7 +293,7 @@ const Dashboard = () => {
           </Typography>
 
           <Box display="flex" justifyContent="center">
-           <Button 
+           {/* <Button 
             variant="contained" 
             // color="#0ECCFB" 
             onClick={() => setOpenDialog("heat")}
@@ -307,7 +307,7 @@ const Dashboard = () => {
           startIcon={<HelpIcon />} // Add the HelpOutlineOutlined icon here
           >
             View Heat Index Details
-          </Button>  
+          </Button>   */}
           
           </Box>
           
@@ -327,7 +327,7 @@ const Dashboard = () => {
             VOLCANIC SMOG (VOG)
           </Typography>
           <Box display="flex" justifyContent="center">
-           <Button 
+           {/* <Button 
             variant="contained" 
             // color="#0ECCFB" 
             onClick={() => setOpenDialog("vog")}
@@ -341,7 +341,7 @@ const Dashboard = () => {
           startIcon={<HelpIcon />} // Add the HelpOutlineOutlined icon here
           >
             View VOG Details
-          </Button> 
+          </Button>  */}
           
           </Box>
           {Object.entries(inactiveDevices.pms5003Rooms).map(([room, count]) => (
