@@ -166,11 +166,11 @@ function ExpandedCard({ param }) {
           data.timestamps.map((timestamp) => new Date(timestamp).toISOString())
         ),
       },
-      yaxis: {
-        title: {
-          text: "Heat Index",
-        },
-      },
+      // yaxis: {
+      //   title: {
+      //     text: "Heat Index",
+      //   },
+      // },
       annotations: {
         yaxis: [
           {

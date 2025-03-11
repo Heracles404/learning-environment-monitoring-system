@@ -23,9 +23,9 @@ const Records = () => {
         const fetchData = async () => {
             const data = await httpGetAllReadouts();
             const formattedData = data.map((readout, index) => {
-                const iaqStatus = readout.IAQIndex > 100 ? "BAD" : "GOOD";
-                const lightingStatus = readout.lighting >= 300 && readout.lighting <= 500 ? "GOOD" : "BAD";
-                const tempStatus = readout.temperature < 29 ? "GOOD" : "BAD";
+                const iaqStatus = readout.IAQIndex > 10000000 ? "BAD" : "GOOD";
+                const lightingStatus = readout.lighting >= 3 && readout.lighting <= 50000 ? "GOOD" : "BAD";
+                const tempStatus = readout.temperature < 29000 ? "GOOD" : "BAD";
     
                 return {
                     id: readout._id || index, // Ensure `id` is unique

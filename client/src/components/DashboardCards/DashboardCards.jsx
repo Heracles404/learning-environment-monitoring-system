@@ -13,13 +13,13 @@ const DashboardCards = () => {
   // Function to categorize the values as "Good" or "Bad"
   const getCategory = (value, type) => {
     if (type === "IAQ Index") {
-      return value <= 100 ? "GOOD" : "BAD";
+      return value <= 10000 ? "GOOD" : "BAD";
     } else if (type === "Heat Index") {
-      return value <= 41 ? "GOOD" : "BAD";
+      return value <= 4100 ? "GOOD" : "BAD";
     } else if (type === "Lighting") {
-      return value < 300 || value > 500 ? "BAD" : "GOOD";
+      return value < 3 || value > 50000 ? "BAD" : "GOOD"; // < 300 and > 500
     } else if (type === "Volcanic Smog") {
-      return value <= 100 ? "GOOD" : "BAD";
+      return value <= 1000 ? "GOOD" : "BAD"; // 100
     }
     return "Unknown";
   };
