@@ -95,14 +95,14 @@ function DBExpandedCard({ param, setExpanded }) {
           return new Date(Date.now() - (param.series[0].data.length - index) * 1000 * 60 * 60).toISOString();
         }),
       },
-      yaxis: {
-        title: {
-          text: "Values",
-          style: {
-            color: "black", // Adjust color if necessary
-          },
-        },
-      },
+      // yaxis: {
+      //   title: {
+      //     text: "Values",
+      //     style: {
+      //       color: "black", // Adjust color if necessary
+      //     },
+      //   },
+      // },
     },
   };
 

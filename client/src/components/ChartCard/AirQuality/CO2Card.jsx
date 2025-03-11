@@ -123,11 +123,11 @@ const CO2Card = (props) => {
             },
           },
         },
-        yaxis: {
-          title: {
-            text: "Index",
-          },
-        },
+        // yaxis: {
+        //   title: {
+        //     text: "Index",
+        //   },
+        // },
         annotations: {
           yaxis: [
             {

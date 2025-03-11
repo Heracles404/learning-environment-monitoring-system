@@ -128,11 +128,11 @@ function ExpandedCard({ param }) {
           },
         },
       },
-      yaxis: {
-        title: {
-          text: "Lux",
-        },
-      },
+      // yaxis: {
+      //   title: {
+      //     text: "Lux",
+      //   },
+      // },
       annotations: {
         yaxis: [
           {

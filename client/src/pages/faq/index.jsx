@@ -32,12 +32,12 @@ const FAQ = () => {
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-          Placeholder
+          What sensors are used in the system to measure the environmental factors?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni pariatur neque aliquam modi eligendi vitae incidunt eos fugit porro? Dolorum autem modi saepe omnis quibusdam nulla adipisci, cumque rerum fugit!
+          The system utilizes three sensors: the BH1750, BME680, and PMS5003. The BH1750 is used for measuring ambient light intensity. The BME680 monitors temperature, humidity, and air quality, including volatile organic compounds (VOCs). Lastly, the PMS5003 detects airborne particulate matter, making it suitable for monitoring volcanic smog and air pollution levels.
           </Typography>
         </AccordionDetails>
       </Accordion>
