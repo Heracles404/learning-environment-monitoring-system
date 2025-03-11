@@ -112,7 +112,7 @@ const Form = () => {
                       "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
                     }}
                 >
-                  <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 4"}}>
+                  {/* <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 4"}}>
                   <AccountCircleOutlinedIcon sx={{ fontSize: 38, color: '#70d8bd', mr: 1 }} />
                   <TextField
                       fullWidth
@@ -130,7 +130,7 @@ const Form = () => {
                         readOnly: true
                       }}
                   />
-                  </Box>
+                  </Box> */}
                   <Box mb={2} sx={{ display: 'flex', alignItems: 'center', gridColumn: "span 2"}}>
                 <BadgeOutlinedIcon sx={{ fontSize: 38, color: '#70d8bd', mr: 1 }} />
                   <TextField

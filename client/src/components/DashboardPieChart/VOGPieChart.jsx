@@ -7,7 +7,7 @@ import { httpGetAllReadouts } from "../../hooks/vog.requests"; // Fetch VOG data
 const VOGPieChart = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const defaultColors = ["#70FFA2", "#FFC2C2", "#FF7070", "#FF1F1F"]; // Colors for levels 1-4
+  const defaultColors = ["#70FFA2", "#ffff00", "#FF8000", "#FF1F1F"]; // Colors for levels 1-4
   const fadedColor = "#50ccac"; // Faded color for levels above the latest one
 
   const [pieData, setPieData] = useState([]);
