@@ -172,7 +172,7 @@ const Dashboard = () => {
             <StatBox
               title="INDOOR"
               title2="DEVICE"
-              subtitle={`Active: ${activeDevices}`}
+              subtitle={`Active: ${activeDevices - 1}`}
               subtitle2={`Inactive: ${inactiveDevices.bme680 + inactiveDevices.bh1750}`}
               subtitle3={`Status`}
               icon2={<SensorsIcon sx={{ color: "#0AFFBE", fontSize: "46px" }} />}
