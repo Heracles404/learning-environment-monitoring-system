@@ -73,12 +73,17 @@ async function deleteUserByUserName(userName) {
 // Function to update a user by username
 async function updateUserByUserName(userName, updates) {
     try {
+        // Hash the password if included in the updates
+        if (updates.password) {
+            updates.password = await argon2.hash(updates.password);
+        }
         const result = await User.updateOne({ userName }, { $set: updates });
         return result;
     } catch (error) {
         throw new Error('Error updating user');
     }
 }
+
 
 module.exports = {
     existsUserName,
