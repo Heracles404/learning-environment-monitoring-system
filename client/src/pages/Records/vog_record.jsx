@@ -19,6 +19,7 @@ const VOGRecords = () => {
     const [endDate, setEndDate] = useState("");
     const [openDownloadDialog, setOpenDownloadDialog] = useState(false);
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -116,8 +117,10 @@ const VOGRecords = () => {
     };
 
     const handleDeleteSelected = async () => {
-        if (selectedRows.length === 0) return;
-
+        if (selectedRows.length === 0) {
+            return;
+        }
+        setLoading(true); // Set loading to true when deletion starts
         try {
             for (const id of selectedRows) {
                 const result = await httpDeleteReadout(id);
@@ -132,6 +135,7 @@ const VOGRecords = () => {
         } catch (error) {
             console.error("Error during deletion:", error);
         }
+        setLoading(false); // Set loading to false when deletion ends
         setOpenDialog(false);
     };
 
@@ -201,8 +205,16 @@ const VOGRecords = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenDialog(false)} color="secondary">Cancel</Button>
-                    <Button sx={{ backgroundColor: '#4cceac', height: '30px', borderRadius: '25px', fontWeight: 'bold' }} onClick={handleDeleteSelected} color="primary" variant="contained">
-                        Delete Record
+                    <Button sx={{ backgroundColor: '#4cceac', 
+                    height: '30px', 
+                    borderRadius: '25px', 
+                    fontWeight: 'bold' }} 
+                    onClick={handleDeleteSelected} 
+                    color="primary" 
+                    variant="contained"
+                    disabled={loading} // Disable button while loading
+                    >
+                    {loading ? 'Deleting...' : 'Delete Record'}
                     </Button>
                 </DialogActions>
             </Dialog>

@@ -19,6 +19,7 @@ const Records = () => {
     const [endDate, setEndDate] = useState("");
     const [openDownloadDialog, setOpenDownloadDialog] = useState(false); // For download confirmation
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -159,11 +160,11 @@ const Records = () => {
         
     ];
 
-    const handleDeleteSelected = async () => {
+    const handleDeleteSelected = async () => { 
         if (selectedRows.length === 0) {
-
             return;
         }
+        setLoading(true); // Set loading to true when deletion starts
         try {
             for (const id of selectedRows) {
                 const result = await httpDeleteReadout(id);
@@ -175,13 +176,13 @@ const Records = () => {
             }
             setSelectedRows([]); // Clear selection after deletion
             setSnackbar({ open: true, message: 'Row Deleted Successfully!', severity: 'success' });
-
         } catch (error) {
             console.error("Error during deletion:", error);
         }
+        setLoading(false); // Set loading to false when deletion ends
         setOpenDialog(false); // Close dialog after deletion 
-        
     };
+    
 
     const handleDownload = () => {
         // Filter rows based on date range
@@ -307,16 +308,21 @@ const Records = () => {
             <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
                 <DialogTitle>Delete Record</DialogTitle>
                 <DialogContent>
-                <DialogContentText>Are you sure you want to delete?</DialogContentText>
+                    <DialogContentText>Are you sure you want to delete?</DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={() => setOpenDialog(false)} color="secondary">
-                    Cancel
-                </Button>
-                <Button sx={{backgroundColor: '#4cceac',height: '30px', borderRadius: '25px', fontWeight: 'bold',}}
-                onClick={handleDeleteSelected} color="primary" variant="contained">
-                    Delete Record
-                </Button>
+                    <Button onClick={() => setOpenDialog(false)} color="secondary">
+                        Cancel
+                    </Button>
+                    <Button
+                        sx={{ backgroundColor: '#4cceac', height: '30px', borderRadius: '25px', fontWeight: 'bold' }}
+                        onClick={handleDeleteSelected}
+                        color="primary"
+                        variant="contained"
+                        disabled={loading} // Disable button while loading
+                    >
+                        {loading ? 'Deleting...' : 'Delete Record'}
+                    </Button>
                 </DialogActions>
             </Dialog>
 
