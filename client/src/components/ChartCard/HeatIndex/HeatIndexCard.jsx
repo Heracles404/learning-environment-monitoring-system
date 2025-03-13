@@ -34,49 +34,55 @@ function ExpandedCard({ param }) {
     const fetchHeatIndexData = async () => {
       try {
         const response = await httpGetAllReadouts();
-
         if (response && response.length > 0) {
           const roomData = response.reduce((acc, item) => {
             const room = item.classroom;
             if (!acc[room]) {
               acc[room] = { heatIndexLevels: [], timestamps: [], formattedTimestamps: [] };
             }
-
-            // Handle date and time formatting
-            const dateString = item.date || new Date().toISOString().split('T')[0];
-            let timeString = item.time; // Example: "02:55 PM"
-            
-            // Convert 12-hour format time to 24-hour format and build the Date object
-            const localDate = new Date(`${dateString} ${timeString}`);
-            
-            // Reformat to 12-hour AM/PM (ensures consistency)
-            const formattedTime = localDate.toLocaleTimeString("en-US", {
-              hour: "numeric",
-              minute: "2-digit",
-              hour12: true,
-            });
-
-            // Correct timestamp conversion for UTC (without altering the date)
-            const timestamp = localDate.getTime() - localDate.getTimezoneOffset() * 60000; // Convert to UTC
-
-            acc[room].heatIndexLevels.push(item.heatIndex);
-            acc[room].timestamps.push(timestamp);
-            acc[room].formattedTimestamps.push(`${dateString} ${formattedTime}`);
+  
+            const dateString = item.date || new Date().toISOString().split("T")[0];
+            const timeString = item.time;
+            const parsedDate = new Date(`${dateString} ${timeString}`);
+            const timestamp = parsedDate.getTime();
+  
+            acc[room].heatIndexLevels.push({ timestamp, heatIndex: item.heatIndex });
+  
             return acc;
           }, {});
-
-          console.log("Fetched Heat Index Data:", roomData);
+  
+          Object.keys(roomData).forEach((room) => {
+            roomData[room].heatIndexLevels.sort((a, b) => a.timestamp - b.timestamp);
+  
+            roomData[room] = {
+              heatIndexLevels: roomData[room].heatIndexLevels.map((d) => d.heatIndex),
+              timestamps: roomData[room].heatIndexLevels.map((d) => d.timestamp),
+              formattedTimestamps: roomData[room].heatIndexLevels.map((d) =>
+                new Date(d.timestamp).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                })
+              ),
+            };
+          });
+  
           setHeatIndexData(roomData);
+          setFilteredData(roomData);
         } else {
           console.error("No data found.");
         }
       } catch (error) {
-        console.error("Error fetching Heat Index data:", error);
+        console.error("Error fetching heat index data:", error);
       }
     };
-
+  
     fetchHeatIndexData();
   }, []);
+  
 
   const filterData = () => {
     const start = new Date(startDate).setHours(0, 0, 0, 0);

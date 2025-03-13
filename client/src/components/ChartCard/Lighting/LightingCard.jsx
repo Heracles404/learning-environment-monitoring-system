@@ -30,25 +30,30 @@ function ExpandedCard({ param }) {
             if (!acc[room]) {
               acc[room] = { lightingLevels: [], timestamps: [], formattedTimestamps: [] };
             }
-
+  
             const dateString = item.date ? item.date : new Date().toISOString().split('T')[0];
             let timeString = item.time;
-
+  
             const localDate = new Date(`${dateString} ${timeString}`);
-            const formattedTime = localDate.toLocaleTimeString("en-US", {
-              hour: "numeric",
-              minute: "2-digit",
-              hour12: true,
-            });
-
-            const timestamp = localDate.getTime() - localDate.getTimezoneOffset() * 60000;
-
-            acc[room].lightingLevels.push(item.lighting);
-            acc[room].timestamps.push(timestamp);
-            acc[room].formattedTimestamps.push(`${dateString} ${formattedTime}`);
+            const timestamp = localDate.getTime();
+  
+            acc[room].lightingLevels.push({ timestamp, lighting: item.lighting });
             return acc;
           }, {});
-
+  
+          Object.keys(roomData).forEach((room) => {
+            roomData[room].lightingLevels.sort((a, b) => a.timestamp - b.timestamp);
+  
+            roomData[room] = {
+              lightingLevels: roomData[room].lightingLevels.map((d) => d.lighting),
+              timestamps: roomData[room].lightingLevels.map((d) => d.timestamp),
+              formattedTimestamps: roomData[room].lightingLevels.map((d) => {
+                const dateObj = new Date(d.timestamp);
+                return dateObj.toLocaleDateString() + " " + dateObj.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true });
+              }),
+            };
+          });
+  
           setLightingData(roomData);
           setFilteredData(roomData);
         } else {
@@ -58,9 +63,10 @@ function ExpandedCard({ param }) {
         console.error("Error fetching lighting data:", error);
       }
     };
-
+  
     fetchLightingData();
   }, []);
+  
 
   const filterData = () => {
     const start = new Date(startDate).setHours(0, 0, 0, 0);
