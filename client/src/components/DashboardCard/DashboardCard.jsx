@@ -55,6 +55,8 @@ function DBCompactCard({ param, setExpanded }) {
 
 // Expanded Card
 function DBExpandedCard({ param, setExpanded }) {
+  const sortedData = param.series[0].data.sort((a, b) => a.x - b.x); // Ensure data is sorted by timestamp
+
   const data = {
     options: {
       chart: {
@@ -63,9 +65,6 @@ function DBExpandedCard({ param, setExpanded }) {
       },
       dropShadow: {
         enabled: false,
-        enabledOnSeries: undefined,
-        top: 0,
-        left: 0,
         blur: 3,
         color: "#000",
         opacity: 0.35,
@@ -75,7 +74,7 @@ function DBExpandedCard({ param, setExpanded }) {
         type: "gradient",
       },
       dataLabels: {
-        enabled: false, // Disables the small boxes with data values
+        enabled: false, // Disables small value labels
       },
       stroke: {
         curve: "smooth",
@@ -83,7 +82,7 @@ function DBExpandedCard({ param, setExpanded }) {
       },
       tooltip: {
         x: {
-          format: "dd/MM/yy HH:mm", // Format for tooltip X-axis values (time)
+          format: "dd/MM/yy HH:mm", // Tooltip time format
         },
       },
       grid: {
@@ -91,20 +90,12 @@ function DBExpandedCard({ param, setExpanded }) {
       },
       xaxis: {
         type: "datetime",
-        categories: param.series[0].data.map((_, index) => {
-          return new Date(Date.now() - (param.series[0].data.length - index) * 1000 * 60 * 60).toISOString();
-        }),
+        categories: sortedData.map((point) => new Date(point.x).toISOString()), // Ensure correct ordering
       },
-      // yaxis: {
-      //   title: {
-      //     text: "Values",
-      //     style: {
-      //       color: "black", // Adjust color if necessary
-      //     },
-      //   },
-      // },
     },
   };
+  
+  
 
   return (
     <motion.div

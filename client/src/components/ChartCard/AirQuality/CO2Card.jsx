@@ -18,33 +18,36 @@ const CO2Card = (props) => {
         const response = await httpGetAllReadouts();
         if (response && response.length > 0) {
           const roomData = response.reduce((acc, item) => {
-            const room = item.classroom;
+            const room = item.classroom; // Adjust based on your actual data structure
             if (!acc[room]) {
               acc[room] = { iaqIndexes: [], timestamps: [], formattedTimestamps: [] };
             }
-
-            // Keep the date intact, but handle the time properly
+  
             const dateString = item.date ? item.date : new Date().toISOString().split('T')[0];
-            let timeString = item.time; // Example: "02:55 PM"
-            
-            // Convert 12-hour format time to 24-hour format and build the Date object
+            let timeString = item.time; // Example: "12:55 AM" or "12:55 PM"
+  
+            // Ensure correct parsing of time, assuming the format is hh:mm AM/PM
             const localDate = new Date(`${dateString} ${timeString}`);
-            
-            // Reformat to 12-hour AM/PM (ensures consistency)
-            const formattedTime = localDate.toLocaleTimeString("en-US", {
-              hour: "numeric",
-              minute: "2-digit",
-              hour12: true,
-            });
-
-            // Correct timestamp conversion for UTC (without altering the date)
-            const timestamp = localDate.getTime() - localDate.getTimezoneOffset() * 60000; // Convert to UTC
-
-            acc[room].iaqIndexes.push(item.IAQIndex);
-            acc[room].timestamps.push(timestamp);
-            acc[room].formattedTimestamps.push(`${dateString} ${formattedTime}`); // Combine date and time for the tooltip
+            const timestamp = localDate.getTime(); // Get correct timestamp in ms
+  
+            acc[room].iaqIndexes.push({ timestamp, iaqIndex: item.IAQIndex });
             return acc;
           }, {});
+  
+          // Sort timestamps in ascending order for each room
+          Object.keys(roomData).forEach((room) => {
+            roomData[room].iaqIndexes.sort((a, b) => a.timestamp - b.timestamp);
+  
+            roomData[room] = {
+              iaqIndexes: roomData[room].iaqIndexes.map((d) => d.iaqIndex),
+              timestamps: roomData[room].iaqIndexes.map((d) => d.timestamp),
+              formattedTimestamps: roomData[room].iaqIndexes.map((d) => {
+                const dateObj = new Date(d.timestamp);
+                return dateObj.toLocaleDateString() + " " + dateObj.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true });
+              }),
+            };
+          });
+  
           setIaqData(roomData);
           setFilteredData(roomData);
         } else {
@@ -54,6 +57,7 @@ const CO2Card = (props) => {
         console.error("Error fetching IAQ data:", error);
       }
     };
+  
     fetchIAQData();
   }, []);
 
