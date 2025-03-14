@@ -20,25 +20,41 @@ const VolcanicSmogCard = (props) => {
           const roomData = response.reduce((acc, item) => {
             const room = item.classroom;
             if (!acc[room]) {
-              acc[room] = { pm25Levels: [], pm10Levels: [], timestamps: [], formattedTimestamps: [] };
+              acc[room] = { readings: [] };
             }
 
-            const dateString = item.date ? item.date : new Date().toISOString().split('T')[0];
-            let timeString = item.time;
-            const localDate = new Date(`${dateString} ${timeString}`);
-            const formattedTime = localDate.toLocaleTimeString("en-US", {
-              hour: "numeric",
-              minute: "2-digit",
-              hour12: true,
-            });
-            const timestamp = localDate.getTime() - localDate.getTimezoneOffset() * 60000;
+            const dateString = item.date ? item.date : new Date().toISOString().split("T")[0];
+            const localDate = new Date(`${dateString} ${item.time}`);
+            const timestamp = localDate.getTime();
 
-            acc[room].pm25Levels.push(item.pm25);
-            acc[room].pm10Levels.push(item.pm10);
-            acc[room].timestamps.push(timestamp);
-            acc[room].formattedTimestamps.push(`${dateString} ${formattedTime}`);
+            acc[room].readings.push({
+              timestamp,
+              pm25: item.pm25,
+              pm10: item.pm10,
+            });
+
             return acc;
           }, {});
+
+          // Sort timestamps in ascending order for each room
+          Object.keys(roomData).forEach((room) => {
+            roomData[room].readings.sort((a, b) => a.timestamp - b.timestamp);
+
+            roomData[room] = {
+              pm25Levels: roomData[room].readings.map((d) => d.pm25),
+              pm10Levels: roomData[room].readings.map((d) => d.pm10),
+              timestamps: roomData[room].readings.map((d) => d.timestamp),
+              formattedTimestamps: roomData[room].readings.map((d) => {
+                const dateObj = new Date(d.timestamp);
+                return dateObj.toLocaleDateString() + " " + dateObj.toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                });
+              }),
+            };
+          });
+
           setAirData(roomData);
           setFilteredData(roomData);
         } else {
@@ -60,11 +76,11 @@ const VolcanicSmogCard = (props) => {
         const filteredRoomData = airData[room].timestamps
           .map((timestamp, index) =>
             timestamp >= start && timestamp <= end
-              ? { 
-                  timestamp, 
-                  pm25Level: airData[room].pm25Levels[index], 
+              ? {
+                  timestamp,
+                  pm25Level: airData[room].pm25Levels[index],
                   pm10Level: airData[room].pm10Levels[index],
-                  formattedTimestamp: airData[room].formattedTimestamps[index] 
+                  formattedTimestamp: airData[room].formattedTimestamps[index],
                 }
               : null
           )
@@ -133,65 +149,15 @@ const VolcanicSmogCard = (props) => {
           },
         },
       },
-      // yaxis: {
-      //   title: {
-      //     text: "VOG Value",
-      //   },
-      // },
       annotations: {
         yaxis: [
-          {
-            y: 50, // Threshold Level 1
-            borderColor: '#70FFA2',
-            label: {
-              borderColor: '#70FFA2',
-              style: {
-                color: '#fff',
-                background: '#70FFA2',
-              },
-              text: 'Level 1',
-            },
-          },
-          {
-            y: 150, // Threshold Level 2
-            borderColor: '#FFC2C2',
-            label: {
-              borderColor: '#FFC2C2',
-              style: {
-                color: '#fff',
-                background: '#FFC2C2',
-              },
-              text: 'Level 2',
-            },
-          },
-          {
-            y: 250, // Threshold Level 2
-            borderColor: '#FF7070',
-            label: {
-              borderColor: '#FF7070',
-              style: {
-                color: '#fff',
-                background: '#FF7070',
-              },
-              text: 'Level 3',
-            },
-          },
-          {
-            y: 300, // Threshold Level 2
-            borderColor: '#FF1F1F',
-            label: {
-              borderColor: '#FF1F1F',
-              style: {
-                color: '#fff',
-                background: '#FF1F1F',
-              },
-              text: 'Level 4',
-            },
-          },
+          { y: 50, borderColor: "#70FFA2", label: { borderColor: "#70FFA2", style: { color: "#fff", background: "#70FFA2" }, text: "Level 1" } },
+          { y: 150, borderColor: "#FFC2C2", label: { borderColor: "#FFC2C2", style: { color: "#fff", background: "#FFC2C2" }, text: "Level 2" } },
+          { y: 250, borderColor: "#FF7070", label: { borderColor: "#FF7070", style: { color: "#fff", background: "#FF7070" }, text: "Level 3" } },
+          { y: 300, borderColor: "#FF1F1F", label: { borderColor: "#FF1F1F", style: { color: "#fff", background: "#FF1F1F" }, text: "Level 4" } },
         ],
       },
-      legend: { show: false }, // This removes the legend
-
+      legend: { show: false },
     },
     series: seriesData,
   };
@@ -201,34 +167,8 @@ const VolcanicSmogCard = (props) => {
       <span>{props.title}</span>
       <div className="filters" style={{ marginBottom: "20px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-          <TextField
-            type="date"
-            label="Start Date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            InputLabelProps={{ shrink: true }}
-            style={{ width: "140px" }}
-          />
-          <TextField
-            type="date"
-            label="End Date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            InputLabelProps={{ shrink: true }}
-            inputProps={{ min: startDate }}
-            style={{ width: "140px" }}
-          />
-          <FormControl variant="outlined" margin="normal" style={{ minWidth: 200, width: 140 }}>
-            <InputLabel htmlFor="roomSelect">Select Rooms</InputLabel>
-            <Select multiple value={selectedRooms} onChange={(e) => setSelectedRooms(e.target.value)} renderValue={(selected) => selected.join(", ")}>
-              {Object.keys(airData).map((room) => (
-                <MenuItem key={room} value={room}>
-                  <Checkbox checked={selectedRooms.includes(room)} />
-                  <ListItemText primary={`Room ${room}`} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <TextField type="date" label="Start Date" value={startDate} onChange={(e) => setStartDate(e.target.value)} InputLabelProps={{ shrink: true }} style={{ width: "140px" }} />
+          <TextField type="date" label="End Date" value={endDate} onChange={(e) => setEndDate(e.target.value)} InputLabelProps={{ shrink: true }} inputProps={{ min: startDate }} style={{ width: "140px" }} />
           <Button onClick={filterData} variant="contained" color="primary">Filter</Button>
           <Button onClick={clearFilters} variant="contained" color="primary">Clear Filters</Button>
         </div>

@@ -25,8 +25,9 @@ const VOGRecords = () => {
         const fetchData = async () => {
             const data = await httpGetAllReadouts();
             const formattedData = data.map((readout, index) => {
-                const vogStatus = readout.level === 1 ? "GOOD" : "BAD"; // Updated VOG Status logic
-                
+                const level = Number(readout.level); // Ensure level is treated as a number
+                const vogStatus = level === 1 ? "GOOD" : "BAD"; // Levels 2-4 are BAD
+            
                 return {
                     id: readout._id || index,
                     classroom: readout.classroom,
@@ -35,10 +36,12 @@ const VOGRecords = () => {
                     pm25: readout.pm25,
                     pm10: readout.pm10,
                     OAQIndex: readout.OAQIndex,
-                    level: readout.level,
-                    vogStatus, // Add computed VOG Status
+                    level: level, // Store it as a number
+                    vogStatus, // Updated VOG Status logic
                 };
             });
+            
+            
             setRows(formattedData);
         };
     

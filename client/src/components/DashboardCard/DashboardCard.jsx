@@ -54,8 +54,14 @@ function DBCompactCard({ param, setExpanded }) {
 }
 
 // Expanded Card
+// Expanded Card
+// Expanded Card
 function DBExpandedCard({ param, setExpanded }) {
-  const sortedData = param.series[0].data.sort((a, b) => a.x - b.x); // Ensure data is sorted by timestamp
+  // Ensure all series data is sorted by timestamp while maintaining x-y pairs
+  const sortedSeries = param.series.map((serie) => ({
+    ...serie,
+    data: [...serie.data].sort((a, b) => new Date(a.x) - new Date(b.x)), // Sort each series
+  }));
 
   const data = {
     options: {
@@ -67,11 +73,7 @@ function DBExpandedCard({ param, setExpanded }) {
         enabled: false,
         blur: 3,
         color: "#000",
-        opacity: 0.35,
-      },
-      fill: {
-        colors: ["#fff"],
-        type: "gradient",
+        opacity: 0.3,
       },
       dataLabels: {
         enabled: false, // Disables small value labels
@@ -84,13 +86,23 @@ function DBExpandedCard({ param, setExpanded }) {
         x: {
           format: "dd/MM/yy HH:mm", // Tooltip time format
         },
+        y: {
+          formatter: (val) => (val !== undefined && val !== null ? val.toFixed(2) : ""), // Ensures no undefined errors
+        },
       },
       grid: {
         show: true,
       },
       xaxis: {
         type: "datetime",
-        categories: sortedData.map((point) => new Date(point.x).toISOString()), // Ensure correct ordering
+        categories: sortedSeries[0]?.data.map((point) =>
+          point.x ? new Date(point.x).toISOString() : null
+        ), // Ensure 'x' values exist before converting
+      },
+      yaxis: {
+        labels: {
+          formatter: (val) => (val !== undefined ? val.toFixed(2) : ""), // Fix potential undefined values
+        },
       },
     },
   };
@@ -111,14 +123,12 @@ function DBExpandedCard({ param, setExpanded }) {
       </div>
       <span style={{ color: param.titleColor }}>{param.title}</span>
       <div className="DBchartContainer">
-        <Chart
-          options={data.options}
-          series={param.series}
-          type="area"
-        />
+        <Chart options={data.options} series={sortedSeries} type="area" />
       </div>
     </motion.div>
   );
 }
+
+
 
 export default DashboardCard;
