@@ -14,8 +14,8 @@ const VolcanicSmogRecordTable = () => {
         const fetchData = async () => {
             const data = await httpGetAllReadouts();
             const formattedData = data.map((readout, index) => ({
-                id: readout._id || index, // Use `classroom` instead of `id`
-                classroom: readout.classroom,   // Add classroom to the row data
+                id: readout._id || index,
+                classroom: readout.classroom,
                 date: readout.date,
                 time: readout.time,
                 temperature: readout.temperature,
@@ -26,7 +26,7 @@ const VolcanicSmogRecordTable = () => {
                 IAQIndex: readout.IAQIndex,
                 indoorAir: readout.indoorAir,
                 temp: readout.temp,
-                concernLevel: (readout.pm25 > 30 || readout.pm10 > 50) ? "BAD" : "GOOD",
+                concernLevel: (readout.concernLevel === 1) ? "GOOD" : (readout.concernLevel >= 2 && readout.concernLevel <= 4) ? "BAD" : "UNKNOWN",
             }));
             setRows(formattedData);
         };
