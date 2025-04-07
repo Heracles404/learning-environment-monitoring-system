@@ -54,13 +54,10 @@ function DBCompactCard({ param, setExpanded }) {
 }
 
 // Expanded Card
-// Expanded Card
-// Expanded Card
 function DBExpandedCard({ param, setExpanded }) {
-  // Ensure all series data is sorted by timestamp while maintaining x-y pairs
   const sortedSeries = param.series.map((serie) => ({
     ...serie,
-    data: [...serie.data].sort((a, b) => new Date(a.x) - new Date(b.x)), // Sort each series
+    data: [...serie.data].sort((a, b) => new Date(a.x) - new Date(b.x)),
   }));
 
   const data = {
@@ -76,7 +73,7 @@ function DBExpandedCard({ param, setExpanded }) {
         opacity: 0.3,
       },
       dataLabels: {
-        enabled: false, // Disables small value labels
+        enabled: false,
       },
       stroke: {
         curve: "smooth",
@@ -84,30 +81,27 @@ function DBExpandedCard({ param, setExpanded }) {
       },
       tooltip: {
         x: {
-          format: "dd/MM/yy HH:mm", // Tooltip time format
+          format: "dd/MM/yy HH:mm",
         },
         y: {
-          formatter: (val) => (val !== undefined && val !== null ? val.toFixed(2) : ""), // Ensures no undefined errors
+          formatter: (val) =>
+            val !== undefined && val !== null ? val.toFixed(2) : "",
         },
       },
       grid: {
         show: true,
       },
       xaxis: {
-        type: "datetime",
-        categories: sortedSeries[0]?.data.map((point) =>
-          point.x ? new Date(point.x).toISOString() : null
-        ), // Ensure 'x' values exist before converting
+        type: "datetime", // Let ApexCharts handle it
       },
       yaxis: {
         labels: {
-          formatter: (val) => (val !== undefined ? val.toFixed(2) : ""), // Fix potential undefined values
+          formatter: (val) =>
+            val !== undefined && val !== null ? val.toFixed(2) : "",
         },
       },
     },
   };
-  
-  
 
   return (
     <motion.div
@@ -118,7 +112,13 @@ function DBExpandedCard({ param, setExpanded }) {
       }}
       layoutId={`expandableCard-${param.title}`}
     >
-      <div style={{ alignSelf: "flex-end", cursor: "pointer", color: "white" }}>
+      <div
+        style={{
+          alignSelf: "flex-end",
+          cursor: "pointer",
+          color: "white",
+        }}
+      >
         <UilTimes onClick={setExpanded} />
       </div>
       <span style={{ color: param.titleColor }}>{param.title}</span>
@@ -128,6 +128,7 @@ function DBExpandedCard({ param, setExpanded }) {
     </motion.div>
   );
 }
+
 
 
 
