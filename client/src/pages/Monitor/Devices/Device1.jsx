@@ -65,9 +65,96 @@ const Device1 = () => {
     const role = localStorage.getItem("role");
     const columns = [
         { id: "classroom", label: "Classroom", minWidth: 150 },
-        { id: "status", label: "Device Status", minWidth: 150 },
-        { id: "bh1750", label: "Light Sensor", minWidth: 150 },
-        { id: "bme680", label: "Air Quality, Heat Index Sensor", minWidth: 150 },
+        // { id: "status", label: "Device Status", minWidth: 150 },
+        {
+            id: "status",
+            label: "Device Status",
+            minWidth: 150,
+            renderCell: (row) => {
+              const status = row.status || "Unknown";
+              const bgColor =
+                status === "ACTIVE"
+                  ? colors.greenAccent[600]
+                  : status === "INACTIVE"
+                  ? colors.redAccent[700]
+                  : colors.grey[600];
+        
+              return (
+                <Box
+                  m="5px auto"
+                  p="5px"
+                  display="flex"
+                  justifyContent="center"
+                  backgroundColor={bgColor}
+                  borderRadius="4px"
+                >
+                  <Typography color="white" fontWeight="bold">
+                    {status}
+                  </Typography>
+                </Box>
+              );
+            },
+          },
+        // { id: "bh1750", label: "Light Sensor", minWidth: 150 },
+        {
+            id: "bh1750",
+            label: "Light Sensor",
+            minWidth: 150,
+            renderCell: (row) => {
+              const bh1750 = row.bh1750 || "Unknown";
+              const bgColor =
+                bh1750 === "ACTIVE"
+                  ? colors.greenAccent[600]
+                  : bh1750 === "INACTIVE"
+                  ? colors.redAccent[700]
+                  : colors.grey[600];
+        
+              return (
+                <Box
+                  m="5px auto"
+                  p="5px"
+                  display="flex"
+                  justifyContent="center"
+                  backgroundColor={bgColor}
+                  borderRadius="4px"
+                >
+                  <Typography color="white" fontWeight="bold">
+                    {bh1750}
+                  </Typography>
+                </Box>
+              );
+            },
+          },
+        // { id: "bme680", label: "Air Quality, Heat Index Sensor", minWidth: 150 },
+        {
+            id: "bme680",
+            label: "Air Quality",
+            minWidth: 150,
+            renderCell: (row) => {
+              const bme680 = row.bme680 || "Unknown";
+              const bgColor =
+                bme680 === "ACTIVE"
+                  ? colors.greenAccent[600]
+                  : bme680 === "INACTIVE"
+                  ? colors.redAccent[700]
+                  : colors.grey[600];
+        
+              return (
+                <Box
+                  m="5px auto"
+                  p="5px"
+                  display="flex"
+                  justifyContent="center"
+                  backgroundColor={bgColor}
+                  borderRadius="4px"
+                >
+                  <Typography color="white" fontWeight="bold">
+                    {bme680}
+                  </Typography>
+                </Box>
+              );
+            },
+          },
         // { id: "pms5003", label: "Volcanic Smog Sensor", minWidth: 150 },
     ];
 
