@@ -71,9 +71,10 @@ const Dashboard = () => {
     bh1750: 0,
     bme680: 0,
     pms5003: 0,
-    bh1750Rooms: {},
-    bme680Rooms: {},
-    pms5003Rooms: {}
+    bh1750Rooms: [],
+    bme680Rooms: [],
+    pms5003Rooms: [],
+    inactiveRooms: [] // Store rooms labeled as inactive here
   });
   const [totalDevices, setTotalDevices] = useState(null);
 
@@ -82,43 +83,61 @@ const Dashboard = () => {
       try {
         const active = await httpGetActive();
         const allDevices = await httpGetAllDevices();
-
+  
         console.log("Active Devices Data:", active);
-         console.log("All Devices Data:", allDevices);
-
+        console.log("All Devices Data:", allDevices);
+  
         setActiveDevices(active.count || 0);
         setTotalDevices(allDevices.length || 0);
-
-        // Calculate inactive devices for each sensor type and store rooms with count
+  
+        // Initialize inactive devices and rooms counters
         let inactive = { bh1750: 0, bme680: 0, pms5003: 0 };
-        let inactiveRooms = { bh1750Rooms: {}, bme680Rooms: {}, pms5003Rooms: {} };
-        let activePMSCount = 0; // Track active PMS5003 separately
-
+        let inactiveRooms = { bh1750Rooms: [], bme680Rooms: [], pms5003Rooms: [], inactiveRooms: [] }; // Track inactive rooms
+        let activePMSCount = 0;
+  
+        // Iterate through devices and check for inactive rooms
         allDevices.forEach(device => {
+          // Track rooms labeled as "INACTIVE"
+          if (device.status === "INACTIVE") {
+            inactiveRooms.inactiveRooms.push(device.classroom); // Add the classroom to the inactiveRooms list
+          }
+  
+          // Track inactive bh1750 rooms
           if (device.bh1750 === "INACTIVE") {
             inactive.bh1750 += 1;
-            inactiveRooms.bh1750Rooms[device.classroom] = (inactiveRooms.bh1750Rooms[device.classroom] || 0) + 1;
+            inactiveRooms.bh1750Rooms.push(device.classroom); // Add bh1750 rooms
           }
+  
+          // Track inactive bme680 rooms
           if (device.bme680 === "INACTIVE") {
             inactive.bme680 += 1;
-            inactiveRooms.bme680Rooms[device.classroom] = (inactiveRooms.bme680Rooms[device.classroom] || 0) + 1;
+            inactiveRooms.bme680Rooms.push(device.classroom); // Add bme680 rooms
           }
+  
+          // Track active PMS5003 devices
           if (device.pms5003 === "ACTIVE") {
-            activePMSCount += 1; // Count active PMS5003 devices
+            activePMSCount += 1;
           }
+          
+          // Track inactive PMS5003 rooms
           if (device.pms5003 === "INACTIVE") {
             inactive.pms5003 += 1;
-            inactiveRooms.pms5003Rooms[device.classroom] = (inactiveRooms.pms5003Rooms[device.classroom] || 0) + 1;
+            inactiveRooms.pms5003Rooms.push(device.classroom); // Add pms5003 rooms
           }
         });
-
+  
         setInactiveDevices({ ...inactive, ...inactiveRooms });
         setActivePMS(activePMSCount);
+  
+        // Log the count of inactive rooms
+        console.log("Inactive Rooms:", inactiveRooms.inactiveRooms);
+        console.log("Inactive Rooms Count:", inactiveRooms.inactiveRooms.length);
+  
       } catch (error) {
         console.error("Error fetching devices:", error);
       }
     };
-
+  
     fetchDevices();
   }, []);
 
@@ -138,78 +157,68 @@ const Dashboard = () => {
         }}
       >
         <Header title="DASHBOARD" subtitle="Welcome to Edilberto S. Legaspi Integrated High School Dashboard"
-        // subtitle2="Monitored using Charts, Tables, Graphs" 
         />
         <Grid container
-        display='flex'
-        justifyContent={{xs:"space-around",sm:"space-between", lg:"space-around"}}
-        alignContent={{xs:"space-around",sm:"space-between", lg:"space-around"}}
-        pr="120px"
-        ml="4px"
-        rowSpacing={1}
-        columnSpacing={{ xs: 1, sm: 3, md: 3 }}
-        mb="30px"
-      >
-        <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 2 }}>
-
-          <Box
-            backgroundColor={colors.greenAccent[600]}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            sx={{
-              borderRadius: '12px',
-              height: '102px', 
-              width: {
-                xs: '140%', // 0
-                sm: 166, // 600
-                md: 166, // 900
-                lg: 166, // 1200
-                xl: 166, // 1536
-              },
-            }}
-          >
+          display='flex'
+          justifyContent={{xs:"space-around", sm:"space-between", lg:"space-around"}}
+          alignContent={{xs:"space-around", sm:"space-between", lg:"space-around"}}
+          pr="120px"
+          ml="4px"
+          rowSpacing={1}
+          columnSpacing={{ xs: 1, sm: 3, md: 3 }}
+          mb="30px"
+        >
+          {/* Indoor Device Stat */}
+          <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 2 }}>
+            <Box
+              backgroundColor={colors.greenAccent[600]}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              sx={{
+                borderRadius: '12px',
+                height: '102px', 
+                width: { xs: '140%', sm: 166, md: 166, lg: 166, xl: 166 }
+              }}
+            >
             <StatBox
               title="INDOOR"
               title2="DEVICE"
               subtitle={`Active: ${activeDevices}`}
-              subtitle2={`Inactive: ${inactiveDevices.bme680 + inactiveDevices.bh1750}`}
+              subtitle2={`Inactive: ${inactiveDevices.inactiveRooms.length}`} 
               subtitle3={`Status`}
               icon2={<SensorsIcon sx={{ color: "#0AFFBE", fontSize: "46px" }} />}
             />
-          </Box>
+            
+            </Box>
+          </Grid>
+          
+          {/* Outdoor Device Stat */}
+          <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 2 }}>
+            <Box
+              backgroundColor={colors.greenAccent[600]}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              mr="5px"
+              sx={{
+                borderRadius: '12px',
+                height: '102px', 
+                width: { xs: '140%', sm: 166, md: 166, lg: 166, xl: 166 }
+              }}
+            >
+              <StatBox
+                title="OUTDOOR"
+                title2="DEVICE"
+                subtitle={`Active: ${activePMS}`}
+                subtitle2={`Inactive: ${inactiveDevices.pms5003}`}
+                subtitle3={`Status`}
+                icon2={<SensorsIcon sx={{ color: "#0AFFBE", fontSize: "46px" }} />}
+              />
+            </Box>
+          </Grid>
         </Grid>
-        <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 2 }} >
-          <Box
-            backgroundColor={colors.greenAccent[600]}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            mr="5px"
-            sx={{
-              borderRadius: '12px',
-              height: '102px', 
-              width: {
-                xs: '140%', // 0
-                sm: 166, // 600
-                md: 166, // 900
-                lg: 166, // 1200
-                xl: 166, // 1536
-              },
-            }}
-          >
-            <StatBox
-              title="OUTDOOR"
-              title2="DEVICE"
-              subtitle={`Active: ${activePMS}`}
-              subtitle2={`Inactive: ${inactiveDevices.pms5003}`}
-              subtitle3={`Status`}
-              icon2={<SensorsIcon sx={{ color: "#0AFFBE", fontSize: "46px" }} />}
-            />
-          </Box>
-        </Grid>
-      </Grid>
-      </Box>
+        </Box>
       <Box>
         <DashboardCards />
         {/* <DBRecords/> */}
