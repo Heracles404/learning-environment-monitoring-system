@@ -42,7 +42,7 @@ float temperature, humidity, voc, IAQIndex, lux;
 float ppm;
 int heatIndex;
 String indoorAir, tempLabel, lightLabel, recordTime;
-const String classroom = "R06";
+const String classroom = "MMCL_E311";
 // Global or static variable to track blinking state
 bool alertTriggered = false;
 

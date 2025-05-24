@@ -27,7 +27,7 @@ const char* devices  = "/devices/classroom/";
 const char*  vog = "/vog";
 //const char* cloudAPI    = "https://api.lems.systems/vog";  // if using external endpoint
 
-const String classroom       = "R102";   // or "401", pick one
+const String classroom       = "MMCL_vog";   // or "401", pick one
 
 // --------------------------------------------------
 // NTP CONFIG
