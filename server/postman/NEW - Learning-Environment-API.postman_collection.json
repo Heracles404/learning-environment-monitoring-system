@@ -1,0 +1,810 @@
+{
+	"info": {
+		"_postman_id": "e2f216e6-a336-4f10-a333-07926b3bce08",
+		"name": "Learning-Environment-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29955735",
+		"_collection_link": "https://www.postman.com/satellite-operator-28813848/workspace/isbn/collection/29955735-e2f216e6-a336-4f10-a333-07926b3bce08?action=share&source=collection_link&creator=29955735"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "POST /user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"admin\",\r\n    \"password\": \"lems\",\r\n    \"role\": \"principal\",\r\n    \"firstName\": \"User\",\r\n    \"lastName\": \"Admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.lems.systems/users",
+							"protocol": "https",
+							"host": [
+								"api",
+								"lems",
+								"systems"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /userName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/users/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"users",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /users",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/users/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"users",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH /users",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"role\": \"admin\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/users/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"users",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /users/authenticate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"user\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/users/authenticate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"users",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Devices",
+			"item": [
+				{
+					"name": "GET /deviceById",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/devices/67887327027c64c0f271ddc7",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"devices",
+								"67887327027c64c0f271ddc7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /deviceByClassroom",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/devices/classroom/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"devices",
+								"classroom",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /devices",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.lems.systems/devices",
+							"protocol": "https",
+							"host": [
+								"api",
+								"lems",
+								"systems"
+							],
+							"path": [
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /devices",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"classroom\": \"1\",\r\n    \"status\": \"inactive\",\r\n    \"bh1750\": \"-\",\r\n    \"bme680\": \"-\",\r\n    \"pms5003\": \"inactive\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.lems.systems/devices",
+							"protocol": "https",
+							"host": [
+								"api",
+								"lems",
+								"systems"
+							],
+							"path": [
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /activeDevices",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.lems.systems/devices/getActive",
+							"protocol": "https",
+							"host": [
+								"api",
+								"lems",
+								"systems"
+							],
+							"path": [
+								"devices",
+								"getActive"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /inactiveDevices",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.lems.systems/devices/getInactive",
+							"protocol": "https",
+							"host": [
+								"api",
+								"lems",
+								"systems"
+							],
+							"path": [
+								"devices",
+								"getInactive"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /devices",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://api.lems.systems/devices/67baf53f6d27f2f8afbff0d5",
+							"protocol": "https",
+							"host": [
+								"api",
+								"lems",
+								"systems"
+							],
+							"path": [
+								"devices",
+								"67baf53f6d27f2f8afbff0d5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH /updateDevice",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"classroom\": \"402\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/devices/678a355d3b39d367143feb7b",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"devices",
+								"678a355d3b39d367143feb7b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH /updateDeviceByClassroom",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"active\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.lems.systems/devices/classroom/1",
+							"protocol": "https",
+							"host": [
+								"api",
+								"lems",
+								"systems"
+							],
+							"path": [
+								"devices",
+								"classroom",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sensors",
+			"item": [
+				{
+					"name": "POST /sensors",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"classroom\": \"1\",\r\n        \"time\": \"10:15 PM\",\r\n        \"temperature\": 10,\r\n        \"humidity\": 50,\r\n        \"heatIndex\": 40,\r\n        \"lighting\": 702,\r\n        \"voc\": 830,\r\n        \"IAQIndex\": 49,\r\n        \"indoorAir\": \"Good\",\r\n        \"temp\": \"Good\",\r\n        \"lightRemarks\": \"Good\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.lems.systems/sensors",
+							"protocol": "https",
+							"host": [
+								"api",
+								"lems",
+								"systems"
+							],
+							"path": [
+								"sensors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /sensors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.lems.systems/sensors",
+							"protocol": "https",
+							"host": [
+								"api",
+								"lems",
+								"systems"
+							],
+							"path": [
+								"sensors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /sensor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/sensors/6784c02e41b861f39f8ba3fd",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"sensors",
+								"6784c02e41b861f39f8ba3fd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /classroom sensors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/sensors/classroom/402",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"sensors",
+								"classroom",
+								"402"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /date sensors",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/sensors/date/date?startDate=10/10/2024&endDate=1/13/2025",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"sensors",
+								"date",
+								"date"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "10/10/2024"
+								},
+								{
+									"key": "endDate",
+									"value": "1/13/2025"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /time sensors",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/sensors/time/03:15 PM",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"sensors",
+								"time",
+								"03:15 PM"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /sensors",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/sensors/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"sensors",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /all sensors",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://api.lems.systems/sensors",
+							"protocol": "https",
+							"host": [
+								"api",
+								"lems",
+								"systems"
+							],
+							"path": [
+								"sensors"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vog",
+			"item": [
+				{
+					"name": "POST /vog",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"classroom\": 1,\r\n    \"time\": \"6:37 PM\",\r\n    \"pm25\": 25,\r\n    \"pm10\": 10,\r\n    \"OAQIndex\": 40,\r\n    \"level\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.lems.systems/vog",
+							"protocol": "https",
+							"host": [
+								"api",
+								"lems",
+								"systems"
+							],
+							"path": [
+								"vog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /vogs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.lems.systems/vog",
+							"protocol": "https",
+							"host": [
+								"api",
+								"lems",
+								"systems"
+							],
+							"path": [
+								"vog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /vog",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/vog/6784cac9192190ef8e929e23",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"vog",
+								"6784cac9192190ef8e929e23"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /date vog",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/vog/date/date?startDate=10/10/2024&endDate=10/25/2024",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"vog",
+								"date",
+								"date"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "10/10/2024"
+								},
+								{
+									"key": "endDate",
+									"value": "10/25/2024"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /time vog",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/vog/time/03:15 PM",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"vog",
+								"time",
+								"03:15 PM"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /vog",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/vog/6784cac9192190ef8e929e23",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"vog",
+								"6784cac9192190ef8e929e23"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /all vog",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/vog",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"vog"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
