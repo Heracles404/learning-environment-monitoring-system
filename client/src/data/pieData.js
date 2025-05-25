@@ -57,9 +57,10 @@ export const fetchPieData = async () => {
       const { IAQIndex, heatIndex, lighting } = roomStatus[room];
 
       // Ensure "BAD" for values below 5
-      const IAQStatus = IAQIndex < 5 ? "BAD" : IAQIndex > 1000000 ? "BAD" : "GOOD";
-      const heatStatus = heatIndex < 5 ? "BAD" : heatIndex < 60000 ? "GOOD" : "BAD";
-      const lightingStatus = lighting < 5 ? "BAD" : lighting >= 3 && lighting < 500000 ? "GOOD" : "BAD";
+      const IAQStatus = IAQIndex < 100 ? "GOOD" : "BAD";
+      const heatStatus = heatIndex >= 27 && heatIndex <= 32 ? "GOOD" : "BAD";
+      const lightingStatus = lighting >= 300 && lighting <= 500 ? "GOOD" : "BAD";
+
 
       if (IAQStatus === "GOOD") {
         indoorAirGoodData.push({ classroom: room, data: IAQIndex });

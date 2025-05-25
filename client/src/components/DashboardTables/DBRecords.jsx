@@ -24,10 +24,10 @@ const DBRecords = () => {
                   currentHeatIndex: readout.heatIndex,
                   currentIAQIndex: readout.IAQIndex,
                   currentLighting: readout.lighting,
-                  concernLevel: (readout.heatIndex < 60000) ? "GOOD" : 
-                               (readout.heatIndex > 3) ? "BAD" : "GOOD",
-                  IAQStatus: readout.IAQIndex > 1000000 ? "BAD" : "GOOD",
-                  LightStatus: (readout.lighting >= 3 && readout.lighting < 500000) ? "GOOD" : "BAD",
+                  concernLevel: readout.heatIndex >= 27 && readout.heatIndex <= 32 ? "GOOD" : "BAD",
+                  IAQStatus: readout.IAQIndex < 100 ? "GOOD" : "BAD",
+                  LightStatus: readout.lighting >= 300 && readout.lighting <= 500 ? "GOOD" : "BAD",
+
                 };
             });
 
