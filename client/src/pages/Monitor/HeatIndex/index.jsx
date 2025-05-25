@@ -53,8 +53,9 @@ const HeatIndexMonitor = () => {
           <Box >
             <HeatIndexRecordTable/>
             <Card width="300px">
-                <CardMedia component='img' height='210vh'
-                // image="../../../assets/iaq.png"
+                <CardMedia component='img' 
+                // height='210vh'
+                image="../../../params/heat.png"
                 alt='img'/>   
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
@@ -64,7 +65,7 @@ const HeatIndexMonitor = () => {
                   Ideal Heat Index Ranges <br/>
                   </Typography>
                   <Typography variant='body2' color="green">
-                  Good Heat Index Range: Values between 27°C - 32°C = GOOD <br/>
+                  Good Heat Index Range: Values between 27°C - 41°C = GOOD <br/>
                   </Typography>
                   <Typography variant='body2' color="red">
                   Bad Heat Index Range: Values above 32°C, below 27°C = BAD <br/>

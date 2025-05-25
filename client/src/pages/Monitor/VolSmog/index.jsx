@@ -54,7 +54,9 @@ const VolSmogMonitor = () => {
           <Box >
             <VolcanicSmogRecordTable/>
             <Card width="300px">
-                <CardMedia component='img' height='210vh'
+                <CardMedia component='img' 
+                // height='210vh'
+                image="../../../params/vog.png"
                 // image="../../../assets/iaq.png"
                 alt='img'/>   
                 <CardContent>
