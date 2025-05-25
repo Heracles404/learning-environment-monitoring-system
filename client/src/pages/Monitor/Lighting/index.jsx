@@ -54,8 +54,11 @@ const LightingMonitor = () => {
           <Box >
             <LightingRecordTable/>
             <Card width="300px">
-                <CardMedia component='img' height='200vh'
+                <CardMedia component='img' 
+                // height='200vh'
                 // image="../../../assets/iaq.png"
+                image="../../../params/lux.png"
+
                 alt='img'/>   
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">

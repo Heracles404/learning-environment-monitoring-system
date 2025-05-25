@@ -53,8 +53,9 @@ const CarbonDioxideMonitor = () => {
           <Box >
             <AirQualityRecordTable/>
             <Card width="300px">
-                <CardMedia component='img' height='210vh'
-                // image="../../../assets/iaq.png"
+                <CardMedia component='img' 
+                // height='210vh'
+                image="../../../params/iaq.png"
                 alt='img'/>   
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
