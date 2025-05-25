@@ -39,7 +39,7 @@ const VolcanicSmogRecordTable = () => {
     }, []);
 
     const columns = [
-        { field: "classroom", headerName: "Room", width: 100,},  // Updated header to Classroom
+        { field: "classroom", headerName: "Device", width: 100,},  // Updated header to Classroom
         { field: "date", headerName: "Date", width: 100,},
         { field: "time", headerName: "Time", width: 100,},
         { field: "pm25", headerName: "pm2.5", width: 120,},

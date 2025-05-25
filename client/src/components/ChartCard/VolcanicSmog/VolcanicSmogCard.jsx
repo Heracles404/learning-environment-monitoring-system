@@ -138,7 +138,7 @@ const VolcanicSmogCard = (props) => {
 
       if (selectedPollutants.includes("pm25") && roomData.pm25Levels.length > 0) {
         series.push({
-          name: `Room ${room} PM2.5`,
+          name: `Device ${room} PM2.5`,
           data: roomData.timestamps.map((timestamp, index) => ({
             x: timestamp,
             y: roomData.pm25Levels[index],
@@ -148,7 +148,7 @@ const VolcanicSmogCard = (props) => {
 
       if (selectedPollutants.includes("pm10") && roomData.pm10Levels.length > 0) {
         series.push({
-          name: `Room ${room} PM10`,
+          name: `Device ${room} PM10`,
           data: roomData.timestamps.map((timestamp, index) => ({
             x: timestamp,
             y: roomData.pm10Levels[index],
@@ -253,7 +253,7 @@ const VolcanicSmogCard = (props) => {
               {Object.keys(airData).map((room) => (
                 <MenuItem key={room} value={room}>
                   <Checkbox checked={selectedRooms.includes(room)} />
-                  <ListItemText primary={`Room ${room}`} />
+                  <ListItemText primary={`Device ${room}`} />
                 </MenuItem>
               ))}
             </Select>
