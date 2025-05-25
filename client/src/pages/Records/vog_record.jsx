@@ -21,7 +21,7 @@ const VOGRecords = () => {
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
+   
         const fetchData = async () => {
             const data = await httpGetAllReadouts();
             const formattedData = data.map((readout, index) => {
@@ -44,9 +44,15 @@ const VOGRecords = () => {
             
             setRows(formattedData);
         };
+        useEffect(() => {
+                const interval = setInterval(() => {
+                    void fetchData();
+                }, 1000);
+        
+                return () => clearInterval(interval);
+            }, []);
     
-        fetchData();
-    }, []);
+
 
     const columns = [
         // { field: "classroom", headerName: "Room", minWidth: 100, flex: 1 },

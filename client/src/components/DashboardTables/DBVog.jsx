@@ -18,9 +18,9 @@ const DBVOGRecords = () => {
 
             const updatedData = { ...rows };
             data.forEach((readout) => {
-                updatedData["Outdoor"] = {
-                    id: "Outdoor",
-                    classroom: "Outdoor",
+                updatedData[readout.classroom] = {
+                    id: readout.classroom,
+                    classroom: readout.classroom,
                     currentPM25: readout.pm25,
                     currentPM10: readout.pm10,
                     currentlevel: readout.level,
@@ -39,7 +39,7 @@ const DBVOGRecords = () => {
     }, [rows]);
 
     const columns = [
-        // { field: "classroom", headerName: "Outdoor", minWidth: 100, flex: 1 },
+        { field: "classroom", headerName: "Device", minWidth: 100, flex: 1 },
         { field: "currentlevel", headerName: "Concern Level", minWidth:140,  },
         // { field: "concernLevel", headerName: "VOG Status", minWidth: 100, flex: 1 },
         {

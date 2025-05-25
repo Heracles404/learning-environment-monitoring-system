@@ -3,7 +3,16 @@ import "./VolcanicSmogCard.css";
 import { motion } from "framer-motion";
 import Chart from "react-apexcharts";
 import { httpGetAllReadouts } from "../../../hooks/vog.requests.js";
-import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Checkbox, ListItemText } from "@mui/material";
+import {
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Checkbox,
+  ListItemText,
+} from "@mui/material";
 
 const VolcanicSmogCard = (props) => {
   const [airData, setAirData] = useState({});
@@ -11,6 +20,7 @@ const VolcanicSmogCard = (props) => {
   const [endDate, setEndDate] = useState("");
   const [filteredData, setFilteredData] = useState({});
   const [selectedRooms, setSelectedRooms] = useState([]);
+  const [selectedPollutants, setSelectedPollutants] = useState(["pm25", "pm10"]);
 
   useEffect(() => {
     const fetchAirData = async () => {
@@ -19,11 +29,9 @@ const VolcanicSmogCard = (props) => {
         if (response && response.length > 0) {
           const roomData = response.reduce((acc, item) => {
             const room = item.classroom;
-            if (!acc[room]) {
-              acc[room] = { readings: [] };
-            }
+            if (!acc[room]) acc[room] = { readings: [] };
 
-            const dateString = item.date ? item.date : new Date().toISOString().split("T")[0];
+            const dateString = item.date || new Date().toISOString().split("T")[0];
             const localDate = new Date(`${dateString} ${item.time}`);
             const timestamp = localDate.getTime();
 
@@ -36,7 +44,6 @@ const VolcanicSmogCard = (props) => {
             return acc;
           }, {});
 
-          // Sort timestamps in ascending order for each room
           Object.keys(roomData).forEach((room) => {
             roomData[room].readings.sort((a, b) => a.timestamp - b.timestamp);
 
@@ -46,11 +53,15 @@ const VolcanicSmogCard = (props) => {
               timestamps: roomData[room].readings.map((d) => d.timestamp),
               formattedTimestamps: roomData[room].readings.map((d) => {
                 const dateObj = new Date(d.timestamp);
-                return dateObj.toLocaleDateString() + " " + dateObj.toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: true,
-                });
+                return (
+                  dateObj.toLocaleDateString() +
+                  " " +
+                  dateObj.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                  })
+                );
               }),
             };
           });
@@ -67,23 +78,41 @@ const VolcanicSmogCard = (props) => {
     fetchAirData();
   }, []);
 
+  useEffect(() => {
+    if (!Object.keys(airData).length) return;
+
+    const filtered = Object.keys(airData).reduce((acc, room) => {
+      if (selectedRooms.length === 0 || selectedRooms.includes(room)) {
+        acc[room] = airData[room];
+      }
+      return acc;
+    }, {});
+
+    setFilteredData(filtered);
+  }, [selectedRooms, airData]);
+
   const filterData = () => {
-    const start = new Date(startDate).setHours(0, 0, 0, 0);
-    const end = new Date(endDate).setHours(23, 59, 59, 999);
+    const start = startDate ? new Date(startDate).setHours(0, 0, 0, 0) : null;
+    const end = endDate ? new Date(endDate).setHours(23, 59, 59, 999) : null;
 
     const filtered = Object.keys(airData).reduce((acc, room) => {
       if (selectedRooms.length === 0 || selectedRooms.includes(room)) {
         const filteredRoomData = airData[room].timestamps
-          .map((timestamp, index) =>
-            timestamp >= start && timestamp <= end
-              ? {
-                  timestamp,
-                  pm25Level: airData[room].pm25Levels[index],
-                  pm10Level: airData[room].pm10Levels[index],
-                  formattedTimestamp: airData[room].formattedTimestamps[index],
-                }
-              : null
-          )
+          .map((timestamp, index) => {
+            const isInDateRange =
+              (start === null || timestamp >= start) &&
+              (end === null || timestamp <= end);
+
+            if (isInDateRange) {
+              return {
+                timestamp,
+                pm25Level: airData[room].pm25Levels[index],
+                pm10Level: airData[room].pm10Levels[index],
+                formattedTimestamp: airData[room].formattedTimestamps[index],
+              };
+            }
+            return null;
+          })
           .filter(Boolean);
 
         if (filteredRoomData.length > 0) {
@@ -105,33 +134,41 @@ const VolcanicSmogCard = (props) => {
     setStartDate("");
     setEndDate("");
     setSelectedRooms([]);
+    setSelectedPollutants(["pm25", "pm10"]);
     setFilteredData(airData);
   };
 
   const sortedData = Object.keys(filteredData).length > 0 ? filteredData : airData;
 
+  // Build series data according to selected pollutants only
   const seriesData = Object.keys(sortedData)
     .map((room) => {
       const roomData = sortedData[room];
-      if (!roomData || roomData.pm25Levels.length === 0 || roomData.pm10Levels.length === 0) {
-        return null;
-      }
-      return [
-        {
+      if (!roomData) return null;
+
+      const series = [];
+
+      if (selectedPollutants.includes("pm25") && roomData.pm25Levels.length > 0) {
+        series.push({
           name: `Room ${room} PM2.5`,
           data: roomData.timestamps.map((timestamp, index) => ({
             x: timestamp,
             y: roomData.pm25Levels[index],
           })),
-        },
-        {
+        });
+      }
+
+      if (selectedPollutants.includes("pm10") && roomData.pm10Levels.length > 0) {
+        series.push({
           name: `Room ${room} PM10`,
           data: roomData.timestamps.map((timestamp, index) => ({
             x: timestamp,
             y: roomData.pm10Levels[index],
           })),
-        },
-      ];
+        });
+      }
+
+      return series;
     })
     .flat()
     .filter(Boolean);
@@ -144,35 +181,135 @@ const VolcanicSmogCard = (props) => {
       tooltip: {
         x: {
           formatter: function (value, { dataPointIndex, seriesIndex }) {
-            const roomKey = Object.keys(sortedData)[Math.floor(seriesIndex / 2)];
+            const roomIndex = Math.floor(seriesIndex / (selectedPollutants.length));
+            const roomKey = Object.keys(sortedData)[roomIndex];
             return sortedData[roomKey]?.formattedTimestamps?.[dataPointIndex] || "Unknown";
           },
         },
       },
       annotations: {
         yaxis: [
-          { y: 50, borderColor: "#70FFA2", label: { borderColor: "#70FFA2", style: { color: "#fff", background: "#70FFA2" }, text: "Level 1" } },
-          { y: 150, borderColor: "#FFC2C2", label: { borderColor: "#FFC2C2", style: { color: "#fff", background: "#FFC2C2" }, text: "Level 2" } },
-          { y: 250, borderColor: "#FF7070", label: { borderColor: "#FF7070", style: { color: "#fff", background: "#FF7070" }, text: "Level 3" } },
-          { y: 300, borderColor: "#FF1F1F", label: { borderColor: "#FF1F1F", style: { color: "#fff", background: "#FF1F1F" }, text: "Level 4" } },
+          {
+            y: 50,
+            borderColor: "#70FFA2",
+            label: {
+              borderColor: "#70FFA2",
+              style: { color: "#fff", background: "#70FFA2" },
+              text: "Level 1",
+            },
+          },
+          {
+            y: 150,
+            borderColor: "#FFC2C2",
+            label: {
+              borderColor: "#FFC2C2",
+              style: { color: "#fff", background: "#FFC2C2" },
+              text: "Level 2",
+            },
+          },
+          {
+            y: 250,
+            borderColor: "#FF7070",
+            label: {
+              borderColor: "#FF7070",
+              style: { color: "#fff", background: "#FF7070" },
+              text: "Level 3",
+            },
+          },
+          {
+            y: 300,
+            borderColor: "#FF1F1F",
+            label: {
+              borderColor: "#FF1F1F",
+              style: { color: "#fff", background: "#FF1F1F" },
+              text: "Level 4",
+            },
+          },
         ],
       },
-      legend: { show: false },
+      legend: { show:false },
     },
     series: seriesData,
   };
 
   return (
-    <motion.div className="ExpandedCard" style={{ background: props.color.backGround, boxShadow: props.color.boxShadow }}>
+    <motion.div
+      className="ExpandedCard"
+      style={{ background: props.color.backGround, boxShadow: props.color.boxShadow }}
+    >
       <span>{props.title}</span>
       <div className="filters" style={{ marginBottom: "20px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-          <TextField type="date" label="Start Date" value={startDate} onChange={(e) => setStartDate(e.target.value)} InputLabelProps={{ shrink: true }} style={{ width: "140px" }} />
-          <TextField type="date" label="End Date" value={endDate} onChange={(e) => setEndDate(e.target.value)} InputLabelProps={{ shrink: true }} inputProps={{ min: startDate }} style={{ width: "140px" }} />
-          <Button onClick={filterData} variant="contained" color="primary">Filter</Button>
-          <Button onClick={clearFilters} variant="contained" color="primary">Clear Filters</Button>
+          {/* Room Selector */}
+          <FormControl style={{ minWidth: 200 }}>
+            <InputLabel>Rooms</InputLabel>
+            <Select
+              multiple
+              value={selectedRooms}
+              onChange={(e) => setSelectedRooms(e.target.value)}
+              renderValue={(selected) => selected.join(", ")}
+            >
+              {Object.keys(airData).map((room) => (
+                <MenuItem key={room} value={room}>
+                  <Checkbox checked={selectedRooms.includes(room)} />
+                  <ListItemText primary={`Room ${room}`} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {/* Date Filters */}
+          <TextField
+            type="date"
+            label="Start Date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+            style={{ width: "140px" }}
+          />
+          <TextField
+            type="date"
+            label="End Date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+            inputProps={{ min: startDate }}
+            style={{ width: "140px" }}
+          />
+
+          {/* Pollutant Selector */}
+          <FormControl style={{ minWidth: 160 }}>
+            <InputLabel>Pollutants</InputLabel>
+            <Select
+              multiple
+              value={selectedPollutants}
+              onChange={(e) => setSelectedPollutants(e.target.value)}
+              renderValue={(selected) =>
+                selected
+                  .map((p) => (p === "pm25" ? "PM2.5" : "PM10"))
+                  .join(", ")
+              }
+            >
+              <MenuItem value="pm25">
+                <Checkbox checked={selectedPollutants.includes("pm25")} />
+                <ListItemText primary="PM2.5" />
+              </MenuItem>
+              <MenuItem value="pm10">
+                <Checkbox checked={selectedPollutants.includes("pm10")} />
+                <ListItemText primary="PM10" />
+              </MenuItem>
+            </Select>
+          </FormControl>
+
+          <Button onClick={filterData} variant="contained" color="primary">
+            Filter
+          </Button>
+          <Button onClick={clearFilters} variant="contained" color="primary">
+            Clear Filters
+          </Button>
         </div>
       </div>
+
       <div className="chartContainer" style={{ marginTop: "20px" }}>
         <Chart options={data.options} series={data.series} type="area" />
       </div>

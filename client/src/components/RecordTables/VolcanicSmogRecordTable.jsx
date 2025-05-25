@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { httpGetAllReadouts } from "../../hooks/sensors.requests";
+import { httpGetAllReadouts } from "../../hooks/vog.requests";
 import { Box, Typography, Paper } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
@@ -26,7 +26,11 @@ const VolcanicSmogRecordTable = () => {
                 IAQIndex: readout.IAQIndex,
                 indoorAir: readout.indoorAir,
                 temp: readout.temp,
-                concernLevel: (readout.concernLevel === 1) ? "GOOD" : (readout.concernLevel >= 2 && readout.concernLevel <= 4) ? "BAD" : "UNKNOWN",
+                pm25: readout.pm25,
+                pm10: readout.pm10,
+                OAQ: readout.OAQIndex,
+                level: readout.level,
+                concernLevel: (Number(readout.level) === 1) ? "GOOD" : "BAD",
             }));
             setRows(formattedData);
         };
@@ -38,7 +42,10 @@ const VolcanicSmogRecordTable = () => {
         { field: "classroom", headerName: "Room", width: 100,},  // Updated header to Classroom
         { field: "date", headerName: "Date", width: 100,},
         { field: "time", headerName: "Time", width: 100,},
-        { field: "voc", headerName: "VOG", width: 120,},
+        { field: "pm25", headerName: "pm2.5", width: 120,},
+        { field: "pm10", headerName: "pm10", width: 120,},
+        { field: "OAQ", headerName: "OAQ Index", width: 120,},
+        { field: "level", headerName: "Level of Concern", width: 120,},
         {
                             field: "concernLevel",
                             headerName: "VOG Status",

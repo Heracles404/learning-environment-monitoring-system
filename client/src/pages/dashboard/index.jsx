@@ -252,7 +252,7 @@ const Dashboard = () => {
           </Box>
           
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
-            <Box backgroundColor="orange" display="inline-flex" pr="10px" borderRadius='15px' mt="5px">
+            <Box backgroundColor="#d8708b" display="inline-flex" pr="10px" borderRadius='15px' mt="5px">
             <CrisisAlertIcon sx={{ fontSize: 21, color: 'white', mr: 1 }}/>
           <Typography color="white" key={room}>Room {room}: '{count}' Inactive IAQ Sensor</Typography>
           </Box>
@@ -285,7 +285,7 @@ const Dashboard = () => {
           </Box>
           
           {Object.entries(inactiveDevices.bh1750Rooms).map(([room, count]) => (
-            <Box backgroundColor="orange" display="inline-flex" pr="10px" borderRadius='15px' mt="5px">
+            <Box backgroundColor="#d8708b" display="inline-flex" pr="10px" borderRadius='15px' mt="5px">
               <CrisisAlertIcon sx={{ fontSize: 21, color: 'white', mr: 1 }}/>
             <Typography color="white" key={room}>Room {room}: '{count}' Inactive Light Sensor</Typography>
             </Box>
@@ -321,7 +321,7 @@ const Dashboard = () => {
           </Box>
           
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
-            <Box backgroundColor="orange" display="inline-flex" pr="10px" borderRadius='15px' mt="5px">
+            <Box backgroundColor="#d8708b" display="inline-flex" pr="10px" borderRadius='15px' mt="5px">
             <CrisisAlertIcon sx={{ fontSize: 21, color: 'white', mr: 1 }}/>
           <Typography color="white" key={room}>Room {room}: '{count}' Inactive Heat Index Sensor</Typography>
           </Box>
@@ -354,7 +354,7 @@ const Dashboard = () => {
           
           </Box>
           {Object.entries(inactiveDevices.pms5003Rooms).map(([room, count]) => (
-            <Box backgroundColor="orange" display="inline-flex" pr="10px" borderRadius='15px' mt="5px">
+            <Box backgroundColor="#d8708b" display="inline-flex" pr="10px" borderRadius='15px' mt="5px">
             <CrisisAlertIcon sx={{ fontSize: 21, color: 'white', mr: 1 }}/>
           <Typography color="white" key={room}>Room {room}: '{count}' Inactive VOG Sensor</Typography>
           </Box>

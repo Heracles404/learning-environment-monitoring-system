@@ -2,7 +2,20 @@ import React, { useState, useEffect } from "react";
 import "./HeatIndexCard.css";
 import { motion, LayoutGroup } from "framer-motion";
 import Chart from "react-apexcharts";
-import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Select, Checkbox, ListItemText, FormControl, InputLabel } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  MenuItem,
+  Select,
+  Checkbox,
+  ListItemText,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
 import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
 
 const HeatIndexCard = (props) => {
@@ -30,6 +43,7 @@ function ExpandedCard({ param }) {
     return color;
   };
 
+  // Fetch and preprocess data on mount
   useEffect(() => {
     const fetchHeatIndexData = async () => {
       try {
@@ -40,20 +54,21 @@ function ExpandedCard({ param }) {
             if (!acc[room]) {
               acc[room] = { heatIndexLevels: [], timestamps: [], formattedTimestamps: [] };
             }
-  
+
             const dateString = item.date || new Date().toISOString().split("T")[0];
-            const timeString = item.time;
+            const timeString = item.time || "00:00:00";
             const parsedDate = new Date(`${dateString} ${timeString}`);
             const timestamp = parsedDate.getTime();
-  
+
             acc[room].heatIndexLevels.push({ timestamp, heatIndex: item.heatIndex });
-  
+
             return acc;
           }, {});
-  
+
+          // Sort and format data
           Object.keys(roomData).forEach((room) => {
             roomData[room].heatIndexLevels.sort((a, b) => a.timestamp - b.timestamp);
-  
+
             roomData[room] = {
               heatIndexLevels: roomData[room].heatIndexLevels.map((d) => d.heatIndex),
               timestamps: roomData[room].heatIndexLevels.map((d) => d.timestamp),
@@ -69,7 +84,7 @@ function ExpandedCard({ param }) {
               ),
             };
           });
-  
+
           setHeatIndexData(roomData);
           setFilteredData(roomData);
         } else {
@@ -79,20 +94,32 @@ function ExpandedCard({ param }) {
         console.error("Error fetching heat index data:", error);
       }
     };
-  
+
     fetchHeatIndexData();
   }, []);
-  
 
-  const filterData = () => {
-    const start = new Date(startDate).setHours(0, 0, 0, 0);
-    const end = new Date(endDate).setHours(23, 59, 59, 999);
+  // Auto filter data whenever filters change
+  useEffect(() => {
+    if (!startDate && !endDate && selectedRooms.length === 0) {
+      setFilteredData(heatIndexData);
+      setOpenDialog(false);
+      return;
+    }
+
+    const start = startDate ? new Date(startDate).setHours(0, 0, 0, 0) : Number.NEGATIVE_INFINITY;
+    const end = endDate ? new Date(endDate).setHours(23, 59, 59, 999) : Number.POSITIVE_INFINITY;
 
     const filtered = Object.keys(heatIndexData).reduce((acc, room) => {
       if (selectedRooms.length === 0 || selectedRooms.includes(room)) {
         const filteredRoomData = heatIndexData[room].timestamps
           .map((timestamp, index) =>
-            timestamp >= start && timestamp <= end ? { timestamp, heatIndexLevel: heatIndexData[room].heatIndexLevels[index], formattedTimestamp: heatIndexData[room].formattedTimestamps[index] } : null
+            timestamp >= start && timestamp <= end
+              ? {
+                  timestamp,
+                  heatIndexLevel: heatIndexData[room].heatIndexLevels[index],
+                  formattedTimestamp: heatIndexData[room].formattedTimestamps[index],
+                }
+              : null
           )
           .filter(Boolean);
 
@@ -108,31 +135,35 @@ function ExpandedCard({ param }) {
     }, {});
 
     setFilteredData(filtered);
+
     setOpenDialog(Object.keys(filtered).length === 0);
-  };
+  }, [startDate, endDate, selectedRooms, heatIndexData]);
 
   const clearFilters = () => {
     setStartDate("");
     setEndDate("");
     setSelectedRooms([]);
-    setFilteredData(heatIndexData); // Reset to the original data
+    setFilteredData(heatIndexData);
+    setOpenDialog(false);
   };
 
   const sortedData = Object.keys(filteredData).length > 0 ? filteredData : heatIndexData;
 
-  const seriesData = Object.keys(sortedData).map((room) => {
-    const roomData = sortedData[room];
-    if (!roomData || roomData.heatIndexLevels.length === 0 || roomData.timestamps.length === 0) {
-      return null;
-    }
-    return {
-      name: `Room ${room}`,
-      data: roomData.timestamps.map((timestamp, index) => ({
-        x: timestamp,
-        y: roomData.heatIndexLevels[index],
-      })),
-    };
-  }).filter(Boolean);
+  const seriesData = Object.keys(sortedData)
+    .map((room) => {
+      const roomData = sortedData[room];
+      if (!roomData || roomData.heatIndexLevels.length === 0 || roomData.timestamps.length === 0) {
+        return null;
+      }
+      return {
+        name: `Room ${room}`,
+        data: roomData.timestamps.map((timestamp, index) => ({
+          x: timestamp,
+          y: roomData.heatIndexLevels[index],
+        })),
+      };
+    })
+    .filter(Boolean);
 
   const data = {
     options: {
@@ -172,41 +203,36 @@ function ExpandedCard({ param }) {
           data.timestamps.map((timestamp) => new Date(timestamp).toISOString())
         ),
       },
-      // yaxis: {
-      //   title: {
-      //     text: "Heat Index",
-      //   },
-      // },
       annotations: {
         yaxis: [
           {
-            y: 27, // Good threshold
-            borderColor: 'green',
+            y: 27,
+            borderColor: "green",
             label: {
-              borderColor: 'green',
+              borderColor: "green",
               style: {
-                color: '#fff',
-                background: 'green',
+                color: "#fff",
+                background: "green",
               },
-              text: 'Good',
-            }
+              text: "Good",
+            },
           },
           {
-            y: 41, // Bad threshold
-            borderColor: 'red',
+            y: 41,
+            borderColor: "red",
             label: {
-              borderColor: 'red',
+              borderColor: "red",
               style: {
-                color: '#fff',
-                background: 'red',
+                color: "#fff",
+                background: "red",
               },
-              text: 'Bad',
-            }
-          }
-        ]
+              text: "Bad",
+            },
+          },
+        ],
       },
       legend: {
-        show: false, // This removes the legends
+        show: false,
       },
     },
     series: seriesData,
@@ -217,7 +243,11 @@ function ExpandedCard({ param }) {
   };
 
   return (
-    <motion.div className="ExpandedCard" style={{ background: param.color.backGround, boxShadow: param.color.boxShadow }} layoutId={`expandableCard-${param.title}`} >
+    <motion.div
+      className="ExpandedCard"
+      style={{ background: param.color.backGround, boxShadow: param.color.boxShadow }}
+      layoutId={`expandableCard-${param.title}`}
+    >
       <span>{param.title}</span>
 
       <div className="filters" style={{ marginBottom: "20px" }}>
@@ -239,16 +269,11 @@ function ExpandedCard({ param }) {
             inputProps={{ min: startDate }}
             style={{ width: "140px" }}
           />
-          {/* Room filter */}
-          <FormControl
-            variant="outlined"
-            margin="normal"
-            style={{
-              minWidth: 200,
-              width: 140, // Same width as the date fields
-            }}
-          >
-            <InputLabel htmlFor="roomSelect" style={{ fontSize: "0.9rem" }}>Select Rooms</InputLabel>
+
+          <FormControl variant="outlined" margin="normal" style={{ minWidth: 200, width: 140 }}>
+            <InputLabel htmlFor="roomSelect" style={{ fontSize: "0.9rem" }}>
+              Select Rooms
+            </InputLabel>
             <Select
               multiple
               value={selectedRooms}
@@ -258,16 +283,16 @@ function ExpandedCard({ param }) {
                 PaperProps: {
                   style: {
                     maxHeight: 200,
-                    width: 140, // Consistent dropdown width
+                    width: 140,
                   },
                 },
               }}
               inputProps={{ id: "roomSelect" }}
               label="Select Rooms"
               style={{
-                fontSize: "0.9rem", // Maintain consistent font size
-                padding: "5px", // Consistent padding
-                height: "40px", // Set height for alignment
+                fontSize: "0.9rem",
+                padding: "5px",
+                height: "40px",
               }}
             >
               {Object.keys(heatIndexData).map((room) => (
@@ -279,11 +304,6 @@ function ExpandedCard({ param }) {
             </Select>
           </FormControl>
 
-          <Button onClick={filterData} variant="contained" color="primary" style={{ height: "40px" }}>
-            Filter
-          </Button>
-
-          {/* Clear Filters Button with Same Style as Filter Button */}
           <Button onClick={clearFilters} variant="contained" color="primary" style={{ height: "40px" }}>
             Clear Filters
           </Button>

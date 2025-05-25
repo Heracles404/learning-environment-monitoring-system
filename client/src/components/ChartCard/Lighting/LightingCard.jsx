@@ -30,30 +30,34 @@ function ExpandedCard({ param }) {
             if (!acc[room]) {
               acc[room] = { lightingLevels: [], timestamps: [], formattedTimestamps: [] };
             }
-  
+
             const dateString = item.date ? item.date : new Date().toISOString().split('T')[0];
             let timeString = item.time;
-  
+
             const localDate = new Date(`${dateString} ${timeString}`);
             const timestamp = localDate.getTime();
-  
+
             acc[room].lightingLevels.push({ timestamp, lighting: item.lighting });
             return acc;
           }, {});
-  
+
           Object.keys(roomData).forEach((room) => {
             roomData[room].lightingLevels.sort((a, b) => a.timestamp - b.timestamp);
-  
+
             roomData[room] = {
               lightingLevels: roomData[room].lightingLevels.map((d) => d.lighting),
               timestamps: roomData[room].lightingLevels.map((d) => d.timestamp),
               formattedTimestamps: roomData[room].lightingLevels.map((d) => {
                 const dateObj = new Date(d.timestamp);
-                return dateObj.toLocaleDateString() + " " + dateObj.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true });
+                return (
+                  dateObj.toLocaleDateString() +
+                  " " +
+                  dateObj.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true })
+                );
               }),
             };
           });
-  
+
           setLightingData(roomData);
           setFilteredData(roomData);
         } else {
@@ -63,23 +67,28 @@ function ExpandedCard({ param }) {
         console.error("Error fetching lighting data:", error);
       }
     };
-  
+
     fetchLightingData();
   }, []);
-  
 
   const filterData = () => {
-    const start = new Date(startDate).setHours(0, 0, 0, 0);
-    const end = new Date(endDate).setHours(23, 59, 59, 999);
+    const start = startDate ? new Date(startDate).setHours(0, 0, 0, 0) : null;
+    const end = endDate ? new Date(endDate).setHours(23, 59, 59, 999) : null;
 
     const filtered = Object.keys(lightingData).reduce((acc, room) => {
       if (selectedRooms.length === 0 || selectedRooms.includes(room)) {
         const filteredRoomData = lightingData[room].timestamps
-          .map((timestamp, index) =>
-            timestamp >= start && timestamp <= end
-              ? { timestamp, lightingLevel: lightingData[room].lightingLevels[index], formattedTimestamp: lightingData[room].formattedTimestamps[index] }
-              : null
-          )
+          .map((timestamp, index) => {
+            if ((start !== null && end !== null) ? (timestamp >= start && timestamp <= end) : true) {
+              return {
+                timestamp,
+                lightingLevel: lightingData[room].lightingLevels[index],
+                formattedTimestamp: lightingData[room].formattedTimestamps[index],
+              };
+            } else {
+              return null;
+            }
+          })
           .filter(Boolean);
 
         if (filteredRoomData.length > 0) {
@@ -95,6 +104,13 @@ function ExpandedCard({ param }) {
 
     setFilteredData(filtered);
   };
+
+  // Run filterData automatically on any relevant state change
+  useEffect(() => {
+    if (Object.keys(lightingData).length > 0) {
+      filterData();
+    }
+  }, [selectedRooms, startDate, endDate, lightingData]);
 
   const clearFilters = () => {
     setStartDate("");
@@ -134,46 +150,39 @@ function ExpandedCard({ param }) {
           },
         },
       },
-      // yaxis: {
-      //   title: {
-      //     text: "Lux",
-      //   },
-      // },
       annotations: {
         yaxis: [
           {
-            y: 500, // Threshold Level 1
-            borderColor: 'red',
+            y: 500,
+            borderColor: "red",
             label: {
-              borderColor: 'red',
-              style: {
-                color: '#fff',
-                background: 'red',
-              },
-              text: 'Bad',
+              borderColor: "red",
+              style: { color: "#fff", background: "red" },
+              text: "Bad",
             },
           },
           {
-            y: 350, // Threshold Level 2
-            borderColor: 'green',
+            y: 350,
+            borderColor: "green",
             label: {
-              borderColor: 'green',
-              style: {
-                color: '#fff',
-                background: 'green',
-              },
-              text: 'Good',
+              borderColor: "green",
+              style: { color: "#fff", background: "green" },
+              text: "Good",
             },
           },
         ],
       },
-      legend: { show: false }, // This removes the legend
+      legend: { show: false },
     },
     series: seriesData,
   };
 
   return (
-    <motion.div className="ExpandedCard" style={{ background: param.color.backGround, boxShadow: param.color.boxShadow }} layoutId={`expandableCard-${param.title}`} >
+    <motion.div
+      className="ExpandedCard"
+      style={{ background: param.color.backGround, boxShadow: param.color.boxShadow }}
+      layoutId={`expandableCard-${param.title}`}
+    >
       <span>{param.title}</span>
       <div className="filters" style={{ marginBottom: "20px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
@@ -210,8 +219,10 @@ function ExpandedCard({ param }) {
               ))}
             </Select>
           </FormControl>
-          <Button onClick={filterData} variant="contained" color="primary">Filter</Button>
-          <Button onClick={clearFilters} variant="contained" color="primary">Clear Filters</Button>
+          {/* Removed the Filter button */}
+          <Button onClick={clearFilters} variant="contained" color="primary">
+            Clear Filters
+          </Button>
         </div>
       </div>
       <div className="chartContainer" style={{ marginTop: "20px" }}>

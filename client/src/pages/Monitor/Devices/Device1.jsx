@@ -17,10 +17,13 @@ const Device1 = () => {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [selectedDeviceId, setSelectedDeviceId] = useState(null);
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
 
-    useEffect(() => {
+    console.log("device rows:", rows)
+
         const fetchData = async () => {
             const data = await httpGetAllDevices();
+            console.log("device:", data)
             if (data && data.length > 0) {
                 const formattedData = data.map(device => ({
                     id: device._id,
@@ -36,7 +39,14 @@ const Device1 = () => {
             }
         };
 
-        fetchData();
+        
+    // Polling to fetch data every 10 seconds
+    useEffect(() => {
+        const interval = setInterval(() => {
+            void fetchData();
+        }, 1000);
+
+        return () => clearInterval(interval);
     }, []);
 
     const handleOpenDeleteDialog = (id) => {

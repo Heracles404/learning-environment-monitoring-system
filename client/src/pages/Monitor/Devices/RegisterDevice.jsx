@@ -23,13 +23,21 @@ const RegisterDevice = () => {
   const [checked, setChecked] = React.useState([false, false]);
   const [checkedSecond, setCheckedSecond] = React.useState([false, false]);
 
-  useEffect(() => {
+  
     const fetchDevices = async () => {
       const devices = await httpGetAllDevices(); // Fetch all devices
       setExistingDevices(devices);
+      
     };
-    fetchDevices();
-  }, []);
+
+    useEffect(() => {
+            const interval = setInterval(() => {
+                void fetchDevices();
+            }, 1000);
+    
+            return () => clearInterval(interval);
+        }, []);
+   
 
   const handleChange2 = (event) => {
     setChecked([event.target.checked, checked[1]]);
