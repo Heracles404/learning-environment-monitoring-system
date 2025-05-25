@@ -50,13 +50,15 @@ const CarbonDioxideMonitor = () => {
           >
             INDOOR AIR QUALITY
           </Typography>
-          <Box >
+          <Box 
+          paddingTop={{xs: "90px"}}
+          >
             <AirQualityRecordTable/>
             <Card width="300px">
-                <CardMedia component='img' 
-                // height='210vh'
+                {/* <CardMedia component='img' 
+                height='210vh'
                 image="../../../params/iaq.png"
-                alt='img'/>   
+                alt='img'/>    */}
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
                   INDOOR AIR QUALITY (IAQ) DETAILS <br/>

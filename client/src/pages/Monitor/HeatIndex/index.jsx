@@ -50,13 +50,15 @@ const HeatIndexMonitor = () => {
           >
             Heat Index
           </Typography>
-          <Box >
+          <Box 
+          paddingTop={{xs: "90px"}}
+          >
             <HeatIndexRecordTable/>
             <Card width="300px">
-                <CardMedia component='img' 
-                // height='210vh'
+                {/* <CardMedia component='img' 
+                height='210vh'
                 image="../../../params/heat.png"
-                alt='img'/>   
+                alt='img'/>    */}
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
                   HEAT INDEX DETAILS <br/>
@@ -68,14 +70,14 @@ const HeatIndexMonitor = () => {
                   Good Heat Index Range: Values between 27°C - 41°C = GOOD <br/>
                   </Typography>
                   <Typography variant='body2' color="red">
-                  Bad Heat Index Range: Values above 32°C, below 27°C = BAD <br/>
+                  Bad Heat Index Range: Values below 27°C, above 41°C,  = BAD <br/>
                   <br/>
                   </Typography>
                   <Typography variant='body2' color="black">
                   Heat Index Threshold <br/>
                   </Typography>
                   <Typography variant='body2' color="green">
-                  Good Heat Index Threshold: Line in (Chart), values below 27°C = GOOD <br/>
+                  Good Heat Index Threshold: Line in (Chart), values equal to and below 41°C = GOOD <br/>
                   </Typography>
                   <Typography variant='body2' color="red">
                   Bad Heat Index Threshold: Line in (Chart), values above 41°C = BAD <br/>

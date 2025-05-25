@@ -51,15 +51,16 @@ const LightingMonitor = () => {
           >
             Heat Index
           </Typography>
-          <Box >
+          <Box 
+          paddingTop={{xs: "90px"}}
+          >
             <LightingRecordTable/>
             <Card width="300px">
-                <CardMedia component='img' 
-                // height='200vh'
-                // image="../../../assets/iaq.png"
+                {/* <CardMedia component='img' 
+                height='200vh'
                 image="../../../params/lux.png"
 
-                alt='img'/>   
+                alt='img'/>    */}
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
                   LIGHT DETAILS <br/>
