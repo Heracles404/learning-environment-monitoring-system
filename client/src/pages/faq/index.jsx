@@ -44,13 +44,12 @@ const FAQ = () => {
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-          Placeholder
+          How does the monitoring system help improve classroom conditions?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-          malesuada lacus ex, sit amet blandit leo lobortis eget.
+          By monitoring air quality and environmental conditions, the system helps identify issues that could affect health or comfort, allowing timely corrective actions.
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -58,28 +57,13 @@ const FAQ = () => {
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-          Placeholder
+          Can the monitoring system operate without internet access?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-          malesuada lacus ex, sit amet blandit leo lobortis eget.
-            {/* makikita ng user pag nag learn more sa text holder ng monitor -params- <br/>ilagay yung nasa RRL. */}
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      
-      <Accordion defaultExpanded>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography color={colors.greenAccent[500]} variant="h5">
-          Placeholder
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-          malesuada lacus ex, sit amet blandit leo lobortis eget.
+          No, the web based monitoring system requires network access to operate.
+
             {/* makikita ng user pag nag learn more sa text holder ng monitor -params- <br/>ilagay yung nasa RRL. */}
           </Typography>
         </AccordionDetails>
