@@ -81,17 +81,6 @@ const VolcanicSmogCard = (props) => {
   useEffect(() => {
     if (!Object.keys(airData).length) return;
 
-    const filtered = Object.keys(airData).reduce((acc, room) => {
-      if (selectedRooms.length === 0 || selectedRooms.includes(room)) {
-        acc[room] = airData[room];
-      }
-      return acc;
-    }, {});
-
-    setFilteredData(filtered);
-  }, [selectedRooms, airData]);
-
-  const filterData = () => {
     const start = startDate ? new Date(startDate).setHours(0, 0, 0, 0) : null;
     const end = endDate ? new Date(endDate).setHours(23, 59, 59, 999) : null;
 
@@ -128,7 +117,7 @@ const VolcanicSmogCard = (props) => {
     }, {});
 
     setFilteredData(filtered);
-  };
+  }, [startDate, endDate, selectedRooms, airData]);
 
   const clearFilters = () => {
     setStartDate("");
@@ -140,7 +129,6 @@ const VolcanicSmogCard = (props) => {
 
   const sortedData = Object.keys(filteredData).length > 0 ? filteredData : airData;
 
-  // Build series data according to selected pollutants only
   const seriesData = Object.keys(sortedData)
     .map((room) => {
       const roomData = sortedData[room];
@@ -181,7 +169,7 @@ const VolcanicSmogCard = (props) => {
       tooltip: {
         x: {
           formatter: function (value, { dataPointIndex, seriesIndex }) {
-            const roomIndex = Math.floor(seriesIndex / (selectedPollutants.length));
+            const roomIndex = Math.floor(seriesIndex / selectedPollutants.length);
             const roomKey = Object.keys(sortedData)[roomIndex];
             return sortedData[roomKey]?.formattedTimestamps?.[dataPointIndex] || "Unknown";
           },
@@ -227,7 +215,7 @@ const VolcanicSmogCard = (props) => {
           },
         ],
       },
-      legend: { show:false },
+      legend: { show: false },
     },
     series: seriesData,
   };
@@ -301,9 +289,6 @@ const VolcanicSmogCard = (props) => {
             </Select>
           </FormControl>
 
-          <Button onClick={filterData} variant="contained" color="primary">
-            Filter
-          </Button>
           <Button onClick={clearFilters} variant="contained" color="primary">
             Clear Filters
           </Button>
