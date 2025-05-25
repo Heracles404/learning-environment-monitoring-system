@@ -2,7 +2,16 @@ import React, { useState, useEffect } from "react";
 import "./LightingCard.css";
 import { motion, LayoutGroup } from "framer-motion";
 import Chart from "react-apexcharts";
-import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Checkbox, ListItemText } from "@mui/material";
+import {
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Checkbox,
+  ListItemText,
+} from "@mui/material";
 import { httpGetAllReadouts } from "../../../hooks/sensors.requests.js";
 
 const LightingCard = (props) => {
@@ -31,7 +40,7 @@ function ExpandedCard({ param }) {
               acc[room] = { lightingLevels: [], timestamps: [], formattedTimestamps: [] };
             }
 
-            const dateString = item.date ? item.date : new Date().toISOString().split('T')[0];
+            const dateString = item.date ? item.date : new Date().toISOString().split("T")[0];
             let timeString = item.time;
 
             const localDate = new Date(`${dateString} ${timeString}`);
@@ -131,7 +140,10 @@ function ExpandedCard({ param }) {
         name: `Room ${room}`,
         data: roomData.timestamps.map((timestamp, index) => ({
           x: timestamp,
-          y: roomData.lightingLevels[index],
+          y:
+            roomData.lightingLevels[index] !== undefined && roomData.lightingLevels[index] !== null
+              ? parseFloat(Number(roomData.lightingLevels[index]).toFixed(2))
+              : null,
         })),
       };
     })
@@ -147,6 +159,11 @@ function ExpandedCard({ param }) {
           formatter: function (value, { dataPointIndex, seriesIndex }) {
             const roomKey = Object.keys(sortedData)[seriesIndex];
             return sortedData[roomKey]?.formattedTimestamps?.[dataPointIndex] || "Unknown";
+          },
+        },
+        y: {
+          formatter: function (val) {
+            return typeof val === "number" ? val.toFixed(2) : val;
           },
         },
       },
@@ -219,7 +236,6 @@ function ExpandedCard({ param }) {
               ))}
             </Select>
           </FormControl>
-          {/* Removed the Filter button */}
           <Button onClick={clearFilters} variant="contained" color="primary">
             Clear Filters
           </Button>

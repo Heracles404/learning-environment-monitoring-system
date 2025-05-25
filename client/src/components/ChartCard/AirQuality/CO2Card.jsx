@@ -72,9 +72,7 @@ const CO2Card = (props) => {
     fetchIAQData();
   }, []);
 
-  // Filtering logic, triggered automatically on dependency changes
   useEffect(() => {
-    // Only filter if data loaded
     if (!iaqData || Object.keys(iaqData).length === 0) return;
 
     const start = startDate ? new Date(startDate).setHours(0, 0, 0, 0) : null;
@@ -136,7 +134,10 @@ const CO2Card = (props) => {
         name: `Room ${room}`,
         data: roomData.timestamps.map((timestamp, index) => ({
           x: timestamp,
-          y: roomData.iaqIndexes[index],
+          y:
+            roomData.iaqIndexes[index] !== undefined && roomData.iaqIndexes[index] !== null
+              ? parseFloat(Number(roomData.iaqIndexes[index]).toFixed(2))
+              : null,
         })),
       };
     })
@@ -154,11 +155,16 @@ const CO2Card = (props) => {
             return sortedData[roomKey]?.formattedTimestamps?.[dataPointIndex] || "Unknown";
           },
         },
+        y: {
+          formatter: function (val) {
+            return typeof val === "number" ? val.toFixed(2) : val;
+          },
+        },
       },
       annotations: {
         yaxis: [
           {
-            y: 100, // Threshold Level 1
+            y: 100,
             borderColor: "red",
             label: {
               borderColor: "red",
@@ -170,7 +176,7 @@ const CO2Card = (props) => {
             },
           },
           {
-            y: 50, // Threshold Level 2
+            y: 50,
             borderColor: "green",
             label: {
               borderColor: "green",

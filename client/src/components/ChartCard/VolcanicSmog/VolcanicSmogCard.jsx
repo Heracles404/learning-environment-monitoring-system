@@ -162,63 +162,76 @@ const VolcanicSmogCard = (props) => {
     .filter(Boolean);
 
   const data = {
-    options: {
-      chart: { type: "area" },
-      xaxis: { type: "datetime" },
-      dataLabels: { enabled: false },
-      tooltip: {
-        x: {
-          formatter: function (value, { dataPointIndex, seriesIndex }) {
-            const roomIndex = Math.floor(seriesIndex / selectedPollutants.length);
-            const roomKey = Object.keys(sortedData)[roomIndex];
-            return sortedData[roomKey]?.formattedTimestamps?.[dataPointIndex] || "Unknown";
-          },
+  options: {
+    chart: { type: "area" },
+    xaxis: { type: "datetime" },
+    dataLabels: { enabled: false },
+    tooltip: {
+      x: {
+        formatter: function (value, { dataPointIndex, seriesIndex }) {
+          const roomIndex = Math.floor(seriesIndex / selectedPollutants.length);
+          const roomKey = Object.keys(sortedData)[roomIndex];
+          return sortedData[roomKey]?.formattedTimestamps?.[dataPointIndex] || "Unknown";
         },
       },
-      annotations: {
-        yaxis: [
-          {
-            y: 50,
-            borderColor: "#70FFA2",
-            label: {
-              borderColor: "#70FFA2",
-              style: { color: "#fff", background: "#70FFA2" },
-              text: "Level 1",
-            },
-          },
-          {
-            y: 150,
-            borderColor: "#FFC2C2",
-            label: {
-              borderColor: "#FFC2C2",
-              style: { color: "#fff", background: "#FFC2C2" },
-              text: "Level 2",
-            },
-          },
-          {
-            y: 250,
-            borderColor: "#FF7070",
-            label: {
-              borderColor: "#FF7070",
-              style: { color: "#fff", background: "#FF7070" },
-              text: "Level 3",
-            },
-          },
-          {
-            y: 300,
-            borderColor: "#FF1F1F",
-            label: {
-              borderColor: "#FF1F1F",
-              style: { color: "#fff", background: "#FF1F1F" },
-              text: "Level 4",
-            },
-          },
-        ],
+      y: {
+        formatter: function (val) {
+          return val?.toFixed ? val.toFixed(2) : val;
+        },
       },
-      legend: { show: false },
     },
-    series: seriesData,
-  };
+    yaxis: {
+      labels: {
+        formatter: function (val) {
+          return val?.toFixed ? val.toFixed(2) : val;
+        },
+      },
+    },
+    annotations: {
+      yaxis: [
+        {
+          y: 50,
+          borderColor: "#70FFA2",
+          label: {
+            borderColor: "#70FFA2",
+            style: { color: "#fff", background: "#70FFA2" },
+            text: "Level 1",
+          },
+        },
+        {
+          y: 150,
+          borderColor: "#FFC2C2",
+          label: {
+            borderColor: "#FFC2C2",
+            style: { color: "#fff", background: "#FFC2C2" },
+            text: "Level 2",
+          },
+        },
+        {
+          y: 250,
+          borderColor: "#FF7070",
+          label: {
+            borderColor: "#FF7070",
+            style: { color: "#fff", background: "#FF7070" },
+            text: "Level 3",
+          },
+        },
+        {
+          y: 300,
+          borderColor: "#FF1F1F",
+          label: {
+            borderColor: "#FF1F1F",
+            style: { color: "#fff", background: "#FF1F1F" },
+            text: "Level 4",
+          },
+        },
+      ],
+    },
+    legend: { show: false },
+  },
+  series: seriesData,
+};
+
 
   return (
     <motion.div
@@ -230,7 +243,7 @@ const VolcanicSmogCard = (props) => {
         <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
           {/* Room Selector */}
           <FormControl style={{ minWidth: 200 }}>
-            <InputLabel>Rooms</InputLabel>
+            <InputLabel>Device</InputLabel>
             <Select
               multiple
               value={selectedRooms}
