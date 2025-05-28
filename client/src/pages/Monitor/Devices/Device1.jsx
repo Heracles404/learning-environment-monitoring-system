@@ -7,6 +7,9 @@ import { tokens } from "../../../theme";
 import { httpGetAllDevices, httpDeleteDevice } from "../../../hooks/devices.requests";
 import Header from "../../../components/Header";
 
+import Grid from '@mui/material/Grid2';
+import StatusIndicator from '../../../components/StatusIndicator';
+
 const Device1 = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
@@ -18,6 +21,8 @@ const Device1 = () => {
     const [selectedDeviceId, setSelectedDeviceId] = useState(null);
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
     const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+    const deviceStatus = 'ACTIVE'; // or 'Inactive'
 
     console.log("device rows:", rows)
 
@@ -187,7 +192,53 @@ const Device1 = () => {
 
     return (
         <Box m="5px 25px">
-            <Header title="DEVICES" subtitle="Managing the Device" />
+                  {/* HEADER */}
+      <Box 
+        display="flex" 
+        justifyContent="space-between"
+        alignItems="space-between"
+        sx={{
+          flexDirection: { xs: 'column', sm: 'row', md: "column", lg: "row" }
+        }}
+      >
+        <Header title="DEVICES" subtitle="Monitoring the Device"
+        />
+        <Grid container
+          display='flex'
+          justifyContent={{xs:"space-around", sm:"space-between", lg:"space-between"}}
+          alignContent={{xs:"space-around", sm:"space-between", lg:"space-between"}}
+          pr="120px"
+          ml="4px"
+          rowSpacing={1}
+          columnSpacing={{ xs: 1, sm: 3, md: 3 }}
+          mb="30px"
+        >
+          {/* Indoor Device Stat */}
+          <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 2 }}>
+            <Box
+              backgroundColor={colors.greenAccent[600]}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              sx={{
+                borderRadius: '12px',
+                height: '52px', 
+                width: { xs: '140%', sm: 150, md: 150, lg: 150, xl: 150 }
+              }}
+            >
+            <Box style={{ color: 'white' }}>
+            Volcanic Smog Sensor 
+            
+            {/* {deviceStatus} */}
+            <StatusIndicator status={deviceStatus} />
+            </Box>
+
+         
+            </Box>
+          </Grid>
+          
+        </Grid>
+        </Box>
             <Box mt="1px">
                 <Paper sx={{ width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
