@@ -38,6 +38,8 @@ const Device1 = () => {
                     bme680: device.bme680,
                     pms5003: device.pms5003,
                 }));
+                {console.log("VOG pms5003 status:", rows[0]?.pms5003)}
+
                 setRows(formattedData);
             } else {
                 console.warn("No devices found in the API response.");
@@ -170,6 +172,7 @@ const Device1 = () => {
               );
             },
           },
+          
         // { id: "pms5003", label: "Volcanic Smog Sensor", minWidth: 150 },
     ];
 
@@ -226,12 +229,16 @@ const Device1 = () => {
                 width: { xs: '140%', sm: 150, md: 150, lg: 150, xl: 150 }
               }}
             >
-            <Box style={{ color: 'white' }}>
-            Volcanic Smog Sensor 
-            
-            {/* {deviceStatus} */}
-            <StatusIndicator status={deviceStatus} />
-            </Box>
+            {rows.length > 0 ? (
+              <Box style={{ color: 'white' }}>
+                Volcanic Smog Sensor
+                {console.log("VOG pms5003 status:", rows[0]?.pms5003)}
+                <StatusIndicator status={(rows[0]?.pms5003 || 'Unknown').toUpperCase()} />
+              </Box>
+            ) : (
+              <Typography variant="body2">Loading VOG status...</Typography>
+            )}
+
 
          
             </Box>
