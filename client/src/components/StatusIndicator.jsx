@@ -2,8 +2,8 @@ import React from 'react';
 
 const StatusIndicator = ({ status }) => {
   const getColor = () => {
-    if (status === 'Active') return 'green';
-    if (status === 'Inactive') return 'red';
+    if (status === 'ACTIVE') return 'green';
+    if (status === 'INACTIVE') return 'red';
     return 'gray';
   };
 

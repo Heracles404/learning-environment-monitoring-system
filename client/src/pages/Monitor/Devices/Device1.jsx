@@ -8,9 +8,6 @@ import { httpGetAllDevices, httpDeleteDevice } from "../../../hooks/devices.requ
 import Header from "../../../components/Header";
 
 import Grid from '@mui/material/Grid2';
-import StatBox from "../../../components/StatBox";
-import SensorsIcon from '@mui/icons-material/Sensors';
-import VolcanoOutlinedIcon from '@mui/icons-material/VolcanoOutlined';
 import StatusIndicator from '../../../components/StatusIndicator';
 
 const Device1 = () => {
@@ -25,7 +22,7 @@ const Device1 = () => {
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
     const [refreshTrigger, setRefreshTrigger] = useState(0);
 
-    const deviceStatus = 'Active'; // or 'Inactive'
+    const deviceStatus = 'ACTIVE'; // or 'Inactive'
 
     console.log("device rows:", rows)
 
