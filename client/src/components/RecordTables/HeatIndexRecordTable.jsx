@@ -25,7 +25,8 @@ const HeatIndexRecordTable = () => {
                 voc: readout.voc,
                 IAQIndex: readout.IAQIndex,
                 indoorAir: readout.indoorAir,
-                temp: readout.heatIndex < 26 ? "GOOD" : readout.heatIndex > 32 ? "BAD" : "GOOD",
+                temp: readout.heatIndex >= 27 && readout.heatIndex <= 32 ? "GOOD" : "BAD",
+
 
 
             }));
