@@ -23,6 +23,7 @@ import LightingPieChart from "../../components/DashboardPieChart/LightingPieChar
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import Alert from '@mui/material/Alert';
+import { Link } from 'react-router-dom';
 
 const CustomDialog = ({ open, onClose, title, content1, content2, content3, content4, content5, content6, content7,content8,content9,content10,content11,content12,content13,content14,content15, }) => {
   return (
@@ -97,11 +98,13 @@ const Dashboard = () => {
     }
     setSnackbarOpen(false);
   };
-  const ViewRooms = (
-  <Button color="white" size="small">
-    View Rooms
-  </Button>
-  );
+const ViewRooms = (
+  <Link to="/DeviceStatus" style={{ textDecoration: 'none', color:"white" }}>
+    <Button color="white" size="small">
+      View Rooms
+    </Button>
+  </Link>
+);
   useEffect(() => {
     const fetchDevices = async () => {
       try {
