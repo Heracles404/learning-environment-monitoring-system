@@ -20,6 +20,11 @@ import TemperaturePieChart from "../../components/DashboardPieChart/TemperatureP
 import AirQualityPieChart from "../../components/DashboardPieChart/AirQualityPieChart";
 import VOGPieChart from "../../components/DashboardPieChart/VOGPieChart";
 import LightingPieChart from "../../components/DashboardPieChart/LightingPieChart";
+import Snackbar from '@mui/material/Snackbar';
+import SnackbarContent from '@mui/material/SnackbarContent';
+import Alert from '@mui/material/Alert';
+import { Link } from 'react-router-dom';
+
 const CustomDialog = ({ open, onClose, title, content1, content2, content3, content4, content5, content6, content7,content8,content9,content10,content11,content12,content13,content14,content15, }) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -77,7 +82,36 @@ const Dashboard = () => {
     inactiveRooms: [] // Store rooms labeled as inactive here
   });
   const [totalDevices, setTotalDevices] = useState(null);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
 
+  // Revision Number 5
+  // 2. Add useEffect to watch inactiveDevices and show snackbar if inactive devices present
+  useEffect(() => {
+    if (inactiveDevices.inactiveRooms && inactiveDevices.inactiveRooms.length > 0) {
+      setSnackbarOpen(true);
+    }
+  }, [inactiveDevices]);
+  // 3. Add a handler for closing the snackbar
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+const ViewRooms = (
+  <Link to="/DeviceStatus" style={{ textDecoration: 'none', color:"white" }}>
+    <Button color="white" size="small">
+      View Rooms
+    </Button>
+  </Link>
+);
+const ViewStatus = (
+  <Link to="/ViewNotification" style={{ textDecoration: 'none', color:"white" }}>
+    <Button color="white" size="small">
+      View Status
+    </Button>
+  </Link>
+);
   useEffect(() => {
     const fetchDevices = async () => {
       try {
@@ -376,6 +410,41 @@ const Dashboard = () => {
           </Box>
         </Box>
       </Box>
+
+      {/* ----------------SNACKBAR FOR ALERT - REVISIONS---------------- */}
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}         
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }} > 
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="warning"
+          variant="filled"
+          sx={{ width: '100%' }}
+          action={ViewRooms}
+        >
+          WARNING: {inactiveDevices.inactiveRooms.length} devices are INACTIVE.
+        </Alert>
+      </Snackbar>
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}         
+      anchorOrigin={{ vertical: 'top', horizontal: 'left' }} > 
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="error"
+          variant="filled"
+          sx={{ width: '100%' }}
+          action={ViewStatus}
+        >
+           Parameters are in BAD level.
+        </Alert>
+      </Snackbar>
+      
+      {/* <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={5000} // snackbar will auto-close after 5 seconds
+        onClose={handleSnackbarClose}
+        message={`Warning: ${inactiveDevices.inactiveRooms.length} devices are INACTIVE.`}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        
+      /> */}  
       <CustomDialog 
             open={openDialog === "iaq"} 
             onClose={() => setOpenDialog(null)} 

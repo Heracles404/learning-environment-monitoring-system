@@ -24,6 +24,8 @@ import VOGRecords from "./pages/Records/vog_record";
 import RegisterDevice from "./pages/Monitor/Devices/RegisterDevice";
 import UpdateDevice from "./pages/Monitor/Devices/UpdateDevice";
 import RoomLayout from "./pages/Monitor/RoomLayout";
+import ViewNotification from "./pages/Records/ViewNotification";
+import Suggestion from "./pages/faq/suggestions";
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
@@ -152,6 +154,22 @@ function App() {
               element={
                 <PrivateRoute>
                   <Device1 />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/ViewNotification"
+              element={
+                <PrivateRoute>
+                  <ViewNotification />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/Suggestion"
+              element={
+                <PrivateRoute>
+                  <Suggestion />
                 </PrivateRoute>
               }
             />
