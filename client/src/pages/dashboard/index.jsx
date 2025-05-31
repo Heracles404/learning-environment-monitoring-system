@@ -105,6 +105,13 @@ const ViewRooms = (
     </Button>
   </Link>
 );
+const ViewStatus = (
+  <Link to="/ViewNotification" style={{ textDecoration: 'none', color:"white" }}>
+    <Button color="white" size="small">
+      View Status
+    </Button>
+  </Link>
+);
   useEffect(() => {
     const fetchDevices = async () => {
       try {
@@ -406,15 +413,27 @@ const ViewRooms = (
 
       {/* ----------------SNACKBAR FOR ALERT - REVISIONS---------------- */}
       <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}         
-      anchorOrigin={{ vertical: 'top', horizontal: 'center' }} > 
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }} > 
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="warning"
+          variant="filled"
+          sx={{ width: '100%' }}
+          action={ViewRooms}
+        >
+          WARNING: {inactiveDevices.inactiveRooms.length} devices are INACTIVE.
+        </Alert>
+      </Snackbar>
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}         
+      anchorOrigin={{ vertical: 'top', horizontal: 'left' }} > 
         <Alert
           onClose={handleSnackbarClose}
           severity="error"
           variant="filled"
           sx={{ width: '100%' }}
-          action={ViewRooms}
+          action={ViewStatus}
         >
-          Warning: {inactiveDevices.inactiveRooms.length} devices are INACTIVE.
+           {inactiveDevices.inactiveRooms.length} parameters are in BAD level.
         </Alert>
       </Snackbar>
       

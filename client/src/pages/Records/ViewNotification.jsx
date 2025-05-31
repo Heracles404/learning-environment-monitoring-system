@@ -1,306 +1,302 @@
-import React, { useEffect, useState } from "react";
-import {
-    Box, Paper, Table, TableBody, TableCell, TableContainer,Snackbar, Alert, TableHead, TableRow, TablePagination, Typography, useTheme, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button
-} from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import React, { useState, useEffect } from "react";
+import { httpGetAllReadouts, httpDeleteReadout, httpDeleteAllReadouts } from "../../hooks/sensors.requests";
+import { Box, Button, Paper, Typography, Snackbar, Alert, Dialog, DialogActions, DialogContent,DialogContentText, DialogTitle, TextField } from "@mui/material";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { httpGetAllDevices, httpDeleteDevice } from "../../hooks/devices.requests";
 import Header from "../../components/Header";
-
-import Grid from '@mui/material/Grid2';
-import StatusIndicator from '../../components/StatusIndicator';
+import { useTheme } from "@mui/material";
+import DownloadIcon from '@mui/icons-material/Download';
+import DeleteIcon from '@mui/icons-material/Delete';
+import dayjs from "dayjs";
 
 const ViewNotification = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-
     const [rows, setRows] = useState([]);
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-    const [selectedDeviceId, setSelectedDeviceId] = useState(null);
+    const [selectedRows, setSelectedRows] = useState([]); // Store selected rows
+    const [openDialog, setOpenDialog] = useState(false); // State for confirmation dialog
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [openDownloadDialog, setOpenDownloadDialog] = useState(false); // For download confirmation
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
-    const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const [loading, setLoading] = useState(false);
 
-    const deviceStatus = 'ACTIVE'; // or 'Inactive'
-
-    console.log("device rows:", rows)
-
+   
         const fetchData = async () => {
-            const data = await httpGetAllDevices();
-            console.log("device:", data)
-            if (data && data.length > 0) {
-                const formattedData = data.map(device => ({
-                    id: device._id,
-                    status: device.status,
-                    classroom: device.classroom,
-                    bh1750: device.bh1750,
-                    bme680: device.bme680,
-                    pms5003: device.pms5003,
-                }));
-                {console.log("VOG pms5003 status:", rows[0]?.pms5003)}
-
-                setRows(formattedData);
-            } else {
-                console.warn("No devices found in the API response.");
-            }
+            const data = await httpGetAllReadouts();
+            const formattedData = data.map((readout, index) => {
+                const iaqStatus = readout.IAQIndex > 10000000 ? "BAD" : "GOOD";
+                const lightingStatus = readout.lighting >= 3 && readout.lighting <= 50000 ? "GOOD" : "BAD";
+                const tempStatus = readout.temperature < 29000 ? "GOOD" : "BAD";
+    
+                return {
+                    id: readout._id || index, // Ensure `id` is unique
+                    classroom: readout.classroom,
+                    date: readout.date,
+                    time: readout.time,
+                    temperature: readout.temperature,
+                    humidity: readout.humidity,
+                    heatIndex: readout.heatIndex,
+                    lighting: readout.lighting,
+                    voc: readout.voc,
+                    IAQIndex: readout.IAQIndex,
+                    indoorAir: iaqStatus,   // Updated IAQ Status
+                    temp: tempStatus,       // Updated Temperature Status
+                    lightRemarks: lightingStatus, // Updated Lighting Status
+                };
+            });
+    
+            setRows(formattedData);
         };
-
+        useEffect(() => {
+                const interval = setInterval(() => {
+                    void fetchData();
+                }, 1000);
         
-    // Polling to fetch data every 10 seconds
-    useEffect(() => {
-        const interval = setInterval(() => {
-            void fetchData();
-        }, 1000);
+                return () => clearInterval(interval);
+            }, []);
+    
 
-        return () => clearInterval(interval);
-    }, []);
 
-    const handleOpenDeleteDialog = (id) => {
-        setSelectedDeviceId(id);
-        setDeleteDialogOpen(true);
-    };
-
-    const handleCloseDeleteDialog = () => {
-        setDeleteDialogOpen(false);
-        setSelectedDeviceId(null);
-    };
-
-    const handleConfirmDelete = async () => {
-        if (selectedDeviceId) {
-            const response = await httpDeleteDevice(selectedDeviceId);
-            if (response.ok) {
-                setRows(prevRows => prevRows.filter(device => device.id !== selectedDeviceId));
-                setSnackbar({ open: true, message: 'Device Deleted Successfully!', severity: 'success' });
-            } else {
-                alert("Failed to delete device. Please try again.");
-            }
-        }
-        handleCloseDeleteDialog();
-    };
-
-    const role = localStorage.getItem("role");
     const columns = [
-        { id: "classroom", label: "Classroom", minWidth: 150 },
-        // { id: "status", label: "Device Status", minWidth: 150 },
+        { field: "classroom", headerName: "Room", width: 98, },
+        { field: "date", headerName: "Date", width: 91, },
+        { field: "time", headerName: "Time", width: 94, },
+        // { field: "temperature", headerName: "Temperature", minWidth: 100, flex: 1 },
+        // { field: "humidity", headerName: "Humidity", minWidth: 100, flex: 1 },
         {
-            id: "status",
-            label: "Device Status",
-            minWidth: 150,
-            renderCell: (row) => {
-              const status = row.status || "Unknown";
-              const bgColor =
-                status === "ACTIVE"
-                  ? colors.greenAccent[600]
-                  : status === "INACTIVE"
-                  ? colors.redAccent[700]
-                  : colors.grey[600];
-        
+            field: "indoorAir",
+            headerName: "IAQ Status",
+            minWidth:120,
+            flex: 1,
+            renderCell: ({ row: { indoorAir } }) => {
               return (
                 <Box
-                  m="5px auto"
+                //   width="60%"
+                  m="8px auto"
                   p="5px"
                   display="flex"
                   justifyContent="center"
-                  backgroundColor={bgColor}
+                  backgroundColor={
+                    indoorAir === "GOOD"
+                      ? colors.greenAccent[600]
+                      : indoorAir === "BAD"
+                      ? colors.redAccent[700]
+                      : colors.redAccent[700]
+                  }
                   borderRadius="4px"
                 >
-                  <Typography color="white" fontWeight="bold">
-                    {status}
+                  {indoorAir === "GOOD" }
+                  {indoorAir === "BAD" }
+                  <Typography color={"white"} >
+                    {indoorAir}
                   </Typography>
                 </Box>
               );
             },
-          },
-        // { id: "bh1750", label: "Light Sensor", minWidth: 150 },
+        },
+        // { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
         {
-            id: "bh1750",
-            label: "Heat Index Status",
-            minWidth: 150,
-            renderCell: (row) => {
-              const bh1750 = row.bh1750 || "Unknown";
-              const bgColor =
-                bh1750 === "ACTIVE"
-                  ? colors.greenAccent[600]
-                  : bh1750 === "INACTIVE"
-                  ? colors.redAccent[700]
-                  : colors.grey[600];
-        
+            field: "temp",
+            headerName: "Heat Index Status",
+            minWidth:170,
+            flex: 1,
+            renderCell: ({ row: { temp } }) => {
               return (
                 <Box
-                  m="5px auto"
+                //   width="60%"
+                  m="8px auto"
                   p="5px"
                   display="flex"
                   justifyContent="center"
-                  backgroundColor={bgColor}
+                  backgroundColor={
+                    temp === "GOOD"
+                      ? colors.greenAccent[600]
+                      : temp === "BAD"
+                      ? colors.redAccent[700]
+                      : colors.redAccent[700]
+                  }
                   borderRadius="4px"
                 >
-                  <Typography color="white" fontWeight="bold">
-                    {bh1750}
+                  {temp === "GOOD" }
+                  {temp === "BAD" }
+                  <Typography color={"white"} >
+                    {temp}
                   </Typography>
                 </Box>
               );
             },
-          },
-        // { id: "bme680", label: "Air Quality, Heat Index Sensor", minWidth: 150 },
+        },
+        // { field: "lightRemarks", headerName: "Lighting Stat", minWidth: 91, flex: 1 },
         {
-            id: "bme680",
-            label: "Lighting Status",
-            minWidth: 150,
-            renderCell: (row) => {
-              const bme680 = row.bme680 || "Unknown";
-              const bgColor =
-                bme680 === "ACTIVE"
-                  ? colors.greenAccent[600]
-                  : bme680 === "INACTIVE"
-                  ? colors.redAccent[700]
-                  : colors.grey[600];
-        
+            field: "lightRemarks",
+            headerName: "Lighting Status",
+            minWidth:145,
+            flex: 1,
+            renderCell: ({ row: { lightRemarks } }) => {
               return (
                 <Box
-                  m="5px auto"
+                //   width="60%"
+                  m="8px auto"
                   p="5px"
                   display="flex"
                   justifyContent="center"
-                  backgroundColor={bgColor}
+                  backgroundColor={
+                    lightRemarks === "GOOD"
+                      ? colors.greenAccent[600]
+                      : lightRemarks === "BAD"
+                      ? colors.redAccent[700]
+                      : colors.redAccent[700]
+                  } 
                   borderRadius="4px"
                 >
-                  <Typography color="white" fontWeight="bold">
-                    {bme680}
+                  {lightRemarks === "GOOD" }
+                  {lightRemarks === "BAD" }
+                  <Typography color={"white"} >
+                    {lightRemarks}
                   </Typography>
                 </Box>
               );
             },
-          },
-        {
-            id: "bme680",
-            label: "Air Quality Status",
-            minWidth: 150,
-            renderCell: (row) => {
-              const bme680 = row.bme680 || "Unknown";
-              const bgColor =
-                bme680 === "ACTIVE"
-                  ? colors.greenAccent[600]
-                  : bme680 === "INACTIVE"
-                  ? colors.redAccent[700]
-                  : colors.grey[600];
+        },
+        // { field: "IAQIndex", headerName: "IAQ Index", width: 115.5, },
+        // { field: "heatIndex", headerName: "Heat Index", width: 121.5, },
+        // { field: "lighting", headerName: "Lighting", width: 105, },
+        // { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
         
-              return (
-                <Box
-                  m="5px auto"
-                  p="5px"
-                  display="flex"
-                  justifyContent="center"
-                  backgroundColor={bgColor}
-                  borderRadius="4px"
-                >
-                  <Typography color="white" fontWeight="bold">
-                    {bme680}
-                  </Typography>
-                </Box>
-              );
-            },
-          },
-          
     ];
 
-    // if (role.toUpperCase() === "PRINCIPAL" || role.toUpperCase() === "ADMIN") {
-    //     columns.push({
-    //         id: "delete",
-    //         label: "Delete",
-    //         minWidth: 80,
-    //         align: "center",
-    //         renderCell: (row) => (
-    //             <button
-    //                 style={{ background: "none", border: "none", cursor: "pointer" }}
-    //                 onClick={() => handleOpenDeleteDialog(row.id)}
-    //             >
-    //                 <DeleteIcon style={{ color: "red", fontSize: "20px" }} />
-    //             </button>
-    //         ),
-    //     });
-    // }
+    const handleDeleteSelected = async () => { 
+        if (selectedRows.length === 0) {
+            return;
+        }
+        setLoading(true); // Set loading to true when deletion starts
+        try {
+            for (const id of selectedRows) {
+                const result = await httpDeleteReadout(id);
+                if (result.ok) {
+                    setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+                } else {
+                    console.error(`Failed to delete record with id: ${id}`);
+                }
+            }
+            setSelectedRows([]); // Clear selection after deletion
+            setSnackbar({ open: true, message: 'Row Deleted Successfully!', severity: 'success' });
+        } catch (error) {
+            console.error("Error during deletion:", error);
+        }
+        setLoading(false); // Set loading to false when deletion ends
+        setOpenDialog(false); // Close dialog after deletion 
+    };
+    
+
+    const handleDownload = () => {
+        // Filter rows based on date range
+        const filteredRows = rows.filter((row) => {
+            const rowDate = dayjs(row.date, "MM/DD/YYYY");
+            const start = dayjs(startDate, "YYYY-MM-DD");
+            const end = dayjs(endDate, "YYYY-MM-DD");
+            return rowDate.isAfter(start.subtract(1, "day")) && rowDate.isBefore(end.add(1, "day"));
+        });
+
+        // Convert filtered rows to CSV format
+        const csvHeaders = columns.map((col) => col.headerName).join(",");
+        const csvRows = filteredRows.map((row) =>
+            columns.map((col) => row[col.field] || "").join(",")
+        );
+        const csvContent = [csvHeaders, ...csvRows].join("\n");
+
+        // Create a blob and trigger download
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "filtered_records_report.csv";
+        link.style.display = "none";
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // Close the dialog after download
+        setOpenDownloadDialog(false); // Close download dialog
+    };
+
 
     return (
-        <Box m="5px 25px">
-                  {/* HEADER */}
-      <Box 
-        display="flex" 
-        justifyContent="space-between"
-        alignItems="space-between"
-        sx={{
-          flexDirection: { xs: 'column', sm: 'row', md: "column", lg: "row" }
-        }}
-      >
-        <Header title="Notification" subtitle="Monitoring the Notification"
-        />
-        <Grid container
-          display='flex'
-          justifyContent={{xs:"space-around", sm:"space-between", lg:"space-between"}}
-          alignContent={{xs:"space-around", sm:"space-between", lg:"space-between"}}
-          pr="120px"
-          ml="4px"
-          rowSpacing={1}
-          columnSpacing={{ xs: 1, sm: 3, md: 3 }}
-          mb="30px"
-        >
-
-          
-        </Grid>
-        </Box>
-            <Box mt="1px">
-                <Paper sx={{ width: "100%", overflow: "hidden" }}>
-                    <Typography variant="caption" sx={{ ml: 2 }}>
-                        Device Information
-                    </Typography>
-                    <TableContainer sx={{ height: "65vh" }}>
-                        <Table stickyHeader>
-                            <TableHead>
-                                <TableRow>
-                                    {columns.map((column) => (
-                                        <TableCell
-                                            key={column.id}
-                                            style={{
-                                                minWidth: column.minWidth,
-                                                backgroundColor: colors.greenAccent[700],
-                                                color: colors.grey[100],
-                                            }}
-                                            align={column.align || "left"}
-                                        >
-                                            {column.label}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                                    <TableRow hover key={row.id}>
-                                        {columns.map((column) => (
-                                            <TableCell
-                                                key={column.id}
-                                                align={column.align || "left"}
-                                                sx={{ color: column.id === "role" ? colors.greenAccent[300] : "inherit" }}
-                                            >
-                                                {column.renderCell ? column.renderCell(row) : row[column.id]}
-                                            </TableCell>
-                                        ))}
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    <TablePagination
-                        rowsPerPageOptions={[10, 25, 50]}
-                        component="div"
-                        count={rows.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={(event, newPage) => setPage(newPage)}
-                        onRowsPerPageChange={(event) => {
-                            setRowsPerPage(+event.target.value);
-                            setPage(0);
+        <Box m="5px 25px" height="100%">
+            <Box display="flex" justifyContent="space-between" alignItems="space-between" sx={{ flexDirection: { xs: "column", sm: "row" } }}>
+                <Header title="Status Notification" subtitle="Monitoring the Parameter Status Notif" />
+                <Box>
+                    {/* <Button
+                        onClick={() => setOpenDialog(true)}
+                        sx={{
+                            backgroundColor: colors.redAccent[500],
+                            color: "white",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                            padding: "10px 20px",
+                            margin: "5px",
                         }}
-                        sx={{ backgroundColor: colors.greenAccent[700], color: colors.grey[100] }}
+                    >
+                        <DeleteIcon sx={{ mr: "10px" }} />
+                        Delete Selected Rows
+                    </Button> */}
+                    <Button
+                        onClick={() => setOpenDownloadDialog(true)}
+                        sx={{
+                            backgroundColor: colors.greenAccent[400],
+                            color: "white",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                            padding: "10px 20px",
+                            margin: "5px",
+                        }}
+                    >
+                        <DownloadIcon sx={{ mr: "10px" }} />
+                        Download Reports
+                    </Button>
+                </Box>
+            </Box>
+
+            <Box mt="1px">
+                <Paper sx={{ height: {xs:"60vh", md: "70vh"}, width: "100%", overflow: "hidden" }}>
+                    <Typography variant="caption" sx={{ ml: 2 }}>
+                    Indoor Air Quality (IAQ), Heat Index, Light
+                    </Typography>
+                    <DataGrid
+                        rows={rows}
+                        columns={columns}
+                        disableSelectionOnClick
+                        components={{ Toolbar: GridToolbar }}
+                        initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
+                        pageSizeOptions={[5, 10, 15]}
+                        checkboxSelection
+                        onRowSelectionModelChange={(ids) => setSelectedRows(ids)} // Update selected rows
+                        sx={{
+                            "& .MuiDataGrid-row:hover": {
+                                backgroundColor: colors.greenAccent[500],
+                            },
+                            "& .MuiDataGrid-columnHeader": {
+                                backgroundColor: colors.greenAccent[700],
+                            },
+                            "& .MuiDataGrid-footerContainer": {
+                                backgroundColor: colors.greenAccent[700],
+                            },
+                            "& .MuiTablePagination-toolbar": {
+                                paddingBottom:"5px",
+                            },
+                            "& .MuiTablePagination-root .MuiTablePagination-input": {
+                                display: "flex"
+                            },
+                            "& .MuiTablePagination-root .MuiTablePagination-selectLabel": {
+                                display: "flex"
+                            },
+                            "& .MuiDataGrid-root": {
+                                border: "none",
+                                tableLayout: "auto", 
+                            },
+                        }}
                     />
                 </Paper>
             </Box>
@@ -315,22 +311,60 @@ const ViewNotification = () => {
                     {snackbar.message}
                 </Alert>
             </Snackbar>
-            {/* Delete Confirmation Dialog */}
-            <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
-                <DialogTitle>Confirm Deletion</DialogTitle>
+            <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+                <DialogTitle>Delete Record</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        Are you sure you want to delete this device?
-                    </DialogContentText>
+                    <DialogContentText>Are you sure you want to delete?</DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDeleteDialog} color="primary">
+                    <Button onClick={() => setOpenDialog(false)} color="secondary">
                         Cancel
                     </Button>
-                    <Button sx={{backgroundColor: '#4cceac',height: '30px', borderRadius: '25px', fontWeight: 'bold',}}
-                        onClick={handleConfirmDelete} color="primary" variant="contained">
-                        Delete
+                    <Button
+                        sx={{ backgroundColor: '#4cceac', height: '30px', borderRadius: '25px', fontWeight: 'bold' }}
+                        onClick={handleDeleteSelected}
+                        color="primary"
+                        variant="contained"
+                        disabled={loading} // Disable button while loading
+                    >
+                        {loading ? 'Deleting...' : 'Delete Record'}
                     </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* Date Range Dialog */}
+            <Dialog open={openDownloadDialog} onClose={() => setOpenDownloadDialog(false)}>
+                <DialogTitle>Select Date Range</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        type="date"
+                        label="Start Date"
+                        fullWidth
+                        margin="dense"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                    <TextField
+                        type="date"
+                        label="End Date"
+                        fullWidth
+                        margin="dense"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        inputProps={{
+                            min: startDate,
+                        }}
+                    />
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={() => setOpenDownloadDialog(false)}>Cancel</Button>
+                <Button onClick={handleDownload} color="primary">Download</Button>
                 </DialogActions>
             </Dialog>
         </Box>
