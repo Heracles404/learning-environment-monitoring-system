@@ -433,7 +433,7 @@ const ViewStatus = (
           sx={{ width: '100%' }}
           action={ViewStatus}
         >
-           {inactiveDevices.inactiveRooms.length} parameters are in BAD level.
+           Parameters are in BAD level.
         </Alert>
       </Snackbar>
       
