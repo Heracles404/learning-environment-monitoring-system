@@ -36,7 +36,7 @@ const ViewNotification = () => {
       setSnackbarOpen(false);
     };
     const ViewSuggestion = (
-    <Link to="/faq" style={{ textDecoration: 'none', color:"white" }}>
+    <Link to="/Suggestion" style={{ textDecoration: 'none', color:"white" }}>
       <Button color="white" size="small">
         View Suggestions
       </Button>

@@ -12,7 +12,7 @@ const FAQ = () => {
   const colors = tokens(theme.palette.mode);
   return (
     <Box m="20px" height="100%" overflow="auto">
-      <Header title="FAQ" subtitle="Frequently Asked Questions Page" />
+      <Header title="FAQ" subtitle="Frequently Asked Questions Page for the System" />
       <Box sx={{ height: {xs:"130%", md:"100%"}
     }} >
       <Accordion defaultExpanded>
@@ -63,8 +63,6 @@ const FAQ = () => {
         <AccordionDetails>
           <Typography>
           No, the web based monitoring system requires network access to operate.
-
-            {/* makikita ng user pag nag learn more sa text holder ng monitor -params- <br/>ilagay yung nasa RRL. */}
           </Typography>
         </AccordionDetails>
       </Accordion>

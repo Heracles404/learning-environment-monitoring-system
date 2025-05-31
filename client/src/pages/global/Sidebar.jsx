@@ -311,6 +311,7 @@ const Sidebar = () => {
               </SubMenu>
 
 
+
             <Typography
               variant="h6"
               color={colors.greenAccent[400]}
@@ -374,7 +375,7 @@ const Sidebar = () => {
               />
               </SubMenu>
   
-            
+          
             <Typography
               variant="h6"
               color={colors.greenAccent[400]}
@@ -382,13 +383,29 @@ const Sidebar = () => {
             >
               Other
             </Typography>
-            <Item
+            <SubMenu
               title="FAQ Page"
+              icon={<HelpOutlineOutlinedIcon />}
+              style={{ color: colors.greenAccent[100] }}
+            >
+            <Item
+                title="System"
+                to="/Suggestion"
+                icon={<HelpOutlineOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />           
+            <Item
+              title="Parameters"
               to="/faq"
               icon={<HelpOutlineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            />            
+            />                  
+
+
+              </SubMenu>  
+        
             <Item
               title="Sign Out"
               to="#"
