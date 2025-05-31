@@ -360,6 +360,19 @@ const Sidebar = () => {
                 setSelected={setSelected}
               />               */}
               </SubMenu>
+            <SubMenu
+              title="Notification"
+              icon={<DevicesOutlinedIcon />}
+              style={{ color: colors.greenAccent[100] }}
+            >
+              <Item
+                title="Status"
+                to="/ViewNotification"
+                icon={<DevicesOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              </SubMenu>
   
             
             <Typography
