@@ -8,6 +8,7 @@ import { useTheme } from "@mui/material";
 import DownloadIcon from '@mui/icons-material/Download';
 import DeleteIcon from '@mui/icons-material/Delete';
 import dayjs from "dayjs";
+import { Link } from 'react-router-dom';
 
 const ViewNotification = () => {
     const theme = useTheme();
@@ -20,6 +21,27 @@ const ViewNotification = () => {
     const [openDownloadDialog, setOpenDownloadDialog] = useState(false); // For download confirmation
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
     const [loading, setLoading] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+    // Revision Number 5
+    useEffect(() => {
+        setSnackbarOpen(true);
+      }
+    );
+    // 3. Add a handler for closing the snackbar
+    const handleSnackbarClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setSnackbarOpen(false);
+    };
+    const ViewSuggestion = (
+    <Link to="/faq" style={{ textDecoration: 'none', color:"white" }}>
+      <Button color="white" size="small">
+        View Suggestions
+      </Button>
+    </Link>
+    );
 
    
         const fetchData = async () => {
@@ -300,10 +322,23 @@ const ViewNotification = () => {
                     />
                 </Paper>
             </Box>
+            {/* ----------------SNACKBAR FOR ALERT - REVISIONS---------------- */}
+            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}         
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }} > 
+              <Alert
+                onClose={handleSnackbarClose}
+                severity="info"
+                variant="filled"
+                sx={{ width: '100%' }}
+                action={ViewSuggestion}
+              >
+                INFO: Keep Optimal Conditions
+              </Alert>
+            </Snackbar>
             {/* Snackbar Alerts */}
             <Snackbar 
                 open={snackbar.open} 
-                autoHideDuration={2000} 
+                autoHideDuration={5000} 
                 onClose={() => setSnackbar({ ...snackbar, open: false })} 
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             >
