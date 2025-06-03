@@ -10,96 +10,94 @@ const HeatIndexRecordTable = () => {
     const colors = tokens(theme.palette.mode);
     const [rows, setRows] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await httpGetAllReadouts();
-      const formattedData = data.map((readout, index) => {
-        let tempStatus;
-
-        if (readout.heatIndex === undefined || readout.heatIndex === null) {
-          tempStatus = "UNKNOWN";
-        } else if (readout.heatIndex <= 27) {
-          tempStatus = "GOOD";
-        } else if (readout.heatIndex <= 35) {
-          tempStatus = "WARNING";
-        } else if (readout.heatIndex >= 41) {
-          tempStatus = "BAD";
-        } else if (readout.heatIndex > 41) {
-          tempStatus = "EXTREME"; // buzzer / extreme danger
-        }
-
-        return {
-          id: readout._id || index,
-          classroom: readout.classroom,
-          date: readout.date,
-          time: readout.time,
-          temperature: readout.temperature,
-          humidity: readout.humidity,
-          heatIndex: readout.heatIndex,
-          temp: tempStatus,
-        };
-      });
-      setRows(formattedData);
-    };
-
-    fetchData();
-  }, []);
-
-  const columns = [
-    { field: "classroom", headerName: "Room", width: 100 },
-    { field: "date", headerName: "Date", width: 100 },
-    { field: "time", headerName: "Time", width: 100 },
-    { field: "temperature", headerName: "Temperature", width: 120 },
-    { field: "humidity", headerName: "Humidity", width: 120 },
-    { field: "heatIndex", headerName: "Heat Index", width: 120 },
-    {
-      field: "temp",
-      headerName: "Heat Index Status",
-      flex: 1,
-      minWidth: 180,
-      renderCell: ({ row: { temp } }) => {
-        let bgColor = colors.grey[400];
-        let textColor = "black";
-
-        switch (temp) {
-          case "GOOD":
+    useEffect(() => {
+      const fetchData = async () => {
+        const data = await httpGetAllReadouts();
+        const formattedData = data.map((readout, index) => {
+          let tempStatus;
+    
+          if (readout.heatIndex === undefined || readout.heatIndex === null) {
+            tempStatus = "UNKNOWN";
+          } else if (readout.heatIndex <= 27) {
+            tempStatus = "GOOD";
+          } else if (readout.heatIndex <= 35) {
+            tempStatus = "WARNING";
+          } else if (readout.heatIndex <= 41) {
+            tempStatus = "BAD";
+          } else if (readout.heatIndex > 41) {
+            tempStatus = "EXTREME";
+          }
+    
+          return {
+            id: readout._id || index,
+            classroom: readout.classroom,
+            date: readout.date,
+            time: readout.time,
+            temperature: readout.temperature,
+            humidity: readout.humidity,
+            heatIndex: readout.heatIndex,
+            temp: tempStatus,
+          };
+        });
+        setRows(formattedData);
+      };
+    
+      fetchData();
+    }, []);
+    
+    const columns = [
+      { field: "classroom", headerName: "Room", width: 100 },
+      { field: "date", headerName: "Date", width: 100 },
+      { field: "time", headerName: "Time", width: 100 },
+      { field: "temperature", headerName: "Temperature", width: 120 },
+      { field: "humidity", headerName: "Humidity", width: 120 },
+      { field: "heatIndex", headerName: "Heat Index", width: 120 },
+      {
+        field: "temp",
+        headerName: "Heat Index Status",
+        flex: 1,
+        minWidth: 180,
+        renderCell: ({ row }) => {
+          const { heatIndex } = row;
+          let bgColor = colors.grey[400];
+          let textColor = "black";
+          let label = "UNKNOWN";
+    
+          if (heatIndex === undefined || heatIndex === null) {
+            label = "UNKNOWN";
+          } else if (heatIndex <= 27) {
+            label = "GOOD";
             bgColor = colors.greenAccent[600];
             textColor = "white";
-            break;
-          case "WARNING":
-            bgColor = "#ff9933"; // yellow/orange for warning
-            textColor = "black";
-            break;
-          case "BAD":
+          } else if (heatIndex <= 35) {
+            label = "WARNING";
+            bgColor = "#ff9933";
+          } else if (heatIndex <= 41) {
+            label = "BAD";
             bgColor = colors.redAccent[700];
             textColor = "white";
-            break;
-          case "EXTREME":
-            bgColor = "#8B0000"; // dark red for extreme danger
+          } else {
+            label = "EXTREME";
+            bgColor = "#8B0000";
             textColor = "white";
-            break;
-          case "UNKNOWN":
-          default:
-            bgColor = colors.grey[400];
-            textColor = "black";
-            break;
-        }
-
-        return (
-          <Box
-            m="8px auto"
-            p="5px"
-            display="flex"
-            justifyContent="center"
-            backgroundColor={bgColor}
-            borderRadius="4px"
-          >
-            <Typography color={textColor}>{temp}</Typography>
-          </Box>
-        );
+          }
+    
+          return (
+            <Box
+              m="8px auto"
+              p="5px"
+              display="flex"
+              justifyContent="center"
+              backgroundColor={bgColor}
+              borderRadius="4px"
+            >
+              <Typography color={textColor}>{label}</Typography>
+            </Box>
+          );
+        },
       },
-    },
-  ];
+    ];
+    
 
     return (
         <Box m="5px">
