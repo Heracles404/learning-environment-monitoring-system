@@ -11,19 +11,38 @@ const DashboardCards = () => {
   }, []);
 
   // Function to categorize the values as "Good" or "Bad"
-  const getCategory = (value, type) => {
-    if (type === "IAQ Index") {
-  return value < 100 ? "GOOD" : "BAD"; // GOOD if below 100
-} else if (type === "Heat Index") {
-  return value >= 27 && value <= 32 ? "GOOD" : "BAD"; // GOOD if 27–32 inclusive
-} else if (type === "Lighting") {
-  return value >= 300 && value <= 500 ? "GOOD" : "BAD"; // GOOD if 300–500 inclusive
-} else if (type === "Volcanic Smog") {
-  return value <= 50 ? "GOOD" : "BAD"; // GOOD if 50 or below
-}
-return "Unknown";
+const getCategory = (value, type) => {
+  if (type === "IAQ Index") {
+    if (value >= 0 && value <= 100) return "GOOD";
+    if (value > 100 && value <= 200) return "WARNING";
+    if (value > 200) return "BAD";
+  }
 
-  };
+  if (type === "Heat Index") {
+    if (value >= 27 && value <= 41) return "GOOD";
+    if (value > 41 && value <= 51) return "WARNING";
+    if (value > 51) return "BAD";
+  }
+
+  if (type === "Lighting") {
+    if (value === -1) return "NIGHT";
+    if (value >= 0 && value <= 30) return "CLOSED";
+    if (value > 30 && value <= 150) return "GOOD";
+    if (value > 150 && value <= 500) return "WARNING";
+    if (value > 500) return "BAD";
+  }
+
+  if (type === "Volcanic Smog") {
+    if (value >= 0 && value <= 100) return "GOOD";
+    if (value > 100 && value <= 200) return "WARNING";
+    if (value > 200 && value <= 300) return "BAD";
+    if (value > 300 && value <= 500) return "EXTREME";
+  }
+
+  return "UNKNOWN";
+};
+
+
   
 
   return (

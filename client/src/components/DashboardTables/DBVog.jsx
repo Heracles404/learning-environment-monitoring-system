@@ -14,72 +14,81 @@ const DBVOGRecords = () => {
     useEffect(() => {
         const fetchData = async () => {
             const data = await httpGetAllReadouts();
-            // console.log(data);
 
-            const updatedData = { ...rows };
+            const updatedData = {};
             data.forEach((readout) => {
+                const oaq = Number(readout.OAQIndex);
+
+                // Determine concernLevel based on OAQIndex thresholds
+                let concernLevel;
+                if (oaq <= 100) concernLevel = "GOOD";
+                else if (oaq <= 200) concernLevel = "WARNING";
+                else if (oaq <= 300) concernLevel = "BAD";
+                else if (oaq <= 500) concernLevel = "EXTREME";
+                else concernLevel = "UNKNOWN";
+
                 updatedData[readout.classroom] = {
                     id: readout.classroom,
                     classroom: readout.classroom,
                     currentPM25: readout.pm25,
                     currentPM10: readout.pm10,
-                    currentlevel: readout.level,
-                    concernLevel: (Number(readout.level) === 1) ? "GOOD" : "BAD",
-
-
+                    currentOAQIndex: readout.OAQIndex,
+                    concernLevel,
                 };
             });
 
-            setRows(updatedData);
+            setRows(Object.values(updatedData));
         };
 
         fetchData();
         const interval = setInterval(fetchData, 5000); // Update every 5 seconds
         return () => clearInterval(interval);
-    }, [rows]);
+    }, []); // Removed rows dependency to avoid infinite loop
 
     const columns = [
         { field: "classroom", headerName: "Device", minWidth: 100, flex: 1 },
-        { field: "currentlevel", headerName: "Concern Level", minWidth:140,  },
-        // { field: "concernLevel", headerName: "VOG Status", minWidth: 100, flex: 1 },
+        { field: "currentOAQIndex", headerName: "OAQ Index", minWidth: 130 },
         {
-                    field: "concernLevel",
-                    headerName: "VOG Status",
-                    minWidth:150,
-                    flex: 1,
-                    renderCell: ({ row: { concernLevel } }) => {
-                      return (
-                        <Box
-                        //   width="60%"
-                          m="8px auto"
-                          p="5px"
-                          display="flex"
-                          justifyContent="center"
-                          backgroundColor={
-                            concernLevel === "GOOD"
-                              ? colors.greenAccent[600]
-                              : concernLevel === "BAD"
-                              ? colors.redAccent[700]
-                              : colors.redAccent[700]
-                          }
-                          borderRadius="4px"
-                        >
-                          {concernLevel === "GOOD" }
-                          {concernLevel === "BAD" }
-                          <Typography color={"white"} >
-                            {concernLevel}
-                          </Typography>
-                        </Box>
-                      );
-                    },
-                },
-        { field: "currentPM25", headerName: "PM 2.5", minWidth:130,  },
-        { field: "currentPM10", headerName: "PM 10.0", minWidth:130,  },
+            field: "concernLevel",
+            headerName: "VOG Status",
+            minWidth: 150,
+            flex: 1,
+            renderCell: ({ row: { concernLevel } }) => {
+                const bgColor =
+                    concernLevel === "GOOD"
+                        ? colors?.greenAccent?.[600] ?? "green"
+                        : concernLevel === "WARNING"
+                        ? colors?.yellowAccent?.[600] ?? "#ff9933"
+                        : concernLevel === "BAD"
+                        ? colors?.redAccent?.[700] ?? "red"
+                        : concernLevel === "EXTREME"
+                        ? colors?.redAccent?.[900] ?? "darkred"
+                        : "gray";
+
+                return (
+                    <Box
+                        m="8px auto"
+                        p="5px"
+                        display="flex"
+                        justifyContent="center"
+                        backgroundColor={bgColor}
+                        borderRadius="4px"
+                    >
+                        <Typography color="white">{concernLevel}</Typography>
+                    </Box>
+                );
+            },
+        },
+        { field: "currentPM25", headerName: "PM 2.5", minWidth: 130 },
+        { field: "currentPM10", headerName: "PM 10.0", minWidth: 130 },
     ];
 
     return (
         <Box m="5px">
-            <Header title="Latest Volcanic Smog Record" subtitle="Monitoring the Latest Captured Value" />
+            <Header
+                title="Latest Volcanic Smog Record"
+                subtitle="Monitoring the Latest Captured Value"
+            />
             <Box>
                 <Paper sx={{ maxHeight: "65vh", width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
@@ -117,7 +126,7 @@ const DBVOGRecords = () => {
                             },
                             "& .MuiDataGrid-root": {
                                 border: "none",
-                                tableLayout: "auto", 
+                                tableLayout: "auto",
                             },
                             "& .MuiDataGrid-cell": {
                                 borderBottom: "none",
@@ -137,10 +146,10 @@ const DBVOGRecords = () => {
                                 color: `${colors.greenAccent[200]} !important`,
                             },
                             "& .MuiTablePagination-root .MuiTablePagination-input": {
-                                display: "flex"
+                                display: "flex",
                             },
                             "& .MuiTablePagination-root .MuiTablePagination-selectLabel": {
-                                display: "flex"
+                                display: "flex",
                             },
                         }}
                     />

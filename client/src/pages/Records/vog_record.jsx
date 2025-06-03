@@ -22,80 +22,95 @@ const VOGRecords = () => {
     const [loading, setLoading] = useState(false);
 
    
-        const fetchData = async () => {
-            const data = await httpGetAllReadouts();
-            const formattedData = data.map((readout, index) => {
-                const level = Number(readout.level); // Ensure level is treated as a number
-                const vogStatus = level === 1 ? "GOOD" : "BAD"; // Levels 2-4 are BAD
-            
-                return {
-                    id: readout._id || index,
-                    classroom: readout.classroom,
-                    date: readout.date,
-                    time: readout.time,
-                    pm25: readout.pm25,
-                    pm10: readout.pm10,
-                    OAQIndex: readout.OAQIndex,
-                    level: level, // Store it as a number
-                    vogStatus, // Updated VOG Status logic
-                };
-            });
-            
-            
-            setRows(formattedData);
+const fetchData = async () => {
+    const data = await httpGetAllReadouts();
+    const formattedData = data.map((readout, index) => {
+        const level = Number(readout.level);
+        const oaqIndex = Number(readout.OAQIndex);
+
+        // Determine VOG Status based on OAQIndex thresholds
+        let vogStatus = "UNKNOWN";
+        if (oaqIndex >= 0 && oaqIndex <= 100) vogStatus = "GOOD";
+        else if (oaqIndex <= 200) vogStatus = "WARNING";
+        else if (oaqIndex <= 300) vogStatus = "BAD";
+        else if (oaqIndex <= 500) vogStatus = "EXTREME";
+
+        return {
+            id: readout._id || index,
+            classroom: readout.classroom,
+            date: readout.date,
+            time: readout.time,
+            pm25: readout.pm25,
+            pm10: readout.pm10,
+            OAQIndex: oaqIndex,
+            level: level,
+            vogStatus,
         };
-        useEffect(() => {
-                const interval = setInterval(() => {
-                    void fetchData();
-                }, 1000);
-        
-                return () => clearInterval(interval);
-            }, []);
-    
+    });
 
+    setRows(formattedData);
+};
 
-    const columns = [
-        // { field: "classroom", headerName: "Room", minWidth: 100, flex: 1 },
-        { field: "date", headerName: "Date", width: 91, },
-        { field: "time", headerName: "Time", width: 94, },
-        { field: "level", headerName: "Concern Level", width: 140, },
-        // { field: "vogStatus", headerName: "VOG Status", minWidth: 100, flex: 1 }, // Display computed VOG Status
-        {
-            field: "vogStatus",
-            headerName: "VOG Status",
-            minWidth:125,
-            flex: 1,
-            renderCell: ({ row: { vogStatus } }) => {
-              return (
+useEffect(() => {
+    const interval = setInterval(() => {
+        void fetchData();
+    }, 1000);
+
+    return () => clearInterval(interval);
+}, []);
+
+const columns = [
+    { field: "date", headerName: "Date", width: 91 },
+    { field: "time", headerName: "Time", width: 94 },
+    { field: "level", headerName: "Concern Level", width: 140 },  // KEEP this
+    {
+        field: "vogStatus",
+        headerName: "VOG Status",
+        minWidth: 125,
+        flex: 1,
+        renderCell: ({ row: { vogStatus } }) => {
+            let bgColor = "#9e9e9e"; // Default gray
+            let textColor = "#ffffff"; // Default white text
+
+            switch (vogStatus) {
+                case "GOOD":
+                    bgColor = colors.greenAccent[600];
+                    break;
+                case "WARNING":
+                    bgColor = "#ff9933"; // yellow-orange
+                    textColor = "#000000";
+                    break;
+                case "BAD":
+                    bgColor = colors.redAccent[700];
+                    break;
+                case "EXTREME":
+                    bgColor = "#800000"; // dark red for extreme
+                    break;
+            }
+
+            return (
                 <Box
-                //   width="60%"
-                  m="8px auto"
-                  p="5px"
-                  display="flex"
-                  justifyContent="center"
-                  backgroundColor={
-                    vogStatus === "GOOD"
-                      ? colors.greenAccent[600]
-                      : vogStatus === "BAD"
-                      ? colors.redAccent[700]
-                      : colors.redAccent[700]
-                  }
-                  borderRadius="4px"
+                    m="8px auto"
+                    p="5px"
+                    display="flex"
+                    justifyContent="center"
+                    backgroundColor={bgColor}
+                    borderRadius="4px"
                 >
-                  {vogStatus === "GOOD" }
-                  {vogStatus === "BAD" }
-                  <Typography color={"white"} >
-                    {vogStatus}
-                  </Typography>
+                    <Typography color={textColor}>{vogStatus}</Typography>
                 </Box>
-              );
-            },
+            );
         },
-        { field: "pm25", headerName: "PM 2.5", width: 120, },
-        { field: "pm10", headerName: "PM 10.0", width: 120, },
-        { field: "OAQIndex", headerName: "OAQ Index", width: 130, },
+    },
+    { field: "pm25", headerName: "PM 2.5", width: 120 },
+    { field: "pm10", headerName: "PM 10.0", width: 120 },
+    { field: "OAQIndex", headerName: "OAQ Index", width: 130 },
+];
 
-    ];
+
+
+
+
 
     const handleDownload = () => {
         const filteredRows = rows.filter((row) => {

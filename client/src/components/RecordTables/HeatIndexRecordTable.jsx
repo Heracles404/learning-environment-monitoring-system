@@ -10,68 +10,96 @@ const HeatIndexRecordTable = () => {
     const colors = tokens(theme.palette.mode);
     const [rows, setRows] = useState([]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const data = await httpGetAllReadouts();
-            const formattedData = data.map((readout, index) => ({
-                id: readout._id || index,
-                classroom: readout.classroom,
-                date: readout.date,
-                time: readout.time,
-                temperature: readout.temperature,
-                humidity: readout.humidity,
-                heatIndex: readout.heatIndex,
-                lighting: readout.lighting,
-                voc: readout.voc,
-                IAQIndex: readout.IAQIndex,
-                indoorAir: readout.indoorAir,
-                temp: readout.heatIndex >= 27 && readout.heatIndex <= 32 ? "GOOD" : "BAD",
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await httpGetAllReadouts();
+      const formattedData = data.map((readout, index) => {
+        let tempStatus;
 
+        if (readout.heatIndex === undefined || readout.heatIndex === null) {
+          tempStatus = "UNKNOWN";
+        } else if (readout.heatIndex <= 27) {
+          tempStatus = "GOOD";
+        } else if (readout.heatIndex <= 35) {
+          tempStatus = "WARNING";
+        } else if (readout.heatIndex >= 41) {
+          tempStatus = "BAD";
+        } else if (readout.heatIndex > 41) {
+          tempStatus = "EXTREME"; // buzzer / extreme danger
+        }
 
-
-            }));
-            setRows(formattedData);
+        return {
+          id: readout._id || index,
+          classroom: readout.classroom,
+          date: readout.date,
+          time: readout.time,
+          temperature: readout.temperature,
+          humidity: readout.humidity,
+          heatIndex: readout.heatIndex,
+          temp: tempStatus,
         };
+      });
+      setRows(formattedData);
+    };
 
-        fetchData();
-    }, []);
+    fetchData();
+  }, []);
 
-    const columns = [
-        { field: "classroom", headerName: "Room", width: 100 },
-        { field: "date", headerName: "Date", width: 100 },
-        { field: "time", headerName: "Time", width: 100 },
-        { field: "temperature", headerName: "Temperature", width: 120 },
-        { field: "humidity", headerName: "Humidity", width: 120 },
-        { field: "heatIndex", headerName: "Heat Index", width: 120 },
-        {
-            field: "temp",
-            headerName: "Heat Index Status",
-            flex: 1,
-            minWidth: 180,
-            renderCell: ({ row: { temp } }) => {
-                return (
-                    <Box
-                        m="8px auto"
-                        p="5px"
-                        display="flex"
-                        justifyContent="center"
-                        backgroundColor={
-                            temp === "GOOD"
-                                ? colors.greenAccent[600]
-                                : temp === "BAD"
-                                ? colors.redAccent[700]
-                                : colors.redAccent[700]
-                        }
-                        borderRadius="4px"
-                    >
-                        <Typography color={"white"}>
-                            {temp}
-                        </Typography>
-                    </Box>
-                );
-            },
-        },
-    ];
+  const columns = [
+    { field: "classroom", headerName: "Room", width: 100 },
+    { field: "date", headerName: "Date", width: 100 },
+    { field: "time", headerName: "Time", width: 100 },
+    { field: "temperature", headerName: "Temperature", width: 120 },
+    { field: "humidity", headerName: "Humidity", width: 120 },
+    { field: "heatIndex", headerName: "Heat Index", width: 120 },
+    {
+      field: "temp",
+      headerName: "Heat Index Status",
+      flex: 1,
+      minWidth: 180,
+      renderCell: ({ row: { temp } }) => {
+        let bgColor = colors.grey[400];
+        let textColor = "black";
+
+        switch (temp) {
+          case "GOOD":
+            bgColor = colors.greenAccent[600];
+            textColor = "white";
+            break;
+          case "WARNING":
+            bgColor = "#ff9933"; // yellow/orange for warning
+            textColor = "black";
+            break;
+          case "BAD":
+            bgColor = colors.redAccent[700];
+            textColor = "white";
+            break;
+          case "EXTREME":
+            bgColor = "#8B0000"; // dark red for extreme danger
+            textColor = "white";
+            break;
+          case "UNKNOWN":
+          default:
+            bgColor = colors.grey[400];
+            textColor = "black";
+            break;
+        }
+
+        return (
+          <Box
+            m="8px auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            backgroundColor={bgColor}
+            borderRadius="4px"
+          >
+            <Typography color={textColor}>{temp}</Typography>
+          </Box>
+        );
+      },
+    },
+  ];
 
     return (
         <Box m="5px">

@@ -10,10 +10,25 @@ const VolcanicSmogRecordTable = () => {
     const colors = tokens(theme.palette.mode);
     const [rows, setRows] = useState([]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const data = await httpGetAllReadouts();
-            const formattedData = data.map((readout, index) => ({
+useEffect(() => {
+    const fetchData = async () => {
+        const data = await httpGetAllReadouts();
+        const formattedData = data.map((readout, index) => {
+            const oaqIndex = Number(readout.OAQIndex);
+
+            let vogStatus = "UNKNOWN";
+
+            if (oaqIndex >= 0 && oaqIndex <= 100) {
+                vogStatus = "GOOD";
+            } else if (oaqIndex > 100 && oaqIndex <= 200) {
+                vogStatus = "WARNING";
+            } else if (oaqIndex > 200 && oaqIndex <= 300) {
+                vogStatus = "BAD";
+            } else if (oaqIndex > 300 && oaqIndex <= 500) {
+                vogStatus = "EXTREME";
+            }
+
+            return {
                 id: readout._id || index,
                 classroom: readout.classroom,
                 date: readout.date,
@@ -28,59 +43,74 @@ const VolcanicSmogRecordTable = () => {
                 temp: readout.temp,
                 pm25: readout.pm25,
                 pm10: readout.pm10,
-                OAQ: readout.OAQIndex,
+                OAQ: oaqIndex,
                 level: readout.level,
-                concernLevel: (Number(readout.level) === 1) ? "GOOD" : "BAD",
-            }));
-            setRows(formattedData);
-        };
+                vogStatus,
+            };
+        });
+        setRows(formattedData);
+    };
 
-        fetchData();
-    }, []);
+    fetchData();
+}, []);
 
-    const columns = [
-        { field: "classroom", headerName: "Device", width: 100,},  // Updated header to Classroom
-        { field: "date", headerName: "Date", width: 100,},
-        { field: "time", headerName: "Time", width: 100,},
-        { field: "pm25", headerName: "pm2.5", width: 120,},
-        { field: "pm10", headerName: "pm10", width: 120,},
-        { field: "OAQ", headerName: "OAQ Index", width: 120,},
-        { field: "level", headerName: "Level of Concern", width: 120,},
-        {
-                            field: "concernLevel",
-                            headerName: "VOG Status",
-                            minWidth: 150,
-                            flex: 1,
-                            renderCell: ({ row: { concernLevel } }) => {
-                              return (
-                                <Box
-                                //   width="60%"
-                                  m="8px auto"
-                                  p="5px"
-                                  display="flex"
-                                  justifyContent="center"
-                                  backgroundColor={
-                                    concernLevel === "GOOD"
-                                      ? colors.greenAccent[600]
-                                      : concernLevel === "BAD"
-                                      ? colors.redAccent[700]
-                                      : colors.redAccent[700]
-                                  }
-                                  borderRadius="4px"
-                                >
-                                  {concernLevel === "GOOD" }
-                                  {concernLevel === "BAD" }
-                                  <Typography color={"white"} >
-                                    {concernLevel}
-                                  </Typography>
-                                </Box>
-                              )
-                            },
-                        },
-        // { field: "IAQIndex", headerName: "IAQ Index", minWidth: 100, flex: 1 },
-        // { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
-        // { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
-    ];
+const columns = [
+    { field: "classroom", headerName: "Device", width: 100 },
+    { field: "date", headerName: "Date", width: 100 },
+    { field: "time", headerName: "Time", width: 100 },
+    { field: "pm25", headerName: "PM2.5", width: 120 },
+    { field: "pm10", headerName: "PM10", width: 120 },
+    { field: "OAQ", headerName: "OAQ Index", width: 120 },
+    { field: "level", headerName: "Level of Concern", width: 120 },
+    {
+        field: "vogStatus",
+        headerName: "VOG Status",
+        minWidth: 150,
+        flex: 1,
+        renderCell: ({ row: { vogStatus } }) => {
+            let bgColor = colors.grey[500];
+            let textColor = "white";
+
+            switch (vogStatus) {
+                case "GOOD":
+                    bgColor = colors.greenAccent[600];
+                    break;
+                case "WARNING":
+                    bgColor = "#FFA500"; // Orange
+                    textColor = "black";
+                    break;
+                case "BAD":
+                    bgColor = colors.redAccent[700];
+                    break;
+                case "EXTREME":
+                    bgColor = "#8B0000"; // Dark red for extreme
+                    break;
+                case "UNKNOWN":
+                default:
+                    bgColor = colors.grey[500];
+                    textColor = "black";
+                    break;
+            }
+
+            return (
+                <Box
+                    m="8px auto"
+                    p="5px"
+                    display="flex"
+                    justifyContent="center"
+                    backgroundColor={bgColor}
+                    borderRadius="4px"
+                >
+                    <Typography color={textColor}>
+                        {vogStatus}
+                    </Typography>
+                </Box>
+            );
+        },
+    },
+];
+
+
 
     return (
         <Box m="5px" mt="12.5px">

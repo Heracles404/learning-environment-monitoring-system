@@ -11,23 +11,64 @@ const DBRecords = () => {
     const colors = tokens(theme.palette.mode);
     const [rows, setRows] = useState([]);
 
-    useEffect(() => {
+   useEffect(() => {
         const fetchData = async () => {
             const data = await httpGetAllReadouts();
             console.log(data);
 
             const updatedData = {};
             data.forEach((readout) => {
-                updatedData[readout.classroom] = {
-                  id: readout.classroom,
-                  classroom: readout.classroom,
-                  currentHeatIndex: readout.heatIndex,
-                  currentIAQIndex: readout.IAQIndex,
-                  currentLighting: readout.lighting,
-                  concernLevel: readout.heatIndex >= 27 && readout.heatIndex <= 32 ? "GOOD" : "BAD",
-                  IAQStatus: readout.IAQIndex < 100 ? "GOOD" : "BAD",
-                  LightStatus: readout.lighting >= 300 && readout.lighting <= 500 ? "GOOD" : "BAD",
+                // Determine concernLevel with GOOD, WARNING, BAD
+                let concernLevel;
+                if (readout.heatIndex === undefined || readout.heatIndex === null) {
+                    concernLevel = "UNKNOWN";
+                } else if (readout.heatIndex < 27) {
+                    concernLevel = "GOOD";
+                } else if (readout.heatIndex <= 32) {
+                    concernLevel = "WARNING";
+                } else if (readout.heatIndex >= 41) {
+                    concernLevel = "EXTREME";
+                } else {
+                    concernLevel = "BAD";
+                }
 
+                let IAQStatus;
+                if (readout.IAQIndex === undefined || readout.IAQIndex === null) {
+                    IAQStatus = "UNKNOWN";
+                } else if (readout.IAQIndex <= 100) {
+                    IAQStatus = "GOOD";
+                } else if (readout.IAQIndex <= 300) {
+                    IAQStatus = "WARNING";
+                } else if (readout.IAQIndex <= 500) {
+                    IAQStatus = "BAD";
+                } else {
+                    IAQStatus = "UNKNOWN";
+                }
+
+                let LightStatus;
+                if (readout.lighting === undefined || readout.lighting === null) {
+                    LightStatus = "UNKNOWN";
+                } else if (readout.lighting === -1) {
+                    LightStatus = "NIGHT";
+                } else if (readout.lighting <= 30) {
+                    LightStatus = "CLOSED";
+                } else if (readout.lighting <= 150) {
+                    LightStatus = "GOOD";
+                } else if (readout.lighting <= 500) {
+                    LightStatus = "BAD";
+                } else {
+                    LightStatus = "UNKNOWN";
+                }
+
+                updatedData[readout.classroom] = {
+                    id: readout.classroom,
+                    classroom: readout.classroom,
+                    currentHeatIndex: readout.heatIndex,
+                    currentIAQIndex: readout.IAQIndex,
+                    currentLighting: readout.lighting,
+                    concernLevel,
+                    IAQStatus,
+                    LightStatus,
                 };
             });
 
@@ -39,109 +80,93 @@ const DBRecords = () => {
         return () => clearInterval(interval);
     }, []);
 
-    const columns = [
-        { field: "classroom", headerName: "Room", width: 123,   },
-        // { field: "IAQStatus", headerName: "IAQ Status", minWidth: 100, flex: 1 },
-        {
-            field: "IAQStatus",
-            headerName: "IAQ Stat",
-            minWidth: 130,
-            flex: 1,
-            renderCell: ({ row: { IAQStatus } }) => {
-              return (
-                <Box
-                  width="120%"
-                  m="8px auto"
-                  p="5px"
-                  display="flex"
-                  justifyContent="center"
-                  backgroundColor={
-                    IAQStatus === "GOOD"
-                      ? colors.greenAccent[600]
-                      : IAQStatus === "BAD"
-                      ? colors.redAccent[700]
-                      : colors.redAccent[700]
-                  }
-                  borderRadius="4px"
-                >
-                  {IAQStatus === "GOOD" }
-                  {IAQStatus === "BAD" }
-                  <Typography color={"white"} >
-                    {IAQStatus}
-                  </Typography>
-                </Box>
-              );
-            },
-        },
-        // { field: "concernLevel", headerName: "Heat Index Status", minWidth: 100, flex: 1 },
-        {
-            field: "concernLevel",
-            headerName: "Heat Index Status",
-            minWidth: 157,
-            flex: 1,
-            renderCell: ({ row: { concernLevel } }) => {
-              return (
-                <Box
-                //   width="100%"
-                  m="8px auto"
-                  p="5px"
-                  display="flex"
-                  justifyContent="center"
-                  backgroundColor={
-                    concernLevel === "GOOD"
-                      ? colors.greenAccent[600]
-                      : concernLevel === "BAD"
-                      ? colors.redAccent[700]
-                      : colors.redAccent[700]
-                  }
-                  borderRadius="4px"
-                >
-                  {concernLevel === "GOOD" }
-                  {concernLevel === "BAD" }
-                  <Typography color={"white"} >
-                    {concernLevel}
-                  </Typography>
-                </Box>
-              );
-            },
-        },
+const columns = [
+    { field: "classroom", headerName: "Room", width: 123 },
+    {
+        field: "IAQStatus",
+        headerName: "IAQ Stat",
+        minWidth: 130,
+        flex: 1,
+        renderCell: ({ row: { IAQStatus } }) => {
+            let bgColor = "#999999"; // Default to UNKNOWN
+            if (IAQStatus === "GOOD") bgColor = colors.greenAccent[600];
+            else if (IAQStatus === "WARNING") bgColor = "#ff9933";
+            else if (IAQStatus === "BAD") bgColor = colors.redAccent[700];
 
-        // { field: "LightStatus", headerName: "Light Status", minWidth: 100, flex: 1 },
-        {
-                    field: "LightStatus",
-                    headerName: "Light Status",
-                    minWidth: 130,
-                    flex: 1,
-                    renderCell: ({ row: { LightStatus } }) => {
-                      return (
-                        <Box
-                        //   width="60%"
-                          m="8px auto"
-                          p="5px"
-                          display="flex"
-                          justifyContent="center"
-                          backgroundColor={
-                            LightStatus === "GOOD"
-                              ? colors.greenAccent[600]
-                              : LightStatus === "BAD"
-                              ? colors.redAccent[700]
-                              : colors.redAccent[700]
-                          }
-                          borderRadius="4px"
-                        >
-                          {LightStatus === "GOOD" }
-                          {LightStatus === "BAD" }
-                          <Typography color={"white"} >
-                            {LightStatus}
-                          </Typography>
-                        </Box>
-                      );
-                    },
-                },        
-        { field: "currentHeatIndex", headerName: "Heat Index", width: 130,  },
-        { field: "currentIAQIndex", headerName: "IAQ Index", width: 130,  },
-        { field: "currentLighting", headerName: "Light Level", width: 130, },
-    ];
+            return (
+                <Box
+                    width="120%"
+                    m="8px auto"
+                    p="5px"
+                    display="flex"
+                    justifyContent="center"
+                    backgroundColor={bgColor}
+                    borderRadius="4px"
+                >
+                    <Typography color="white">{IAQStatus}</Typography>
+                </Box>
+            );
+        },
+    },
+    {
+        field: "concernLevel",
+        headerName: "Heat Index Status",
+        minWidth: 157,
+        flex: 1,
+        renderCell: ({ row: { concernLevel } }) => {
+            let bgColor = "#999999"; // Default to UNKNOWN
+            if (concernLevel === "GOOD") bgColor = colors.greenAccent[600];
+            else if (concernLevel === "WARNING") bgColor = "#ff9933";
+            else if (concernLevel === "BAD") bgColor = colors.redAccent[700];
+            else if (concernLevel === "EXTREME") bgColor = "#990000";
+
+            return (
+                <Box
+                    m="8px auto"
+                    p="5px"
+                    display="flex"
+                    justifyContent="center"
+                    backgroundColor={bgColor}
+                    borderRadius="4px"
+                >
+                    <Typography color="white">{concernLevel}</Typography>
+                </Box>
+            );
+        },
+    },
+    {
+        field: "LightStatus",
+        headerName: "Light Status",
+        minWidth: 130,
+        flex: 1,
+        renderCell: ({ row: { LightStatus } }) => {
+            let bgColor = "#999999"; // Default to UNKNOWN
+            if (LightStatus === "GOOD") bgColor = colors.greenAccent[600];
+            else if (LightStatus === "WARNING") bgColor = "#ff9933";
+            else if (LightStatus === "BAD") bgColor = colors.redAccent[700];
+            else if (LightStatus === "CLOSED") bgColor = "#666666";
+            else if (LightStatus === "NIGHT") bgColor = "#333333";
+
+            return (
+                <Box
+                    m="8px auto"
+                    p="5px"
+                    display="flex"
+                    justifyContent="center"
+                    backgroundColor={bgColor}
+                    borderRadius="4px"
+                >
+                    <Typography color="white">{LightStatus}</Typography>
+                </Box>
+            );
+        },
+    },
+    { field: "currentHeatIndex", headerName: "Heat Index", width: 130 },
+    { field: "currentIAQIndex", headerName: "IAQ Index", width: 130 },
+    { field: "currentLighting", headerName: "Light Level", width: 130 },
+];
+
+
 
     return (
         <Box m="5px">

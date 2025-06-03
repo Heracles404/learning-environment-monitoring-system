@@ -22,149 +22,198 @@ const Records = () => {
     const [loading, setLoading] = useState(false);
 
    
-        const fetchData = async () => {
-            const data = await httpGetAllReadouts();
-            const formattedData = data.map((readout, index) => {
-                const iaqStatus = readout.IAQIndex > 10000000 ? "BAD" : "GOOD";
-                const lightingStatus = readout.lighting >= 3 && readout.lighting <= 50000 ? "GOOD" : "BAD";
-                const tempStatus = readout.temperature < 29000 ? "GOOD" : "BAD";
-    
-                return {
-                    id: readout._id || index, // Ensure `id` is unique
-                    classroom: readout.classroom,
-                    date: readout.date,
-                    time: readout.time,
-                    temperature: readout.temperature,
-                    humidity: readout.humidity,
-                    heatIndex: readout.heatIndex,
-                    lighting: readout.lighting,
-                    voc: readout.voc,
-                    IAQIndex: readout.IAQIndex,
-                    indoorAir: iaqStatus,   // Updated IAQ Status
-                    temp: tempStatus,       // Updated Temperature Status
-                    lightRemarks: lightingStatus, // Updated Lighting Status
-                };
-            });
-    
-            setRows(formattedData);
+const fetchData = async () => {
+    const data = await httpGetAllReadouts();
+    const formattedData = data.map((readout, index) => {
+        // Updated IAQ status logic
+        let iaqStatus = "UNKNOWN";
+        if (readout.IAQIndex !== undefined && readout.IAQIndex !== null) {
+            if (readout.IAQIndex <= 100) iaqStatus = "GOOD";
+            else if (readout.IAQIndex <= 300) iaqStatus = "WARNING";
+            else if (readout.IAQIndex <= 500) iaqStatus = "BAD";
+            else iaqStatus = "UNKNOWN";
+        }
+
+        // Updated lighting status logic
+        let lightingStatus = "UNKNOWN";
+        if (readout.lighting !== undefined && readout.lighting !== null) {
+            if (readout.lighting === -1) lightingStatus = "NIGHT";
+            else if (readout.lighting <= 30) lightingStatus = "CLOSED";
+            else if (readout.lighting <= 150) lightingStatus = "WARNING";
+            else if (readout.lighting <= 500) lightingStatus = "GOOD";
+            else lightingStatus = "BAD";
+        }
+
+        // Updated heat index logic
+        let tempStatus = "UNKNOWN";
+        if (readout.heatIndex !== undefined && readout.heatIndex !== null) {
+            if (readout.heatIndex <= 27) tempStatus = "GOOD";
+            else if (readout.heatIndex <= 35) tempStatus = "WARNING";
+            else if (readout.heatIndex >= 41) tempStatus = "EXTREME";
+            else tempStatus = "BAD"; // covers 36-40
+        }
+
+        return {
+            id: readout._id || index,
+            classroom: readout.classroom,
+            date: readout.date,
+            time: readout.time,
+            temperature: readout.temperature,
+            humidity: readout.humidity,
+            heatIndex: readout.heatIndex,
+            lighting: readout.lighting,
+            voc: readout.voc,
+            IAQIndex: readout.IAQIndex,
+            indoorAir: iaqStatus,
+            temp: tempStatus,
+            lightRemarks: lightingStatus,
         };
-        useEffect(() => {
-                const interval = setInterval(() => {
-                    void fetchData();
-                }, 1000);
-        
-                return () => clearInterval(interval);
-            }, []);
-    
+    });
+
+    setRows(formattedData);
+};
 
 
-    const columns = [
-        { field: "classroom", headerName: "Room", width: 98, },
-        { field: "date", headerName: "Date", width: 91, },
-        { field: "time", headerName: "Time", width: 94, },
-        // { field: "temperature", headerName: "Temperature", minWidth: 100, flex: 1 },
-        // { field: "humidity", headerName: "Humidity", minWidth: 100, flex: 1 },
-        {
-            field: "indoorAir",
-            headerName: "IAQ Status",
-            minWidth:120,
-            flex: 1,
-            renderCell: ({ row: { indoorAir } }) => {
-              return (
-                <Box
-                //   width="60%"
-                  m="8px auto"
-                  p="5px"
-                  display="flex"
-                  justifyContent="center"
-                  backgroundColor={
-                    indoorAir === "GOOD"
-                      ? colors.greenAccent[600]
-                      : indoorAir === "BAD"
-                      ? colors.redAccent[700]
-                      : colors.redAccent[700]
-                  }
-                  borderRadius="4px"
-                >
-                  {indoorAir === "GOOD" }
-                  {indoorAir === "BAD" }
-                  <Typography color={"white"} >
-                    {indoorAir}
-                  </Typography>
+useEffect(() => {
+    const interval = setInterval(() => {
+        void fetchData();
+    }, 1000);
+
+    return () => clearInterval(interval);
+}, []);
+
+const columns = [
+    { field: "classroom", headerName: "Room", width: 98 },
+    { field: "date", headerName: "Date", width: 91 },
+    { field: "time", headerName: "Time", width: 94 },
+    {
+        field: "indoorAir",
+        headerName: "IAQ Status",
+        minWidth: 120,
+        flex: 1,
+        renderCell: ({ row: { indoorAir } }) => {
+            let bgColor = "#ccc";
+            let textColor = "black";
+
+            switch (indoorAir) {
+                case "GOOD":
+                    bgColor = colors.greenAccent[600];
+                    textColor = "white";
+                    break;
+                case "WARNING":
+                    bgColor = "#ff9933";
+                    break;
+                case "BAD":
+                    bgColor = colors.redAccent[700];
+                    textColor = "white";
+                    break;
+                case "UNKNOWN":
+                default:
+                    bgColor = "#999999";
+                    textColor = "white";
+                    break;
+            }
+
+            return (
+                <Box m="8px auto" p="5px" display="flex" justifyContent="center" backgroundColor={bgColor} borderRadius="4px">
+                    <Typography color={textColor}>{indoorAir}</Typography>
                 </Box>
-              );
-            },
+            );
         },
-        // { field: "temp", headerName: "Temperature Stat", minWidth: 100, flex: 1 },
-        {
-            field: "temp",
-            headerName: "Heat Index Status",
-            minWidth:170,
-            flex: 1,
-            renderCell: ({ row: { temp } }) => {
-              return (
-                <Box
-                //   width="60%"
-                  m="8px auto"
-                  p="5px"
-                  display="flex"
-                  justifyContent="center"
-                  backgroundColor={
-                    temp === "GOOD"
-                      ? colors.greenAccent[600]
-                      : temp === "BAD"
-                      ? colors.redAccent[700]
-                      : colors.redAccent[700]
-                  }
-                  borderRadius="4px"
-                >
-                  {temp === "GOOD" }
-                  {temp === "BAD" }
-                  <Typography color={"white"} >
-                    {temp}
-                  </Typography>
+    },
+    {
+        field: "temp",
+        headerName: "Heat Index Status",
+        minWidth: 170,
+        flex: 1,
+        renderCell: ({ row: { temp } }) => {
+            let bgColor = "#ccc";
+            let textColor = "black";
+
+            switch (temp) {
+                case "GOOD":
+                    bgColor = colors.greenAccent[600];
+                    textColor = "white";
+                    break;
+                case "WARNING":
+                    bgColor = "#ff9933";
+                    break;
+                case "BAD":
+                    bgColor = colors.redAccent[700];
+                    textColor = "white";
+                    break;
+                case "EXTREME":
+                    bgColor = "#990000";
+                    textColor = "white";
+                    break;
+                case "UNKNOWN":
+                default:
+                    bgColor = "#999999";
+                    textColor = "white";
+                    break;
+            }
+
+            return (
+                <Box m="8px auto" p="5px" display="flex" justifyContent="center" backgroundColor={bgColor} borderRadius="4px">
+                    <Typography color={textColor}>{temp}</Typography>
                 </Box>
-              );
-            },
+            );
         },
-        // { field: "lightRemarks", headerName: "Lighting Stat", minWidth: 91, flex: 1 },
-        {
-            field: "lightRemarks",
-            headerName: "Lighting Status",
-            minWidth:145,
-            flex: 1,
-            renderCell: ({ row: { lightRemarks } }) => {
-              return (
-                <Box
-                //   width="60%"
-                  m="8px auto"
-                  p="5px"
-                  display="flex"
-                  justifyContent="center"
-                  backgroundColor={
-                    lightRemarks === "GOOD"
-                      ? colors.greenAccent[600]
-                      : lightRemarks === "BAD"
-                      ? colors.redAccent[700]
-                      : colors.redAccent[700]
-                  } 
-                  borderRadius="4px"
-                >
-                  {lightRemarks === "GOOD" }
-                  {lightRemarks === "BAD" }
-                  <Typography color={"white"} >
-                    {lightRemarks}
-                  </Typography>
+    },
+    {
+        field: "lightRemarks",
+        headerName: "Lighting Status",
+        minWidth: 145,
+        flex: 1,
+        renderCell: ({ row: { lightRemarks } }) => {
+            let bgColor = "#ccc";
+            let textColor = "black";
+
+            switch (lightRemarks) {
+                case "GOOD":
+                    bgColor = colors.greenAccent[600];
+                    textColor = "white";
+                    break;
+                case "WARNING":
+                    bgColor = "#ff9933";
+                    break;
+                case "BAD":
+                    bgColor = colors.redAccent[700];
+                    textColor = "white";
+                    break;
+                case "CLOSED":
+                    bgColor = "#666666";
+                    textColor = "white";
+                    break;
+                case "NIGHT":
+                    bgColor = "#333333";
+                    textColor = "white";
+                    break;
+                case "UNKNOWN":
+                default:
+                    bgColor = "#999999";
+                    textColor = "white";
+                    break;
+            }
+
+            return (
+                <Box m="8px auto" p="5px" display="flex" justifyContent="center" backgroundColor={bgColor} borderRadius="4px">
+                    <Typography color={textColor}>{lightRemarks}</Typography>
                 </Box>
-              );
-            },
+            );
         },
-        { field: "IAQIndex", headerName: "IAQ Index", width: 115.5, },
-        { field: "heatIndex", headerName: "Heat Index", width: 121.5, },
-        { field: "lighting", headerName: "Lighting", width: 105, },
-        // { field: "indoorAir", headerName: "IAQ Stat", minWidth: 100, flex: 1 },
-        
-    ];
+    },
+    { field: "IAQIndex", headerName: "IAQ Index", width: 115.5 },
+    { field: "heatIndex", headerName: "Heat Index", width: 121.5 },
+    { field: "lighting", headerName: "Lighting", width: 105 },
+];
+
+
+
+
+
+
+
 
     const handleDeleteSelected = async () => { 
         if (selectedRows.length === 0) {
