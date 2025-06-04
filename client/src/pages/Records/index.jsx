@@ -28,9 +28,9 @@ const fetchData = async () => {
         // Updated IAQ status logic
         let iaqStatus = "UNKNOWN";
         if (readout.IAQIndex !== undefined && readout.IAQIndex !== null) {
-            if (readout.IAQIndex <= 100) iaqStatus = "GOOD";
-            else if (readout.IAQIndex <= 300) iaqStatus = "WARNING";
-            else if (readout.IAQIndex <= 500) iaqStatus = "BAD";
+            if (readout.IAQIndex <= 150) iaqStatus = "GOOD";
+            else if (readout.IAQIndex <= 300) iaqStatus = "BAD";
+            else if (readout.IAQIndex <= 500) iaqStatus = "DANGER";
             else iaqStatus = "UNKNOWN";
         }
 
@@ -38,19 +38,19 @@ const fetchData = async () => {
         let lightingStatus = "UNKNOWN";
         if (readout.lighting !== undefined && readout.lighting !== null) {
             if (readout.lighting === -1) lightingStatus = "NIGHT";
-            else if (readout.lighting <= 30) lightingStatus = "CLOSED";
-            else if (readout.lighting <= 150) lightingStatus = "WARNING";
-            else if (readout.lighting <= 500) lightingStatus = "GOOD";
-            else lightingStatus = "BAD";
+            else if (readout.lighting <= 20) lightingStatus = "CLOSED";
+            else if (readout.lighting >= 300) lightingStatus = "GOOD";
+            else if (readout.lighting <= 299) lightingStatus = "DIM";
+            else if (readout.lighting <= 150) lightingStatus = "BAD";
         }
 
         // Updated heat index logic
         let tempStatus = "UNKNOWN";
         if (readout.heatIndex !== undefined && readout.heatIndex !== null) {
             if (readout.heatIndex <= 27) tempStatus = "GOOD";
-            else if (readout.heatIndex <= 35) tempStatus = "WARNING";
-            else if (readout.heatIndex >= 41) tempStatus = "EXTREME";
-            else tempStatus = "BAD"; // covers 36-40
+            else if (readout.heatIndex <= 35) tempStatus = "BAD";
+            else if (readout.heatIndex >= 36) tempStatus = "DANGER";
+
         }
 
         return {
@@ -100,8 +100,8 @@ const columns = [
                     bgColor = colors.greenAccent[600];
                     textColor = "white";
                     break;
-                case "WARNING":
-                    bgColor = "#ff9933";
+                case "DANGER":
+                    bgColor = "#990000";
                     break;
                 case "BAD":
                     bgColor = colors.redAccent[700];
@@ -135,14 +135,11 @@ const columns = [
                     bgColor = colors.greenAccent[600];
                     textColor = "white";
                     break;
-                case "WARNING":
-                    bgColor = "#ff9933";
-                    break;
                 case "BAD":
                     bgColor = colors.redAccent[700];
                     textColor = "white";
                     break;
-                case "EXTREME":
+                case "DANGER":
                     bgColor = "#990000";
                     textColor = "white";
                     break;
@@ -174,7 +171,7 @@ const columns = [
                     bgColor = colors.greenAccent[600];
                     textColor = "white";
                     break;
-                case "WARNING":
+                case "DIM":
                     bgColor = "#ff9933";
                     break;
                 case "BAD":

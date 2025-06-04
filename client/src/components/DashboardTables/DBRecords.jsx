@@ -22,15 +22,14 @@ const DBRecords = () => {
                 let concernLevel;
                 if (readout.heatIndex === undefined || readout.heatIndex === null) {
                     concernLevel = "UNKNOWN";
-                } else if (readout.heatIndex < 27) {
+                } else if (readout.heatIndex <= 27) {
                     concernLevel = "GOOD";
-                } else if (readout.heatIndex <= 32) {
-                    concernLevel = "WARNING";
-                } else if (readout.heatIndex >= 41) {
-                    concernLevel = "EXTREME";
-                } else {
+                } else if (readout.heatIndex <= 35) {
                     concernLevel = "BAD";
-                }
+                } else if (readout.heatIndex >= 36) {
+                    concernLevel = "DANGER";
+                } 
+                
 
                 let IAQStatus;
                 if (readout.IAQIndex === undefined || readout.IAQIndex === null) {
@@ -38,9 +37,9 @@ const DBRecords = () => {
                 } else if (readout.IAQIndex <= 100) {
                     IAQStatus = "GOOD";
                 } else if (readout.IAQIndex <= 300) {
-                    IAQStatus = "WARNING";
-                } else if (readout.IAQIndex <= 500) {
                     IAQStatus = "BAD";
+                } else if (readout.IAQIndex <= 500) {
+                    IAQStatus = "DANGER";
                 } else {
                     IAQStatus = "UNKNOWN";
                 }
@@ -50,13 +49,15 @@ const DBRecords = () => {
                     LightStatus = "UNKNOWN";
                 } else if (readout.lighting === -1) {
                     LightStatus = "NIGHT";
-                } else if (readout.lighting <= 30) {
+                } else if (readout.lighting <= 20) {
                     LightStatus = "CLOSED";
-                } else if (readout.lighting <= 150) {
+                } else if (readout.lighting >= 300) {
                     LightStatus = "GOOD";
-                } else if (readout.lighting <= 500) {
+                } else if (readout.lighting <= 299) {
+                    LightStatus = "DIM";
+                } else if (readout.lighting <= 150) {
                     LightStatus = "BAD";
-                } else {
+                }else {
                     LightStatus = "UNKNOWN";
                 }
 
@@ -90,7 +91,7 @@ const columns = [
         renderCell: ({ row: { IAQStatus } }) => {
             let bgColor = "#999999"; // Default to UNKNOWN
             if (IAQStatus === "GOOD") bgColor = colors.greenAccent[600];
-            else if (IAQStatus === "WARNING") bgColor = "#ff9933";
+            else if (IAQStatus === "DANGER") bgColor = "#ff9933";
             else if (IAQStatus === "BAD") bgColor = colors.redAccent[700];
 
             return (
@@ -116,9 +117,8 @@ const columns = [
         renderCell: ({ row: { concernLevel } }) => {
             let bgColor = "#999999"; // Default to UNKNOWN
             if (concernLevel === "GOOD") bgColor = colors.greenAccent[600];
-            else if (concernLevel === "WARNING") bgColor = "#ff9933";
             else if (concernLevel === "BAD") bgColor = colors.redAccent[700];
-            else if (concernLevel === "EXTREME") bgColor = "#990000";
+            else if (concernLevel === "DANGER") bgColor = "#990000";
 
             return (
                 <Box
@@ -142,7 +142,7 @@ const columns = [
         renderCell: ({ row: { LightStatus } }) => {
             let bgColor = "#999999"; // Default to UNKNOWN
             if (LightStatus === "GOOD") bgColor = colors.greenAccent[600];
-            else if (LightStatus === "WARNING") bgColor = "#ff9933";
+            else if (LightStatus === "DIM") bgColor = "#ff9933";
             else if (LightStatus === "BAD") bgColor = colors.redAccent[700];
             else if (LightStatus === "CLOSED") bgColor = "#666666";
             else if (LightStatus === "NIGHT") bgColor = "#333333";

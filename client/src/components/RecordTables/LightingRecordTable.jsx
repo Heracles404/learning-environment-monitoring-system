@@ -18,13 +18,13 @@ useEffect(() => {
 
       if (readout.lighting === -1) {
         LightStatus = "NIGHT";
-      } else if (readout.lighting <= 30) {
+      } else if (readout.lighting <= 20) {
         LightStatus = "CLOSED";
-      } else if (readout.lighting > 30 && readout.lighting <= 150) {
+      } else if (readout.lighting >= 300) {
         LightStatus = "GOOD";
-      } else if (readout.lighting > 150 && readout.lighting <= 500) {
-        LightStatus = "WARNING";
-      } else if (readout.lighting > 500) {
+      } else if (readout.lighting <= 299) {
+        LightStatus = "DIM";
+      } else if (readout.lighting <= 150) {
         LightStatus = "BAD";
       } else {
         LightStatus = "UNKNOWN";
@@ -63,7 +63,7 @@ const columns = [
         case "GOOD":
           bgColor = colors.greenAccent[600];
           break;
-        case "WARNING":
+        case "DIM":
           bgColor = "#ff9933"; // yellow/orange for warning
           textColor = "black";
           break;

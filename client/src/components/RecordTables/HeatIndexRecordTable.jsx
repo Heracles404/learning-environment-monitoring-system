@@ -21,11 +21,9 @@ const HeatIndexRecordTable = () => {
           } else if (readout.heatIndex <= 27) {
             tempStatus = "GOOD";
           } else if (readout.heatIndex <= 35) {
-            tempStatus = "WARNING";
-          } else if (readout.heatIndex <= 41) {
             tempStatus = "BAD";
-          } else if (readout.heatIndex > 41) {
-            tempStatus = "EXTREME";
+          } else if (readout.heatIndex >= 36) {
+            tempStatus = "DANGER";
           }
     
           return {
@@ -70,17 +68,13 @@ const HeatIndexRecordTable = () => {
             bgColor = colors.greenAccent[600];
             textColor = "white";
           } else if (heatIndex <= 35) {
-            label = "WARNING";
-            bgColor = "#ff9933";
-          } else if (heatIndex <= 41) {
             label = "BAD";
             bgColor = colors.redAccent[700];
+          } else if (heatIndex >= 36) {
+            label = "DANGER";
+            bgColor = "#990000"
             textColor = "white";
-          } else {
-            label = "EXTREME";
-            bgColor = "#8B0000";
-            textColor = "white";
-          }
+          } 
     
           return (
             <Box

@@ -17,12 +17,12 @@ useEffect(() => {
             let indoorAir = "UNKNOWN";
 
             if (typeof readout.IAQIndex === "number") {
-                if (readout.IAQIndex <= 100) {
+                if (readout.IAQIndex <= 150) {
                     indoorAir = "GOOD";
                 } else if (readout.IAQIndex <= 300) {
-                    indoorAir = "WARNING";
-                } else if (readout.IAQIndex <= 500) {
                     indoorAir = "BAD";
+                } else if (readout.IAQIndex <= 500) {
+                    indoorAir = "DANGER";
                 } else {
                     indoorAir = "UNKNOWN"; // Or handle >500 if needed
                 }
@@ -69,7 +69,7 @@ const columns = [
                     bgColor = colors.greenAccent[600];
                     textColor = "white";
                     break;
-                case "WARNING":
+                case "DANGER":
                     bgColor = "#ffcc00"; // yellowish warning
                     textColor = "black";
                     break;

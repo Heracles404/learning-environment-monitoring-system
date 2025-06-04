@@ -13,30 +13,30 @@ const DashboardCards = () => {
   // Function to categorize the values as "Good" or "Bad"
 const getCategory = (value, type) => {
   if (type === "IAQ Index") {
-    if (value >= 0 && value <= 100) return "GOOD";
-    if (value > 100 && value <= 200) return "WARNING";
-    if (value > 200) return "BAD";
+    if (value <= 150 ) return "GOOD";
+    if (value <= 300 ) return "BAD";
+    if (value <= 500) return "DANGER";
   }
 
   if (type === "Heat Index") {
-    if (value >= 27 && value <= 41) return "GOOD";
-    if (value > 41 && value <= 51) return "WARNING";
-    if (value > 51) return "BAD";
+    if (value <= 27) return "GOOD";
+    if (value <= 35 ) return "BAD";
+    if (value >= 36) return "DANGER";
   }
 
   if (type === "Lighting") {
     if (value === -1) return "NIGHT";
-    if (value >= 0 && value <= 30) return "CLOSED";
-    if (value > 30 && value <= 150) return "GOOD";
-    if (value > 150 && value <= 500) return "WARNING";
-    if (value > 500) return "BAD";
+    if (value <= 20) return "CLOSED";
+    if (value >= 300) return "GOOD";
+    if (value <= 299) return "DIM";
+    if (value <= 150) return "BAD";
   }
 
   if (type === "Volcanic Smog") {
     if (value >= 0 && value <= 100) return "GOOD";
     if (value > 100 && value <= 200) return "WARNING";
     if (value > 200 && value <= 300) return "BAD";
-    if (value > 300 && value <= 500) return "EXTREME";
+    if (value > 300 && value <= 500) return "DANGER";
   }
 
   return "UNKNOWN";
