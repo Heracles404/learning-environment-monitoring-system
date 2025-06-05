@@ -173,6 +173,8 @@ const columns = [
                     break;
                 case "DIM":
                     bgColor = "#ff9933";
+                    textColor = "white";
+
                     break;
                 case "BAD":
                     bgColor = colors.redAccent[700];
