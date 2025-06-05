@@ -11,39 +11,38 @@ const DBVOGRecords = () => {
     const colors = tokens(theme.palette.mode);
     const [rows, setRows] = useState({});
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const data = await httpGetAllReadouts();
+useEffect(() => {
+    const fetchData = async () => {
+        const data = await httpGetAllReadouts();
+        const updatedData = {};
 
-            const updatedData = {};
-            data.forEach((readout) => {
-                const oaq = Number(readout.OAQIndex);
+        data.forEach((readout) => {
+            const level = Number(readout.level);
+            let concernLevel;
 
-                // Determine concernLevel based on OAQIndex thresholds
-                let concernLevel;
-                if (oaq <= 100) concernLevel = "GOOD";
-                else if (oaq <= 200) concernLevel = "WARNING";
-                else if (oaq <= 300) concernLevel = "BAD";
-                else if (oaq <= 500) concernLevel = "EXTREME";
-                else concernLevel = "UNKNOWN";
+            if (level === 1) concernLevel = "GOOD";
+            else if (level === 2 || level === 3) concernLevel = "BAD";
+            else if (level === 4) concernLevel = "DANGER";
+            else concernLevel = "UNKNOWN";
 
-                updatedData[readout.classroom] = {
-                    id: readout.classroom,
-                    classroom: readout.classroom,
-                    currentPM25: readout.pm25,
-                    currentPM10: readout.pm10,
-                    currentOAQIndex: readout.OAQIndex,
-                    concernLevel,
-                };
-            });
+            updatedData[readout.classroom] = {
+                id: readout.classroom,
+                classroom: readout.classroom,
+                currentPM25: readout.pm25,
+                currentPM10: readout.pm10,
+                currentOAQIndex: readout.OAQIndex,
+                concernLevel,
+            };
+        });
 
-            setRows(Object.values(updatedData));
-        };
+        setRows(Object.values(updatedData));
+    };
 
-        fetchData();
-        const interval = setInterval(fetchData, 5000); // Update every 5 seconds
-        return () => clearInterval(interval);
-    }, []); // Removed rows dependency to avoid infinite loop
+    fetchData();
+    const interval = setInterval(fetchData, 5000); // Refresh every 5s
+    return () => clearInterval(interval);
+}, []);
+
 
     const columns = [
         { field: "classroom", headerName: "Device", minWidth: 100, flex: 1 },

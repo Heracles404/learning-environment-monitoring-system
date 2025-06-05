@@ -14,18 +14,15 @@ useEffect(() => {
     const fetchData = async () => {
         const data = await httpGetAllReadouts();
         const formattedData = data.map((readout, index) => {
-            const oaqIndex = Number(readout.OAQIndex);
-
+            const level = Number(readout.level);
             let vogStatus = "UNKNOWN";
 
-            if (oaqIndex >= 0 && oaqIndex <= 100) {
+            if (level === 1) {
                 vogStatus = "GOOD";
-            } else if (oaqIndex > 100 && oaqIndex <= 200) {
-                vogStatus = "WARNING";
-            } else if (oaqIndex > 200 && oaqIndex <= 300) {
+            } else if (level === 2 || level === 3) {
                 vogStatus = "BAD";
-            } else if (oaqIndex > 300 && oaqIndex <= 500) {
-                vogStatus = "EXTREME";
+            } else if (level === 4) {
+                vogStatus = "DANGER";
             }
 
             return {
@@ -43,8 +40,8 @@ useEffect(() => {
                 temp: readout.temp,
                 pm25: readout.pm25,
                 pm10: readout.pm10,
-                OAQ: oaqIndex,
-                level: readout.level,
+                OAQ: Number(readout.OAQIndex),
+                level: level,
                 vogStatus,
             };
         });
@@ -53,6 +50,7 @@ useEffect(() => {
 
     fetchData();
 }, []);
+
 
 const columns = [
     { field: "classroom", headerName: "Device", width: 100 },
@@ -75,15 +73,11 @@ const columns = [
                 case "GOOD":
                     bgColor = colors.greenAccent[600];
                     break;
-                case "WARNING":
-                    bgColor = "#FFA500"; // Orange
-                    textColor = "black";
-                    break;
                 case "BAD":
                     bgColor = colors.redAccent[700];
                     break;
-                case "EXTREME":
-                    bgColor = "#8B0000"; // Dark red for extreme
+                case "DANGER":
+                    bgColor = colors.redAccent[900] ?? "#8B0000"; // fallback
                     break;
                 case "UNKNOWN":
                 default:
@@ -101,14 +95,13 @@ const columns = [
                     backgroundColor={bgColor}
                     borderRadius="4px"
                 >
-                    <Typography color={textColor}>
-                        {vogStatus}
-                    </Typography>
+                    <Typography color={textColor}>{vogStatus}</Typography>
                 </Box>
             );
         },
     },
 ];
+
 
 
 

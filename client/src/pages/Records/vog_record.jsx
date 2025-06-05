@@ -28,12 +28,11 @@ const fetchData = async () => {
         const level = Number(readout.level);
         const oaqIndex = Number(readout.OAQIndex);
 
-        // Determine VOG Status based on OAQIndex thresholds
+        // Determine VOG Status based on Level
         let vogStatus = "UNKNOWN";
-        if (oaqIndex >= 0 && oaqIndex <= 100) vogStatus = "GOOD";
-        else if (oaqIndex <= 200) vogStatus = "WARNING";
-        else if (oaqIndex <= 300) vogStatus = "BAD";
-        else if (oaqIndex <= 500) vogStatus = "EXTREME";
+        if (level === 1) vogStatus = "GOOD";
+        else if (level === 2 || level === 3) vogStatus = "BAD";
+        else if (level === 4) vogStatus = "DANGER";
 
         return {
             id: readout._id || index,
@@ -51,6 +50,7 @@ const fetchData = async () => {
     setRows(formattedData);
 };
 
+
 useEffect(() => {
     const interval = setInterval(() => {
         void fetchData();
@@ -62,7 +62,7 @@ useEffect(() => {
 const columns = [
     { field: "date", headerName: "Date", width: 91 },
     { field: "time", headerName: "Time", width: 94 },
-    { field: "level", headerName: "Concern Level", width: 140 },  // KEEP this
+    { field: "level", headerName: "Concern Level", width: 140 }, // KEEP this
     {
         field: "vogStatus",
         headerName: "VOG Status",
@@ -70,21 +70,22 @@ const columns = [
         flex: 1,
         renderCell: ({ row: { vogStatus } }) => {
             let bgColor = "#9e9e9e"; // Default gray
-            let textColor = "#ffffff"; // Default white text
+            let textColor = "#ffffff"; // Default white
 
             switch (vogStatus) {
                 case "GOOD":
                     bgColor = colors.greenAccent[600];
                     break;
-                case "WARNING":
-                    bgColor = "#ff9933"; // yellow-orange
-                    textColor = "#000000";
-                    break;
                 case "BAD":
                     bgColor = colors.redAccent[700];
                     break;
-                case "EXTREME":
-                    bgColor = "#800000"; // dark red for extreme
+                case "DANGER":
+                    bgColor = colors.redAccent[900] ?? "#800000";
+                    break;
+                case "UNKNOWN":
+                default:
+                    bgColor = "#9e9e9e";
+                    textColor = "#000000";
                     break;
             }
 
@@ -106,6 +107,7 @@ const columns = [
     { field: "pm10", headerName: "PM 10.0", width: 120 },
     { field: "OAQIndex", headerName: "OAQ Index", width: 130 },
 ];
+
 
 
 

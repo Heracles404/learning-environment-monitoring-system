@@ -32,12 +32,13 @@ const getCategory = (value, type) => {
     if (value <= 150) return "BAD";
   }
 
-  if (type === "Volcanic Smog") {
-    if (value >= 0 && value <= 100) return "GOOD";
-    if (value > 100 && value <= 200) return "WARNING";
-    if (value > 200 && value <= 300) return "BAD";
-    if (value > 300 && value <= 500) return "DANGER";
-  }
+if (type === "Volcanic Smog") {
+  const level = Number(value);
+  if (level === 1) return "GOOD";
+  if (level === 2 || level === 3) return "BAD";
+  if (level === 4) return "DANGER";
+  return "UNKNOWN";
+}
 
   return "UNKNOWN";
 };
