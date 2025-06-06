@@ -288,7 +288,7 @@ const ViewStatus = (
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
             <Box backgroundColor="#d8708b" display="inline-flex" pr="10px" borderRadius='15px' mt="5px">
             <CrisisAlertIcon sx={{ fontSize: 21, color: 'white', mr: 1 }}/>
-          <Typography color="white" key={room}>Room {room}: '{count}' Inactive IAQ Sensor</Typography>
+          <Typography color="white" key={room}>'{count}' Inactive IAQ Sensor</Typography>
           </Box>
         ))}
           <Box height="300px">
@@ -321,7 +321,7 @@ const ViewStatus = (
           {Object.entries(inactiveDevices.bh1750Rooms).map(([room, count]) => (
             <Box backgroundColor="#d8708b" display="inline-flex" pr="10px" borderRadius='15px' mt="5px">
               <CrisisAlertIcon sx={{ fontSize: 21, color: 'white', mr: 1 }}/>
-            <Typography color="white" key={room}>Room {room}: '{count}' Inactive Light Sensor</Typography>
+            <Typography color="white" key={room}>'{count}' Inactive Light Sensor</Typography>
             </Box>
           ))}
           <Box height="300px">
@@ -357,7 +357,7 @@ const ViewStatus = (
           {Object.entries(inactiveDevices.bme680Rooms).map(([room, count]) => (
             <Box backgroundColor="#d8708b" display="inline-flex" pr="10px" borderRadius='15px' mt="5px">
             <CrisisAlertIcon sx={{ fontSize: 21, color: 'white', mr: 1 }}/>
-          <Typography color="white" key={room}>Room {room}: '{count}' Inactive Heat Index Sensor</Typography>
+          <Typography color="white" key={room}>'{count}' Inactive Heat Index Sensor</Typography>
           </Box>
         ))}
           <Box height="300px">
