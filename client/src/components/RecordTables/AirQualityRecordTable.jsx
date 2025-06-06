@@ -14,7 +14,7 @@ useEffect(() => {
     const fetchData = async () => {
         const data = await httpGetAllReadouts();
         const formattedData = data.map((readout, index) => {
-            let indoorAir = "UNKNOWN";
+            let indoorAir = "INACTIVE";
 
             if (typeof readout.IAQIndex === "number") {
                 if (readout.IAQIndex <= 150) {
@@ -24,7 +24,7 @@ useEffect(() => {
                 } else if (readout.IAQIndex <= 500) {
                     indoorAir = "DANGER";
                 } else {
-                    indoorAir = "UNKNOWN"; // Or handle >500 if needed
+                    indoorAir = "INACTIVE"; // Or handle >500 if needed
                 }
             }
 
@@ -77,7 +77,7 @@ const columns = [
                     bgColor = colors.redAccent[700];
                     textColor = "white";
                     break;
-                case "UNKNOWN":
+                case "INACTIVE":
                 default:
                     bgColor = colors.grey[400];
                     textColor = "black";

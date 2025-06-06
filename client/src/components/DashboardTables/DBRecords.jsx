@@ -21,7 +21,7 @@ const DBRecords = () => {
                 // Determine concernLevel with GOOD, WARNING, BAD
                 let concernLevel;
                 if (readout.heatIndex === undefined || readout.heatIndex === null) {
-                    concernLevel = "UNKNOWN";
+                    concernLevel = "INACTIVE";
                 } else if (readout.heatIndex <= 27) {
                     concernLevel = "GOOD";
                 } else if (readout.heatIndex <= 35) {
@@ -33,7 +33,7 @@ const DBRecords = () => {
 
                 let IAQStatus;
                 if (readout.IAQIndex === undefined || readout.IAQIndex === null) {
-                    IAQStatus = "UNKNOWN";
+                    IAQStatus = "INACTIVE";
                 } else if (readout.IAQIndex <= 100) {
                     IAQStatus = "GOOD";
                 } else if (readout.IAQIndex <= 300) {
@@ -41,14 +41,14 @@ const DBRecords = () => {
                 } else if (readout.IAQIndex <= 500) {
                     IAQStatus = "DANGER";
                 } else {
-                    IAQStatus = "UNKNOWN";
+                    IAQStatus = "INACTIVE";
                 }
 
                 let LightStatus;
                 if (readout.lighting === undefined || readout.lighting === null) {
-                    LightStatus = "UNKNOWN";
+                    LightStatus = "INACTIVE";
                 } else if (readout.lighting === -1) {
-                    LightStatus = "NIGHT";
+                    LightStatus = "INOPERATIVE";
                 } else if (readout.lighting <= 20) {
                     LightStatus = "CLOSED";
                 } else if (readout.lighting >= 300) {
@@ -58,7 +58,7 @@ const DBRecords = () => {
                 } else if (readout.lighting <= 150) {
                     LightStatus = "BAD";
                 }else {
-                    LightStatus = "UNKNOWN";
+                    LightStatus = "INACTIVE";
                 }
 
                 updatedData[readout.classroom] = {
@@ -145,7 +145,7 @@ const columns = [
             else if (LightStatus === "DIM") bgColor = "#ff9933";
             else if (LightStatus === "BAD") bgColor = colors.redAccent[700];
             else if (LightStatus === "CLOSED") bgColor = "#666666";
-            else if (LightStatus === "NIGHT") bgColor = "#333333";
+            else if (LightStatus === "INOPERATIVE") bgColor = "#333333";
 
             return (
                 <Box

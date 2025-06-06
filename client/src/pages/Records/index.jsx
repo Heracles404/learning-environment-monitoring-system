@@ -26,18 +26,18 @@ const fetchData = async () => {
     const data = await httpGetAllReadouts();
     const formattedData = data.map((readout, index) => {
         // Updated IAQ status logic
-        let iaqStatus = "UNKNOWN";
+        let iaqStatus = "INACTIVE";
         if (readout.IAQIndex !== undefined && readout.IAQIndex !== null) {
             if (readout.IAQIndex <= 150) iaqStatus = "GOOD";
             else if (readout.IAQIndex <= 300) iaqStatus = "BAD";
             else if (readout.IAQIndex <= 500) iaqStatus = "DANGER";
-            else iaqStatus = "UNKNOWN";
+            else iaqStatus = "INACTIVE";
         }
 
         // Updated lighting status logic
-        let lightingStatus = "UNKNOWN";
+        let lightingStatus = "INACTIVE";
         if (readout.lighting !== undefined && readout.lighting !== null) {
-            if (readout.lighting === -1) lightingStatus = "NIGHT";
+            if (readout.lighting === -1) lightingStatus = "INOPERATIVE";
             else if (readout.lighting <= 20) lightingStatus = "CLOSED";
             else if (readout.lighting >= 300) lightingStatus = "GOOD";
             else if (readout.lighting <= 299) lightingStatus = "DIM";
@@ -45,7 +45,7 @@ const fetchData = async () => {
         }
 
         // Updated heat index logic
-        let tempStatus = "UNKNOWN";
+        let tempStatus = "INACTIVE";
         if (readout.heatIndex !== undefined && readout.heatIndex !== null) {
             if (readout.heatIndex <= 27) tempStatus = "GOOD";
             else if (readout.heatIndex <= 35) tempStatus = "BAD";
@@ -107,7 +107,7 @@ const columns = [
                     bgColor = colors.redAccent[700];
                     textColor = "white";
                     break;
-                case "UNKNOWN":
+                case "INACTIVE":
                 default:
                     bgColor = "#999999";
                     textColor = "white";
@@ -143,7 +143,7 @@ const columns = [
                     bgColor = "#990000";
                     textColor = "white";
                     break;
-                case "UNKNOWN":
+                case "INACTIVE":
                 default:
                     bgColor = "#999999";
                     textColor = "white";
@@ -184,11 +184,11 @@ const columns = [
                     bgColor = "#666666";
                     textColor = "white";
                     break;
-                case "NIGHT":
+                case "INOPERATIVE":
                     bgColor = "#333333";
                     textColor = "white";
                     break;
-                case "UNKNOWN":
+                case "INACTIVE":
                 default:
                     bgColor = "#999999";
                     textColor = "white";

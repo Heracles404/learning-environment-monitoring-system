@@ -48,15 +48,15 @@ const fetchData = async () => {
     const data = await httpGetAllReadouts();
     const formattedData = data.map((readout, index) => {
         // --- IAQ status logic ---
-        let iaqStatus = "UNKNOWN";
+        let iaqStatus = "INACTIVE";
         if (readout.IAQIndex <= 150) iaqStatus = "GOOD";
         else if (readout.IAQIndex <= 300) iaqStatus = "BAD";
         else if (readout.IAQIndex <= 500) iaqStatus = "DANGER";
 
         // --- Lighting logic ---
-        let lightingStatus = "UNKNOWN";
+        let lightingStatus = "INACTIVE";
         if (readout.lighting !== undefined && readout.lighting !== null) {
-            if (readout.lighting === -1) lightingStatus = "NIGHT";
+            if (readout.lighting === -1) lightingStatus = "INOPERATIVE";
             else if (readout.lighting <= 20) lightingStatus = "CLOSED";
             else if (readout.lighting >= 300) lightingStatus = "GOOD";
             else if (readout.lighting <= 299) lightingStatus = "DIM";
@@ -64,7 +64,7 @@ const fetchData = async () => {
         }
 
         // --- Heat Index logic ---
-        let tempStatus = "UNKNOWN";
+        let tempStatus = "INACTIVE";
         if (readout.heatIndex <= 27) tempStatus = "GOOD";
         else if (readout.heatIndex <= 35) tempStatus = "BAD";
         else if (readout.heatIndex >= 36) tempStatus = "DANGER";
@@ -209,7 +209,7 @@ const columns = [
                     bgColor = "#666666";
                     textColor = "white";
                     break;
-                case "NIGHT":
+                case "INOPERATIVE":
                     bgColor = colors.greenAccent[600];
                     textColor = "white";
                     break;

@@ -24,7 +24,7 @@ const DashboardCards = () => {
     }
 
     if (type === "Lighting") {
-      if (value === -1) return "NIGHT";
+      if (value === -1) return "INOPERATIVE";
       if (value <= 20) return "CLOSED";
       if (value >= 300) return "GOOD";
       if (value <= 299) return "DIM";
@@ -36,10 +36,10 @@ const DashboardCards = () => {
       if (level === 1) return "GOOD";
       if (level === 2 || level === 3) return "BAD";
       if (level === 4) return "DANGER";
-      return "UNKNOWN";
+      return "INACTIVE";
     }
 
-    return "UNKNOWN";
+    return "INACTIVE";
   };
 
   const getTextColor = (category) => {
@@ -52,9 +52,9 @@ const DashboardCards = () => {
         return "#990000";
       case "DIM":
         return "#ff9933";
-      case "NIGHT":
+      case "INOPERATIVE":
         return "#333333";
-      case "UNKNOWN":
+      case "INACTIVE":
         return "#999999";
       default:
         return "#000000"; // Fallback color

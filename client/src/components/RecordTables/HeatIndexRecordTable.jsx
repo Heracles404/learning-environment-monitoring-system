@@ -17,7 +17,7 @@ const HeatIndexRecordTable = () => {
           let tempStatus;
     
           if (readout.heatIndex === undefined || readout.heatIndex === null) {
-            tempStatus = "UNKNOWN";
+            tempStatus = "INACTIVE";
           } else if (readout.heatIndex <= 27) {
             tempStatus = "GOOD";
           } else if (readout.heatIndex <= 35) {
@@ -59,10 +59,10 @@ const HeatIndexRecordTable = () => {
           const { heatIndex } = row;
           let bgColor = colors.grey[400];
           let textColor = "black";
-          let label = "UNKNOWN";
+          let label = "INACTIVE";
     
           if (heatIndex === undefined || heatIndex === null) {
-            label = "UNKNOWN";
+            label = "INACTIVE";
           } else if (heatIndex <= 27) {
             label = "GOOD";
             bgColor = colors.greenAccent[600];

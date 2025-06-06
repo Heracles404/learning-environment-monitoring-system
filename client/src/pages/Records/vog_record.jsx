@@ -29,7 +29,7 @@ const fetchData = async () => {
         const oaqIndex = Number(readout.OAQIndex);
 
         // Determine VOG Status based on Level
-        let vogStatus = "UNKNOWN";
+        let vogStatus = "INACTIVE";
         if (level === 1) vogStatus = "GOOD";
         else if (level === 2 || level === 3) vogStatus = "BAD";
         else if (level === 4) vogStatus = "DANGER";
@@ -82,7 +82,7 @@ const columns = [
                 case "DANGER":
                     bgColor = colors.redAccent[900] ?? "#800000";
                     break;
-                case "UNKNOWN":
+                case "INACTIVE":
                 default:
                     bgColor = "#9e9e9e";
                     textColor = "#000000";

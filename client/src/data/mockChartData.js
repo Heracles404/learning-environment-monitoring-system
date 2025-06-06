@@ -200,7 +200,7 @@ export const fetchCardData = async (setCardData) => {
       {
   ...cardsData[3],
   barValue: vogReadouts.length > 0 ? vogReadouts[vogReadouts.length - 1].pm25 : 0,
-  value: vogReadouts.length > 0 ? vogReadouts[vogReadouts.length - 1].level : "UNKNOWN",
+  value: vogReadouts.length > 0 ? vogReadouts[vogReadouts.length - 1].level : "INACTIVE",
 
         series: [
           {

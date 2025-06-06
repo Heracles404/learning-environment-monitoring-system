@@ -15,7 +15,7 @@ useEffect(() => {
         const data = await httpGetAllReadouts();
         const formattedData = data.map((readout, index) => {
             const level = Number(readout.level);
-            let vogStatus = "UNKNOWN";
+            let vogStatus = "INACTIVE";
 
             if (level === 1) {
                 vogStatus = "GOOD";
@@ -79,7 +79,7 @@ const columns = [
                 case "DANGER":
                     bgColor = colors.redAccent[900] ?? "#8B0000"; // fallback
                     break;
-                case "UNKNOWN":
+                case "INACTIVE":
                 default:
                     bgColor = colors.grey[500];
                     textColor = "black";

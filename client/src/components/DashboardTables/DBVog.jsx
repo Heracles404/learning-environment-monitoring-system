@@ -23,7 +23,7 @@ useEffect(() => {
             if (level === 1) concernLevel = "GOOD";
             else if (level === 2 || level === 3) concernLevel = "BAD";
             else if (level === 4) concernLevel = "DANGER";
-            else concernLevel = "UNKNOWN";
+            else concernLevel = "INACTIVE";
 
             updatedData[readout.classroom] = {
                 id: readout.classroom,
