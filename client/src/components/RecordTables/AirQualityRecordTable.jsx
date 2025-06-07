@@ -70,8 +70,8 @@ const columns = [
                     textColor = "white";
                     break;
                 case "DANGER":
-                    bgColor = "#ffcc00"; // yellowish warning
-                    textColor = "black";
+                    bgColor = "#990000";
+                    textColor = "white";
                     break;
                 case "BAD":
                     bgColor = colors.redAccent[700];
