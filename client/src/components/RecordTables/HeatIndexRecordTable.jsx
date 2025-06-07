@@ -63,6 +63,7 @@ const HeatIndexRecordTable = () => {
     
           if (heatIndex === undefined || heatIndex === null) {
             label = "INACTIVE";
+            textColor = "white";
           } else if (heatIndex <= 27) {
             label = "GOOD";
             bgColor = colors.greenAccent[600];
@@ -70,6 +71,7 @@ const HeatIndexRecordTable = () => {
           } else if (heatIndex <= 35) {
             label = "BAD";
             bgColor = colors.redAccent[700];
+            textColor = "white";
           } else if (heatIndex >= 36) {
             label = "DANGER";
             bgColor = "#990000"

@@ -125,7 +125,7 @@ const columns = [
                     break;
                 default:
                     bgColor = "#ccc";
-                    textColor = "black";
+                    textColor = "white";
             }
 
             return (
@@ -166,7 +166,7 @@ const columns = [
                     break;
                 default:
                     bgColor = "#ccc";
-                    textColor = "black";
+                    textColor = "white";
             }
 
             return (
