@@ -14,7 +14,8 @@ const DashboardCards = () => {
     if (type === "IAQ Index") {
       if (value <= 150) return "GOOD";
       if (value <= 300) return "BAD";
-      if (value <= 500) return "DANGER";
+      // if (value <= 500) return "DANGER"; //changed from
+      if (value >= 301) return "DANGER"; //changed to
     }
 
     if (type === "Heat Index") {
@@ -24,8 +25,8 @@ const DashboardCards = () => {
     }
 
     if (type === "Lighting") {
-      if (value === -1) return "INOPERATIVE";
-      if (value <= 20) return "CLOSED";
+      if (value === -1) return "NIGHT";
+      if (value <= 20) return "DARK";
       if (value >= 300) return "GOOD";
       if (value <= 299) return "DIM";
       if (value <= 150) return "BAD";
@@ -45,19 +46,21 @@ const DashboardCards = () => {
   const getTextColor = (category) => {
     switch (category) {
       case "GOOD":
-        return "#33FF7A";
+        return "#33FF7A"; //Spring Green
       case "BAD":
-        return "#FF0A0A";
+        return "#FF0A0A"; //Red
       case "DANGER":
-        return "#990000";
+        return "#990000"; //Penn Red
       case "DIM":
-        return "#ff9933";
-      case "INOPERATIVE":
-        return "#333333";
+        return "#ff9933"; //Princeton Orange
+      case "DARK":
+        return "#333333"; // Jet Black
+      case "NIGHT":
+        return "#141414"; // Night Black
       case "INACTIVE":
-        return "#999999";
+        return "#999999"; //Battleship Gray
       default:
-        return "#000000"; // Fallback color
+        return "#000000"; // Black
     }
   };
 
