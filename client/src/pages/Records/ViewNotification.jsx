@@ -56,8 +56,8 @@ const fetchData = async () => {
         // --- Lighting logic ---
         let lightingStatus = "INACTIVE";
         if (readout.lighting !== undefined && readout.lighting !== null) {
-            if (readout.lighting === -1) lightingStatus = "INOPERATIVE";
-            else if (readout.lighting <= 20) lightingStatus = "CLOSED";
+            if (readout.lighting === -1) lightingStatus = "NIGHT";
+            else if (readout.lighting <= 20) lightingStatus = "DARK";
             else if (readout.lighting >= 300) lightingStatus = "GOOD";
             else if (readout.lighting <= 299) lightingStatus = "DIM";
             else if (readout.lighting <= 150) lightingStatus = "BAD";
@@ -205,11 +205,11 @@ const columns = [
                     bgColor = colors.redAccent[700];
                     textColor = "white";
                     break;
-                case "CLOSED":
+                case "DARK":
                     bgColor = "#666666";
                     textColor = "white";
                     break;
-                case "INOPERATIVE":
+                case "NIGHT":
                     bgColor = colors.greenAccent[600];
                     textColor = "white";
                     break;

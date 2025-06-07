@@ -48,9 +48,9 @@ const DBRecords = () => {
                 if (readout.lighting === undefined || readout.lighting === null) {
                     LightStatus = "INACTIVE";
                 } else if (readout.lighting === -1) {
-                    LightStatus = "INOPERATIVE";
+                    LightStatus = "NIGHT";
                 } else if (readout.lighting <= 20) {
-                    LightStatus = "CLOSED";
+                    LightStatus = "DARK";
                 } else if (readout.lighting >= 300) {
                     LightStatus = "GOOD";
                 } else if (readout.lighting <= 299) {
@@ -144,8 +144,8 @@ const columns = [
             if (LightStatus === "GOOD") bgColor = colors.greenAccent[600];
             else if (LightStatus === "DIM") bgColor = "#ff9933";
             else if (LightStatus === "BAD") bgColor = colors.redAccent[700];
-            else if (LightStatus === "CLOSED") bgColor = "#666666";
-            else if (LightStatus === "INOPERATIVE") bgColor = "#333333";
+            else if (LightStatus === "DARK") bgColor = "#666666";
+            else if (LightStatus === "NIGHT") bgColor = "#333333";
 
             return (
                 <Box

@@ -17,9 +17,9 @@ useEffect(() => {
       let LightStatus;
 
       if (readout.lighting === -1) {
-        LightStatus = "INOPERATIVE";
+        LightStatus = "NIGHT";
       } else if (readout.lighting <= 20) {
-        LightStatus = "CLOSED";
+        LightStatus = "DARK";
       } else if (readout.lighting >= 300) {
         LightStatus = "GOOD";
       } else if (readout.lighting <= 299) {
@@ -70,10 +70,10 @@ const columns = [
         case "BAD":
           bgColor = colors.redAccent[700];
           break;
-        case "CLOSED":
+        case "DARK":
           bgColor = "#666666"; // dark grey for closed
           break;
-        case "INOPERATIVE":
+        case "NIGHT":
           bgColor = "#222222"; // very dark for night
           break;
         case "INACTIVE":
