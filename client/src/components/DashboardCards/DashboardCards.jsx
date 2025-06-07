@@ -50,7 +50,7 @@ const DashboardCards = () => {
       case "BAD":
         return "#FF0A0A"; //Red
       case "DANGER":
-        return "#990000"; //Penn Red
+        return "#F50000"; //Penn Red
       case "DIM":
         return "#ff9933"; //Princeton Orange
       case "DARK":

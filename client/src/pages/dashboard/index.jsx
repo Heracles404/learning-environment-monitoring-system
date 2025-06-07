@@ -433,7 +433,7 @@ const ViewStatus = (
           sx={{ width: '100%' }}
           action={ViewStatus}
         >
-           Parameters are in BAD level.
+           Parameters are in BAD/DANGER level.
         </Alert>
       </Snackbar>
       
