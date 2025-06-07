@@ -102,6 +102,7 @@ const columns = [
                     break;
                 case "DANGER":
                     bgColor = "#990000";
+                    textColor = "white";
                     break;
                 case "BAD":
                     bgColor = colors.redAccent[700];
