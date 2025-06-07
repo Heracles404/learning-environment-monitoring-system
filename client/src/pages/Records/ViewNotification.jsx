@@ -199,7 +199,7 @@ const columns = [
                     break;
                 case "DIM":
                     bgColor = "#ff9933";
-                    textColor = "black";
+                    textColor = "white";
                     break;
                 case "BAD":
                     bgColor = colors.redAccent[700];
@@ -210,12 +210,12 @@ const columns = [
                     textColor = "white";
                     break;
                 case "NIGHT":
-                    bgColor = colors.greenAccent[600];
+                    bgColor = "#222222"; // yellow/orange for warning
                     textColor = "white";
                     break;
                 default:
                     bgColor = "#ccc";
-                    textColor = "black";
+                    textColor = "white";
             }
 
             return (

@@ -80,7 +80,7 @@ const columns = [
                 case "INACTIVE":
                 default:
                     bgColor = colors.grey[400];
-                    textColor = "black";
+                    textColor = "white";
                     break;
             }
 

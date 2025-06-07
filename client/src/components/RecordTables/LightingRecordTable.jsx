@@ -65,7 +65,7 @@ const columns = [
           break;
         case "DIM":
           bgColor = "#ff9933"; // yellow/orange for warning
-          textColor = "black";
+          textColor = "white";
           break;
         case "BAD":
           bgColor = colors.redAccent[700];
@@ -79,7 +79,7 @@ const columns = [
         case "INACTIVE":
         default:
           bgColor = colors.grey[400];
-          textColor = "black";
+          textColor = "white";
           break;
       }
 
