@@ -224,7 +224,7 @@ const ViewNotification = () => {
     return (
         <Box m="5px 25px" height="100%">
             <Box display="flex" justifyContent="space-between" alignItems="space-between" sx={{ flexDirection: { xs: "column", sm: "row" } }}>
-                <Header title="Status Log" subtitle="Monitoring the  Status Notification logs" />
+                <Header title="Status Logs" subtitle="Monitoring the  Status Notification Logs" />
                 <Box>
                     <Button
                         onClick={() => setOpenDownloadDialog(true)}
