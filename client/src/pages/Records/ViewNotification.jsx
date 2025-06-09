@@ -42,8 +42,8 @@ const ViewNotification = () => {
         const formattedData = data.map((readout, index) => {
             let iaqStatus = "INACTIVE";
             if (readout.IAQIndex <= 150) iaqStatus = "GOOD";
-            else if (readout.IAQIndex <= 300) iaqStatus = "BAD";
-            else if (readout.IAQIndex <= 500) iaqStatus = "DANGER";
+            else if (readout.IAQIndex <= 300) iaqStatus = "CRITICAL";
+            else if (readout.IAQIndex <= 500) iaqStatus = "BAD";
 
             let lightingStatus = "INACTIVE";
             if (readout.lighting !== undefined && readout.lighting !== null) {
@@ -56,8 +56,8 @@ const ViewNotification = () => {
 
             let tempStatus = "INACTIVE";
             if (readout.heatIndex <= 27) tempStatus = "GOOD";
-            else if (readout.heatIndex <= 35) tempStatus = "BAD";
-            else if (readout.heatIndex >= 36) tempStatus = "DANGER";
+            else if (readout.heatIndex <= 35) tempStatus = "CRITICAL";
+            else if (readout.heatIndex >= 36) tempStatus = "BAD";
 
             return {
                 id: readout._id || index,
@@ -97,9 +97,9 @@ const ViewNotification = () => {
             minWidth: 120,
             flex: 1,
             renderCell: ({ row: { indoorAir } }) => {
-                if (indoorAir !== "BAD" && indoorAir !== "DANGER") return null;
+                if (indoorAir !== "CRITICAL" && indoorAir !== "BAD") return null;
 
-                const bgColor = indoorAir === "BAD" ? colors.redAccent[700] : "#990000";
+                const bgColor = indoorAir === "CRITICAL" ? colors.redAccent[700] : "#990000";
 
                 return (
                     <Box
@@ -121,9 +121,9 @@ const ViewNotification = () => {
             minWidth: 170,
             flex: 1,
             renderCell: ({ row: { temp } }) => {
-                if (temp !== "BAD" && temp !== "DANGER") return null;
+                if (temp !== "CRITICAL" && temp !== "BAD") return null;
 
-                const bgColor = temp === "BAD" ? colors.redAccent[700] : "#990000";
+                const bgColor = temp === "CRITICAL" ? colors.redAccent[700] : "#990000";
 
                 return (
                     <Box
@@ -145,9 +145,9 @@ const ViewNotification = () => {
             minWidth: 145,
             flex: 1,
             renderCell: ({ row: { lightRemarks } }) => {
-                if (lightRemarks !== "BAD" && lightRemarks !== "DANGER") return null;
+                if (lightRemarks !== "CRITICAL" && lightRemarks !== "BAD") return null;
 
-                const bgColor = lightRemarks === "BAD" ? colors.redAccent[700] : "#990000";
+                const bgColor = lightRemarks === "CRITICAL" ? colors.redAccent[700] : "#990000";
 
                 return (
                     <Box
@@ -167,9 +167,9 @@ const ViewNotification = () => {
 
     // FILTER rows to only show BAD or DANGER statuses in any of the three columns
     const filteredRows = rows.filter(row =>
-        row.indoorAir === "BAD" || row.indoorAir === "DANGER" ||
-        row.temp === "BAD" || row.temp === "DANGER" ||
-        row.lightRemarks === "BAD" || row.lightRemarks === "DANGER"
+        row.indoorAir === "CRITICAL" || row.indoorAir === "BAD" ||
+        row.temp === "CRITICAL" || row.temp === "BAD" ||
+        row.lightRemarks === "CRITICAL" || row.lightRemarks === "BAD"
     );
 
     const handleDeleteSelected = async () => {
