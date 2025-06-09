@@ -9,7 +9,7 @@ import Header from "../../../components/Header";
 
 import Grid from '@mui/material/Grid2';
 import StatusIndicator from '../../../components/StatusIndicator';
-
+import DeviceStatusIndicator from "../../../components/DeviceStatusIndicator";
 const Device1 = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
@@ -81,37 +81,29 @@ const Device1 = () => {
 
     const role = localStorage.getItem("role");
     const columns = [
-        { id: "classroom", label: "Classroom", minWidth: 150 },
+        { id: "classroom", label: "Classroom", minWidth: 110 },
         // { id: "status", label: "Device Status", minWidth: 150 },
         {
-            id: "status",
-            label: "Device Status",
-            minWidth: 150,
-            renderCell: (row) => {
-              const status = row.status || "Unknown";
-              const bgColor =
-                status === "ACTIVE"
-                  ? colors.greenAccent[600]
-                  : status === "INACTIVE"
-                  ? colors.redAccent[700]
-                  : colors.grey[600];
-        
-              return (
-                <Box
-                  m="5px auto"
-                  p="5px"
-                  display="flex"
-                  justifyContent="center"
-                  backgroundColor={bgColor}
-                  borderRadius="4px"
-                >
-                  <Typography color="white" fontWeight="bold">
-                    {status}
-                  </Typography>
-                </Box>
-              );
-            },
+          id: "status",
+          label: "Device Status",
+          minWidth: 10,
+          renderCell: (row) => {
+            const status = row.status || "Unknown";
+
+            return (
+              <Box
+                // m="5px auto"
+                // p="5px"
+                display="flex"
+                // justifyContent="center"
+                // alignItems="center"
+                paddingLeft="25px"
+              >
+                <DeviceStatusIndicator status={status} />
+              </Box>
+            );
           },
+        },
         // { id: "bh1750", label: "Light Sensor", minWidth: 150 },
         {
             id: "bh1750",
@@ -145,7 +137,7 @@ const Device1 = () => {
         // { id: "bme680", label: "Air Quality, Heat Index Sensor", minWidth: 150 },
         {
             id: "bme680",
-            label: "Air Quality",
+            label: "Air Quality, Heat Index Sensor",
             minWidth: 150,
             renderCell: (row) => {
               const bme680 = row.bme680 || "Unknown";
@@ -253,7 +245,7 @@ const Device1 = () => {
                     </Typography>
                     <TableContainer sx={{ height: "65vh" }}>
                         <Table stickyHeader>
-                            <TableHead>
+                            <TableHead >
                                 <TableRow>
                                     {columns.map((column) => (
                                         <TableCell
