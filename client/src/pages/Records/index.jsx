@@ -29,8 +29,8 @@ const fetchData = async () => {
         let iaqStatus = "INACTIVE";
         if (readout.IAQIndex !== undefined && readout.IAQIndex !== null) {
             if (readout.IAQIndex <= 150) iaqStatus = "GOOD";
-            else if (readout.IAQIndex <= 300) iaqStatus = "BAD";
-            else if (readout.IAQIndex <= 500) iaqStatus = "DANGER";
+            else if (readout.IAQIndex <= 300) iaqStatus = "CRITICAL";
+            else if (readout.IAQIndex <= 500) iaqStatus = "BAD";
             else iaqStatus = "INACTIVE";
         }
 
@@ -48,8 +48,8 @@ const fetchData = async () => {
         let tempStatus = "INACTIVE";
         if (readout.heatIndex !== undefined && readout.heatIndex !== null) {
             if (readout.heatIndex <= 27) tempStatus = "GOOD";
-            else if (readout.heatIndex <= 35) tempStatus = "BAD";
-            else if (readout.heatIndex >= 36) tempStatus = "DANGER";
+            else if (readout.heatIndex <= 35) tempStatus = "CRITICAL";
+            else if (readout.heatIndex >= 36) tempStatus = "BAD";
 
         }
 
@@ -100,11 +100,11 @@ const columns = [
                     bgColor = colors.greenAccent[600];
                     textColor = "white";
                     break;
-                case "DANGER":
+                case "BAD":
                     bgColor = "#990000";
                     textColor = "white";
                     break;
-                case "BAD":
+                case "CRITICAL":
                     bgColor = colors.redAccent[700];
                     textColor = "white";
                     break;
@@ -136,11 +136,11 @@ const columns = [
                     bgColor = colors.greenAccent[600];
                     textColor = "white";
                     break;
-                case "BAD":
+                case "CRITICAL":
                     bgColor = colors.redAccent[700];
                     textColor = "white";
                     break;
-                case "DANGER":
+                case "BAD":
                     bgColor = "#990000";
                     textColor = "white";
                     break;

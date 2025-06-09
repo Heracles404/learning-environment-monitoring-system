@@ -21,9 +21,9 @@ const HeatIndexRecordTable = () => {
           } else if (readout.heatIndex <= 27) {
             tempStatus = "GOOD";
           } else if (readout.heatIndex <= 35) {
-            tempStatus = "BAD";
+            tempStatus = "CRITICAL";
           } else if (readout.heatIndex >= 36) {
-            tempStatus = "DANGER";
+            tempStatus = "BAD";
           }
     
           return {
@@ -69,11 +69,11 @@ const HeatIndexRecordTable = () => {
             bgColor = colors.greenAccent[600];
             textColor = "white";
           } else if (heatIndex <= 35) {
-            label = "BAD";
+            label = "CRITICAL";
             bgColor = colors.redAccent[700];
             textColor = "white";
           } else if (heatIndex >= 36) {
-            label = "DANGER";
+            label = "BAD";
             bgColor = "#990000"
             textColor = "white";
           } 

@@ -13,15 +13,15 @@ const DashboardCards = () => {
   const getCategory = (value, type) => {
     if (type === "IAQ Index") {
       if (value <= 150) return "GOOD";
-      if (value <= 300) return "BAD";
+      if (value <= 300) return "CRITICAL";
       // if (value <= 500) return "DANGER"; //changed from
-      if (value >= 301) return "DANGER"; //changed to
+      if (value >= 301) return "BAD"; //changed to
     }
 
     if (type === "Heat Index") {
       if (value <= 27) return "GOOD";
-      if (value <= 35) return "BAD";
-      if (value >= 36) return "DANGER";
+      if (value <= 35) return "CRITICAL";
+      if (value >= 36) return "BAD";
     }
 
     if (type === "Lighting") {
@@ -35,8 +35,8 @@ const DashboardCards = () => {
     if (type === "Volcanic Smog") {
       const level = Number(value);
       if (level === 1) return "GOOD";
-      if (level === 2 || level === 3) return "BAD";
-      if (level === 4) return "DANGER";
+      if (level === 2 || level === 3) return "CRITICAL";
+      if (level === 4) return "BAD";
       return "INACTIVE";
     }
 
@@ -47,9 +47,9 @@ const DashboardCards = () => {
     switch (category) {
       case "GOOD":
         return "#33FF7A"; //Spring Green
-      case "BAD":
+      case "CRITICAL":
         return "#FF0A0A"; //Red
-      case "DANGER":
+      case "BAD":
         return "#F50000"; //Penn Red
       case "DIM":
         return "#ff9933"; //Princeton Orange

@@ -21,8 +21,8 @@ useEffect(() => {
             let concernLevel;
 
             if (level === 1) concernLevel = "GOOD";
-            else if (level === 2 || level === 3) concernLevel = "BAD";
-            else if (level === 4) concernLevel = "DANGER";
+            else if (level === 2 || level === 3) concernLevel = "CRITICAL";
+            else if (level === 4) concernLevel = "BAD";
             else concernLevel = "INACTIVE";
 
             updatedData[readout.classroom] = {
@@ -58,9 +58,9 @@ useEffect(() => {
                         ? colors?.greenAccent?.[600] ?? "green"
                         : concernLevel === "WARNING"
                         ? colors?.yellowAccent?.[600] ?? "#ff9933"
-                        : concernLevel === "BAD"
+                        : concernLevel === "CRITICAL"
                         ? colors?.redAccent?.[700] ?? "red"
-                        : concernLevel === "EXTREME"
+                        : concernLevel === "BAD"
                         ? colors?.redAccent?.[900] ?? "darkred"
                         : "gray";
 

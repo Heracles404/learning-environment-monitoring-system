@@ -25,9 +25,9 @@ const DBRecords = () => {
                 } else if (readout.heatIndex <= 27) {
                     concernLevel = "GOOD";
                 } else if (readout.heatIndex <= 35) {
-                    concernLevel = "BAD";
+                    concernLevel = "CRITICAL";
                 } else if (readout.heatIndex >= 36) {
-                    concernLevel = "DANGER";
+                    concernLevel = "BAD";
                 } 
                 
 
@@ -37,9 +37,9 @@ const DBRecords = () => {
                 } else if (readout.IAQIndex <= 100) {
                     IAQStatus = "GOOD";
                 } else if (readout.IAQIndex <= 300) {
-                    IAQStatus = "BAD";
+                    IAQStatus = "CRITICAL";
                 } else if (readout.IAQIndex <= 500) {
-                    IAQStatus = "DANGER";
+                    IAQStatus = "BAD";
                 } else {
                     IAQStatus = "INACTIVE";
                 }
@@ -91,8 +91,8 @@ const columns = [
         renderCell: ({ row: { IAQStatus } }) => {
             let bgColor = "#999999"; // Default to UNKNOWN
             if (IAQStatus === "GOOD") bgColor = colors.greenAccent[600];
-            else if (IAQStatus === "DANGER") bgColor = "#ff9933";
-            else if (IAQStatus === "BAD") bgColor = colors.redAccent[700];
+            else if (IAQStatus === "BAD") bgColor = "#ff9933";
+            else if (IAQStatus === "CRITICAL") bgColor = colors.redAccent[700];
 
             return (
                 <Box
@@ -117,8 +117,8 @@ const columns = [
         renderCell: ({ row: { concernLevel } }) => {
             let bgColor = "#999999"; // Default to UNKNOWN
             if (concernLevel === "GOOD") bgColor = colors.greenAccent[600];
-            else if (concernLevel === "BAD") bgColor = colors.redAccent[700];
-            else if (concernLevel === "DANGER") bgColor = "#990000";
+            else if (concernLevel === "CRITICAL") bgColor = colors.redAccent[700];
+            else if (concernLevel === "BAD") bgColor = "#990000";
 
             return (
                 <Box

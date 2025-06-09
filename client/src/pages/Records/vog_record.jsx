@@ -31,8 +31,8 @@ const fetchData = async () => {
         // Determine VOG Status based on Level
         let vogStatus = "INACTIVE";
         if (level === 1) vogStatus = "GOOD";
-        else if (level === 2 || level === 3) vogStatus = "BAD";
-        else if (level === 4) vogStatus = "DANGER";
+        else if (level === 2 || level === 3) vogStatus = "CRITICAL";
+        else if (level === 4) vogStatus = "BAD";
 
         return {
             id: readout._id || index,
@@ -76,10 +76,10 @@ const columns = [
                 case "GOOD":
                     bgColor = colors.greenAccent[600];
                     break;
-                case "BAD":
+                case "CRITICAL":
                     bgColor = colors.redAccent[700];
                     break;
-                case "DANGER":
+                case "BAD":
                     bgColor = colors.redAccent[900] ?? "#800000";
                     break;
                 case "INACTIVE":
