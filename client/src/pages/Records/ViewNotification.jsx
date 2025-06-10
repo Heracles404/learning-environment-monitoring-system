@@ -22,6 +22,23 @@ const ViewNotification = () => {
     const [loading, setLoading] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
 
+    // Get today's date in multiple formats to match your data format
+    const getTodayFormatted = () => {
+        const today = dayjs();
+        // Try different formats that might match your data
+        const formats = [
+            today.format("MM/DD/YYYY"), // 06/10/2025
+            today.format("M/D/YY"),     // 6/10/25
+            today.format("M/DD/YY"),    // 6/10/25
+            today.format("MM/D/YY"),    // 06/10/25
+            today.format("MM/DD/YY"),   // 06/10/25
+            today.format("M/D/YYYY"),   // 6/10/2025
+        ];
+        
+        console.log("Possible date formats:", formats);
+        return formats;
+    };
+
     useEffect(() => {
         setSnackbarOpen(true);
     }, []);
@@ -39,42 +56,54 @@ const ViewNotification = () => {
 
     const fetchData = async () => {
         const data = await httpGetAllReadouts();
-        const formattedData = data.map((readout, index) => {
-            let iaqStatus = "INACTIVE";
-            if (readout.IAQIndex <= 150) iaqStatus = "GOOD";
-            else if (readout.IAQIndex <= 300) iaqStatus = "CRITICAL";
-            else if (readout.IAQIndex <= 500) iaqStatus = "BAD";
+        const todayFormats = getTodayFormatted();
+        
+        // Debug: Log the dates to see what format they're in
+        console.log("Today's possible formats:", todayFormats);
+        console.log("Sample data dates:", data.slice(0, 3).map(d => ({ date: d.date, type: typeof d.date })));
+        
+        const formattedData = data
+            .filter(readout => {
+                const isToday = todayFormats.includes(readout.date);
+                console.log("Comparing:", readout.date, "Match:", isToday);
+                return isToday;
+            }) // Filter for today's data only
+            .map((readout, index) => {
+                let iaqStatus = "INACTIVE";
+                if (readout.IAQIndex <= 150) iaqStatus = "GOOD";
+                else if (readout.IAQIndex <= 300) iaqStatus = "CRITICAL";
+                else if (readout.IAQIndex <= 500) iaqStatus = "BAD";
 
-            let lightingStatus = "INACTIVE";
-            if (readout.lighting !== undefined && readout.lighting !== null) {
-                if (readout.lighting === -1) lightingStatus = "NIGHT";
-                else if (readout.lighting <= 20) lightingStatus = "DARK";
-                else if (readout.lighting >= 300) lightingStatus = "GOOD";
-                else if (readout.lighting <= 299) lightingStatus = "DIM";
-                else if (readout.lighting <= 150) lightingStatus = "BAD";
-            }
+                let lightingStatus = "INACTIVE";
+                if (readout.lighting !== undefined && readout.lighting !== null) {
+                    if (readout.lighting === -1) lightingStatus = "NIGHT";
+                    else if (readout.lighting <= 20) lightingStatus = "DARK";
+                    else if (readout.lighting >= 300) lightingStatus = "GOOD";
+                    else if (readout.lighting <= 299) lightingStatus = "DIM";
+                    else if (readout.lighting <= 150) lightingStatus = "BAD";
+                }
 
-            let tempStatus = "INACTIVE";
-            if (readout.heatIndex <= 27) tempStatus = "GOOD";
-            else if (readout.heatIndex <= 35) tempStatus = "CRITICAL";
-            else if (readout.heatIndex >= 36) tempStatus = "BAD";
+                let tempStatus = "INACTIVE";
+                if (readout.heatIndex <= 27) tempStatus = "GOOD";
+                else if (readout.heatIndex <= 35) tempStatus = "CRITICAL";
+                else if (readout.heatIndex >= 36) tempStatus = "BAD";
 
-            return {
-                id: readout._id || index,
-                classroom: readout.classroom,
-                date: readout.date,
-                time: readout.time,
-                temperature: readout.temperature,
-                humidity: readout.humidity,
-                heatIndex: readout.heatIndex,
-                lighting: readout.lighting,
-                voc: readout.voc,
-                IAQIndex: readout.IAQIndex,
-                indoorAir: iaqStatus,
-                temp: tempStatus,
-                lightRemarks: lightingStatus,
-            };
-        });
+                return {
+                    id: readout._id || index,
+                    classroom: readout.classroom,
+                    date: readout.date,
+                    time: readout.time,
+                    temperature: readout.temperature,
+                    humidity: readout.humidity,
+                    heatIndex: readout.heatIndex,
+                    lighting: readout.lighting,
+                    voc: readout.voc,
+                    IAQIndex: readout.IAQIndex,
+                    indoorAir: iaqStatus,
+                    temp: tempStatus,
+                    lightRemarks: lightingStatus,
+                };
+            });
 
         setRows(formattedData);
     };
@@ -165,7 +194,8 @@ const ViewNotification = () => {
         },
     ];
 
-    // FILTER rows to only show BAD or DANGER statuses in any of the three columns
+    // FILTER rows to only show BAD or CRITICAL statuses in any of the three columns
+    // Since we already filtered for today's data, this will only show today's bad conditions
     const filteredRows = rows.filter(row =>
         row.indoorAir === "CRITICAL" || row.indoorAir === "BAD" ||
         row.temp === "CRITICAL" || row.temp === "BAD" ||
@@ -211,7 +241,7 @@ const ViewNotification = () => {
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = "filtered_records_report.csv";
+        link.download = `notifications_${dayjs().format('YYYY-MM-DD')}.csv`;
         link.style.display = "none";
 
         document.body.appendChild(link);
@@ -224,7 +254,7 @@ const ViewNotification = () => {
     return (
         <Box m="5px 25px" height="100%">
             <Box display="flex" justifyContent="space-between" alignItems="space-between" sx={{ flexDirection: { xs: "column", sm: "row" } }}>
-                <Header title="Status Logs" subtitle="Monitoring the  Status Notification Logs" />
+                <Header title="Status Logs" subtitle={`Monitoring Today's Critical Status - ${dayjs().format('M/D/YY')}`} />
                 <Box>
                     <Button
                         onClick={() => setOpenDownloadDialog(true)}
@@ -247,9 +277,14 @@ const ViewNotification = () => {
                 <Paper sx={{ height: {xs:"60vh", md: "70vh"}, width: "100%", overflow: "hidden" }}>
                     <Typography variant="caption" sx={{ ml: 2 }}>
                         Indoor Air Quality (IAQ), Heat Index, Light
+                        {filteredRows.length === 0 && (
+                            <Typography variant="body2" sx={{ ml: 2, mt: 1, color: colors.greenAccent[400] }}>
+                                ✅ No critical conditions detected today!
+                            </Typography>
+                        )}
                     </Typography>
                     <DataGrid
-                        rows={filteredRows} // <-- use filteredRows here
+                        rows={filteredRows}
                         columns={columns}
                         disableSelectionOnClick
                         components={{ Toolbar: GridToolbar }}
@@ -285,9 +320,15 @@ const ViewNotification = () => {
                 </Paper>
             </Box>
 
-            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-                <Alert onClose={handleSnackbarClose} severity="info" variant="filled" sx={{ width: '100%' }} action={ViewSuggestion}>
-                    INFO: Keep Optimal Conditions
+            {/* Show snackbar only if there are critical conditions today */}
+            <Snackbar 
+                open={snackbarOpen && filteredRows.length > 0} 
+                autoHideDuration={6000} 
+                onClose={handleSnackbarClose} 
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+                <Alert onClose={handleSnackbarClose} severity="warning" variant="filled" sx={{ width: '100%' }} action={ViewSuggestion}>
+                    ⚠️ Critical conditions detected today! Check Status Logs.
                 </Alert>
             </Snackbar>
 
