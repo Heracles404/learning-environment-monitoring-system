@@ -10,6 +10,8 @@ import Header from "../../../components/Header";
 import Grid from '@mui/material/Grid2';
 import StatusIndicator from '../../../components/StatusIndicator';
 import DeviceStatusIndicator from "../../../components/DeviceStatusIndicator";
+import StatusLegend from "../../../components/StatusLegend";
+
 const Device1 = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
@@ -198,6 +200,7 @@ const Device1 = () => {
       >
         <Header title="DEVICES" subtitle="Monitoring the Device"
         />
+        
         <Grid container
           display='flex'
           justifyContent={{xs:"space-around", sm:"space-between", lg:"space-between"}}
@@ -240,9 +243,11 @@ const Device1 = () => {
         </Box>
             <Box mt="1px">
                 <Paper sx={{ width: "100%", overflow: "hidden" }}>
-                    <Typography variant="caption" sx={{ ml: 2 }}>
+                    <Typography variant="caption" sx={{ ml: 2, display: 'flex', gap: '105px' }}>
                         Device Information
+                        <StatusLegend />
                     </Typography>
+                    
                     <TableContainer sx={{ height: "65vh" }}>
                         <Table stickyHeader>
                             <TableHead >
