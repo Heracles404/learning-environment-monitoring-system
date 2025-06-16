@@ -175,7 +175,7 @@ const DBRecords = () => {
             renderCell: ({ row: { IAQStatus } }) => {
                 let bgColor = "#999999";
                 if (IAQStatus === "GOOD") bgColor = colors.greenAccent[600];
-                else if (IAQStatus === "BAD" || IAQStatus === "DANGER") bgColor = "#ff9933";
+                else if (IAQStatus === "BAD" || IAQStatus === "DANGER") bgColor = "#990000";
                 else if (IAQStatus === "CRITICAL") bgColor = colors.redAccent[700];
 
                 return (

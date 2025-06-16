@@ -10,11 +10,19 @@ const DashboardCards = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
+    // Fetch data initially
     fetchCardData(setCardData);
+
+    // Auto-refresh every 5 seconds
+    const interval = setInterval(() => {
+      fetchCardData(setCardData);
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    // Check for any bad values after data is loaded
+    // Auto-check for bad values whenever cardData updates
     const hasBadValue = cardData.some((card) => {
       const category = getCategory(card.value, card.title);
       return category === "BAD";
@@ -62,22 +70,14 @@ const DashboardCards = () => {
 
   const getTextColor = (category) => {
     switch (category) {
-      case "GOOD":
-        return "#33FF7A";
-      case "CRITICAL":
-        return "#FF0A0A";
-      case "BAD":
-        return "#F50000";
-      case "DIM":
-        return "#ff9933";
-      case "DARK":
-        return "#333333";
-      case "NIGHT":
-        return "#141414";
-      case "INACTIVE":
-        return "#999999";
-      default:
-        return "#000000";
+      case "GOOD": return "#33FF7A";
+      case "CRITICAL": return "#FF0A0A";
+      case "BAD": return "#F50000";
+      case "DIM": return "#ff9933";
+      case "DARK": return "#333333";
+      case "NIGHT": return "#141414";
+      case "INACTIVE": return "#999999";
+      default: return "#000000";
     }
   };
 
@@ -123,7 +123,7 @@ const DashboardCards = () => {
           sx={{ width: '100%' }}
           action={ViewStatus}
         >
-          Parameters are in BAD level.
+          Parameters are in BAD/DANGER level.
         </Alert>
       </Snackbar>
     </div>
