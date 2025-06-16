@@ -2,20 +2,37 @@ import React, { useState, useEffect } from "react";
 import './DashboardCards.css';
 import DashboardCard from '../DashboardCard/DashboardCard';
 import { fetchCardData } from "../../data/mockChartData";
+import { Snackbar, Alert, Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const DashboardCards = () => {
   const [cardData, setCardData] = useState([]);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
     fetchCardData(setCardData);
   }, []);
 
+  useEffect(() => {
+    // Check for any bad values after data is loaded
+    const hasBadValue = cardData.some((card) => {
+      const category = getCategory(card.value, card.title);
+      return category === "BAD";
+    });
+
+    setSnackbarOpen(hasBadValue);
+  }, [cardData]);
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setSnackbarOpen(false);
+  };
+
   const getCategory = (value, type) => {
     if (type === "IAQ Index") {
       if (value <= 150) return "GOOD";
       if (value <= 300) return "CRITICAL";
-      // if (value <= 500) return "DANGER"; //changed from
-      if (value >= 301) return "BAD"; //changed to
+      if (value >= 301) return "BAD";
     }
 
     if (type === "Heat Index") {
@@ -46,23 +63,31 @@ const DashboardCards = () => {
   const getTextColor = (category) => {
     switch (category) {
       case "GOOD":
-        return "#33FF7A"; //Spring Green
+        return "#33FF7A";
       case "CRITICAL":
-        return "#FF0A0A"; //Red
+        return "#FF0A0A";
       case "BAD":
-        return "#F50000"; //Penn Red
+        return "#F50000";
       case "DIM":
-        return "#ff9933"; //Princeton Orange
+        return "#ff9933";
       case "DARK":
-        return "#333333"; // Jet Black
+        return "#333333";
       case "NIGHT":
-        return "#141414"; // Night Black
+        return "#141414";
       case "INACTIVE":
-        return "#999999"; //Battleship Gray
+        return "#999999";
       default:
-        return "#000000"; // Black
+        return "#000000";
     }
   };
+
+  const ViewStatus = (
+    <Link to="/ViewNotification" style={{ textDecoration: 'none', color:"white" }}>
+      <Button color="white" size="small">
+        View Status
+      </Button>
+    </Link>
+  );
 
   return (
     <div className="Cards">
@@ -84,6 +109,23 @@ const DashboardCards = () => {
           </div>
         );
       })}
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="error"
+          variant="filled"
+          sx={{ width: '100%' }}
+          action={ViewStatus}
+        >
+          Parameters are in BAD level.
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
