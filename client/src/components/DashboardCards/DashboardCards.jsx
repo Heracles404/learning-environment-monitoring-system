@@ -10,19 +10,12 @@ const DashboardCards = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
-    // Fetch data initially
+    // Fetch data once on mount
     fetchCardData(setCardData);
-
-    // Auto-refresh every 5 seconds
-    const interval = setInterval(() => {
-      fetchCardData(setCardData);
-    }, 5000);
-
-    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    // Auto-check for bad values whenever cardData updates
+    // Check for BAD values every time cardData changes
     const hasBadValue = cardData.some((card) => {
       const category = getCategory(card.value, card.title);
       return category === "BAD";
@@ -112,7 +105,6 @@ const DashboardCards = () => {
 
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={6000}
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
       >

@@ -17,8 +17,8 @@ const Records = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
-    const [startTime, setStartTime] = useState("");
-    const [endTime, setEndTime] = useState("");
+    const [startTime, setStartTime] = useState("07:00");  // default 7 AM
+const [endTime, setEndTime] = useState("18:00");      // default 6 PM
     const [openDownloadDialog, setOpenDownloadDialog] = useState(false);
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
     const [loading, setLoading] = useState(false);
