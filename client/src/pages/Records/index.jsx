@@ -238,7 +238,7 @@ const [endTime, setEndTime] = useState("18:00");      // default 6 PM
                 <Header title="RECORDS" subtitle="Managing the Records" />
                 <Box>
                     <TextField
-                        label="Start Time"
+                        label="Class Start"
                         type="time"
                         value={startTime}
                         onChange={e => setStartTime(e.target.value)}
@@ -246,16 +246,16 @@ const [endTime, setEndTime] = useState("18:00");      // default 6 PM
                         sx={{ margin: 1 }}
                     />
                     <TextField
-                        label="End Time"
+                        label="Class End"
                         type="time"
                         value={endTime}
                         onChange={e => setEndTime(e.target.value)}
                         InputLabelProps={{ shrink: true }}
                         sx={{ margin: 1 }}
                     />
-                    <Button onClick={handleSaveTimeRange} sx={{ backgroundColor: colors.blueAccent[400], color: "white", fontWeight: "bold", margin: 1 }}>
+                    {/* <Button onClick={handleSaveTimeRange} sx={{ backgroundColor: colors.blueAccent[400], color: "white", fontWeight: "bold", margin: 1 }}>
                         Save Time Filter
-                    </Button>
+                    </Button> */}
                     <Button onClick={() => setOpenDialog(true)} sx={{ backgroundColor: colors.redAccent[500], color: "white", fontWeight: "bold", margin: 1 }}>
                         <DeleteIcon sx={{ mr: "10px" }} /> Delete Selected Rows
                     </Button>
