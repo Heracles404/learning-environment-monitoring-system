@@ -327,8 +327,8 @@ const ViewNotification = () => {
                 onClose={handleSnackbarClose} 
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             >
-                <Alert onClose={handleSnackbarClose} severity="warning" variant="filled" sx={{ width: '100%' }} action={ViewSuggestion}>
-                    ⚠️ Critical conditions detected today! Check Status Logs.
+                <Alert onClose={handleSnackbarClose} severity="info" variant="filled" sx={{ width: '100%' }} action={ViewSuggestion}>
+                    INFO: Keep Optimal Conditions
                 </Alert>
             </Snackbar>
 

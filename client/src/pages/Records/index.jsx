@@ -70,12 +70,27 @@ const Records = () => {
         setRows(formattedData);
     };
 
+    // Load saved time filter from localStorage
+    useEffect(() => {
+        const savedStartTime = localStorage.getItem("savedStartTime");
+        const savedEndTime = localStorage.getItem("savedEndTime");
+
+        if (savedStartTime) setStartTime(savedStartTime);
+        if (savedEndTime) setEndTime(savedEndTime);
+    }, []);
+
     useEffect(() => {
         const interval = setInterval(() => {
             void fetchData();
         }, 1000);
         return () => clearInterval(interval);
     }, []);
+
+    const handleSaveTimeRange = () => {
+        localStorage.setItem("savedStartTime", startTime);
+        localStorage.setItem("savedEndTime", endTime);
+        setSnackbar({ open: true, message: 'Time range saved!', severity: 'success' });
+    };
 
     const columns = [
         { field: "classroom", headerName: "Room", width: 98 },
@@ -238,6 +253,9 @@ const Records = () => {
                         InputLabelProps={{ shrink: true }}
                         sx={{ margin: 1 }}
                     />
+                    <Button onClick={handleSaveTimeRange} sx={{ backgroundColor: colors.blueAccent[400], color: "white", fontWeight: "bold", margin: 1 }}>
+                        Save Time Filter
+                    </Button>
                     <Button onClick={() => setOpenDialog(true)} sx={{ backgroundColor: colors.redAccent[500], color: "white", fontWeight: "bold", margin: 1 }}>
                         <DeleteIcon sx={{ mr: "10px" }} /> Delete Selected Rows
                     </Button>
