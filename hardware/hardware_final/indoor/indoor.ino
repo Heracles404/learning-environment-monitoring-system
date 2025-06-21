@@ -42,7 +42,7 @@ float temperature, humidity, voc, IAQIndex, lux;
 float ppm;
 int heatIndex;
 String indoorAir, tempLabel, lightLabel, recordTime;
-const String classroom = "MMCL_E311";
+const String classroom = "MMCL_Demo";
 // Global or static variable to track blinking state
 bool alertTriggered = false;
 
@@ -132,7 +132,7 @@ void loop() {
   static bool alertTriggered = false; 
 
   // --- HOURLY SENSOR READINGS & DATA SEND ---
-  if (currentMinute == 0 && currentHour != lastPostHour) {
+  if (currentMinute != lastPostHour) {
     Serial.println("Hourly Trigger at: " + formattedTime);
 
     // Hourly sensor readings
@@ -156,7 +156,7 @@ void loop() {
     );
 
     Serial.println("Hourly data sent at: " + formattedTime);
-    lastPostHour = currentHour;
+    lastPostHour = currentMinute;
   }
 
   // --- Your existing continuous threshold & alert checks ---

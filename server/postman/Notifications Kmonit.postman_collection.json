@@ -1,0 +1,2688 @@
+{
+	"info": {
+		"_postman_id": "5db86ac1-057c-4f66-b14e-bebfa35b30cd",
+		"name": "Kmonit",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29955735",
+		"_collection_link": "https://www.postman.com/satellite-operator-28813848/workspace/isbn/collection/29955735-5db86ac1-057c-4f66-b14e-bebfa35b30cd?action=share&source=collection_link&creator=29955735"
+	},
+	"item": [
+		{
+			"name": "Back Up",
+			"item": [
+				{
+					"name": "old_backup",
+					"item": [
+						{
+							"name": "Sessions API",
+							"item": [
+								{
+									"name": "POST /sessions",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"id\": \"123465\",\r\n    \"user_id\": 2,\r\n    \"ip_address\": \"192.168.x.xx\",\r\n    \"user_agent\": \"Chrome\",\r\n    \"payload\": \"123asjdbuagiwx\",\r\n    \"last_activity\": 123456\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost/kmonit/sessions.php",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"path": [
+												"kmonit",
+												"sessions.php"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "PUT /sessionsById",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"ip_address\": \"192.168.xx\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost/kmonit/sessions.php?id=123465",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"path": [
+												"kmonit",
+												"sessions.php"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "123465"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "PUT /sessionsById Copy",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"ip_address\": \"192.168.xxx\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost/kmonit/sessions.php?user_id=2",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"path": [
+												"kmonit",
+												"sessions.php"
+											],
+											"query": [
+												{
+													"key": "user_id",
+													"value": "2"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "DELETE /sessionsById",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "http://localhost/kmonit/sessions.php?id=12345",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"path": [
+												"kmonit",
+												"sessions.php"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "12345"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "DELETE /sessionsByUserId",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "http://localhost/kmonit/sessions.php?user_id=2",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"path": [
+												"kmonit",
+												"sessions.php"
+											],
+											"query": [
+												{
+													"key": "user_id",
+													"value": "2"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Failed Jobs API",
+							"item": [
+								{
+									"name": "POST /failed_jobs",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"uuid\": \"$.This.ix.Hashed!\",\r\n    \"connection\": \"2\",\r\n    \"queue\": 1,\r\n    \"payload\": \"Als0.H@shed\",\r\n    \"exception\": \"123456\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost/kmonit/failed_jobs.php",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"path": [
+												"kmonit",
+												"failed_jobs.php"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "DELETE /failed_jobsById",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost/kmonit/failed_jobs.php?id=5",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"path": [
+												"kmonit",
+												"failed_jobs.php"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "5"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "DELETE /failed_jobsByUuid",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost/kmonit/failed_jobs.php?uuid=123asd4165",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"path": [
+												"kmonit",
+												"failed_jobs.php"
+											],
+											"query": [
+												{
+													"key": "uuid",
+													"value": "123asd4165"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Password Reset API",
+							"item": [
+								{
+									"name": "POST /password_reset",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"123@asd.com\",\r\n    \"token\": \"monitor\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost/kmonit/password_resets.php",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"path": [
+												"kmonit",
+												"password_resets.php"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "DELETE /password_reset",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost/kmonit/password_resets.php?email=123@asd.com",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"path": [
+												"kmonit",
+												"password_resets.php"
+											],
+											"query": [
+												{
+													"key": "email",
+													"value": "123@asd.com"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET /token",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost/kmonit/password_resets.php?email=123@asd.com",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"path": [
+												"kmonit",
+												"password_resets.php"
+											],
+											"query": [
+												{
+													"key": "email",
+													"value": "123@asd.com"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Monitors API",
+							"item": [
+								{
+									"name": "POST /monitors",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n\t// user_id must be an integer\r\n    \"user_id\": 123123,\r\n    \"monitor_name\": \"monitor\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost/kmonit/monitors.php",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"path": [
+												"kmonit",
+												"monitors.php"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "DELETE /monitorById",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost/kmonit/monitors.php?id=1",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"path": [
+												"kmonit",
+												"monitors.php"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "DELETE /monitorByUser_id",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost/kmonit/monitors.php?user_id=123",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"path": [
+												"kmonit",
+												"monitors.php"
+											],
+											"query": [
+												{
+													"key": "user_id",
+													"value": "123"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET /ByUserId",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost/kmonit/monitors.php?user_id=123123",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"path": [
+												"kmonit",
+												"monitors.php"
+											],
+											"query": [
+												{
+													"key": "user_id",
+													"value": "123123"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET /monitors",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost/kmonit/monitors.php",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"path": [
+												"kmonit",
+												"monitors.php"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "APIs v2",
+					"item": [
+						{
+							"name": "Users API",
+							"item": [
+								{
+									"name": "POST /user",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"jane Doe\",\r\n    \"email\": \"janedoe@example.com\",\r\n    \"role\": \"Test\",\r\n    \"password\": \"Pass.123\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/users.php",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"users.php"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET /users",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/users.php",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"users.php"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET /userById",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/users.php?id=1",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"users.php"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET /userByEmail",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/users.php?email=client1@example.com",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"users.php"
+											],
+											"query": [
+												{
+													"key": "email",
+													"value": "client1@example.com"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET /authentication",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/users.php?email=client1@example.com&password=Pass.123",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"users.php"
+											],
+											"query": [
+												{
+													"key": "email",
+													"value": "client1@example.com"
+												},
+												{
+													"key": "password",
+													"value": "Pass.123"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "DELETE /userById",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/users.php?id=28",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"users.php"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "28"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "DELETE /userByEmail",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/users.php?email=1johndoe@example.com",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"users.php"
+											],
+											"query": [
+												{
+													"key": "email",
+													"value": "1johndoe@example.com"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "PUT /userById",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"password\":\"Pass.123\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/users.php?id=3",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"users.php"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "3"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "PUT /userByEmail",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"johndoe@example.com\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/users.php?email=JONDOE@EXAMPLE.COM",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"users.php"
+											],
+											"query": [
+												{
+													"key": "email",
+													"value": "JONDOE@EXAMPLE.COM"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Devices API",
+							"item": [
+								{
+									"name": "GET /devices",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/devices.php",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"devices.php"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET /deviceById",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/devices.php?id=asd",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"devices.php"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "asd"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "POST /device",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"user_id\": 5\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/devices.php",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"devices.php"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "PUT /device",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"device_name\": \"tank1\",\r\n    \"gps_location\": \"earath\",\r\n    \"status\": \"active\",\r\n    \"last_active\": \"this can be empty, will always read timestamp when initiated\"\r\n\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/devices.php?id=1",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"devices.php"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "DELETE /device",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/devices.php?id=123135",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"devices.php"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "123135"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Tanks API",
+							"item": [
+								{
+									"name": "POST /tankData",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"tank_level\": 1223.1,\r\n    \"device_id\": 1\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/tank_datasets.php",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"tank_datasets.php"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "DELETE /tankdataById",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/tank_datasets.php?id=1",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"tank_datasets.php"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "DELETE /tankdataByDeviceId",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/tank_datasets.php?device_id=1",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"tank_datasets.php"
+											],
+											"query": [
+												{
+													"key": "device_id",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Authentication Token API",
+							"item": [
+								{
+									"name": "GET /authenticationToken",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/authentication_token.php?email=bncnzrn11@gmail.com&token=8DGA4",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"authentication_token.php"
+											],
+											"query": [
+												{
+													"key": "email",
+													"value": "bncnzrn11@gmail.com"
+												},
+												{
+													"key": "token",
+													"value": "8DGA4"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "PUT /authenticationToken",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n\t\"token\":\"123abc\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/authentication_token.php?email=asd@asd.com&token=123123",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"authentication_token.php"
+											],
+											"query": [
+												{
+													"key": "email",
+													"value": "asd@asd.com"
+												},
+												{
+													"key": "token",
+													"value": "123123"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "POST /authenticationToken",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"client1@example.com\",\r\n    \"token\": \"123123\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/authentication_token.php",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"authentication_token.php"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "DELETE /expired tokens",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/authentication_token.php",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"authentication_token.php"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Mailer API",
+							"item": [
+								{
+									"name": "POST /mail",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"bncnzrn11@gmail.com\",\r\n    \"subject\": \"Test Subject\",\r\n    \"message\": \"This is a test message\"\r\n}\r\n\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://jlw.xxm.mybluehost.me/website_88fe842d/api/mailer.php",
+											"protocol": "https",
+											"host": [
+												"jlw",
+												"xxm",
+												"mybluehost",
+												"me"
+											],
+											"path": [
+												"website_88fe842d",
+												"api",
+												"mailer.php"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Users API",
+			"item": [
+				{
+					"name": "POST /client",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"email\": \"test@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Darren Yates\",\r\n    \"email\": \"darren.yates@katzwatertech.com\",\r\n    \"password\": \"GPK1975!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.kmonit.org/users/admin",
+							"protocol": "https",
+							"host": [
+								"api",
+								"kmonit",
+								"org"
+							],
+							"path": [
+								"users",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /authenticate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"bncnzrn11@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/users/session/auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"users",
+								"session",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.kmonit.org/users",
+							"protocol": "https",
+							"host": [
+								"api",
+								"kmonit",
+								"org"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/users/bncnzrn11@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"users",
+								"bncnzrn11@gmail.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/users/67a1ea50fe5fa296cccb1124",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"users",
+								"67a1ea50fe5fa296cccb1124"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT /user",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"password\":\"Pass.123\",\r\n  \"role\": \"Client\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/users/6798c8681f375ee4c010d6be",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"users",
+								"6798c8681f375ee4c010d6be"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT /pw reset",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"bncnzrn11@gmail.com\",\r\n  \"name\": \"test-mail-pw-reset\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/users/rstpw/681a1968ca90cda8fcb23870",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"users",
+								"rstpw",
+								"681a1968ca90cda8fcb23870"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Devices API",
+			"item": [
+				{
+					"name": "POST /device",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"serial_id\": \"001\",\r\n    \"user_id\": \"684ceb90eaaa95d59b5cfd4d\",\r\n    // \"alias\": \"GLI3\",\r\n    \"high_warn\": 38,\r\n    \"low_warn\": 3,\r\n    \"height\": 50,\r\n    \"diameter\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/devices",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /devices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.kmonit.org/devices",
+							"protocol": "https",
+							"host": [
+								"api",
+								"kmonit",
+								"org"
+							],
+							"path": [
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /userDevices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/devices/user/67c7ba06178fb45af117dcba",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"devices",
+								"user",
+								"67c7ba06178fb45af117dcba"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /device",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/devices/001",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"devices",
+								"001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH /device",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"alias\": \"qwe\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/devices/123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"devices",
+								"123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH /lastActive",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"device_name\": \"tank1\",\r\n    \"gps_location\": \"earath\",\r\n    \"status\": \"active\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/devices/last_active/asdadw",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"devices",
+								"last_active",
+								"asdadw"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /device",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://api.kmonit.org/devices/003",
+							"protocol": "https",
+							"host": [
+								"api",
+								"kmonit",
+								"org"
+							],
+							"path": [
+								"devices",
+								"003"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /deviceByUser",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/devices/user/6794653cf3d22f35ebcb5a1e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"devices",
+								"user",
+								"6794653cf3d22f35ebcb5a1e"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tanks API",
+			"item": [
+				{
+					"name": "POST /tankData",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"serial_id\": \"001\",\r\n\t\"level\": 24.65,\r\n\t\"recorded_at\": \"2025-05-14T13:00:02.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.kmonit.org/records",
+							"protocol": "https",
+							"host": [
+								"api",
+								"kmonit",
+								"org"
+							],
+							"path": [
+								"records"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /tankData",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"serial_id\": \"device1\",\r\n    \"level\": 1223.1,\r\n    \"temperature\": 1,\r\n    \"pressure\": 2,\r\n    \"ph\": 1,\r\n    \"tds\": 2,\r\n    \"orp\": 23,\r\n    \"chlorine\": 32,\r\n    \"radiation\": 43\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/records",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"records"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /tankData",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.kmonit.org/records/002",
+							"protocol": "https",
+							"host": [
+								"api",
+								"kmonit",
+								"org"
+							],
+							"path": [
+								"records",
+								"002"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /tank",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/records/6794c10fa2f71e1f21e16caf",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"records",
+								"6794c10fa2f71e1f21e16caf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /deviceData",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://api.kmonit.org/records/device/003",
+							"protocol": "https",
+							"host": [
+								"api",
+								"kmonit",
+								"org"
+							],
+							"path": [
+								"records",
+								"device",
+								"003"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /devices/threshold",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/devices/threshold/123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"devices",
+								"threshold",
+								"123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /devices/userEmail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/devices/user_serial/123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"devices",
+								"user_serial",
+								"123"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication Token API",
+			"item": [
+				{
+					"name": "POST /authenticationToken",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"bncnzrn11@gmail.com\",\r\n    \"name\": \"Someone\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/authentication",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"authentication"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST verifyToken",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test@test.com\",\r\n    \"token\": \"955487\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/authentication/verify",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"authentication",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH /authenticationToken",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"email\":\"aclient@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/authentication",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"authentication"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /expired tokens",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"email\":\"aclient@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/authentication",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"authentication"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "to server",
+			"item": [
+				{
+					"name": "post data 002",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t// 001: 680b44164d358f48ab344482\r\n\t// 002: 680b44184d358f48ab344486\r\n\r\n\t\"serial_id\": \"002\",\r\n\t\"level\": 30,\r\n\t\"recorded_at\": \"15:12 01 February 2025\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://82.180.139.203:8000/records",
+							"protocol": "http",
+							"host": [
+								"82",
+								"180",
+								"139",
+								"203"
+							],
+							"port": "8000",
+							"path": [
+								"records"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post data 001",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t// 001: 680b44164d358f48ab344482\r\n\t// 002: 680b44184d358f48ab344486\r\n\r\n\t\"serial_id\": \"001\",\r\n\t\"level\": 95,\r\n\t\"recorded_at\": \"15:12 01 February 2025\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://82.180.139.203:8000/records",
+							"protocol": "http",
+							"host": [
+								"82",
+								"180",
+								"139",
+								"203"
+							],
+							"port": "8000",
+							"path": [
+								"records"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET DEVICES",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://82.180.139.203:8000/devices/003",
+							"protocol": "http",
+							"host": [
+								"82",
+								"180",
+								"139",
+								"203"
+							],
+							"port": "8000",
+							"path": [
+								"devices",
+								"003"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://82.180.139.203:8000/tankDatasets",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"serial_id\": \"001\", \r\n        \"tank_name\": \"Tank A\", \r\n        \"level\": 20,  \r\n        \"flow_rate\": 100, \r\n        \"temperature\": 341,  \r\n        \"pressure\": 123,\r\n        \"ph\": 1,\r\n        \"tds\": 123, \r\n        \"orp\": 123, \r\n        \"chlorine\": 454,\r\n        \"radiation\": 12 \r\n    },\r\n    {\r\n        \"serial_id\": \"001\", \r\n        \"tank_name\": \"Tank B\", \r\n        \"level\": 25,  \r\n        \"flow_rate\": 120, \r\n        \"temperature\": 350,  \r\n        \"pressure\": 130,\r\n        \"ph\": 2,\r\n        \"tds\": 150, \r\n        \"orp\": 421, \r\n        \"chlorine\": 460,\r\n        \"radiation\": 15 \r\n    }\r\n]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://82.180.139.203:8000/tankDatasets",
+							"protocol": "http",
+							"host": [
+								"82",
+								"180",
+								"139",
+								"203"
+							],
+							"port": "8000",
+							"path": [
+								"tankDatasets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post device 002",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"serial_id\": \"002\",\r\n    \"user_id\": \"67aab981b9aef0f4506c3da1\",\r\n    \"alias\": \"Test Tank\",\r\n    \"high_warn\": 45,\r\n    \"low_warn\": 5,\r\n    \"height\": 50,\r\n    \"diameter\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://82.180.139.203:8000/devices",
+							"protocol": "http",
+							"host": [
+								"82",
+								"180",
+								"139",
+								"203"
+							],
+							"port": "8000",
+							"path": [
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post device 001",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"serial_id\": \"002\",\r\n    \"user_id\": \"67aab981b9aef0f4506c3da1\",\r\n    \"alias\": \"Test Tank\",\r\n    \"high_warn\": 95,\r\n    \"low_warn\": 10,\r\n    \"height\": 100,\r\n    \"diameter\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://82.180.139.203:8000/devices",
+							"protocol": "http",
+							"host": [
+								"82",
+								"180",
+								"139",
+								"203"
+							],
+							"port": "8000",
+							"path": [
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET tanknames",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://82.180.139.203:8000/devices/001",
+							"protocol": "http",
+							"host": [
+								"82",
+								"180",
+								"139",
+								"203"
+							],
+							"port": "8000",
+							"path": [
+								"devices",
+								"001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post data 010",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"serial_id\": \"010\", \r\n        \"tank_name\": \"Tank A\", \r\n        \"level\": 0.1\r\n    },\r\n    {\r\n        \"serial_id\": \"010\", \r\n        \"tank_name\": \"Tank B\", \r\n        \"level\": 0.1\r\n    }\r\n]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://82.180.139.203:8000/tankDatasets",
+							"protocol": "http",
+							"host": [
+								"82",
+								"180",
+								"139",
+								"203"
+							],
+							"port": "8000",
+							"path": [
+								"tankDatasets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://82.180.139.203:8000/users",
+							"protocol": "http",
+							"host": [
+								"82",
+								"180",
+								"139",
+								"203"
+							],
+							"port": "8000",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.kmonit.org/users/67aab981b9aef0f4506c3da1",
+							"protocol": "https",
+							"host": [
+								"api",
+								"kmonit",
+								"org"
+							],
+							"path": [
+								"users",
+								"67aab981b9aef0f4506c3da1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "hardware",
+			"item": [
+				{
+					"name": "GET /device",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.kmonit.org/devices/001",
+							"protocol": "https",
+							"host": [
+								"api",
+								"kmonit",
+								"org"
+							],
+							"path": [
+								"devices",
+								"001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /tankData",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// [\r\n//     {\r\n//         \"serial_id\": \"DEVICE2\",\r\n//         \"tank_name\": \"Tank X\",\r\n//         \"level\": 15,\r\n//         \"flow_rate\": 100,\r\n//         \"temperature\": 341,\r\n//         \"ph\": 1,\r\n//         \"tds\": 123,\r\n//         \"orp\": 123,\r\n//         \"chlorine\": 454,\r\n//         \"radiation\": 12\r\n//     },\r\n//     {\r\n//         \"serial_id\": \"DEVICE2\",\r\n//         \"tank_name\": \"Tank Y\",\r\n//         \"level\": 11,\r\n//         \"flow_rate\": 120,\r\n//         \"temperature\": 350,\r\n//         \"ph\": 2,\r\n//         \"tds\": 150,\r\n//         \"orp\": 421,\r\n//         \"chlorine\": 460,\r\n//         \"radiation\": 15\r\n//     },\r\n//     {\r\n//         \"serial_id\": \"DEVICE2\",\r\n//         \"tank_name\": \"Tank Z\",\r\n//         \"level\": 21,\r\n//         \"flow_rate\": 120,\r\n//         \"temperature\": 350,\r\n//         \"ph\": 2,\r\n//         \"tds\": 150,\r\n//         \"orp\": 421,\r\n//         \"chlorine\": 460,\r\n//         \"radiation\": 15\r\n//     }\r\n// ]\r\n\r\n\r\n[\r\n    {\r\n        \"serial_id\": \"12\",\r\n        \"tank_name\": \"TANK X\",\r\n        \"level\": 15,\r\n        \"recorded_at\": \"15:12 24 February 2025\"\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.kmonit.org/tankDatasets",
+							"protocol": "https",
+							"host": [
+								"api",
+								"kmonit",
+								"org"
+							],
+							"path": [
+								"tankDatasets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /sendAlert",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"to\": \"bncnzrn11@gmail.com\",\r\n    \"name\": \"John Doe\", \r\n    \"alert_type\": \"HIGH\",\r\n    \"tank_name\": \"Woodlands 1\",\r\n    \"level\": 38.0,\r\n\t\"recorded_at\": \"15:12 01 February 2025\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.kmonit.org/records/alert",
+							"protocol": "https",
+							"host": [
+								"api",
+								"kmonit",
+								"org"
+							],
+							"path": [
+								"records",
+								"alert"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /devices/tanknames",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.kmonit.org/devices/tank_names/001",
+							"protocol": "https",
+							"host": [
+								"api",
+								"kmonit",
+								"org"
+							],
+							"path": [
+								"devices",
+								"tank_names",
+								"001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /devices/userEmail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.kmonit.org/devices/user_serial/one",
+							"protocol": "https",
+							"host": [
+								"api",
+								"kmonit",
+								"org"
+							],
+							"path": [
+								"devices",
+								"user_serial",
+								"one"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /devices/height",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.kmonit.org/devices/height/010",
+							"protocol": "https",
+							"host": [
+								"api",
+								"kmonit",
+								"org"
+							],
+							"path": [
+								"devices",
+								"height",
+								"010"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notifications API",
+			"item": [
+				{
+					"name": "POST Notification",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"user@example.com\",\r\n  \"serial_id\": \"tank123\",\r\n  \"alert_type\": \"HIGH\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/notify",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"notify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /sendAlert",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"to\": \"bncnzrn11@gmail.com\",\r\n    \"name\": \"John Doe\", \r\n    \"alert_type\": \"HIGH\",\r\n    \"tank_name\": \"Woodlands 1\",\r\n    \"level\": 38.0,\r\n\t\"recorded_at\": \"15:12 01 February 2025\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/notify/alert",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"notify",
+								"alert"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /Notifications",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/notify",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"notify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /userNotification",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/notify/user?email=TEST@GMAIL.COM",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"notify",
+								"user"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "TEST@GMAIL.COM"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /deviceNotification",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/notify/device?serial_id=003",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"notify",
+								"device"
+							],
+							"query": [
+								{
+									"key": "serial_id",
+									"value": "003"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH /markAsRead",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/notify/684cf4874989e27cd97c668e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"notify",
+								"684cf4874989e27cd97c668e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /notifications",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/notify/684cf4874989e27cd97c668e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"notify",
+								"684cf4874989e27cd97c668e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /notificationByUser",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/notify/user/684ceb90eaaa95d59b5cfd4d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"notify",
+								"user",
+								"684ceb90eaaa95d59b5cfd4d"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GET /devices/threshold",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.kmonit.org/devices/threshold/one",
+					"protocol": "https",
+					"host": [
+						"api",
+						"kmonit",
+						"org"
+					],
+					"path": [
+						"devices",
+						"threshold",
+						"one"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://api.1nce.com/management-api/v1/locate/devices//activity",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "authorization",
+						"value": "{{vault:bearer-token}}UWlPaUl5SWl3aWFXRjBJam94TnpRM01qTXdOVGd6TENKcWRHa2lPaUkzWlRJME1UVTRaQzAxTWpVeExUUmpPV1V0WVdFeVpTMDBaRGsyTWpobFpqQXdOakVpTENKbGJXRnBiQ0k2SW1SaGNuSmxiaTU1WVhSbGMwQnJZWFI2ZDJGMFpYSjBaV05vTG1OdmJTSjkuZU9ZaHZKQ2NCaFFRR1BmcjdsbjJ3ZFhKTDlLelRTWGpXcjBnUFlHbjkxeFNhWEZ5UFg3d0hxeUlMSXoxTWNPRXpndWJoN2VJNm1xWldzYm50V0pfYkpfd2Qyek92ekZRZmYzN19PbldnM3N3UXdBZWJfd19mMm4zeF9LSy1KZzh0UFMtWmRKcTF4SVhUSkR3X084c1VuYlU4aVZTZklmNnlqWkVmSW9iU0l1Q0dnaElmTFo5Z0VDODE0VzVXWHcxbGRxSTR3RDhyNlN2Qlg2VFBnU1FMdzNIRGxuVHI2cEdGSUtJVWJUMXNmUjlsNlBfSTRfT2pfbFdoOGJESlc1Tzk5N0FiMUkzeTRzMkVMdVpjbTdDNWstd2lhRWtCeG5hRUo2dllQd0VyX2tLTmxlLUVSX2NheGdjakEzYjFEVHpWNXFXTjlJYkpZZ0lTUDNvelFkeTlBIiwiYWNjZXNzdG9rZW4iOiJleUpyYVdRaU9pSlRkRmxWUlhsd1ZqVmhNR3hHZGs1Wk1Gd3ZiRnBRWVZGNFMzcE9Zak5vUXpkY0wwOWtVRUp5T0VwTmNtTTlJaXdpWVd4bklqb2lVbE15TlRZaWZRLmV5SnpkV0lpT2lJMlpUUXhNalpqWVMwMFlUTXdMVFEwTTJFdE9HWTNOeTB5WXpnMlpEUTRNV0UxWXpjaUxDSmpiMmR1YVhSdk9tZHliM1Z3Y3lJNld5SlBkMjVsY2lKZExDSnBjM01pT2lKb2RIUndjenBjTDF3dlkyOW5ibWwwYnkxcFpIQXVaWFV0WTJWdWRISmhiQzB4TG1GdFlYcHZibUYzY3k1amIyMWNMMlYxTFdObGJuUnlZV3d0TVY5aWN6QnFjRTR6V0dVaUxDSmpiR2xsYm5SZmFXUWlPaUkzT0hZeWEzTnRZWEZ4ZFRZNGNtcGtiVzB5YVRKdU9HdGtiaUlzSW05eWFXZHBibDlxZEdraU9pSTVNbVU1WkdVNVpTMDJPVFE1TFRSbU4yWXRZak5oWlMwNU9UTmhNRFUyWTJRek5qZ2lMQ0psZG1WdWRGOXBaQ0k2SWpaaFpqVmhZVGhpTFdOa01EUXROREF5WVMxaU1EazNMVEF5TUdKbVpUWmhZVFV5WmlJc0luUnZhMlZ1WDNWelpTSTZJbUZqWTJWemN5SXNJbk5qYjNCbElqb2lZWGR6TG1OdloyNXBkRzh1YzJsbmJtbHVMblZ6WlhJdVlXUnRhVzRpTENKaGRYUm9YM1JwYldVaU9qRTNORGN5TXpBMU9ETXNJbVY0Y0NJNk1UYzBOekl6TkRFNE15d2lhV0YwSWpveE56UTNNak13TlRnekxDSnFkR2tpT2lJNVlXTTNaVEExTnkwd00yTm1MVFEwT1RJdFlUYzBNQzB6WW1ZMU5qWXhZalF3WWpRaUxDSjFjMlZ5Ym1GdFpTSTZJakV3TXpNM01UZzNOalEySW4wLmZHS1VRVzJRSFpyRjN1dDlmTVFybHp0SWgyQW9kX0ZZN3hnWjl6RkhoVVY4c0RBX0FYbEI3VjJMdVpPQmV5VGR4dU1LdDlqdmV1R3hfYnN0alhGSl9oeVVJWkxJWjBHakV1LUlNRGJKbF9GbGlEdGQzNzRxNkRfZVUwaUc2RUlIdkhKaXJvdGZKRFNxZTRHcEVZRUNrcWx5d0hyUm4tbnp6bWtqMmhWZXY2cU1Ia2U1LWlKRzhyYTBlb3RDRDVQcndxWFBoYXdjblR6WmhkNHJuU1M5QlFwbHpDZ1h3akppRkdsNjcyTk96N3dtM0dKMjljNldFUDQ3WHBXb2c3aGZWQVJYMXlPMTRyOTI5eUF3SzBjR3Q2T3c4NFhhTDRQRmxKUFhpWml1RjdreGtZWXI1OVk3WkJwVm1YWE5EWktQd1NZeVNHYXJfR0xIV2NEcEY5WnJ6USJ9"
+					}
+				],
+				"url": {
+					"raw": "https://api.1nce.com/management-api/v1/locate/devices/8988228066611320828/activity?startDateTime=2025-05-08T01%3A01%3A01.000Z&endDateTime=2025-05-14T01%3A01%3A02.000Z",
+					"protocol": "https",
+					"host": [
+						"api",
+						"1nce",
+						"com"
+					],
+					"path": [
+						"management-api",
+						"v1",
+						"locate",
+						"devices",
+						"8988228066611320828",
+						"activity"
+					],
+					"query": [
+						{
+							"key": "startDateTime",
+							"value": "2025-05-08T01%3A01%3A01.000Z"
+						},
+						{
+							"key": "endDateTime",
+							"value": "2025-05-14T01%3A01%3A02.000Z"
+						}
+					]
+				},
+				"description": "Generated from cURL: curl --request GET \\\r\n     --url https://api.1nce.com/management-api/v1/locate/devices//activity \\\r\n     --header 'accept: application/json' \\\r\n     --header 'authorization: {{vault:bearer-token}}'"
+			},
+			"response": []
+		},
+		{
+			"name": "1NCE - GPS",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "authorization",
+						"value": "{{vault:bearer-token}}UWlPaUl5SWl3aWFXRjBJam94TnpRM01qTXdOVGd6TENKcWRHa2lPaUkzWlRJME1UVTRaQzAxTWpVeExUUmpPV1V0WVdFeVpTMDBaRGsyTWpobFpqQXdOakVpTENKbGJXRnBiQ0k2SW1SaGNuSmxiaTU1WVhSbGMwQnJZWFI2ZDJGMFpYSjBaV05vTG1OdmJTSjkuZU9ZaHZKQ2NCaFFRR1BmcjdsbjJ3ZFhKTDlLelRTWGpXcjBnUFlHbjkxeFNhWEZ5UFg3d0hxeUlMSXoxTWNPRXpndWJoN2VJNm1xWldzYm50V0pfYkpfd2Qyek92ekZRZmYzN19PbldnM3N3UXdBZWJfd19mMm4zeF9LSy1KZzh0UFMtWmRKcTF4SVhUSkR3X084c1VuYlU4aVZTZklmNnlqWkVmSW9iU0l1Q0dnaElmTFo5Z0VDODE0VzVXWHcxbGRxSTR3RDhyNlN2Qlg2VFBnU1FMdzNIRGxuVHI2cEdGSUtJVWJUMXNmUjlsNlBfSTRfT2pfbFdoOGJESlc1Tzk5N0FiMUkzeTRzMkVMdVpjbTdDNWstd2lhRWtCeG5hRUo2dllQd0VyX2tLTmxlLUVSX2NheGdjakEzYjFEVHpWNXFXTjlJYkpZZ0lTUDNvelFkeTlBIiwiYWNjZXNzdG9rZW4iOiJleUpyYVdRaU9pSlRkRmxWUlhsd1ZqVmhNR3hHZGs1Wk1Gd3ZiRnBRWVZGNFMzcE9Zak5vUXpkY0wwOWtVRUp5T0VwTmNtTTlJaXdpWVd4bklqb2lVbE15TlRZaWZRLmV5SnpkV0lpT2lJMlpUUXhNalpqWVMwMFlUTXdMVFEwTTJFdE9HWTNOeTB5WXpnMlpEUTRNV0UxWXpjaUxDSmpiMmR1YVhSdk9tZHliM1Z3Y3lJNld5SlBkMjVsY2lKZExDSnBjM01pT2lKb2RIUndjenBjTDF3dlkyOW5ibWwwYnkxcFpIQXVaWFV0WTJWdWRISmhiQzB4TG1GdFlYcHZibUYzY3k1amIyMWNMMlYxTFdObGJuUnlZV3d0TVY5aWN6QnFjRTR6V0dVaUxDSmpiR2xsYm5SZmFXUWlPaUkzT0hZeWEzTnRZWEZ4ZFRZNGNtcGtiVzB5YVRKdU9HdGtiaUlzSW05eWFXZHBibDlxZEdraU9pSTVNbVU1WkdVNVpTMDJPVFE1TFRSbU4yWXRZak5oWlMwNU9UTmhNRFUyWTJRek5qZ2lMQ0psZG1WdWRGOXBaQ0k2SWpaaFpqVmhZVGhpTFdOa01EUXROREF5WVMxaU1EazNMVEF5TUdKbVpUWmhZVFV5WmlJc0luUnZhMlZ1WDNWelpTSTZJbUZqWTJWemN5SXNJbk5qYjNCbElqb2lZWGR6TG1OdloyNXBkRzh1YzJsbmJtbHVMblZ6WlhJdVlXUnRhVzRpTENKaGRYUm9YM1JwYldVaU9qRTNORGN5TXpBMU9ETXNJbVY0Y0NJNk1UYzBOekl6TkRFNE15d2lhV0YwSWpveE56UTNNak13TlRnekxDSnFkR2tpT2lJNVlXTTNaVEExTnkwd00yTm1MVFEwT1RJdFlUYzBNQzB6WW1ZMU5qWXhZalF3WWpRaUxDSjFjMlZ5Ym1GdFpTSTZJakV3TXpNM01UZzNOalEySW4wLmZHS1VRVzJRSFpyRjN1dDlmTVFybHp0SWgyQW9kX0ZZN3hnWjl6RkhoVVY4c0RBX0FYbEI3VjJMdVpPQmV5VGR4dU1LdDlqdmV1R3hfYnN0alhGSl9oeVVJWkxJWjBHakV1LUlNRGJKbF9GbGlEdGQzNzRxNkRfZVUwaUc2RUlIdkhKaXJvdGZKRFNxZTRHcEVZRUNrcWx5d0hyUm4tbnp6bWtqMmhWZXY2cU1Ia2U1LWlKRzhyYTBlb3RDRDVQcndxWFBoYXdjblR6WmhkNHJuU1M5QlFwbHpDZ1h3akppRkdsNjcyTk96N3dtM0dKMjljNldFUDQ3WHBXb2c3aGZWQVJYMXlPMTRyOTI5eUF3SzBjR3Q2T3c4NFhhTDRQRmxKUFhpWml1RjdreGtZWXI1OVk3WkJwVm1YWE5EWktQd1NZeVNHYXJfR0xIV2NEcEY5WnJ6USJ9"
+					}
+				],
+				"url": {
+					"raw": "https://api.1nce.com/management-api/v1/locate/devices/8988228066611320828/activity?startDateTime=2025-05-08T01%3A01%3A01.000Z&endDateTime=2025-05-14T01%3A01%3A02.000Z",
+					"protocol": "https",
+					"host": [
+						"api",
+						"1nce",
+						"com"
+					],
+					"path": [
+						"management-api",
+						"v1",
+						"locate",
+						"devices",
+						"8988228066611320828",
+						"activity"
+					],
+					"query": [
+						{
+							"key": "startDateTime",
+							"value": "2025-05-08T01%3A01%3A01.000Z"
+						},
+						{
+							"key": "endDateTime",
+							"value": "2025-05-14T01%3A01%3A02.000Z"
+						}
+					]
+				},
+				"description": "Generated from cURL: curl --request GET \\\r\n     --url 'https://api.1nce.com/management-api/v1/locate/devices/8988228066611320828/activity?startDateTime=2025-05-08T01%3A01%3A01.000Z&endDateTime=2025-05-14T01%3A01%3A02.000Z' \\\r\n     --header 'accept: application/json' \\\r\n     --header 'authorization: {{vault:bearer-token}}UWlPaUl5SWl3aWFXRjBJam94TnpRM01qTXdOVGd6TENKcWRHa2lPaUkzWlRJME1UVTRaQzAxTWpVeExUUmpPV1V0WVdFeVpTMDBaRGsyTWpobFpqQXdOakVpTENKbGJXRnBiQ0k2SW1SaGNuSmxiaTU1WVhSbGMwQnJZWFI2ZDJGMFpYSjBaV05vTG1OdmJTSjkuZU9ZaHZKQ2NCaFFRR1BmcjdsbjJ3ZFhKTDlLelRTWGpXcjBnUFlHbjkxeFNhWEZ5UFg3d0hxeUlMSXoxTWNPRXpndWJoN2VJNm1xWldzYm50V0pfYkpfd2Qyek92ekZRZmYzN19PbldnM3N3UXdBZWJfd19mMm4zeF9LSy1KZzh0UFMtWmRKcTF4SVhUSkR3X084c1VuYlU4aVZTZklmNnlqWkVmSW9iU0l1Q0dnaElmTFo5Z0VDODE0VzVXWHcxbGRxSTR3RDhyNlN2Qlg2VFBnU1FMdzNIRGxuVHI2cEdGSUtJVWJUMXNmUjlsNlBfSTRfT2pfbFdoOGJESlc1Tzk5N0FiMUkzeTRzMkVMdVpjbTdDNWstd2lhRWtCeG5hRUo2dllQd0VyX2tLTmxlLUVSX2NheGdjakEzYjFEVHpWNXFXTjlJYkpZZ0lTUDNvelFkeTlBIiwiYWNjZXNzdG9rZW4iOiJleUpyYVdRaU9pSlRkRmxWUlhsd1ZqVmhNR3hHZGs1Wk1Gd3ZiRnBRWVZGNFMzcE9Zak5vUXpkY0wwOWtVRUp5T0VwTmNtTTlJaXdpWVd4bklqb2lVbE15TlRZaWZRLmV5SnpkV0lpT2lJMlpUUXhNalpqWVMwMFlUTXdMVFEwTTJFdE9HWTNOeTB5WXpnMlpEUTRNV0UxWXpjaUxDSmpiMmR1YVhSdk9tZHliM1Z3Y3lJNld5SlBkMjVsY2lKZExDSnBjM01pT2lKb2RIUndjenBjTDF3dlkyOW5ibWwwYnkxcFpIQXVaWFV0WTJWdWRISmhiQzB4TG1GdFlYcHZibUYzY3k1amIyMWNMMlYxTFdObGJuUnlZV3d0TVY5aWN6QnFjRTR6V0dVaUxDSmpiR2xsYm5SZmFXUWlPaUkzT0hZeWEzTnRZWEZ4ZFRZNGNtcGtiVzB5YVRKdU9HdGtiaUlzSW05eWFXZHBibDlxZEdraU9pSTVNbVU1WkdVNVpTMDJPVFE1TFRSbU4yWXRZak5oWlMwNU9UTmhNRFUyWTJRek5qZ2lMQ0psZG1WdWRGOXBaQ0k2SWpaaFpqVmhZVGhpTFdOa01EUXROREF5WVMxaU1EazNMVEF5TUdKbVpUWmhZVFV5WmlJc0luUnZhMlZ1WDNWelpTSTZJbUZqWTJWemN5SXNJbk5qYjNCbElqb2lZWGR6TG1OdloyNXBkRzh1YzJsbmJtbHVMblZ6WlhJdVlXUnRhVzRpTENKaGRYUm9YM1JwYldVaU9qRTNORGN5TXpBMU9ETXNJbVY0Y0NJNk1UYzBOekl6TkRFNE15d2lhV0YwSWpveE56UTNNak13TlRnekxDSnFkR2tpT2lJNVlXTTNaVEExTnkwd00yTm1MVFEwT1RJdFlUYzBNQzB6WW1ZMU5qWXhZalF3WWpRaUxDSjFjMlZ5Ym1GdFpTSTZJakV3TXpNM01UZzNOalEySW4wLmZHS1VRVzJRSFpyRjN1dDlmTVFybHp0SWgyQW9kX0ZZN3hnWjl6RkhoVVY4c0RBX0FYbEI3VjJMdVpPQmV5VGR4dU1LdDlqdmV1R3hfYnN0alhGSl9oeVVJWkxJWjBHakV1LUlNRGJKbF9GbGlEdGQzNzRxNkRfZVUwaUc2RUlIdkhKaXJvdGZKRFNxZTRHcEVZRUNrcWx5d0hyUm4tbnp6bWtqMmhWZXY2cU1Ia2U1LWlKRzhyYTBlb3RDRDVQcndxWFBoYXdjblR6WmhkNHJuU1M5QlFwbHpDZ1h3akppRkdsNjcyTk96N3dtM0dKMjljNldFUDQ3WHBXb2c3aGZWQVJYMXlPMTRyOTI5eUF3SzBjR3Q2T3c4NFhhTDRQRmxKUFhpWml1RjdreGtZWXI1OVk3WkJwVm1YWE5EWktQd1NZeVNHYXJfR0xIV2NEcEY5WnJ6USJ9'"
+			},
+			"response": []
+		}
+	]
+}
