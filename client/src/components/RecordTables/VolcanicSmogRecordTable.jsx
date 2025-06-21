@@ -20,9 +20,9 @@ useEffect(() => {
             if (level === 1) {
                 vogStatus = "GOOD";
             } else if (level === 2 || level === 3) {
-                vogStatus = "BAD";
+                vogStatus = "CRITICAL";
             } else if (level === 4) {
-                vogStatus = "DANGER";
+                vogStatus = "BAD";
             }
 
             return {
@@ -73,10 +73,10 @@ const columns = [
                 case "GOOD":
                     bgColor = colors.greenAccent[600];
                     break;
-                case "BAD":
+                case "CRITICAL":
                     bgColor = colors.redAccent[700];
                     break;
-                case "DANGER":
+                case "BAD":
                     bgColor = colors.redAccent[900] ?? "#8B0000"; // fallback
                     break;
                 case "INACTIVE":

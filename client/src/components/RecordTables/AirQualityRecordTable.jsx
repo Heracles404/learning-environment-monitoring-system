@@ -20,9 +20,9 @@ useEffect(() => {
                 if (readout.IAQIndex <= 150) {
                     indoorAir = "GOOD";
                 } else if (readout.IAQIndex <= 300) {
-                    indoorAir = "BAD";
+                    indoorAir = "CRITICAL";
                 } else if (readout.IAQIndex <= 500) {
-                    indoorAir = "DANGER";
+                    indoorAir = "BAD";
                 } else {
                     indoorAir = "INACTIVE"; // Or handle >500 if needed
                 }
@@ -69,11 +69,11 @@ const columns = [
                     bgColor = colors.greenAccent[600];
                     textColor = "white";
                     break;
-                case "DANGER":
+                case "BAD":
                     bgColor = "#990000";
                     textColor = "white";
                     break;
-                case "BAD":
+                case "CRITICAL":
                     bgColor = colors.redAccent[700];
                     textColor = "white";
                     break;

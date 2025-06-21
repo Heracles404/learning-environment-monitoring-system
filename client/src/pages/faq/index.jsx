@@ -25,7 +25,6 @@ const FAQ = () => {
           <Typography>
           This system is designed to read and capture environmental parameters using various sensors. 
           It measures key factors such as heat index, lighting, volcanic smog levels, and indoor air quality. 
-          The system helps users make informed decisions regarding safety, comfort, and potential environmental risks.
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -44,12 +43,12 @@ const FAQ = () => {
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-          How does the monitoring system help improve classroom conditions?
+          How does the monitoring system help in decision making?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-          By monitoring air quality and environmental conditions, the system helps identify issues that could affect health or comfort, allowing timely corrective actions.
+          By monitoring environmental parameters that affect the safety and conduciveness of the classroom, the monitoring system allows the school administrators to make data-driven decisions regarding environmental risk mitigation and resource allocations.
           </Typography>
         </AccordionDetails>
       </Accordion>

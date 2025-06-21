@@ -424,7 +424,7 @@ const ViewStatus = (
           WARNING: {inactiveDevices.inactiveRooms.length} devices are INACTIVE.
         </Alert>
       </Snackbar>
-      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}         
+      {/* <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}         
       anchorOrigin={{ vertical: 'top', horizontal: 'left' }} > 
         <Alert
           onClose={handleSnackbarClose}
@@ -433,9 +433,9 @@ const ViewStatus = (
           sx={{ width: '100%' }}
           action={ViewStatus}
         >
-           Parameters are in BAD level.
+           Parameters are in BAD/DANGER level.
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
       
       {/* <Snackbar
         open={snackbarOpen}
